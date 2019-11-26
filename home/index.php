@@ -6,7 +6,7 @@ require('../config.php');
 require('../function/db_lib.php');
 
 //echo $currentlocation;
-var_dump($_SESSION);
+// var_dump($_SESSION);
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -160,13 +160,15 @@ var_dump($_SESSION);
 $linkar =  array(
   // array('../Approval/','APPROVAL','Request everything!','fa-check-square'),
   array('#','Sản lượng','Quantity','fa-pallet'),
+  array('../print/','Print','Print Label','fa-barcode'),
   array('../Material/','Mã hàng','Part Name, Part No','fa-dolly'),
   array('#','LINE PATROL','Factory issues','fa-camera'),
   array('#','Chất lượng','Push QA issues alert','fa-bullhorn'),
   array('#','SPARE PART','Control spare part','fa-boxes'),
   array('#','Tài liệu','BOM, ISO, PFMEA','fa-folder-open'),
   array('#','Nhân viên','Information','fa-calendar'),
-  array('../system/','ADMIN','Admin System','fa-cogs')
+  array('../system/','ADMIN','Admin System','fa-cogs'),
+
 );
 
 foreach ($linkar as $key => $value) {

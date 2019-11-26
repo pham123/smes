@@ -6,7 +6,7 @@
         <!-- <div class="sidebar-brand-icon rotate-n-15">
           <img src="../img/hallalogo.png" alt="logo" height="45" >
         </div> -->
-        <div class="sidebar-brand-text mx-3" Style='Color:#22356f;font-size: 3em'>Admin</div>
+        <div class="sidebar-brand-text mx-3" Style='Color:#22356f;font-size: 3em'>PRINT</div>
       </a>
 
       <!-- Divider -->
@@ -14,7 +14,7 @@
 
       <!-- Nav Item - Dashboard -->
       <li class="nav-item active">
-        <a class="nav-link" href="../<?php echo $page ?>">
+        <a class="nav-link" href="index.php">
           <i class="fas fa-fw fa-home"></i>
           <span>Home</span></a>
       </li>
@@ -23,19 +23,7 @@
 <?php
 
 $arr = array(
-  array('?tables_Users', 'fa-angle-right',$lang['Users']),
-  array('?tables_Company', 'fa-angle-right',$lang['Company']),
-  array('?tables_Divisions', 'fa-angle-right',$lang['Divisions']),
-  array('?tables_Teams', 'fa-angle-right',$lang['Teams']),
-  array('?tables_Parts', 'fa-angle-right',$lang['Parts']),
-  array('?tables_Section', 'fa-angle-right',$lang['Section']),
-  array('?tables_AssemblyLine', 'fa-angle-right',$lang['AssemblyLine']),
-  array('?tables_Stations', 'fa-angle-right',$lang['Stations']),
-  array('?tables_Machines', 'fa-angle-right',$lang['Machines']),
-  array('?tables_Models', 'fa-angle-right',$lang['Models']),
-  array('?tables_Products', 'fa-angle-right',$lang['Products']),
-  array('?tables_Shift', 'fa-angle-right',$lang['Shift']),
-  array('?tables_Times', 'fa-angle-right',$lang['Times']),
+  array('Products.php', 'fa-angle-right',$lang['Products']),
 );
 echo nav_item($lang['Company'],$arr);
 ?>

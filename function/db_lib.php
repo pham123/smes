@@ -85,9 +85,56 @@ class db {
 			return $rows;
 		}
 
+		public function sl_all($table,$where) {
+			$query = 'SELECT * FROM ' . _DB_PREFIX_ . $table . ' WHERE ' . $where;
+			$rs = mysqli_query($this->dbh,$query);
+			while ($row = mysqli_fetch_assoc($rs)){
+				$rows[] = $row;
+			}
+			return $rows;
+		}
+
+		public function sl_col_all($colar,$table,$where) {
+			$query = 'SELECT '.$table.'Id as id,' .$colar .' FROM ' . _DB_PREFIX_ . $table . ' WHERE ' . $where;
+			$rs = mysqli_query($this->dbh,$query);
+			while ($row = mysqli_fetch_assoc($rs)){
+				$rows[] = $row;
+			}
+			return $rows;
+		}
+
+		//Kiểm tra nhanh thông tin
+		public function getcol($table) {
+			$query = "SHOW COLUMNS FROM ".$table."";
+			$rs = mysqli_query($this->dbh,$query);
+			$text = '';
+			while ($row = mysqli_fetch_assoc($rs)){
+				$text = $text." | ".$row['Field'];
+			}
+			//$arr = mysqli_fetch_assoc($rs);
+			return $text;
+			// return $rows;
+			
+		}
+
+		
 
 }
 
+
+class products extends db{
+	public $name;
+	public $sno;
+	public $id;
+
+	public function all($table,$where) {
+		$query = 'SELECT * FROM ' . _DB_PREFIX_ . $table . ' WHERE ' . $where;
+		$rs = mysqli_query($this->dbh,$query);
+		$result = $rs->fetch_array();
+		return $result;
+	}
+	
+}
 
 function safe($x){
 $rv= addslashes($x);

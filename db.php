@@ -151,7 +151,7 @@ VALUES('WM','Máy giặt','Washing machine',1)";
 
 $sql[20] = "CREATE TABLE Products (
  ProductsId INT(6) UNSIGNED AUTO_INCREMENT PRIMARY KEY,
- ProductsName VARCHAR(30) NOT NULL UNIQUE,
+ ProductsName VARCHAR(30) NOT NULL,
  ProductsNumber VARCHAR(100) NOT NULL UNIQUE,
  ProductsDescription VARCHAR(100) NOT NULL,
  ProductsOption INT(1),
@@ -190,6 +190,96 @@ $sql[24] = "CREATE TABLE Times (
 $sql[25] = "
 INSERT INTO Times(`TimesName`,`TimesInformation`,`TimesDescription`,`TimesOption`)
 VALUES('Products','PP-NC','PP-NC',1)";
+
+$sql[26] = "CREATE TABLE TraceStation (
+    TraceStationId INT(6) UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+    TraceStationName VARCHAR(30) NOT NULL UNIQUE,
+    TraceStationInformation VARCHAR(100) NOT NULL,
+    TraceStationDescription VARCHAR(100) NOT NULL,
+    TraceStationOption INT(1),
+    TraceStationCreateDate TIMESTAMP DEFAULT CURRENT_TIMESTAMP ,
+    TraceStationUpdateDate TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+    );";
+
+$sql[27] = "
+INSERT INTO TraceStation(`TraceStationName`,`TraceStationInformation`,`TraceStationDescription`,`TraceStationOption`)
+VALUES('Products','PP-NC','PP-NC',1)";
+
+
+$sql[28] = "CREATE TABLE TraceRoute (
+    TraceRouteId INT(6) UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+    TraceRouteName VARCHAR(30) NOT NULL UNIQUE,
+    TraceRouteInformation VARCHAR(100) NOT NULL,
+    TraceRouteDescription VARCHAR(100) NOT NULL,
+    TraceRouteOption INT(1),
+    TraceRouteCreateDate TIMESTAMP DEFAULT CURRENT_TIMESTAMP ,
+    TraceRouteUpdateDate TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+    );";
+
+$sql[29] = "
+INSERT INTO TraceRoute(`TraceRouteName`,`TraceRouteInformation`,`TraceRouteDescription`,`TraceRouteOption`)
+VALUES('Products','PP-NC','PP-NC',1)";
+
+
+$sql[30] = "CREATE TABLE TraceRouteAssign (
+    TraceRouteAssignId INT(6) UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+    TraceStationId INT(6),
+    TraceRouteId INT(6),
+    TraceRouteAssignDescription VARCHAR(100) NOT NULL,
+    TraceRouteAssignOption INT(1),
+    TraceRouteAssignCreateDate TIMESTAMP DEFAULT CURRENT_TIMESTAMP ,
+    TraceRouteAssignUpdateDate TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+    );
+    ";
+
+
+$sql[31] = "
+INSERT INTO TraceRouteAssign(`TraceRouteAssignDescription`,`TraceRouteAssignOption`,`TraceStationId`,`TraceRouteId`)
+VALUES('PP-NC',1,1,1)";
+
+
+$sql[32] = "CREATE TABLE LabelType (
+    LabelTypeId INT(6) UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+    LabelTypeName VARCHAR(30) NOT NULL UNIQUE,
+    LabelTypeInformation VARCHAR(100) NOT NULL,
+    LabelTypeDescription VARCHAR(100) NOT NULL,
+    LabelTypeOption INT(1),
+    LabelTypeCreateDate TIMESTAMP DEFAULT CURRENT_TIMESTAMP ,
+    LabelTypeUpdateDate TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+    );
+    ";
+
+$sql[33] = "
+INSERT INTO LabelType(`LabelTypeName`,`LabelTypeInformation`,`LabelTypeDescription`,`LabelTypeOption`)
+VALUES('Products','PP-NC','PP-NC',1)";
+
+$sql[34] = "CREATE TABLE LabelCode (
+    LabelCodeId INT(6) UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+    LabelCodeName VARCHAR(30) NOT NULL UNIQUE,
+    LabelCodeInformation VARCHAR(100) NOT NULL,
+    LabelCodeDescription VARCHAR(100) NOT NULL,
+    LabelCodeOption INT(1),
+    LabelCodeCreateDate TIMESTAMP DEFAULT CURRENT_TIMESTAMP ,
+    LabelCodeUpdateDate TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+    );
+    ";
+$sql[35] = "
+INSERT INTO LabelCode(`LabelCodeName`,`LabelCodeInformation`,`LabelCodeDescription`,`LabelCodeOption`)
+VALUES('Products','PP-NC','PP-NC',1)";
+
+$sql[36] = "CREATE TABLE UserAssignTraceStation (
+    UserAssignTraceStationId INT(6) UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+    UserAssignTraceStationName VARCHAR(30),
+    UsersId INT(6),
+    TraceStationId INT(6),
+    UserAssignTraceStationOption INT(1),
+    UserAssignTraceStationCreateDate TIMESTAMP DEFAULT CURRENT_TIMESTAMP ,
+    UserAssignTraceStationUpdateDate TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+    );
+    ";
+
+$sql[37] = "INSERT INTO UserAssignTraceStation(`UserAssignTraceStationName`,`UserAssignTraceStationOption`,`UsersId`,`TraceStationId`)
+VALUES('Products',1,1,1)";
 
 for ($i=0; $i < count($sql) ; $i++) { 
     $oDB -> query($sql[$i]);

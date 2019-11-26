@@ -9,18 +9,19 @@ require('../function/db_lib.php');
 require('../lang/en.php');
 $page = 'system';
 $pagetitle = _System_;
+// $refresh = 2;
 require('../views/template-header.php');
 require('../function/template.php');
 $oDB = new db();
 
-$actionar = (array_keys($_GET));
-$actionkey = (isset($actionar[0])) ? $actionar[0] : 'content' ;
+// $actionar = (array_keys($_GET));
+// $actionkey = (isset($actionar[0])) ? $actionar[0] : 'content' ;
 
-$action =  (explode("_",$actionkey));
+// $action =  (explode("_",$actionkey));
 
-$option = $action[0];
-$target = (isset($action[1])) ? ucfirst($action[1]) : 'Company' ;
-$id = (isset($action[2])) ? $action[2] : 1 ;
+// $option = $action[0];
+// $target = (isset($action[1])) ? ucfirst($action[1]) : 'Company' ;
+// $id = (isset($action[2])) ? $action[2] : 1 ;
 
 // if (file_exists('../querry/'.$option.'_'.$target.'.php')) {
 //   require('../querry/'.$option.'_'.$target.'.php');
@@ -48,9 +49,21 @@ $id = (isset($action[2])) ? $action[2] : 1 ;
         <!-- Begin Page Content -->
         <div class="container-fluid">
 
-        <?php require($option.'.php') ?>
+        <?php 
+          
+          //var_dump($oDB->getcol('products'));
+          
+          $table_header  = 'ProductsName,ProductsNumber,ProductsDescription';
+          $table_data = $oDB->sl_col_all($table_header,'Products',1);
+          $table_link = "print.php?id=";
 
+          //var_dump ($table_data);
 
+        ?>
+
+        <div class="table-responsive">
+          <?php include('../views/template_table.php') ?>
+        </div>
         </div>
         <!-- /.container-fluid -->
 

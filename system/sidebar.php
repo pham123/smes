@@ -36,6 +36,12 @@ $arr = array(
   array('?tables_Products', 'fa-angle-right',$lang['Products']),
   array('?tables_Shift', 'fa-angle-right',$lang['Shift']),
   array('?tables_Times', 'fa-angle-right',$lang['Times']),
+  array('?tables_TraceStation', 'fa-angle-right',$lang['TraceStation']),
+  array('?tables_TraceRoute', 'fa-angle-right',$lang['TraceRoute']),
+  array('?tables_TraceRouteAssign', 'fa-angle-right',$lang['TraceRouteAssign']),
+  array('?tables_LabelType', 'fa-angle-right',$lang['LabelType']),
+  array('?tables_LabelCode', 'fa-angle-right',$lang['LabelCode']),
+  array('?tables_UserAssignTraceStation', 'fa-angle-right',$lang['UserAssignTraceStation']),
 );
 echo nav_item($lang['Company'],$arr);
 ?>

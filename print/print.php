@@ -8,6 +8,10 @@ $start = (isset($_GET['start'])) ? $_GET['start'] : '0' ;
 $cavity = (isset($_GET['cavity'])) ? $_GET['cavity'] : '' ;
 // include ('data.php');
 
+$id = safe($_GET[id]);
+
+
+
 
 ?>
 <!DOCTYPE html>

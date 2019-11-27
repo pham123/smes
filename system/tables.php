@@ -39,7 +39,7 @@
  
  <!-- DataTales Example -->
   <div class="card shadow mb-4">
-            <h3><a href="<?php echo '?create_'.$target?>"><?php echo $lang['CreateNew'] ?></a></h3>
+            <h3><a href="<?php echo '?create_'.$target?>"><?php echo $oDB->lang("CreateNew") ?></a></h3>
             <div class="card-body">
               <div class="table-responsive">
                 <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
@@ -47,9 +47,9 @@
                     <tr>
 <?php
                     foreach ($headerar as $key => $value) {
-                        echo "<th>".$value."</th>";
+                        echo "<th>".$oDB->lang($value)."</th>";
                     }
-                    echo "<th>".$lang['Edit']."</th>";
+                    echo "<th>".$oDB->lang("Edit")."</th>";
 ?>
                     </tr>
                   </thead>
@@ -64,7 +64,8 @@
                         // $newDate = $newDate->format('d/m/Y'); // for example
                         //$date = new $ketqua[$i][$value2];
                         // echo "<td>".($ketqua[$i][$value2]->format('d-M-y'))."</td>";
-                        echo "<td>".$ketqua[$i][$value2]."</td>";
+                        // echo "<td>".$ketqua[$i][$value2]."</td>";
+                        echo "<td></td>";
                       }else{
                         echo "<td>".$ketqua[$i][$value2]."</td>";
                       }

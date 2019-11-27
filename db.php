@@ -281,6 +281,22 @@ $sql[36] = "CREATE TABLE UserAssignTraceStation (
 $sql[37] = "INSERT INTO UserAssignTraceStation(`UserAssignTraceStationName`,`UserAssignTraceStationOption`,`UsersId`,`TraceStationId`)
 VALUES('Products',1,1,1)";
 
+$sql[38] = "CREATE TABLE Lang (
+    LangId INT(6) UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+    LangName VARCHAR(30) NOT NULL UNIQUE,
+    LangVi VARCHAR(200),
+    LangEn VARCHAR(200),
+    LangCn VARCHAR(200),
+    LangKr VARCHAR(200),
+    LangOption INT(1),
+    LangCreateDate TIMESTAMP DEFAULT CURRENT_TIMESTAMP ,
+    LangUpdateDate TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+    );
+    ";
+
+$sql[39] = "INSERT INTO Lang(`LangName`,`LangVi`,`LangEn`,`LangCn`,`LangKr`,`LangOption`)
+VALUES('Products','Products','Products','Products','Products',1)";
+
 for ($i=0; $i < count($sql) ; $i++) { 
     $oDB -> query($sql[$i]);
 }

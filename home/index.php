@@ -4,7 +4,8 @@ ob_start();
 date_default_timezone_set('Asia/Ho_Chi_Minh');
 require('../config.php');
 require('../function/db_lib.php');
-
+$oDB = new db();
+$oDB->lang = 'Vi';
 //echo $currentlocation;
 // var_dump($_SESSION);
 ?>
@@ -159,9 +160,9 @@ require('../function/db_lib.php');
 <?php
 $linkar =  array(
   // array('../Approval/','APPROVAL','Request everything!','fa-check-square'),
-  array('#','Sản lượng','Quantity','fa-pallet'),
+  array('#',$oDB->lang('Productivity','Sản lượng'),$oDB->lang('Quantity'),'fa-pallet'),
   array('../print/','Print','Print Label','fa-barcode'),
-  array('../Material/','Mã hàng','Part Name, Part No','fa-dolly'),
+  array('../Material/',$oDB->lang('Products'),'Part Name, Part No','fa-dolly'),
   array('#','LINE PATROL','Factory issues','fa-camera'),
   array('#','Chất lượng','Push QA issues alert','fa-bullhorn'),
   array('#','SPARE PART','Control spare part','fa-boxes'),

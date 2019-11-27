@@ -3,6 +3,7 @@
 
 class db {
 	public $dbh; // Create a database connection for use by all functions in this class
+	public $lang;
 
 	function __construct() {
 		if($this->dbh = mysqli_connect(_DB_HOST_, _DB_USER_, _DB_PASS_, _DB_name_)) {
@@ -117,24 +118,44 @@ class db {
 			
 		}
 
+		//Lấy thông tin
+		public function lang($key,$value=Null) {
+			$ngongu = $this->lang;
+			if ($value==Null) {
+				$value = implode(" ",preg_split('/(?=[A-Z])/', $key, -1, PREG_SPLIT_NO_EMPTY));
+			}
+			$return = $value;
+			$query = "SELECT Lang".$ngongu." FROM " . _DB_PREFIX_ . "lang WHERE LangName='".$key."'" ;
+			$rs = mysqli_query($this->dbh,$query);
+			$result = $rs->fetch_array();
+			if (isset($result['Lang'.$ngongu])) {
+				$return =  $result['Lang'.$ngongu];
+			}else{
+				$sql = "INSERT INTO Lang(`LangName`,`LangVi`,`LangEn`,`LangCn`,`LangKr`,`LangOption`)
+				VALUES('".$key."','".$value."','".$value."','".$value."','".$value."',1)";
+				$result = mysqli_query( $this->dbh, $sql );
+			}
+			return $return;
+		}
+
 		
 
 }
 
 
-class products extends db{
-	public $name;
-	public $sno;
-	public $id;
+// class lang extends db{
+// 	public $lang;
+// 	public $key;
 
-	public function all($table,$where) {
-		$query = 'SELECT * FROM ' . _DB_PREFIX_ . $table . ' WHERE ' . $where;
-		$rs = mysqli_query($this->dbh,$query);
-		$result = $rs->fetch_array();
-		return $result;
-	}
+
+// 	public function get($table,$where) {
+// 		$query = 'SELECT * FROM ' . _DB_PREFIX_ . $table . ' WHERE ' . $where;
+// 		$rs = mysqli_query($this->dbh,$query);
+// 		$result = $rs->fetch_array();
+// 		return $result;
+// 	}
 	
-}
+// }
 
 function safe($x){
 $rv= addslashes($x);

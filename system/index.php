@@ -12,6 +12,12 @@ $pagetitle = _System_;
 require('../views/template-header.php');
 require('../function/template.php');
 $oDB = new db();
+$oDB->lang = 'Vi';
+//echo $oDB->lang("Products");
+
+
+
+
 
 $actionar = (array_keys($_GET));
 $actionkey = (isset($actionar[0])) ? $actionar[0] : 'content' ;

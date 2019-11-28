@@ -12,7 +12,11 @@ $pagetitle = _System_;
 // $refresh = 2;
 require('../views/template-header.php');
 require('../function/template.php');
+$id = safe($_GET['id']);
 $oDB = new db();
+$products = new products();
+$products->get($id);
+$products->lang="Vi";
 
 // $actionar = (array_keys($_GET));
 // $actionkey = (isset($actionar[0])) ? $actionar[0] : 'content' ;
@@ -52,17 +56,53 @@ $oDB = new db();
         <?php 
           
           //var_dump($oDB->getcol('products'));
-          
-          $table_header  = 'ProductsName,ProductsNumber,ProductsDescription';
-          $table_data = $oDB->sl_col_all($table_header,'Products',1);
-          $table_link = "preprint.php?id=";
-
-          //var_dump ($table_data);
 
         ?>
 
         <div class="table-responsive">
-          <?php include('../views/template_table.php') ?>
+            <form action="print.php" method="post">
+                <input type="hidden" name="id" value="<?php echo $id ?>">
+               
+                <div class="row">
+                    <div class="form-group col-md-6" >
+                        <label for="exampleInputEmail1"><?php echo $products->lang("PartName") ?></label>
+                        <input type="text" class="form-control" id="exampleInputEmail1" value='<?php echo $products->name ?>' readonly>
+                    </div>
+
+                    <div class="form-group col-md-6" >
+                        <label for="exampleInputEmail1"><?php echo $products->lang("PartNumber") ?></label>
+                        <input type="text" class="form-control" id="exampleInputEmail1" value='<?php echo $products->number ?>' readonly>
+                    </div>
+                    <div class="form-group col-md-2" >
+                        <label for="exampleInputEmail1"><?php echo $products->lang("Cavity") ?></label>
+                        <input type="number" name='cavity' class="form-control" required>
+                    </div>
+                    <div class="form-group col-md-4" >
+                        <label for="exampleInputEmail1"><?php echo $products->lang("Date") ?></label>
+                        <input type="date" name='selectdate' class="form-control" value='<?php echo date('Y-m-d') ?>'>
+                    </div>
+                    <div class="form-group col-md-2" >
+                        <label for="exampleInputEmail1"><?php echo $products->lang("Lot") ?></label>
+                        <input type="number" name='lot' class="form-control" required>
+                    </div>
+                    <div class="form-group col-md-2" >
+                        <label for="exampleInputEmail1"><?php echo $products->lang("Shift") ?></label>
+                        <select name="shift" id="" class="form-control" required>
+                            <option value=""></option>
+                            <option value="01">01</option>
+                            <option value="02">02</option>
+                            <option value="03">03</option>
+                        </select>
+                    </div>
+                    <div class="form-group col-md-2" >
+                        <label for="exampleInputEmail1"><?php echo $products->lang("Quantity") ?></label>
+                        <input type="number" name='quantity' class="form-control" required>
+                    </div>
+
+                </div>
+
+                <button type="submit" class="btn btn-primary"><?php echo $products->lang("Submit") ?></button>
+            </form>
         </div>
         </div>
         <!-- /.container-fluid -->

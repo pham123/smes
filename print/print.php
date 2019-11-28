@@ -2,17 +2,23 @@
 session_start();
 ob_start();
 date_default_timezone_set('Asia/Ho_Chi_Minh');
+require('../config.php');
+require('../function/db_lib.php');
 $label = (isset($_GET['label'])) ? $_GET['label'] : '0' ;
 $qty = (isset($_GET['qty'])) ? $_GET['qty'] : '10' ;
 $start = (isset($_GET['start'])) ? $_GET['start'] : '0' ;
 $cavity = (isset($_GET['cavity'])) ? $_GET['cavity'] : '' ;
 // include ('data.php');
+//var_dump($_POST);
+$id = safe($_POST['id']);
+$cavity = safe($_POST['cavity']);
+$date = safe($_POST['selectdate']);
+$lot = safe($_POST['lot']);
+$shift = safe($_POST['shift']);
+$quantity = safe($_POST['quantity']);
 
-$id = safe($_GET[id]);
-
-
-
-
+$products = new products();
+$products->get($id);
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -118,7 +124,7 @@ $page = 1;
 <body>
     <div class="book">
     <?php
-    for ($j=0; $j < $page; $j++) { 
+    for ($j=1; $j < $quantity+1; $j++) { 
         # code...
    
     ?>
@@ -142,16 +148,19 @@ $page = 1;
                 <td>Lot</td>
                 <td>Shift</td>
                 <td colspan='2'>Lot No</td>
-                <td rowspan='2'><img src="http://192.168.1.2:88/qr/?data=MEK123456789-1233-1221" alt=""></td>
+                <?php
+                    $codevalue = $products->number."-".date("md",strtotime($date))."-".sprintf('%02d', $j)."-".$shift;
+                ?>
+                <td rowspan='2'><img src="http://192.168.1.2:88/qr/?data=<?php echo $codevalue ?>" alt=""></td>
             </tr>
             <tr>
-                <td colspan='2'>VW AR HUD Cover Bottom</td>
-                <td colspan='2'>MCK71113301</td>
-                <td >1</td>
-                <td>14-Nov-19</td>
-                <td>1</td>
-                <td>01</td>
-                <td colspan='2'>191114-A-01</td>
+                <td colspan='2'><?php echo $products->name ?></td>
+                <td colspan='2'><?php echo $products->number ?></td>
+                <td ><?php echo $cavity ?></td>
+                <td><?php echo date("Y-M-d",strtotime($date)) ?></td>
+                <td><?php echo $j ?></td>
+                <td><?php echo $shift ?></td>
+                <td colspan='2'><?php  echo date("md",strtotime($date))."-".sprintf('%02d', $j)."-".$shift  ?></td>
 
             </tr>
 

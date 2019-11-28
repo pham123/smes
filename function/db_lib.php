@@ -137,25 +137,23 @@ class db {
 			}
 			return $return;
 		}
-
-		
-
 }
 
 
-// class lang extends db{
-// 	public $lang;
-// 	public $key;
+class products extends db{
+	public $id;
+	public $name;
+	public $number;
+
+	public function get($id) {
+		$result = $this->sl_one('products','ProductsId='.$id);
+		$this->name = $result['ProductsName'];
+		$this->number = $result['ProductsNumber'];
+	}
 
 
-// 	public function get($table,$where) {
-// 		$query = 'SELECT * FROM ' . _DB_PREFIX_ . $table . ' WHERE ' . $where;
-// 		$rs = mysqli_query($this->dbh,$query);
-// 		$result = $rs->fetch_array();
-// 		return $result;
-// 	}
 	
-// }
+}
 
 function safe($x){
 $rv= addslashes($x);

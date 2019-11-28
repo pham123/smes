@@ -19,6 +19,7 @@ $oDB->lang = 'Vi';
 
 
 
+
 $actionar = (array_keys($_GET));
 $actionkey = (isset($actionar[0])) ? $actionar[0] : 'content' ;
 

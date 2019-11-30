@@ -3,7 +3,7 @@
 
 class db {
 	public $dbh; // Create a database connection for use by all functions in this class
-	public $lang;
+	public $lang="Vi";
 
 	function __construct() {
 		if($this->dbh = mysqli_connect(_DB_HOST_, _DB_USER_, _DB_PASS_, _DB_name_)) {
@@ -150,10 +150,25 @@ class products extends db{
 		$this->name = $result['ProductsName'];
 		$this->number = $result['ProductsNumber'];
 	}
-
-
-	
 }
+
+
+class Users extends db{
+	public $id;
+	public $access;
+	public $module;
+
+	public function acess() {
+		
+		$result = $this->sl_one('modules','ModulesName="'.$this->module.'"');
+		$result2 = $this->sl_one('access','ModulesId='.$result['ModulesId'].' AND UsersId='.$this->id);
+		//$this->access = $result2['AccessOption'];
+		return $result2['AccessOption'];
+	}
+
+}
+
+
 
 function safe($x){
 $rv= addslashes($x);

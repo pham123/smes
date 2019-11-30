@@ -2,15 +2,14 @@
 session_start();
 ob_start();
 date_default_timezone_set('Asia/Ho_Chi_Minh');
-require('config.php');
-require('function/db_lib.php');
-$oDB = new db();
+//header("Location: login.php");
+include('config.php');
+include('function/db_lib.php');
 
-$sql = "Select * from Company";
+$user = New users();
+$user->id = 1;
+$user->acess();
+echo $user->access;
 
-$ketqua = $oDB-> fetchOne($sql);
 
-foreach ($ketqua as $key => $value) {
-    echo $key;
-    echo "</Br>";
-}
+echo '1';

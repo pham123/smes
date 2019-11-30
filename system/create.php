@@ -51,7 +51,7 @@ $headerar = (array_keys($ketqua));
     <?php
       foreach ($headerar as $key => $value) {
           echo "<div class='col-md-6'>";
-          echo "<span>".$lang[$value]."</span>";
+          echo "<span>".$oDB->lang($value)."</span>";
           if ($value==$target.'Id') {
             echo "<input type='text' name='".$value."' id='".$value."' value='".($ketqua[$value]+1)."' class='form-control' readonly>";
           }else{

@@ -13,24 +13,13 @@ $pagetitle = $user->module;
 require('../views/template-header.php');
 require('../function/template.php');
 $oDB = new db();
-
-// $actionar = (array_keys($_GET));
-// $actionkey = (isset($actionar[0])) ? $actionar[0] : 'content' ;
-
-// $action =  (explode("_",$actionkey));
-
-// $option = $action[0];
-// $target = (isset($action[1])) ? ucfirst($action[1]) : 'Company' ;
-// $id = (isset($action[2])) ? $action[2] : 1 ;
-
-// if (file_exists('../querry/'.$option.'_'.$target.'.php')) {
-//   require('../querry/'.$option.'_'.$target.'.php');
-// }else {
-//   $sql = "Select * from ".$target;
-// }
+echo $oDB->getcol('Models');
+echo "</br>";
+echo $oDB->getcol('products');
 
 ?>
 
+</style>
 <body id="page-top">
   <!-- Page Wrapper -->
   <div id="wrapper">
@@ -48,21 +37,50 @@ $oDB = new db();
 
         <!-- Begin Page Content -->
         <div class="container-fluid">
+        <div class="">
+          <form action="listen-create-material.php" method="post" enctype="multipart/form-data">
+              <div class="row">
+                <div class="col-md-6">
+                  <p><?php echo $oDB->lang('MaterialName') ?></p>
+                  <input type="text" name="ProductsName" id="" class='form-control' required>
+                </div>
 
-        <?php 
-          
-          //var_dump($oDB->getcol('products'));
-          
-          $table_header  = 'ProductsName,ProductsNumber,ProductsDescription';
-          $table_data = $oDB->sl_col_all($table_header,'Products',1);
-          $table_link = "preprint.php?id=";
+                <div class="col-md-6">
+                  <p><?php echo $oDB->lang('MaterialCode') ?></p>
+                  <input type="text" name="ProductsNumber" id="" class='form-control' required>
+                </div>
 
-          //var_dump ($table_data);
+                <div class="col-md-6">
+                  <p><?php echo $oDB->lang('MaterialDescription ') ?></p>
+                  <input type="text" name="ProductsDescription" id="" class='form-control' required>
+                  <input type="hidden" name="ProductsOption" id="" value='1' class='form-control' required>
+                </div>
 
-        ?>
+                <div class="col-md-6">
+                  <p><?php echo $oDB->lang('Model') ?></p>
+                  <select name="ModelsId" id="" class='selectpicker show-tick' data-live-search="true" data-style="btn-info" data-width="100%">
+                    <?php 
+                    $model = $oDB->sl_all('models',1);
+                    foreach ($model as $key => $value) {
+                      echo "<option value='".$value['ModelsId']."'>".$value['ModelsName']."</option>";
+                    }
+                    ?>
+                    
+                  </select>
+                </div>
 
-        <div class="table-responsive">
-          <?php include('../views/template_table.php') ?>
+                <div class="col-md-6">
+                  <p><?php echo $oDB->lang('AddPicture') ?></p>
+                  <input type="file" id='ingredient_file' name='fileToUpload' class="form-control" >  
+                </div>
+
+                <div class="col-md-6">
+                  <p>Submit</p>
+                  <button type="submit" class='form-control'><?php echo $oDB->lang('Submit') ?></button>
+                </div>
+
+              </div>
+          </form>
         </div>
         </div>
         <!-- /.container-fluid -->
@@ -116,6 +134,9 @@ $oDB = new db();
     $(function () {
       $('selectpicker').selectpicker();
     });
+
+
+
   </script>
 
 </body>

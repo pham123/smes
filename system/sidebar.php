@@ -3,10 +3,10 @@
 
       <!-- Sidebar - Brand -->
       <a class="sidebar-brand d-flex align-items-center justify-content-center" href="../home/" Style='background-color:white;'>
-        <!-- <div class="sidebar-brand-icon rotate-n-15">
+        <div class="sidebar-brand-icon rotate-n-15">
           <img src="../img/hallalogo.png" alt="logo" height="45" >
-        </div> -->
-        <div class="sidebar-brand-text mx-3" Style='Color:#22356f;font-size: 3em'>Admin</div>
+        </div>
+        
       </a>
 
       <!-- Divider -->

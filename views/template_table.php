@@ -4,7 +4,7 @@ echo "<table class='table table-bordered' id='dataTable' width='100%' cellspacin
 echo "<thead>";
 echo "<tr>";
 foreach ($tablearr as $key => $value) {
-    echo "<th>".$lang[$value]."</th>";
+    echo "<th>".$oDB->lang($value)."</th>";
 }
 echo "</tr>";
 echo "</thead>";

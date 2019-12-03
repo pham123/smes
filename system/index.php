@@ -2,22 +2,22 @@
 session_start();
 ob_start();
 date_default_timezone_set('Asia/Ho_Chi_Minh');
-$currentlocation = basename(dirname(__FILE__));
-require('../function/function_start.php');
 require('../config.php');
 require('../function/db_lib.php');
-require('../lang/en.php');
-$page = 'system';
-$pagetitle = _System_;
+require('../function/function.php');
+$user = New Users();
+$user->set($_SESSION[_site_]['userid']);
+$user->module = basename(dirname(__FILE__));
+check($user->acess());
+$pagetitle = $user->module;
 require('../views/template-header.php');
 require('../function/template.php');
 $oDB = new db();
 
+
 $actionar = (array_keys($_GET));
 $actionkey = (isset($actionar[0])) ? $actionar[0] : 'content' ;
-
 $action =  (explode("_",$actionkey));
-
 $option = $action[0];
 $target = (isset($action[1])) ? ucfirst($action[1]) : 'Company' ;
 $id = (isset($action[2])) ? $action[2] : 1 ;

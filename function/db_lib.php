@@ -151,6 +151,14 @@ class products extends db{
 		$this->name = $result['ProductsName'];
 		$this->number = $result['ProductsNumber'];
 	}
+
+	public function getnum($number) {
+		$result = $this->sl_one('products',"ProductsNumber='".$number."'");
+		$this->name = $result['ProductsName'];
+		$this->number = $result['ProductsNumber'];
+		$this->id = $result['ProductsId'];
+	}
+
 }
 
 
@@ -158,12 +166,17 @@ class Users extends db{
 	public $id;
 	public $access;
 	public $module;
+	public $name;
 
+	public function set($id) {
+		$this->id = $id;
+		$user = $this->sl_one('users','UsersId='.$id);
+		$this->name = $user['UsersName'];
+		return $this;
+	}
 	public function acess() {
-		
 		$result = $this->sl_one('modules','ModulesName="'.$this->module.'"');
 		$result2 = $this->sl_one('access','ModulesId='.$result['ModulesId'].' AND UsersId='.$this->id);
-		//$this->access = $result2['AccessOption'];
 		return $result2['AccessOption'];
 	}
 

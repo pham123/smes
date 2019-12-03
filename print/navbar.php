@@ -5,6 +5,7 @@
             <i class="fa fa-bars"></i>
           </button>
 
+          <div class="sidebar-brand-text mx-3" Style='Color:#22356f;font-size: 3em'><?php echo $oDB->lang('Print')?></div>
           <!-- Topbar Search -->
           <!-- <form class="d-none d-sm-inline-block form-inline mr-auto ml-md-3 my-2 my-md-0 mw-100 navbar-search">
             <div class="input-group">

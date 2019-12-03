@@ -161,8 +161,8 @@ $oDB->lang = 'En';
 $linkar =  array(
   // array('../Approval/','APPROVAL','Request everything!','fa-check-square'),
   array('#',$oDB->lang('Productivity','Sản lượng'),$oDB->lang('Quantity'),'fa-pallet'),
-  array('../print/','Print','Print Label','fa-barcode'),
-  array('../Material/',$oDB->lang('Products'),'Part Name, Part No','fa-dolly'),
+  array('../print/',$oDB->lang('Print'),$oDB->lang('PrintLabel'),'fa-barcode'),
+  array('../products/',$oDB->lang('Products'),'Part Name, Part No','fa-dolly'),
   array('#','LINE PATROL','Factory issues','fa-camera'),
   array('#','Chất lượng','Push QA issues alert','fa-bullhorn'),
   array('#','SPARE PART','Control spare part','fa-boxes'),

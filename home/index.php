@@ -5,7 +5,7 @@ date_default_timezone_set('Asia/Ho_Chi_Minh');
 require('../config.php');
 require('../function/db_lib.php');
 $oDB = new db();
-$oDB->lang = 'Vi';
+$oDB->lang = 'En';
 //echo $currentlocation;
 // var_dump($_SESSION);
 ?>
@@ -21,7 +21,7 @@ $oDB->lang = 'Vi';
   <meta name="description" content="">
   <meta name="author" content="">
 
-  <title>Halla Electronics Vina</title>
+  <title><?php $oDB->lang('HallaElectronicsVina') ?></title>
 
   <!-- Custom fonts for this template-->
   <link href="../vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">

@@ -121,6 +121,7 @@ class db {
 		//Lấy thông tin
 		public function lang($key,$value=Null) {
 			$ngongu = $this->lang;
+			
 			if ($value==Null) {
 				$value = implode(" ",preg_split('/(?=[A-Z])/', $key, -1, PREG_SPLIT_NO_EMPTY));
 			}

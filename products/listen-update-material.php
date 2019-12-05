@@ -10,22 +10,60 @@ $user->set($_SESSION[_site_]['userid']);
 $user->module = basename(dirname(__FILE__));
 check($user->acess());
 $oDB = new db();
-$products = new products();
 
-// var_dump($_POST);
-// exit();
-// Ghi thông tin vào database
-//
-$ProductsName = safe($_POST['ProductsName']);
-$ProductsNumber = safe($_POST['ProductsNumber']);
-$ProductsDescription = safe($_POST['ProductsDescription']);
-$ProductsOption = 1;
-$ModelsId = safe($_POST['ModelsId']);
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+	//CHECK ID IS VALID
+	if (!isset($_GET['id'])) {
+		return 'Empty product id';
+	} else if (!ctype_digit($_GET['id'])) {
+		$errors[] = 'Invalid product id';
+		return;
+	} else {
+		$product_id = (int)$_GET['id'];
+	}
+	
+}else{
+	header('Location:../404.html');
+}
 
-$field_values = "`ProductsName`='".$ProductsName."', `ProductsNumber`='".$ProductsNumber."', `ProductsDescription`='".$ProductsDescription."', `ProductsOption`=".$ProductsOption.", `ModelsId`=".$ModelsId ;
-$oDB->insert('products',$field_values);
+if (isset($_POST['action'])) {
 
-$products -> getnum($ProductsNumber);
+	//CHECK ID IS VALID
+	if (!isset($_GET['id'])) {
+		$errors[] = 'Empty user id';
+		return;
+	} else if (!ctype_digit($_GET['id'])) {
+		$errors[] = 'Invalid id';
+		return;
+	} else {
+		$product_id = (int)$_GET['id'];
+	}
+
+
+	$keyid = safe($_POST[$table.'Id']);
+  
+  $text = '';
+  foreach ($_POST as $key => $value) {
+	if ($key=='action'||$key=='target'||$key==$table.'Id') {
+	  
+	}else{
+	  $text = $text.$key." = '".$value."',";
+	}
+  }
+  $text = rtrim($text, ',');
+  //echo $text;
+  
+	$update_sql = "Update ".$table."
+				  Set ".$text."
+				  Where ".$table."Id = ".$keyid."
+	";
+  
+  //echo $update_sql;
+	$oDB -> query($update_sql);
+  } else {
+	//echo 'NA';
+  }
+
 
 // Phần này xử lý file upload lên
 
@@ -78,4 +116,4 @@ $products -> getnum($ProductsNumber);
         
         $oDB = Null;
         $products = Null;
-header('Location:material.php');
+// header('Location:material.php');

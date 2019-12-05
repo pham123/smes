@@ -51,12 +51,14 @@ echo $oDB->getcol('products');
                 </div>
 
                 <div class="col-md-6">
+                  <br>
                   <p><?php echo $oDB->lang('MaterialDescription ') ?></p>
                   <input type="text" name="ProductsDescription" id="" class='form-control' required>
                   <input type="hidden" name="ProductsOption" id="" value='1' class='form-control' required>
                 </div>
 
                 <div class="col-md-6">
+                  <br>
                   <p><?php echo $oDB->lang('Model') ?></p>
                   <select name="ModelsId" id="" class='selectpicker show-tick' data-live-search="true" data-style="btn-info" data-width="100%">
                     <?php 
@@ -70,13 +72,14 @@ echo $oDB->getcol('products');
                 </div>
 
                 <div class="col-md-6">
+                  <br>
                   <p><?php echo $oDB->lang('AddPicture') ?></p>
                   <input type="file" id='ingredient_file' name='fileToUpload' class="form-control" >  
                 </div>
 
                 <div class="col-md-6">
-                  <p>Submit</p>
-                  <button type="submit" class='form-control'><?php echo $oDB->lang('Submit') ?></button>
+                  <br>
+                  <button type="submit" class='btn btn-primary btn-block'><?php echo $oDB->lang('Submit') ?></button>
                 </div>
 
               </div>

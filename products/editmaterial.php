@@ -17,6 +17,8 @@ echo $oDB->getcol('Models');
 echo "</br>";
 echo $oDB->getcol('products');
 
+$product = $oDB->sl_one('products', 'ProductsId = '.$_GET['id']);
+print_r($product);
 ?>
 
 </style>
@@ -38,31 +40,36 @@ echo $oDB->getcol('products');
         <!-- Begin Page Content -->
         <div class="container-fluid">
         <div class="">
-          <form action="listen-create-material.php" method="post" enctype="multipart/form-data">
+          <form action="listen-update-material.php?id=<?php echo $_GET['id'] ?>" method="post" enctype="multipart/form-data">
               <div class="row">
                 <div class="col-md-6">
-                  <p><?php echo $oDB->lang('MaterialName') ?></p>
-                  <input type="text" name="ProductsName" id="" class='form-control' required>
+                  <p><?php echo $oDB->lang('ProductName') ?></p>
+                  <input type="text" name="ProductsName" id="" class='form-control' required value="<?php echo $product['ProductsName'] ?>">
                 </div>
 
                 <div class="col-md-6">
-                  <p><?php echo $oDB->lang('MaterialCode') ?></p>
-                  <input type="text" name="ProductsNumber" id="" class='form-control' required>
+                  <p><?php echo $oDB->lang('ProductCode') ?></p>
+                  <input type="text" name="ProductsNumber" id="" class='form-control' required value="<?php echo $product['ProductsNumber'] ?>">
                 </div>
 
                 <div class="col-md-6">
-                  <p><?php echo $oDB->lang('MaterialDescription ') ?></p>
-                  <input type="text" name="ProductsDescription" id="" class='form-control' required>
-                  <input type="hidden" name="ProductsOption" id="" value='1' class='form-control' required>
+                  <br>
+                  <p><?php echo $oDB->lang('ProductDescription ') ?></p>
+                  <input type="text" name="ProductsDescription" id="" class='form-control' required value="<?php echo $product['ProductsDescription'] ?>">
                 </div>
 
                 <div class="col-md-6">
+                  <br>
                   <p><?php echo $oDB->lang('Model') ?></p>
                   <select name="ModelsId" id="" class='selectpicker show-tick' data-live-search="true" data-style="btn-info" data-width="100%">
                     <?php 
                     $model = $oDB->sl_all('models',1);
                     foreach ($model as $key => $value) {
-                      echo "<option value='".$value['ModelsId']."'>".$value['ModelsName']."</option>";
+                      if($value['ModelsId'] == $product['ModelsId']){
+                        echo "<option selected value='".$value['ModelsId']."'>".$value['ModelsName']."</option>";
+                      } else {
+                        echo "<option value='".$value['ModelsId']."'>".$value['ModelsName']."</option>";
+                      }
                     }
                     ?>
                     
@@ -70,13 +77,33 @@ echo $oDB->getcol('products');
                 </div>
 
                 <div class="col-md-6">
-                  <p><?php echo $oDB->lang('AddPicture') ?></p>
-                  <input type="file" id='ingredient_file' name='fileToUpload' class="form-control" >  
+                  <br>
+                  <p><?php echo $oDB->lang('ProductOption') ?></p>
+                  <select name="ProductsOption" id="" class='selectpicker show-tick' data-live-search="true" data-style="btn-info" data-width="100%">
+                    <?php
+                      foreach (['1' => 'Product', '2' => 'Material', '3' => 'Spare Part'] as $key => $v) {
+                        if($key == $product['ProductsOption']){
+                          echo "<option selected value='".$key."'>".$v."</option>";
+                        } else {
+                          echo "<option value='".$key."'>".$v."</option>";
+                        }
+                      }
+                    ?>
+                    
+                  </select>
+
                 </div>
 
                 <div class="col-md-6">
-                  <p>Submit</p>
-                  <button type="submit" class='form-control'><?php echo $oDB->lang('Submit') ?></button>
+                  <br>
+                  <p><?php echo $oDB->lang('EditPicture', 'Edit Picture') ?></p>
+                  <input type="file" id='ingredient_file' name='fileToUpload' class="form-control" >
+                  <br>  
+                  <img style="width: 100%;" src="./image/img_<?php echo $product['ProductsId'] ?>.jpg" alt="">
+                </div>
+
+                <div class="col-md-6">
+                  <button type="submit" class='btn btn-primary btn-block'><?php echo $oDB->lang('Submit') ?></button>
                 </div>
 
               </div>

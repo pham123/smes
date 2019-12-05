@@ -20,7 +20,6 @@ function w_logs($dir,$content){
 		file_put_contents ($dir.$name.".txt",$text ,FILE_APPEND);
 	}else{
 		file_put_contents ($dir.$name.".txt",$text ,FILE_APPEND);
-	
 	}
 }
 

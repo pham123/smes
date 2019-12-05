@@ -10,6 +10,19 @@ function check($key){
         exit();
     }
 }
+// Log
+function w_logs($dir,$content){
+	$name = date("Y-m-d");
+	$now = date("Y-m-d H:i:s");
+	$text = $now."\t".$content.PHP_EOL;
+	if (!file_exists ($dir.$name.".txt")) {
+		$myfile = fopen($dir.$name.".txt", "w") or die("Unable to open file!");
+		file_put_contents ($dir.$name.".txt",$text ,FILE_APPEND);
+	}else{
+		file_put_contents ($dir.$name.".txt",$text ,FILE_APPEND);
+	
+	}
+}
 
 
 class ResizeImage

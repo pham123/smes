@@ -34,6 +34,8 @@ $arr = array(
   array('?tables_Stations', 'fa-angle-right',$oDB->lang("Stations")),
   array('?tables_Machines', 'fa-angle-right',$oDB->lang("Machines")),
   array('?tables_Models', 'fa-angle-right',$oDB->lang("Models")),
+
+  array('?tables_MaterialTypes', 'fa-angle-right',$oDB->lang("MaterialType")),
   array('?tables_Products', 'fa-angle-right',$oDB->lang("Products")),
   array('?tables_Shift', 'fa-angle-right',$oDB->lang("Shift")),
   array('?tables_Times', 'fa-angle-right',$oDB->lang("Times")),

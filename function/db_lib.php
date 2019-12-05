@@ -115,7 +115,6 @@ class db {
 			//$arr = mysqli_fetch_assoc($rs);
 			return $text;
 			// return $rows;
-			
 		}
 
 		//Lấy thông tin
@@ -201,14 +200,6 @@ function getStartAndEndDate($week, $year)
     $return[1] = date('Y-m-d', $time);
     return $return;
 }
-
-function rangeMonth($datestr) {
-    date_default_timezone_set(date_default_timezone_get());
-    $dt = strtotime($datestr);
-    $res[0] = date('Y-m-d', strtotime('first day of this month', $dt));
-    $res[1] = date('Y-m-d', strtotime('last day of this month', $dt));
-    return $res;
-	}
 
 function viewprice($price){
 	$number = $price;

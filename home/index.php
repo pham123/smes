@@ -163,7 +163,7 @@ $linkar =  array(
   array('#',$oDB->lang('Productivity','Sản lượng'),$oDB->lang('Quantity'),'fa-pallet'),
   array('../print/',$oDB->lang('Print'),$oDB->lang('PrintLabel'),'fa-barcode'),
   array('../products/',$oDB->lang('Products'),'Part Name, Part No','fa-dolly'),
-  array('#','LINE PATROL','Factory issues','fa-camera'),
+  array('#',$oDB->lang('LinePatrol','Báo cáo'),$oDB->lang('LinePatrol','Báo cáo'),'fa-camera'),
   array('#','Chất lượng','Push QA issues alert','fa-bullhorn'),
   array('#','SPARE PART','Control spare part','fa-boxes'),
   array('#','Tài liệu','BOM, ISO, PFMEA','fa-folder-open'),

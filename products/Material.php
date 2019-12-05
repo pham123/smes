@@ -79,6 +79,7 @@ echo $oDB->getcol('products');
 
                 <div class="col-md-6">
                   <br>
+                  <p>&nbsp;</p>
                   <button type="submit" class='btn btn-primary btn-block'><?php echo $oDB->lang('Submit') ?></button>
                 </div>
 

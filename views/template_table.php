@@ -6,6 +6,9 @@ echo "<tr>";
 foreach ($tablearr as $key => $value) {
     echo "<th>".$oDB->lang($value)."</th>";
 }
+if(isset($product_picture)){
+    echo "<th>Product Picture</th>";
+}
 echo "</tr>";
 echo "</thead>";
 // echo "<tfoot>";
@@ -25,6 +28,13 @@ foreach ($table_data as $key => $value) {
             echo "<td>".$value[$value2]."</td>";
         }
        
+    }
+    if(isset($product_picture)){
+        if(file_exists('./image/small/img_'.$value['id'].'.jpg')) {
+            echo "<td><img style='max-height: 30px' src='./image/small/img_".$value['id'].".jpg'></td>";
+        } else {
+            echo "<td><small>No Picture</small></td>";
+        }
     }
     echo "</tr>";
 }

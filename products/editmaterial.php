@@ -18,7 +18,6 @@ echo "</br>";
 echo $oDB->getcol('products');
 
 $product = $oDB->sl_one('products', 'ProductsId = '.$_GET['id']);
-print_r($product);
 ?>
 
 </style>
@@ -78,24 +77,6 @@ print_r($product);
 
                 <div class="col-md-6">
                   <br>
-                  <p><?php echo $oDB->lang('ProductOption') ?></p>
-                  <select name="ProductsOption" id="" class='selectpicker show-tick' data-live-search="true" data-style="btn-info" data-width="100%">
-                    <?php
-                      foreach (['1' => 'Product', '2' => 'Material', '3' => 'Spare Part'] as $key => $v) {
-                        if($key == $product['ProductsOption']){
-                          echo "<option selected value='".$key."'>".$v."</option>";
-                        } else {
-                          echo "<option value='".$key."'>".$v."</option>";
-                        }
-                      }
-                    ?>
-                    
-                  </select>
-
-                </div>
-
-                <div class="col-md-6">
-                  <br>
                   <p><?php echo $oDB->lang('EditPicture', 'Edit Picture') ?></p>
                   <input type="file" id='ingredient_file' name='fileToUpload' class="form-control" >
                   <br>  
@@ -103,6 +84,8 @@ print_r($product);
                 </div>
 
                 <div class="col-md-6">
+                  <br>
+                  <p>&nbsp;</p>
                   <button type="submit" class='btn btn-primary btn-block'><?php echo $oDB->lang('Submit') ?></button>
                 </div>
 

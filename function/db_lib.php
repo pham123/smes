@@ -137,6 +137,14 @@ class db {
 			}
 			return $return;
 		}
+
+		//
+		public function sl_id($table) {
+			$query = 'SELECT MAX('.$table.'Id) As '.$table.'Id FROM ' . _DB_PREFIX_ . $table . ' WHERE 1';
+			$rs = mysqli_query($this->dbh,$query);
+			$result = $rs->fetch_array();
+			return $result[$table.'Id'];
+		}
 }
 
 

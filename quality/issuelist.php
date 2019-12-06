@@ -36,6 +36,7 @@ $oDB = new db();
           $table_header  = 'IssueDate,Object,PartName,ProductionDate,Title,Lot Qty,NgQty,NgRate,Schedule,Pic,Status,Edit';
           
           $sql = "SELECT 
+          qi.QualityIssuelistId,
           qi.QualityIssuelistDate,
           qi.QualityIssuelistProductionDate,
           qi.QualityIssuelistTitle,
@@ -97,32 +98,11 @@ $oDB = new db();
           echo "<td>".$rate."%</td>";
           echo "<td><p>".date("d-M",strtotime($value['QualityIssuelistDueDate']))."</p><p>".date("Y",strtotime($value['QualityIssuelistDueDate']))."</p></td>"; 
           echo "<td>".$value['UsersName']."</td>";
-          $color='yellow';
-          $text='';
-          switch ($value['QualityIssuelistStatus']) {
-            case '1':
-              $color='yellow';
-              $text=$oDB->lang('Doing');
-              break;
-            case '2':
-              $color='Green';
-              $text=$oDB->lang('Done');
-              break;
-            case '3':
-              $color='Red';
-              $text=$oDB->lang('Delay');
-            break;
-            case '4':
-              $color='Grey';
-              $text=$oDB->lang('Cancel');
-              break;
-            default:
-              # code...
-              break;
-          }
-          echo "<td style='background-color:".$color."'>".$text."</td>";
+
+          $status = color($value['QualityIssuelistStatus']);
+          echo "<td style='background-color:".$status[0]."'>".$oDB->lang($status[1])."</td>";
           if ($user->acess()==1||$user->acess()==2||$_SESSION[_site_]['userid']==$value['UsersId']) {
-            echo "<td><a href=''><i class='fas fa-edit'></i></a></td>";
+            echo "<td><a href='editissue.php?id=".$value['QualityIssuelistId']."'><i class='fas fa-edit'></i></a></td>";
           }else{
             echo "<td><i class='fas fa-edit'></i></td>";
           }

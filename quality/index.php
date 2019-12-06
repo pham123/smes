@@ -15,6 +15,37 @@ require('../function/template.php');
 $oDB = new db();
 ?>
 
+<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+
+<!-- <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script> -->
+    <script type="text/javascript">
+      google.charts.load('current', {'packages':['corechart']});
+      google.charts.setOnLoadCallback(drawVisualization);
+
+      function drawVisualization() {
+        // Some raw data (not necessarily accurate)
+        var data = google.visualization.arrayToDataTable([
+          ['Status', 'Quantity'],
+          ['Done',  11],
+          ['Doing',  2],
+          ['Delay',  2],
+          ['Cancel', 2]
+        ]);
+
+        var options = {
+          title: 'Quality issue control rate',
+          pieHole: 0.4,
+          slices: [{color: 'Green'}, {color:'yellow'}, {color: 'red'}, {color: 'grey'}]
+        };
+
+        var chart = new google.visualization.PieChart(document.getElementById('chart_div'));
+        chart.draw(data, options);
+        
+      }
+
+      
+    </script>
+
 <body id="page-top">
   <!-- Page Wrapper -->
   <div id="wrapper">
@@ -32,14 +63,13 @@ $oDB = new db();
 
         <!-- Begin Page Content -->
         <div class="container-fluid">
-        <?php 
-          $table_header  = 'ProductsName,ProductsNumber,ProductsDescription';
-          $table_data = $oDB->sl_col_all($table_header,'Products',1);
-          $table_link = "editmaterial.php?id=";
-        ?>
+        <div class="table-responsive">
+          <div id="chart_div" style="width: 100%; height: 500px;"></div>
+        </div>
+
 
         <div class="table-responsive">
-          <?php include('../views/template_table.php') ?>
+          <div id="chart" style="width: 100%; height: 500px;"></div>
         </div>
         </div>
         <!-- /.container-fluid -->
@@ -89,10 +119,77 @@ $oDB = new db();
 
   <?php require('../views/template-footer.php'); ?>
 
+  <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
   <script>
-    $(function () {
-      $('selectpicker').selectpicker();
-    });
+    var options = {
+            chart: {
+                height: 350,
+                type: 'bar',
+                stacked: true,
+                toolbar: {
+                    show: true
+                },
+                zoom: {
+                    enabled: true
+                }
+            },
+            //thay màu
+            colors: ['#008000', '#FFFF00', '#FF0000', '#808080'],
+            responsive: [{
+                breakpoint: 480,
+                options: {
+                    legend: {
+                        position: 'bottom',
+                        offsetX: -10,
+                        offsetY: 0
+                    }
+                }
+            }],
+            plotOptions: {
+                bar: {
+                    horizontal: false,
+                }
+            },
+            series: [
+                      {
+                          name: 'Done',
+                          data: [44, 55, 41, 67, 22, 43]
+                      },
+                      {
+                          name: 'Doing',
+                          data: [13, 23, 20, 8, 13, 27]
+                      },
+                      {
+                          name: 'Delay',
+                          data: [11, 17, 15, 15, 21, 14]
+                      },
+                      {
+                          name: 'Cancel',
+                          data: [1, 2, 2, 1, 1, 2]
+                      }
+                      ],
+            xaxis: {
+                type: 'text',
+                categories: ['DC', 'LG-IVI', 'NC', 'LG-WM', 'ST', 'FI'],
+            },
+            legend: {
+                position: 'right',
+                offsetY: 40,
+            },
+            fill: {
+                opacity: 1,
+                
+            },
+
+
+        }
+
+       var chart = new ApexCharts(
+            document.querySelector("#chart"),
+            options
+        );
+        
+        chart.render();
   </script>
 
 </body>

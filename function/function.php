@@ -11,6 +11,36 @@ function check($key){
     }
 }
 // Log
+
+function color($key){
+	$color='yellow';
+	$text='';
+	switch ($key) {
+	  case '1':
+		$color='yellow';
+		$text='Doing';
+		break;
+	  case '2':
+		$color='Green';
+		$text='Done';
+		break;
+	  case '3':
+		$color='Red';
+		$text='Delay';
+	  break;
+	  case '4':
+		$color='Grey';
+		$text='Cancel';
+		break;
+	  default:
+		# code...
+		break;
+	}
+	$return[0]=$color;
+	$return[1]=$text;
+	return $return;
+
+}
 function w_logs($dir,$content){
 	$name = date("Y-m-d");
 	$now = date("Y-m-d H:i:s");

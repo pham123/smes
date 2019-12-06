@@ -14,7 +14,7 @@
 
       <!-- Nav Item - Dashboard -->
       <li class="nav-item active">
-        <a class="nav-link" href="../<?php echo $page ?>">
+        <a class="nav-link" href="../<?php $user->module ?>">
           <i class="fas fa-fw fa-home"></i>
           <span><?php echo $oDB->lang("Home") ?></span></a>
       </li>

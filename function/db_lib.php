@@ -110,7 +110,7 @@ class db {
 			$rs = mysqli_query($this->dbh,$query);
 			$text = '';
 			while ($row = mysqli_fetch_assoc($rs)){
-				$text = $text." | ".$row['Field'];
+				$text = $text.". ".$row['Field'];
 			}
 			//$arr = mysqli_fetch_assoc($rs);
 			return $text;
@@ -144,6 +144,13 @@ class db {
 			$rs = mysqli_query($this->dbh,$query);
 			$result = $rs->fetch_array();
 			return $result[$table.'Id'];
+		}
+
+		public function get_one($column,$table,$id) {
+			$query = 'SELECT '.$column.' FROM ' . _DB_PREFIX_ . $table . ' WHERE '.$table.'Id=' . $id;
+			$rs = mysqli_query($this->dbh,$query);
+			$result = $rs->fetch_array();
+			return $result[$column];
 		}
 }
 

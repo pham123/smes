@@ -12,9 +12,13 @@ check($user->acess());
 $pagetitle = $user->module;
 $oDB = new db();
 
+
 $column = safe($_POST['name']);
 $value = safe($_POST['value']);
 $id = safe($_POST['id']);
+
+$content = $pagetitle."\t".$user->name."\tUpdate\t".$column."\t".$value."\t".$id;
+w_logs('../logs/',$content);
 
 $oDB->update('QualityIssuelist',$column." ='".$value."'" ,'QualityIssuelistId='.$id);
 $oDB=Null;

@@ -17,6 +17,7 @@ $id = $_SESSION[_site_]['editissueid'];
 // $postid = 1;
 // $namepre = '191008';
 
+
 $target_dir = "files/";
 $valid_formats = array("pdf", "PDF","xls","xlsx","ppt","pptx","JPG","jpg","png","PNG");
 $max_file_size = 1024*1024*20; //20 mb
@@ -42,6 +43,11 @@ if(isset($_POST) and $_SERVER['REQUEST_METHOD'] == "POST"){
 			}
 			else{ // No error found! Move uploaded files 
 				//$name = iconv("utf-8", "cp936", $name);
+				$column = "files";
+				$value = $name;
+				$content = $pagetitle."\t".$user->name."\tUpdate\t".$column."\t".$value."\t".$id;
+				w_logs('../logs/',$content);
+
 	            if(move_uploaded_file($_FILES["file"]["tmp_name"], $path.$name))
 				$count++; // Number of successfully uploaded file
 				//$dateoffile = $namepre;

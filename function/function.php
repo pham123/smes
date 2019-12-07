@@ -41,8 +41,15 @@ function color($key){
 	return $return;
 
 }
+
 function w_logs($dir,$content){
 	$name = date("Y-m-d");
+	$foldername = date("Ym");
+	if (!is_dir($dir.$foldername)) {
+		mkdir($dir.$foldername, 0700);
+	}
+	$content = preg_replace('~[\r\n]+~', ' ', $content);
+	$dir = $dir.$foldername.'/';
 	$now = date("Y-m-d H:i:s");
 	$text = $now."\t".$content.PHP_EOL;
 	if (!file_exists ($dir.$name.".txt")) {

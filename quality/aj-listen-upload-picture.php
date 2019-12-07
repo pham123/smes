@@ -35,8 +35,10 @@ if ($uploadOk == 0) {
 } else {
 	if (move_uploaded_file($_FILES["file"]["tmp_name"], $target_file)) {
 		echo "The file ". basename( $_FILES["file"]["name"]). " has been uploaded.";
-		//Đổi tên
-		// rename($target_file, "image/".$_FILES["file"]["name"].".jpg");
+		$column = "picture";
+		$value = $_FILES["file"]["name"];
+		$content = $pagetitle."\t".$user->name."\tUpdate\t".$column."\t".$value."\t".$id;
+		w_logs('../logs/',$content);
 		rename($target_file, "image/img_".$id.".jpg");
 		
 		//thay doi kich thuoc anh

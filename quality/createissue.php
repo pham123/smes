@@ -14,6 +14,7 @@ require('../views/template-header.php');
 require('../function/template.php');
 $oDB = new db();
 // echo $oDB->getcol('qualityissuelist');
+//echo $user->id;
 
 ?>
 <!-- <meta http-equiv="refresh" content="30"> -->
@@ -127,7 +128,8 @@ p{margin:5px;}
                   <?php 
                   $model = $oDB->sl_all('Users',1);
                   foreach ($model as $key => $value) {
-                    echo "<option value='".$value['UsersId']."'>".$value['UsersName']."</option>";
+                    $select = ($user->id==$value['UsersId']) ? 'selected' : '' ;
+                    echo "<option value='".$value['UsersId']."' ".$select.">".$value['UsersName']."</option>";
                   }
                   ?>
                 </select>

@@ -158,6 +158,7 @@ $oDB->lang = 'En';
         <!-- Content Row -->
         <div class="row">
 <?php
+
 $linkar =  array(
   // array('../Approval/','APPROVAL','Request everything!','fa-check-square'),
   array('#',$oDB->lang('Productivity','Sản lượng'),$oDB->lang('Quantity'),'fa-pallet'),
@@ -169,9 +170,12 @@ $linkar =  array(
   array('#','SPARE PART','Control spare part','fa-boxes'),
   array('#','Tài liệu','BOM, ISO, PFMEA','fa-folder-open'),
   array('#','Nhân viên','Information','fa-calendar'),
-  array('../system/','ADMIN','Admin System','fa-cogs'),
 
 );
+
+if ($_SESSION[_site_]['useroption']==1) {
+  $linkar[]=  array('../system/','ADMIN','Admin System','fa-cogs');
+}
 
 foreach ($linkar as $key => $value) {
   ?>

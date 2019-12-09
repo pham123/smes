@@ -10,6 +10,10 @@ require('views/template-header.php');
 require('function/template.php');
 $oDB = new db();
 
+//reset all session variable
+session_unset();
+
+//log user in
 if (isset($_POST['username'])) {
   // Lấy giá trị user name và pass
   $username = safe($_POST['username']);
@@ -25,6 +29,7 @@ if (isset($_POST['username'])) {
     $_SESSION[_site_]['username']=$username;
     $_SESSION[_site_]['userfullname']=$ketqua['UsersFullName'];
     $_SESSION[_site_]['useroption']=$ketqua['UsersOption'];
+    $_SESSION[_site_]['useremail'] = $ketqua['UsersEmail'];
 
      header("Location: home/");
      die(); 

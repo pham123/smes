@@ -1,7 +1,7 @@
 <?php
 include './init.php';
 
-import_function('color');
+i_func('color');
 
 if(function_exists('color'))
 {

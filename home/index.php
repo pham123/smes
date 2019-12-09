@@ -158,19 +158,24 @@ $oDB->lang = 'En';
         <!-- Content Row -->
         <div class="row">
 <?php
+
 $linkar =  array(
   // array('../Approval/','APPROVAL','Request everything!','fa-check-square'),
   array('#',$oDB->lang('Productivity','Sản lượng'),$oDB->lang('Quantity'),'fa-pallet'),
   array('../print/',$oDB->lang('Print'),$oDB->lang('PrintLabel'),'fa-barcode'),
   array('../products/',$oDB->lang('Products'),'Part Name, Part No','fa-dolly'),
   array('#',$oDB->lang('LinePatrol','Báo cáo'),$oDB->lang('LinePatrol','Báo cáo'),'fa-camera'),
-  array('#','Chất lượng','Push QA issues alert','fa-bullhorn'),
+  array('../quality/',$oDB->lang('Quality'),$oDB->lang('QualityIssueControl'),'fa-bullhorn'),
+  // array('#',$oDB->lang('QulityList'),'Push QA issues alert','fa-list-ol'),
   array('#','SPARE PART','Control spare part','fa-boxes'),
   array('#','Tài liệu','BOM, ISO, PFMEA','fa-folder-open'),
   array('#','Nhân viên','Information','fa-calendar'),
-  array('../system/','ADMIN','Admin System','fa-cogs'),
 
 );
+
+if ($_SESSION[_site_]['useroption']==1) {
+  $linkar[]=  array('../system/','ADMIN','Admin System','fa-cogs');
+}
 
 foreach ($linkar as $key => $value) {
   ?>
@@ -244,7 +249,7 @@ foreach ($linkar as $key => $value) {
         <div class="modal-body">Select "Logout" below if you are ready to end your current session.</div>
         <div class="modal-footer">
           <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
-          <a class="btn btn-primary" href="../">Logout</a>
+          <a class="btn btn-primary" href="../login.php">Logout</a>
         </div>
       </div>
     </div>

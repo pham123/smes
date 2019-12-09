@@ -111,7 +111,7 @@ class db {
 			$rs = mysqli_query($this->dbh,$query);
 			$text = '';
 			while ($row = mysqli_fetch_assoc($rs)){
-				$text = $text." | ".$row['Field'];
+				$text = $text.". ".$row['Field'];
 			}
 			//$arr = mysqli_fetch_assoc($rs);
 			return $text;
@@ -137,6 +137,21 @@ class db {
 				$result = mysqli_query( $this->dbh, $sql );
 			}
 			return $return;
+		}
+
+		//
+		public function sl_id($table) {
+			$query = 'SELECT MAX('.$table.'Id) As '.$table.'Id FROM ' . _DB_PREFIX_ . $table . ' WHERE 1';
+			$rs = mysqli_query($this->dbh,$query);
+			$result = $rs->fetch_array();
+			return $result[$table.'Id'];
+		}
+
+		public function get_one($column,$table,$id) {
+			$query = 'SELECT '.$column.' FROM ' . _DB_PREFIX_ . $table . ' WHERE '.$table.'Id=' . $id;
+			$rs = mysqli_query($this->dbh,$query);
+			$result = $rs->fetch_array();
+			return $result[$column];
 		}
 }
 

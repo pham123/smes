@@ -46,7 +46,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $oDB = Null;
     $products = Null;
 
-    header('Location:/home/index.php');
+    header('Location:../home/index.php');
 	
 }else{
 	header('Location:../404.html');

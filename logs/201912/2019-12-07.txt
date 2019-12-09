@@ -1,0 +1,7 @@
+2019-12-07 14:54:27	quality	dongpx	Update	ProductsId	3	2
+2019-12-07 14:54:38	quality	dongpx	Update	ProductsId	2	2
+2019-12-07 14:54:53	quality	dongpx	Update	QualityIssuelistDefectiveContent	dsjhfdjshf hjhsdjhfshdfkjsh f	2
+2019-12-07 14:54:57	quality	dongpx	Update	QualityIssuelistTitle	Lorem ipsum dolor sit amet	2
+2019-12-07 14:55:16	quality	dongpx	Update	ProductsId	5	2
+2019-12-07 15:02:40	quality	dongpx	Update	QualityIssuelistStatus	2	2
+2019-12-07 15:02:46	quality	dongpx	Update	QualityIssuelistStatus	3	2

@@ -14,9 +14,14 @@
 
       <!-- Nav Item - Dashboard -->
       <li class="nav-item active">
-        <a class="nav-link" href="index.php">
-          <i class="fas fa-fw fa-home"></i>
-          <span><?php echo $oDB->lang('Home')?></span></a>
+        <a class="nav-link" style="padding: 5px 16px;" href="index.php">
+          <i class="fas fa-fw fa-list"></i>
+          <span><?php echo $oDB->lang('ProductList')?></span></a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" style="padding: 5px 16px;" href="bom_list.php">
+          <i class="fas fa-fw fa-list"></i>
+          <span><?php echo $oDB->lang('BomList')?></span></a>
       </li>
 
       <!-- Divider -->
@@ -24,7 +29,7 @@
 
 $arr = array(
   array('Material.php', 'fa-table',$oDB->lang('AddMaterial')),
-  array('BOM.php', 'fa-table',$oDB->lang('Bom')),
+  array('Bom.php', 'fa-table',$oDB->lang('AddBom')),
 );
 echo nav_item($oDB->lang('Material'),$arr);
 ?>

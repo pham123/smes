@@ -89,6 +89,7 @@ class db {
 		public function sl_all($table,$where) {
 			$query = 'SELECT * FROM ' . _DB_PREFIX_ . $table . ' WHERE ' . $where;
 			$rs = mysqli_query($this->dbh,$query);
+			$rows = [];
 			while ($row = mysqli_fetch_assoc($rs)){
 				$rows[] = $row;
 			}

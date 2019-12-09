@@ -25,7 +25,7 @@ $ModelsId = safe($_POST['ModelsId']);
 $field_values = "`ProductsName`='".$ProductsName."', `ProductsNumber`='".$ProductsNumber."', `ProductsDescription`='".$ProductsDescription."', `ProductsOption`=".$ProductsOption.", `ModelsId`=".$ModelsId ;
 $oDB->insert('products',$field_values);
 
-$products -> getnum($ProductsNumber);
+$products->getnum($ProductsNumber);
 
 // Phần này xử lý file upload lên
 

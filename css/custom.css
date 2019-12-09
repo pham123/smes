@@ -1,0 +1,16 @@
+/* BOM table */
+#bom_table {
+    border-collapse: collapse;
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 14px;
+    color: #333;
+    max-width: 700px;
+}
+#bom_table th {
+    text-align: center;
+    border:1px solid #000;
+}
+#bom_table td {
+    border: 1px solid #000;
+    text-align: center;
+}

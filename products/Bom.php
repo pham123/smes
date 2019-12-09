@@ -16,6 +16,7 @@ $oDB = new db();
 
 ?>
 
+</style>
 <body id="page-top">
   <!-- Page Wrapper -->
   <div id="wrapper">
@@ -33,15 +34,90 @@ $oDB = new db();
 
         <!-- Begin Page Content -->
         <div class="container-fluid">
+        <div class="">
+          <form action="listen-create-bom.php" method="post" enctype="multipart/form-data">
+            <div class="row">
+              <div class="col-md-6">
+                  <p><?php echo $oDB->lang('BomsDirectParent') ?></p>
+                  <select name="BomsParentId" id="" class='selectpicker show-tick' data-live-search="true" data-style="btn-info" data-width="100%">
+                    <?php 
+                    $model = $oDB->sl_all('boms',1);
+                    echo "<option value='0'>select parent BOM</option>";
+                    foreach ($model as $key => $value) {
+                      echo "<option value='".$value['BomsId']."'>".$value['BomsPartNo']."</option>";
+                    }
+                    ?>
+                    
+                  </select>
+                </div>
 
-        <?php 
-          $table_header  = 'ProductsName,ProductsNumber,ProductsDescription';
-          $table_data = $oDB->sl_col_all($table_header,'Products',1);
-          $table_link = "preprint.php?id=";
-        ?>
+                <div class="col-md-6">
+                  <p><?php echo $oDB->lang('BomsPartNo') ?></p>
+                  <input type="text" name="BomsPartNo" id="" class='form-control' required>
+                </div>
 
-        <div class="table-responsive">
-          <?php include('../views/template_table.php') ?>
+                <div class="col-md-6">
+                  <p><?php echo $oDB->lang('BomsPartName') ?></p>
+                  <input type="text" name="BomsPartName" id="" class='form-control' required>
+                </div>
+
+                <div class="col-md-6">
+                  <p><?php echo $oDB->lang('BomsSize') ?></p>
+                  <input type="text" name="BomsSize" id="" class='form-control' required>
+                </div>
+
+                <div class="col-md-6">
+                  <p><?php echo $oDB->lang('BomsNet') ?>(Kg)</p>
+                  <input type="number" step=".001" name="BomsNet" id="" class='form-control' required>
+                </div>
+
+                <div class="col-md-6">
+                  <p><?php echo $oDB->lang('BomsGloss') ?>(Kg)</p>
+                  <input type="number" step=".001" name="BomsGloss" id="" class='form-control' required>
+                </div>
+
+                <div class="col-md-6">
+                  <p><?php echo $oDB->lang('BomsMaterial') ?></p>
+                  <input type="text" name="BomsMaterial" id="" class='form-control' required>
+                </div>
+
+                <div class="col-md-6">
+                  <p><?php echo $oDB->lang('BomsUnit') ?></p>
+                  <input type="text" name="BomsUnit" id="" class='form-control' required>
+                </div>
+
+                <div class="col-md-6">
+                  <p><?php echo $oDB->lang('BomsQty') ?></p>
+                  <input type="number" name="BomsQty" id="" class='form-control' required>
+                </div>
+
+                <div class="col-md-6">
+                  <p><?php echo $oDB->lang('BomsProcess') ?></p>
+                  <input type="text" name="BomsProcess" id="" class='form-control' required>
+                </div>
+
+                <div class="col-md-6">
+                  <p><?php echo $oDB->lang('BomsMaker') ?></p>
+                  <input type="text" name="BomsMaker" id="" class='form-control' required>
+                </div>
+
+                <div class="col-md-6">
+                  <p><?php echo $oDB->lang('BomsClassifiedMaterial') ?></p>
+                  <input type="text" name="BomsClassifiedMaterial" id="" class='form-control' required>
+                </div>
+
+                <div class="col-md-6">
+                  <p><?php echo $oDB->lang('BomsMachine') ?></p>
+                  <input type="text" name="BomsMachine" id="" class='form-control' required>
+                </div>
+
+                <div class="col-md-6">
+                  <p>&nbsp;</p>
+                  <button type="submit" class='btn btn-primary btn-block'><?php echo $oDB->lang('Submit') ?></button>
+                </div>
+
+              </div>
+          </form>
         </div>
         </div>
         <!-- /.container-fluid -->
@@ -95,6 +171,9 @@ $oDB = new db();
     $(function () {
       $('selectpicker').selectpicker();
     });
+
+
+
   </script>
 
 </body>

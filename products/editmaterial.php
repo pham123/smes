@@ -13,9 +13,6 @@ $pagetitle = $user->module;
 require('../views/template-header.php');
 require('../function/template.php');
 $oDB = new db();
-echo $oDB->getcol('Models');
-echo "</br>";
-echo $oDB->getcol('products');
 
 $product = $oDB->sl_one('products', 'ProductsId = '.$_GET['id']);
 ?>

@@ -18,7 +18,7 @@
           </form> -->
 
           <!-- Topbar Navbar -->
-          <div class="sidebar-brand-text mx-3" Style='Color:#22356f;font-size: 3em'><?php echo $oDB->lang('Products')?></div>
+          <div class="sidebar-brand-text mx-3" Style='Color:#22356f;font-size: 3em'><?php echo $oDB->lang(isset($heading_title)?$heading_title:'Product')?></div>
 
           <ul class="navbar-nav ml-auto">
 

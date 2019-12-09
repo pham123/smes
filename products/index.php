@@ -33,7 +33,7 @@ $oDB = new db();
         <!-- Begin Page Content -->
         <div class="container-fluid">
         <?php 
-          $table_header  = 'ProductsName,ProductsNumber,ProductsDescription';
+          $table_header  = 'ProductsName,ProductsNumber,ProductsSize,ProductsDescription';
           $table_data = $oDB->sl_col_all($table_header,'Products',1);
           $table_link = "editmaterial.php?id=";
           $product_picture = "Product Picture";

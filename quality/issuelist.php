@@ -33,7 +33,7 @@ $oDB = new db();
         <!-- Begin Page Content -->
         <div class="container-fluid">
         <?php 
-          $table_header  = 'IssueDate,Object,PartName,ProductionDate,Title,Lot Qty,NgQty,NgRate,Schedule,Pic,Status,Edit';
+          $table_header  = 'IssueDate,Object,PartName,ProductionDate,Title,Picture,Lot Qty,NgQty,NgRate,Schedule,Pic,Status,Edit';
           
           $sql = "SELECT 
           qi.QualityIssuelistId,
@@ -92,6 +92,7 @@ $oDB = new db();
           echo "<td><p>".$value['ProductsNumber']."</p><p>".$value['ProductsName']."</p></td>";
           echo "<td><p>".date("d-M",strtotime($value['QualityIssuelistProductionDate']))."</p><p>".date("Y",strtotime($value['QualityIssuelistProductionDate']))."</p></td>";
           echo "<td>".$value['QualityIssuelistTitle']."</td>";
+          echo "<td><img src='image/small/img_".$value['QualityIssuelistId'].".jpg' style='width:100px' alt=''></td>";
           echo "<td>".$value['QualityIssuelistLotQuantity']."</td>";
           echo "<td>".$value['QualityIssuelistNgQuantity']."</td>";
           $rate = 100*round($value['QualityIssuelistNgQuantity']/$value['QualityIssuelistLotQuantity'],2);
@@ -113,6 +114,7 @@ $oDB = new db();
         echo "</table>";
         ?>
         </div>
+        
         </div>
         <!-- /.container-fluid -->
 

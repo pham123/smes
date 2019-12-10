@@ -98,11 +98,10 @@ $product = $oDB->sl_one('products', 'ProductsId = '.$_GET['id']);
                   <p><?php echo $oDB->lang('EditPicture', 'Edit Picture') ?></p>
                   <input type="file" id='ingredient_file' name='fileToUpload' class="form-control" >
                   <br>  
-                  <img style="width: 100%;" src="./image/img_<?php echo $product['ProductsId'] ?>.jpg" alt="">
+                  <img style="max-height: 400px;" src="./image/img_<?php echo $product['ProductsId'] ?>.jpg" alt="">
                 </div>
 
                 <div class="col-md-6">
-                  <p>&nbsp;</p>
                   <button type="submit" class='btn btn-primary btn-block'><?php echo $oDB->lang('Submit') ?></button>
                 </div>
 

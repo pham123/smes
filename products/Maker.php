@@ -13,8 +13,10 @@ $pagetitle = $user->module;
 require('../views/template-header.php');
 require('../function/template.php');
 $oDB = new db();
+
 ?>
 
+</style>
 <body id="page-top">
   <!-- Page Wrapper -->
   <div id="wrapper">
@@ -32,16 +34,27 @@ $oDB = new db();
 
         <!-- Begin Page Content -->
         <div class="container-fluid">
-        <?php 
-          $table_header  = 'ProductsName,ProductsNumber,ProductsSize,ProductsDescription';
-          $table_data = $oDB->sl_col_all($table_header,'Products',1);
-          $table_link = "editmaterial.php?id=";
-          $product_picture = "Product Picture";
-        ?>
+        <div class="">
+          <h4>Add new maker</h4>
+          <form action="listen-create-maker.php" method="post">
+              <div class="row">
+                <div class="col-md-6">
+                  <p><?php echo $oDB->lang('MakersName') ?></p>
+                  <input type="text" name="MakersName" id="" class='form-control' required>
+                </div>
 
-        <div class="table-responsive">
-          <a href="Material.php" class="btn btn-secondary btn-sm">Add Product</a>
-          <?php include('../views/template_table.php') ?>
+                <div class="col-md-6">
+                  <p><?php echo $oDB->lang('MakersDescription') ?></p>
+                  <input type="text" name="MakersDescription" id="" class='form-control'>
+                </div>
+
+                <div class="col-md-6">
+                  <p>&nbsp;</p>
+                  <button type="submit" class='btn btn-primary btn-block'><?php echo $oDB->lang('Submit') ?></button>
+                </div>
+
+              </div>
+          </form>
         </div>
         </div>
         <!-- /.container-fluid -->
@@ -95,6 +108,9 @@ $oDB = new db();
     $(function () {
       $('selectpicker').selectpicker();
     });
+
+
+
   </script>
 
 </body>

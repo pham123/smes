@@ -4,6 +4,7 @@ ob_start();
 date_default_timezone_set('Asia/Ho_Chi_Minh');
 require('../config.php');
 require('../function/db_lib.php');
+require('../function/MysqliDb.php');
 require('../function/function.php');
 $user = New Users();
 $user->set($_SESSION[_site_]['userid']);
@@ -12,8 +13,10 @@ check($user->acess());
 $pagetitle = $user->module;
 require('../views/template-header.php');
 require('../function/template.php');
-$heading_title = 'Boms';
+$heading_title = 'BillOfMaterials';
 $oDB = new db();
+
+$newDB = new MysqliDb(_DB_HOST_, _DB_USER_, _DB_PASS_,_DB_name_);
 ?>
 
 <body id="page-top">
@@ -35,7 +38,20 @@ $oDB = new db();
         <div class="container-fluid">
         <?php 
           $table_header  = 'BomsPartNo,BomsPartName,BomsSize,BomsNet,BomsGloss,BomsMaterial,BomsUnit,BomsQty,BomsProcess,BomsMaker,BomsClassifiedMaterial,BomsMachine';
-          $table_data = $oDB->sl_all('Boms',1);
+          // $table_data = $oDB->sl_all('Boms',1);
+
+          //using new db library
+          $newDB->join("products p", "b.ProductsId=p.ProductsId", "LEFT");
+          $newDB->join("processes pro", "b.ProcessesId=pro.ProcessesId", "LEFT");
+          $newDB->join("makers m", "b.MakersId=m.MakersId", "LEFT");
+          $newDB->join("classifiedmaterials c", "b.ClassifiedMaterialsId=c.ClassifiedMaterialsId", "LEFT");
+          $newDB->join("machines ma", "b.MachinesId=ma.MachinesId", "LEFT");
+          $table_data = $newDB->get ("boms b", null, "p.ProductsNumber,p.ProductsName,p.ProductsSize,p.ProductsNet,p.ProductsGloss,p.ProductsMaterial,p.ProductsUnit,b.BomsId,b.BomsQty,b.BomsParentId,b.BomsPath,pro.ProcessesName,m.MakersName,c.ClassifiedMaterialsName,ma.MachinesName");
+          // echo '<pre>';
+          // print_r ($boms);
+          // print_r($table_data);
+          // echo '</pre>';
+          // return;
           $table_link = "editbom.php?id=";
         ?>
 

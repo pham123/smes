@@ -12,6 +12,7 @@ check($user->acess());
 $pagetitle = $user->module;
 require('../views/template-header.php');
 require('../function/template.php');
+$heading_title = 'Processes';
 $oDB = new db();
 ?>
 
@@ -33,14 +34,12 @@ $oDB = new db();
         <!-- Begin Page Content -->
         <div class="container-fluid">
         <?php 
-          $table_header  = 'ProductsName,ProductsNumber,ProductsSize,ProductsDescription';
-          $table_data = $oDB->sl_col_all($table_header,'Products',1);
-          $table_link = "editmaterial.php?id=";
-          $product_picture = "Product Picture";
+          $table_header  = 'ProcessesId,ProcessesName,ProcessesDescription';
+          $table_data = $oDB->sl_col_all($table_header,'Processes',1);
         ?>
 
         <div class="table-responsive">
-          <a href="Material.php" class="btn btn-secondary btn-sm">Add Product</a>
+          <a href="Process.php" class="btn btn-secondary btn-sm"><?php echo $oDB->lang('AddProcess')?></a>
           <?php include('../views/template_table.php') ?>
         </div>
         </div>

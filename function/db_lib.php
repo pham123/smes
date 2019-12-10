@@ -99,6 +99,7 @@ class db {
 		public function sl_col_all($colar,$table,$where) {
 			$query = 'SELECT '.$table.'Id as id,' .$colar .' FROM ' . _DB_PREFIX_ . $table . ' WHERE ' . $where;
 			$rs = mysqli_query($this->dbh,$query);
+			$rows=[];
 			while ($row = mysqli_fetch_assoc($rs)){
 				$rows[] = $row;
 			}

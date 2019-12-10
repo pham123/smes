@@ -14,22 +14,20 @@
 
       <!-- Nav Item - Dashboard -->
       <li class="nav-item active">
-        <a class="nav-link" style="padding: 5px 16px;" href="index.php">
-          <i class="fas fa-fw fa-list"></i>
-          <span><?php echo $oDB->lang('ProductList')?></span></a>
-      </li>
-      <li class="nav-item">
         <a class="nav-link" style="padding: 5px 16px;" href="bom_list.php">
           <i class="fas fa-fw fa-list"></i>
-          <span><?php echo $oDB->lang('Bom')?></span></a>
+          <span>BOM</span></a>
       </li>
 
       <!-- Divider -->
 <?php
 
 $arr = array(
-  array('Material.php', 'fa-table',$oDB->lang('AddProduct')),
-  array('Bom.php', 'fa-table',$oDB->lang('AddBom')),
+  array('index.php', 'fa-table',$oDB->lang('Products')),
+  array('process_index.php', 'fa-table',$oDB->lang('Processes')),
+  array('maker_index.php', 'fa-table',$oDB->lang('Makers')),
+  array('classifiedmaterial_index.php', 'fa-table',$oDB->lang('ClassifiedMaterials')),
+  array('machine_index.php', 'fa-table',$oDB->lang('Machines')),
 );
 echo nav_item($oDB->lang('Material'),$arr);
 ?>

@@ -10,6 +10,7 @@ $user->set($_SESSION[_site_]['userid']);
 $user->module = basename(dirname(__FILE__));
 check($user->acess());
 $pagetitle = $user->module;
+$heading_title = 'ClassifiedMaterials';
 require('../views/template-header.php');
 require('../function/template.php');
 $oDB = new db();
@@ -33,14 +34,12 @@ $oDB = new db();
         <!-- Begin Page Content -->
         <div class="container-fluid">
         <?php 
-          $table_header  = 'ProductsName,ProductsNumber,ProductsSize,ProductsDescription';
-          $table_data = $oDB->sl_col_all($table_header,'Products',1);
-          $table_link = "editmaterial.php?id=";
-          $product_picture = "Product Picture";
+          $table_header  = 'ClassifiedMaterialsId,ClassifiedMaterialsName,ClassifiedMaterialsDescription';
+          $table_data = $oDB->sl_col_all($table_header,'ClassifiedMaterials',1);
         ?>
 
         <div class="table-responsive">
-          <a href="Material.php" class="btn btn-secondary btn-sm">Add Product</a>
+          <a href="ClassifiedMaterial.php" class="btn btn-secondary btn-sm"><?php echo $oDB->lang('AddClassifiedMaterial')?></a>
           <?php include('../views/template_table.php') ?>
         </div>
         </div>

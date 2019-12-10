@@ -41,18 +41,18 @@ function generateRow($data, $level, $parent_id){
                     echo "<td></td>";
                 }
             }
-            echo "<td>".${'value'.$level}['BomsPartNo']."</td>";
-            echo "<td>".${'value'.$level}['BomsPartName']."</td>";
-            echo "<td>".${'value'.$level}['BomsSize']."</td>";
-            echo "<td>".${'value'.$level}['BomsNet']."</td>";
-            echo "<td>".${'value'.$level}['BomsGloss']."</td>";
-            echo "<td>".${'value'.$level}['BomsMaterial']."</td>";
-            echo "<td>".${'value'.$level}['BomsUnit']."</td>";
+            echo "<td>".${'value'.$level}['ProductsNumber']."</td>";
+            echo "<td>".${'value'.$level}['ProductsName']."</td>";
+            echo "<td>".${'value'.$level}['ProductsSize']."</td>";
+            echo "<td>".${'value'.$level}['ProductsNet']."</td>";
+            echo "<td>".${'value'.$level}['ProductsGloss']."</td>";
+            echo "<td>".${'value'.$level}['ProductsMaterial']."</td>";
+            echo "<td>".${'value'.$level}['ProductsUnit']."</td>";
             echo "<td>".${'value'.$level}['BomsQty']."</td>";
-            echo "<td>".${'value'.$level}['BomsProcess']."</td>";
-            echo "<td>".${'value'.$level}['BomsMaker']."</td>";
-            echo "<td>".${'value'.$level}['BomsClassifiedMaterial']."</td>";
-            echo "<td>".${'value'.$level}['BomsMachine']."</td>";
+            echo "<td>".${'value'.$level}['ProcessesName']."</td>";
+            echo "<td>".${'value'.$level}['MakersName']."</td>";
+            echo "<td>".${'value'.$level}['ClassifiedMaterialsName']."</td>";
+            echo "<td>".${'value'.$level}['MachinesName']."</td>";
             echo "</tr>";
             generateRow($data,$level+1, ${'value'.$level}['BomsId']);
         }
@@ -64,12 +64,12 @@ echo "<tr>";
 echo "<th rowspan='2'>No.</th>";
 echo "<th colspan='".getMaxLevel($table_data)."' style='width: 10%;'>Level</th>";
 echo "<th rowspan='2'>Part No.</th>";
-echo "<th rowspan='2'>Part Name</th>";
-echo "<th rowspan='2'>Size<br>H*W*L</th>";
-echo "<th rowspan='2'>Net (Kg)</th>";
-echo "<th rowspan='2'>Gloss (Kg)</th>";
-echo "<th rowspan='2'>Material</th>";
-echo "<th rowspan='2' style='width: 70px !important;'>Unit</th>";
+echo "<th rowspan='2' style='min-width: 130px;'>Part Name</th>";
+echo "<th rowspan='2' style='min-width: 100px;'>Size<br>H*W*L</th>";
+echo "<th rowspan='2' style='min-width: 60px;'>Net (Kg)</th>";
+echo "<th rowspan='2' style='min-width: 60px;'>Gloss (Kg)</th>";
+echo "<th rowspan='2' style='min-width:100px;'>Material</th>";
+echo "<th rowspan='2' style='min-width: 70px'>Unit</th>";
 echo "<th rowspan='2'>Q'ty</th>";
 echo "<th rowspan='2'>Process</th>";
 echo "<th rowspan='2'>Maker</th>";
@@ -94,24 +94,47 @@ echo "<tr><form action='listen-create-bom.php' method='post'>";
 echo "<td><button type='submit' class='btn-secondary'>add</button></td>";
 echo "<td colspan='".getMaxLevel($table_data)."'><select name='BomsParentId'>";
 
-$boms_all = $oDB->sl_all('boms',1);
 echo "<option value='0'>parent PART</option>";
-foreach ($boms_all as $key => $value) {
-    echo "<option value='".$value['BomsId']."'>".$value['BomsPartNo']."</option>";
+foreach ($table_data as $key => $value) {
+    echo "<option value='".$value['BomsId']."'>".$value['ProductsNumber']."</option>";
 }
 echo "</select></td>";
-echo "<td><input type='text' style='max-width: 140px;' name='BomsPartNo' /></td>";
-echo "<td><input type='text' style='max-width: 180px;'  name='BomsPartName' /></td>";
-echo "<td><input type='text' style='max-width: 110px' name='BomsSize' /></td>";
-echo "<td><input type='number' style='max-width: 90px;' step='.001' name='BomsNet' /></td>";
-echo "<td><input type='number' style='max-width: 90px;' step='.001' name='BomsGloss' /></td>";
-echo "<td><input type='text' style='max-width: 120px;' name='BomsMaterial' /></td>";
-echo "<td><input type='text' style='max-width: 70px;' name='BomsUnit' /></td>";
+echo "<td colspan='7'><select name='ProductsId' class='w-75'>";
+$products_all = $oDB->sl_all('products',1);
+echo "<option value='0'>select product</option>";
+foreach ($products_all as $key => $value) {
+    echo "<option value='".$value['ProductsId']."'>".$value['ProductsNumber']."-".$value['ProductsName']."</option>";
+}
+echo "</select></td>";
 echo "<td><input style='max-width: 70px;' type='number' name='BomsQty' /></td>";
-echo "<td><input type='text' style='max-width: 120px;' name='BomsProcess' /></td>";
-echo "<td><input type='text' style='max-width: 100px;' name='BomsMaker' /></td>";
-echo "<td><input type='text' style='max-width: 110px;' name='BomsClassifiedMaterial' /></td>";
-echo "<td><input type='text' style='max-width: 100px' name='BomsMachine' /></td>";
+echo "<td><select name='ProcessesId' style='max-width: 120px'>";
+$processes_all = $oDB->sl_all('processes',1);
+echo "<option value=''>select process</option>";
+foreach ($processes_all as $key => $value) {
+    echo "<option value='".$value['ProcessesId']."'>".$value['ProcessesName']."</option>";
+}
+echo "</select></td>";
+echo "<td><select name='MakersId' style='max-width: 110px'>";
+$makers_all = $oDB->sl_all('makers',1);
+echo "<option value=''>select maker</option>";
+foreach ($makers_all as $key => $value) {
+    echo "<option value='".$value['MakersId']."'>".$value['MakersName']."</option>";
+}
+echo "</select></td>";
+echo "<td><select name='ClassifiedMaterialsId' style='max-width: 120px'>";
+$classifiedmaterials_all = $oDB->sl_all('classifiedmaterials',1);
+echo "<option value=''>select classified material</option>";
+foreach ($classifiedmaterials_all as $key => $value) {
+    echo "<option value='".$value['ClassifiedMaterialsId']."'>".$value['ClassifiedMaterialsName']."</option>";
+}
+echo "</select></td>";
+echo "<td><select name='MachinesId' style='max-width: 60px'>";
+$machine_all = $oDB->sl_all('machines',1);
+echo "<option value=''>select machine</option>";
+foreach ($machine_all as $key => $value) {
+    echo "<option value='".$value['MachinesId']."'>".$value['MachinesName']."</option>";
+}
+echo "</select></td>";
 echo "</form></tr>";
 generateRow($table_data,0,0);
 echo "</tbody>";

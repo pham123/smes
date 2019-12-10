@@ -16,7 +16,6 @@ $oDB = new db();
 
 ?>
 
-</style>
 <body id="page-top">
   <!-- Page Wrapper -->
   <div id="wrapper">
@@ -34,76 +33,52 @@ $oDB = new db();
 
         <!-- Begin Page Content -->
         <div class="container-fluid">
-        <div class="">
-          <h4>Add new product</h4>
-          <form action="listen-create-material.php" method="post" enctype="multipart/form-data">
-              <div class="row">
-                <div class="col-md-6">
-                  <p><?php echo $oDB->lang('ProductName') ?></p>
-                  <input type="text" name="ProductsName" id="" class='form-control' required>
-                </div>
-
-                <div class="col-md-6">
-                  <p><?php echo $oDB->lang('ProductNumber') ?></p>
-                  <input type="text" name="ProductsNumber" id="" class='form-control' required>
-                </div>
-
-                <div class="col-md-6">
-                  <p><?php echo $oDB->lang('ProductSize') ?></p>
-                  <input type="text" name="ProductsSize" id="" class='form-control'>
-                </div>
-
-                <div class="col-md-6">
-                  <p><?php echo $oDB->lang('ProductNet') ?>(Kg)</p>
-                  <input type="number" step="0.001" name="ProductsNet" id="" class='form-control'>
-                </div>
-
-                <div class="col-md-6">
-                  <p><?php echo $oDB->lang('ProductGloss') ?>(Kg)</p>
-                  <input type="number" step="0.001" name="ProductsGloss" id="" class='form-control'>
-                </div>
-
-                <div class="col-md-6">
-                  <p><?php echo $oDB->lang('ProductMaterial') ?></p>
-                  <input type="text" name="ProductsMaterial" id="" class='form-control'>
-                </div>
-                <div class="col-md-6">
-                  <p><?php echo $oDB->lang('ProductUnit') ?></p>
-                  <input type="text" name="ProductsUnit" id="" class='form-control'>
-                </div>
-
-                <div class="col-md-6">
-                  <p><?php echo $oDB->lang('ProductDescription') ?></p>
-                  <input type="text" name="ProductsDescription" id="" class='form-control' required>
-                  <input type="hidden" name="ProductsOption" id="" value='1' class='form-control' required>
-                </div>
-
-                <div class="col-md-6">
-                  <p><?php echo $oDB->lang('Model') ?></p>
-                  <select name="ModelsId" id="" class='selectpicker show-tick' data-live-search="true" data-style="btn-info" data-width="100%">
+          <form action="listen-create-pattern.php" method="post">
+          <div class="row">
+                 <div class="col-md-6">
+                  <p><?php echo $oDB->lang('Station') ?></p>
+                  <select name="TraceStationId" id="" class='selectpicker show-tick' data-live-search="true" data-style="btn-info" data-width="100%">
                     <?php 
-                    $model = $oDB->sl_all('models',1);
+                    $model = $oDB->sl_all('TraceStation',1);
                     foreach ($model as $key => $value) {
-                      echo "<option value='".$value['ModelsId']."'>".$value['ModelsName']."</option>";
+                      echo "<option value='".$value['TraceStationId']."'>".$value['TraceStationName']."</option>";
+                    }
+                    ?>
+                  </select>
+                </Div>
+
+                <div class="col-md-6">
+                  <p><?php echo $oDB->lang('Products') ?></p>
+                  <select name="ProductsId" id="" class='selectpicker show-tick' data-live-search="true" data-style="btn-info" data-width="100%">
+                    <?php 
+                    $model = $oDB->sl_all('Products',1);
+                    foreach ($model as $key => $value) {
+                      echo "<option value='".$value['ProductsId']."'>".$value['ProductsNumber']."/".$value['ProductsName']."</option>";
                     }
                     ?>
                     
                   </select>
+                </Div>
+
+                <div class="col-md-6">
+                  <p><?php echo $oDB->lang('LabelPattern') ?></p>
+                  <input type="text" name="LabelPatternValue" id="" class='form-control' required>
                 </div>
 
                 <div class="col-md-6">
-                  <p><?php echo $oDB->lang('AddPicture') ?></p>
-                  <input type="file" id='ingredient_file' name='fileToUpload' class="form-control" >  
+                  <p><?php echo $oDB->lang('PackingStandard') ?></p>
+                  <input type="text" name="LabelPatternPackingStandard" id="" class='form-control' required>
                 </div>
+
 
                 <div class="col-md-6">
                   <p>&nbsp;</p>
-                  <button type="submit" class='btn btn-primary btn-block'><?php echo $oDB->lang('Submit') ?></button>
+                  <button type="submit" class='btn-success form-control'><?php echo $oDB->lang('Submit')?></button>
                 </div>
 
-              </div>
+            </div>
           </form>
-        </div>
+
         </div>
         <!-- /.container-fluid -->
 
@@ -156,9 +131,6 @@ $oDB = new db();
     $(function () {
       $('selectpicker').selectpicker();
     });
-
-
-
   </script>
 
 </body>

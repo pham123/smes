@@ -54,7 +54,7 @@ $oDB = new db();
           //var_dump($oDB->getcol('products'));
           
           $table_header  = 'ProductsName,ProductsNumber,ProductsDescription';
-          $table_data = $oDB->sl_col_all($table_header,'Products',1);
+          $table_data = $oDB->sl_col_all($table_header,'Products','ProductsOption=1');
           $table_link = "preprint.php?id=";
 
           //var_dump ($table_data);

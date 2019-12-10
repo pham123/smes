@@ -21,14 +21,14 @@
       <li class="nav-item">
         <a class="nav-link" style="padding: 5px 16px;" href="bom_list.php">
           <i class="fas fa-fw fa-list"></i>
-          <span><?php echo $oDB->lang('BomList')?></span></a>
+          <span><?php echo $oDB->lang('Bom')?></span></a>
       </li>
 
       <!-- Divider -->
 <?php
 
 $arr = array(
-  array('Material.php', 'fa-table',$oDB->lang('AddMaterial')),
+  array('Material.php', 'fa-table',$oDB->lang('AddProduct')),
   array('Bom.php', 'fa-table',$oDB->lang('AddBom')),
 );
 echo nav_item($oDB->lang('Material'),$arr);

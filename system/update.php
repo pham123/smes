@@ -8,7 +8,7 @@ if (isset($_POST['action'])) {
 
 $text = '';
 foreach ($_POST as $key => $value) {
-  if ($key=='action'||$key=='target'||$key==$table.'Id') {
+  if ($key=='action'||$key=='target'||$key==$table.'Id'||$value=="") {
     
   }else{
     $text = $text.$key." = '".$value."',";
@@ -22,7 +22,7 @@ $text = rtrim($text, ',');
                 Where ".$table."Id = ".$keyid."
   ";
 
-//echo $update_sql;
+  $update_sql;
   $oDB -> query($update_sql);
 } else {
   //echo 'NA';

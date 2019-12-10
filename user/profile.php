@@ -47,7 +47,7 @@ if(!isset($_SESSION[_site_])){
 
         <!-- Topbar -->
         <nav class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow">
-        <a class="sidebar-brand d-flex align-items-center justify-content-center" href="/home/index.php" Style='text-decoration: none; background-color:white;'>
+        <a class="sidebar-brand d-flex align-items-center justify-content-center" href="../home/index.php" Style='text-decoration: none; background-color:white;'>
         <div class="sidebar-brand-icon rotate-n-15">
           <img src="../img/hallalogo.png" alt="logo" height="45" >
         </div>

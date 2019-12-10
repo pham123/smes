@@ -44,18 +44,40 @@ $product = $oDB->sl_one('products', 'ProductsId = '.$_GET['id']);
                 </div>
 
                 <div class="col-md-6">
-                  <p><?php echo $oDB->lang('ProductCode') ?></p>
+                  <p><?php echo $oDB->lang('ProductNumber') ?></p>
                   <input type="text" name="ProductsNumber" id="" class='form-control' required value="<?php echo $product['ProductsNumber'] ?>">
                 </div>
 
                 <div class="col-md-6">
-                  <br>
+                  <p><?php echo $oDB->lang('ProductSize') ?></p>
+                  <input type="text" name="ProductsSize" id="" class='form-control' required value="<?php echo $product['ProductsSize'] ?>">
+                </div>
+
+                <div class="col-md-6">
+                  <p><?php echo $oDB->lang('ProductNet') ?>(Kg)</p>
+                  <input type="number" step="0.001" name="ProductsNet" id="" class='form-control' value="<?php echo $product['ProductsNet']?>">
+                </div>
+
+                <div class="col-md-6">
+                  <p><?php echo $oDB->lang('ProductGloss') ?>(Kg)</p>
+                  <input type="number" step="0.001" name="ProductsGloss" id="" class='form-control' value="<?php echo $product['ProductsGloss']?>">
+                </div>
+
+                <div class="col-md-6">
+                  <p><?php echo $oDB->lang('ProductMaterial') ?></p>
+                  <input type="text" name="ProductsMaterial" id="" class='form-control' value="<?php echo $product['ProductsMaterial']?>">
+                </div>
+                <div class="col-md-6">
+                  <p><?php echo $oDB->lang('ProductUnit') ?></p>
+                  <input type="text" name="ProductsUnit" id="" class='form-control' value="<?php echo $product['ProductsUnit']?>">
+                </div>
+
+                <div class="col-md-6">
                   <p><?php echo $oDB->lang('ProductDescription ') ?></p>
                   <input type="text" name="ProductsDescription" id="" class='form-control' required value="<?php echo $product['ProductsDescription'] ?>">
                 </div>
 
                 <div class="col-md-6">
-                  <br>
                   <p><?php echo $oDB->lang('Model') ?></p>
                   <select name="ModelsId" id="" class='selectpicker show-tick' data-live-search="true" data-style="btn-info" data-width="100%">
                     <?php 
@@ -73,7 +95,6 @@ $product = $oDB->sl_one('products', 'ProductsId = '.$_GET['id']);
                 </div>
 
                 <div class="col-md-6">
-                  <br>
                   <p><?php echo $oDB->lang('EditPicture', 'Edit Picture') ?></p>
                   <input type="file" id='ingredient_file' name='fileToUpload' class="form-control" >
                   <br>  
@@ -81,7 +102,6 @@ $product = $oDB->sl_one('products', 'ProductsId = '.$_GET['id']);
                 </div>
 
                 <div class="col-md-6">
-                  <br>
                   <p>&nbsp;</p>
                   <button type="submit" class='btn btn-primary btn-block'><?php echo $oDB->lang('Submit') ?></button>
                 </div>

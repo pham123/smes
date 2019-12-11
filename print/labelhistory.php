@@ -52,9 +52,11 @@ $oDB = new db();
         <?php 
           $table_data = $oDB->sl_all('LabelPattern','1');
 
-          $sql = "Select lp.*,prd.ProductsName, prd.ProductsNumber,ts.TraceStationName from labelpattern lp 
-          inner join products prd on prd.ProductsId = lp.ProductsId
-          inner join tracestation ts on ts.TraceStationId = lp.TraceStationId";
+          $sql = "SELECT lh.*, ts.TraceStationName, prd.ProductsName, prd.ProductsNumber FROM labelhistory lh
+          inner join tracestation ts on ts.TraceStationId = lh.TraceStationId
+          inner join labellist lbl on lbl.LabelListValue = lh.LabelHistoryLabelValue
+          inner join products prd on prd.ProductsId = lbl.ProductsId
+          ORDER BY lh.LabelHistoryId DESC LIMIT 50";
 
           $result = $oDB->fetchAll($sql);
             // echo "<pre>";
@@ -67,14 +69,13 @@ $oDB = new db();
         echo "<table class='table table-bordered' id='dataTable' width='100%' cellspacing='0'>";
         echo "<thead>";
         echo "<tr>";
-            echo "<th>".$oDB->lang('Id')."</th>";
             echo "<th>".$oDB->lang('Station')."</th>";
             echo "<th>".$oDB->lang('ProductName')."</th>";
             echo "<th>".$oDB->lang('ProductNumber')."</th>";
-            echo "<th>".$oDB->lang('LabelPattern')."</th>";
-            echo "<th>".$oDB->lang('PackingStandard')."</th>";
-            echo "<th>".$oDB->lang('LastUpdate')."</th>";
-            echo "<th>".$oDB->lang('Edit')."</th>";
+            echo "<th>".$oDB->lang('Ok')."</th>";
+            echo "<th>".$oDB->lang('Ng')."</th>";
+            echo "<th>".$oDB->lang('LabelValue')."</th>";
+            echo "<th>".$oDB->lang('IssueDate')."</th>";
         echo "</tr>";
         echo "</thead>";
 
@@ -83,14 +84,13 @@ $oDB = new db();
 
         foreach ($result as $key => $value) {
             echo "<tr>";
-            echo "<td>".$value['LabelPatternId']."</td>";
-            echo "<td>".$value['TraceStationId']."-".$value['TraceStationName']."</td>";
+            echo "<td>".$value['TraceStationName']."</td>";
             echo "<td>".$value['ProductsName']."</td>";
             echo "<td>".$value['ProductsNumber']."</td>";
-            echo "<td>".$value['LabelPatternValue']."</td>";
-            echo "<td>".$value['LabelPatternPackingStandard']."</td>";
-            echo "<td>".$value['LabelPatternUpdateDate']."</td>";
-            echo "<td><a href='editpattern.php?id=".$value['LabelPatternId']."'>Edit</a></td>";
+            echo "<td>".$value['LabelHistoryQuantityOk']."</td>";
+            echo "<td>".$value['LabelHistoryQuantityNg']."</td>";
+            echo "<td>".$value['LabelHistoryLabelValue']."</td>";
+            echo "<td>".$value['LabelHistoryCreateDate']."</td>";
             echo "</tr>";
         }
 

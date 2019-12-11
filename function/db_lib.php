@@ -32,8 +32,11 @@ class db {
 		// Return false if no, true if yes
 		public function in_table($table,$where) {
 			$query = 'SELECT * FROM ' . _DB_PREFIX_ . $table . ' WHERE ' . $where;
-			$result = mysqli_query($this->dbh,$query);
-			return mysqli_num_rows($result) > 0;
+			
+			if ($result = mysqli_query($this->dbh,$query)) {
+				return mysqli_num_rows($result) > 0;
+			}
+			
 		}
 		public function sl_one($table,$where) {
 			$query = 'SELECT * FROM ' . _DB_PREFIX_ . $table . ' WHERE ' . $where;

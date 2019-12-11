@@ -10,12 +10,19 @@ $start = (isset($_GET['start'])) ? $_GET['start'] : '0' ;
 $cavity = (isset($_GET['cavity'])) ? $_GET['cavity'] : '' ;
 // include ('data.php');
 //var_dump($_POST);
+$oDB = new db();
 $id = safe($_POST['id']);
 $cavity = safe($_POST['cavity']);
 $date = safe($_POST['selectdate']);
 $lot = safe($_POST['lot']);
 $shift = safe($_POST['shift']);
 $quantity = safe($_POST['quantity']);
+$today = date("Y-m-d");
+$sql = "SELECT COUNT(*) as total From labellist where ProductsId=".$id." AND date(LabelListCreateDate)= '".$today."'";
+$start = $oDB->fetchOne($sql);
+$start['total'];
+$startlabel = $start['total'] + 1;
+// echo $startlabel;
 
 $products = new products();
 $products->get($id);
@@ -124,9 +131,7 @@ $page = 1;
 <body>
     <div class="book">
     <?php
-    for ($j=1; $j < $quantity+1; $j++) { 
-        # code...
-   
+    for ($j=$startlabel; $j < $startlabel+$quantity+1; $j++) { 
     ?>
     <div class="page">
         
@@ -150,6 +155,15 @@ $page = 1;
                 <td colspan='2'>Lot No</td>
                 <?php
                     $codevalue = $products->number."-".date("md",strtotime($date))."-".sprintf('%02d', $j)."-".$shift;
+                    // Insert thông tin vào bảng label list
+                    $kq = $oDB->in_table(`labellist`,"`LabelListValue`='".$codevalue."'");
+                    if ($kq==false) {
+                        $sql = "INSERT INTO labellist (`ProductsId`,`UsersId`,`LabelListValue`) VALUES (".$id.",".$_SESSION[_site_]['userid'].",'".$codevalue."')";
+                        $oDB->query($sql);
+                    }else{
+
+                    }
+
                 ?>
                 <td rowspan='2'><img src="http://192.168.1.2:88/qr/?data=<?php echo $codevalue ?>" alt=""></td>
             </tr>

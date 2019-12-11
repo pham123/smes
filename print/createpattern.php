@@ -14,21 +14,6 @@ require('../views/template-header.php');
 require('../function/template.php');
 $oDB = new db();
 
-// $actionar = (array_keys($_GET));
-// $actionkey = (isset($actionar[0])) ? $actionar[0] : 'content' ;
-
-// $action =  (explode("_",$actionkey));
-
-// $option = $action[0];
-// $target = (isset($action[1])) ? ucfirst($action[1]) : 'Company' ;
-// $id = (isset($action[2])) ? $action[2] : 1 ;
-
-// if (file_exists('../querry/'.$option.'_'.$target.'.php')) {
-//   require('../querry/'.$option.'_'.$target.'.php');
-// }else {
-//   $sql = "Select * from ".$target;
-// }
-
 ?>
 
 <body id="page-top">
@@ -48,58 +33,52 @@ $oDB = new db();
 
         <!-- Begin Page Content -->
         <div class="container-fluid">
+          <form action="listen-create-pattern.php" method="post">
+          <div class="row">
+                 <div class="col-md-6">
+                  <p><?php echo $oDB->lang('Station') ?></p>
+                  <select name="TraceStationId" id="" class='selectpicker show-tick' data-live-search="true" data-style="btn-info" data-width="100%">
+                    <?php 
+                    $model = $oDB->sl_all('TraceStation',1);
+                    foreach ($model as $key => $value) {
+                      echo "<option value='".$value['TraceStationId']."'>".$value['TraceStationName']."</option>";
+                    }
+                    ?>
+                  </select>
+                </Div>
 
-        <?php 
-          $table_data = $oDB->sl_all('LabelPattern','1');
+                <div class="col-md-6">
+                  <p><?php echo $oDB->lang('Products') ?></p>
+                  <select name="ProductsId" id="" class='selectpicker show-tick' data-live-search="true" data-style="btn-info" data-width="100%">
+                    <?php 
+                    $model = $oDB->sl_all('Products',1);
+                    foreach ($model as $key => $value) {
+                      echo "<option value='".$value['ProductsId']."'>".$value['ProductsNumber']."/".$value['ProductsName']."</option>";
+                    }
+                    ?>
+                    
+                  </select>
+                </Div>
 
-          $sql = "Select lp.*,prd.ProductsName, prd.ProductsNumber,ts.TraceStationName from labelpattern lp 
-          inner join products prd on prd.ProductsId = lp.ProductsId
-          inner join tracestation ts on ts.TraceStationId = lp.TraceStationId";
+                <div class="col-md-6">
+                  <p><?php echo $oDB->lang('LabelPattern') ?></p>
+                  <input type="text" name="LabelPatternValue" id="" class='form-control' required>
+                </div>
 
-          $result = $oDB->fetchAll($sql);
-            // echo "<pre>";
-            // var_dump ($result);
-            // echo "</pre>";
-        ?>
-
-        <div class="table-responsive">
-        <?php
-        echo "<table class='table table-bordered' id='dataTable' width='100%' cellspacing='0'>";
-        echo "<thead>";
-        echo "<tr>";
-            echo "<th>".$oDB->lang('Id')."</th>";
-            echo "<th>".$oDB->lang('Station')."</th>";
-            echo "<th>".$oDB->lang('ProductName')."</th>";
-            echo "<th>".$oDB->lang('ProductNumber')."</th>";
-            echo "<th>".$oDB->lang('LabelPattern')."</th>";
-            echo "<th>".$oDB->lang('PackingStandard')."</th>";
-            echo "<th>".$oDB->lang('LastUpdate')."</th>";
-            echo "<th>".$oDB->lang('Edit')."</th>";
-        echo "</tr>";
-        echo "</thead>";
+                <div class="col-md-6">
+                  <p><?php echo $oDB->lang('PackingStandard') ?></p>
+                  <input type="text" name="LabelPatternPackingStandard" id="" class='form-control' required>
+                </div>
 
 
-        echo "<tbody>";
+                <div class="col-md-6">
+                  <p>&nbsp;</p>
+                  <button type="submit" class='btn-success form-control'><?php echo $oDB->lang('Submit')?></button>
+                </div>
 
-        foreach ($result as $key => $value) {
-            echo "<tr>";
-            echo "<td>".$value['LabelPatternId']."</td>";
-            echo "<td>".$value['TraceStationId']."-".$value['TraceStationName']."</td>";
-            echo "<td>".$value['ProductsName']."</td>";
-            echo "<td>".$value['ProductsNumber']."</td>";
-            echo "<td>".$value['LabelPatternValue']."</td>";
-            echo "<td>".$value['LabelPatternPackingStandard']."</td>";
-            echo "<td>".$value['LabelPatternUpdateDate']."</td>";
-            echo "<td><a href='editpattern.php?id=".$value['LabelPatternId']."'>Edit</a></td>";
-            echo "</tr>";
-        }
+            </div>
+          </form>
 
-        echo "</tbody>";
-
-        echo "</table>";
-
-          ?>
-        </div>
         </div>
         <!-- /.container-fluid -->
 

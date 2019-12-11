@@ -8,6 +8,11 @@ $oDB = new db();
 $oDB->lang = 'En';
 //echo $currentlocation;
 // var_dump($_SESSION);
+if (!isset($_SESSION[_site_]['userid'])) {
+  # code...
+  header('Location:../login.php');
+  exit();
+}
 ?>
 <!DOCTYPE html>
 <html lang="en">

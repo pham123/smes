@@ -19,6 +19,30 @@
           <span><?php echo $oDB->lang('Home')?></span></a>
       </li>
 
+
+      <hr class="sidebar-divider my-0">
+
+      <!-- Nav Item - Dashboard -->
+      <li class="nav-item active">
+        <a class="nav-link" href="product.php">
+          <i class="fas fa-fw fa-sliders-h"></i>
+          <span><?php echo $oDB->lang('LabelList','LabelList')?></span></a>
+      </li>
+      <!-- Nav Item - Dashboard -->
+      <li class="nav-item active">
+        <a class="nav-link" href="createpattern.php">
+          <i class="fas fa-fw fa-sliders-h"></i>
+          <span><?php echo $oDB->lang('SetStationLabelRules','Thiết lập mẫu tem')?></span></a>
+      </li>
+
+      <li class="nav-item active">
+        <a class="nav-link" href="labelhistory.php">
+          <i class="fas fa-fw fa-sliders-h"></i>
+          <span><?php echo $oDB->lang('LabelHistory')?></span></a>
+      </li>
+
+
+
  
 
 

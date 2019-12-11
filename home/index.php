@@ -182,7 +182,7 @@ $linkar =  array(
   array('#',$oDB->lang('LinePatrol','Báo cáo'),$oDB->lang('LinePatrol','Báo cáo'),'fa-camera'),
   array('../quality/',$oDB->lang('Quality'),$oDB->lang('QualityIssueControl'),'fa-bullhorn'),
   // array('#',$oDB->lang('QulityList'),'Push QA issues alert','fa-list-ol'),
-  array('#','SPARE PART','Control spare part','fa-boxes'),
+  array('../spare-part','SPARE PART','Control spare part','fa-boxes'),
   array('#','Tài liệu','BOM, ISO, PFMEA','fa-folder-open'),
   array('#','Nhân viên','Information','fa-calendar'),
 

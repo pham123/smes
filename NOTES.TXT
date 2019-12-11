@@ -1,0 +1,3 @@
+products table
+- ProductsOption = 1 => product
+- ProductsOption = 4 => Spare Part

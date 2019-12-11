@@ -155,15 +155,25 @@ $stationid = 4;
             
         
         } elseif(isset($_POST['mcode'])&&$_POST['mcode']!=''){
-            var_dump($_POST);
+            //var_dump($_POST);
             $oDB = new db();
             $mcode = $_POST['mcode'];
             $quantity = $_POST['quantity'];
             $mothercode = $_POST['mothercode'];
 
             #kiểm tra mother code có hợp lệ hay không
-
+            $mothercode = $oDB->query('SELECT * FROM labellist WHERE LabelListValue = ?', $mothercode)->fetchArray();
+            if (isset($mothercode['LabelListId'])) {
+                # code...
+                echo $mothercode['LabelListValue'].' hợp lệ';
+            } else {
+                # code...
+                echo 'không hợp lệ';
+            }
+            
             #Hai bạn có cùng nằm trong BOM không
+
+
 
             // if($_POST['rcode']==$no){
 

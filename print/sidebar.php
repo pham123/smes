@@ -25,7 +25,7 @@
       <!-- Nav Item - Dashboard -->
       <li class="nav-item active">
         <a class="nav-link" href="product.php">
-          <i class="fas fa-fw fa-sliders-h"></i>
+          <i class="fas fa-fw fa-list"></i>
           <span><?php echo $oDB->lang('LabelList','LabelList')?></span></a>
       </li>
       <!-- Nav Item - Dashboard -->
@@ -37,8 +37,15 @@
 
       <li class="nav-item active">
         <a class="nav-link" href="labelhistory.php">
-          <i class="fas fa-fw fa-sliders-h"></i>
+          <i class="fas fa-fw fa-list"></i>
           <span><?php echo $oDB->lang('LabelHistory')?></span></a>
+      </li>
+
+      
+      <li class="nav-item active">
+        <a class="nav-link" href="labeltrace.php">
+          <i class="fas fa-fw fa-search"></i>
+          <span><?php echo $oDB->lang('Search')?></span></a>
       </li>
 
 

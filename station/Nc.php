@@ -58,13 +58,13 @@ $stationid = 3;
             <span style='text-align:center;font-size:25px;'>Time : <?php echo date("d-m-Y") ?> </span>
             <span id="txt" style='text-align:center;font-size:25px;'></span>
             </th>
-            <th style='font-size:30px;' >DIE CASTING</th>
+            <th style='font-size:30px;' >NC</th>
         </tr>
         <tr><td colspan='3' style='text-align:center;'>
         <?php 
         if (isset($_POST['code'])&&$_POST['code']!='') {
             $oDB = new db();
-            $code = $_POST['code'];
+            $code = strtoupper($_POST['code']);
             # Kiểm tra xem tem này đã được khai báo tại công đoạn này chưa
             $labelhistory = $oDB->query('SELECT * FROM labelhistory WHERE TraceStationId = ? AND LabelHistoryLabelValue =? ', $stationid,$code)->fetchArray();
             //var_dump();
@@ -104,7 +104,7 @@ $stationid = 3;
         } elseif(isset($_POST['rcode'])&&$_POST['rcode']!=''){
             //var_dump($_POST);
             $oDB = new db();
-            $rcode = $_POST['rcode'];
+            $rcode = strtoupper($_POST['rcode']);
             $quantity = $_POST['quantity'];
             $quantitymax = $_POST['quantitymax'];
             $no = $_POST['no'];

@@ -5,7 +5,7 @@ date_default_timezone_set('Asia/Ho_Chi_Minh');
 require('../config.php');
 i_func('db');
 
-$stationid = 4;
+$stationid = 5;
 //MCK71113301-1211-17-01
 
 
@@ -58,20 +58,20 @@ $stationid = 4;
             <span style='text-align:center;font-size:25px;'>Time : <?php echo date("d-m-Y") ?> </span>
             <span id="txt" style='text-align:center;font-size:25px;'></span>
             </th>
-            <th style='font-size:30px;' >ST</th>
+            <th style='font-size:30px;' >FINAL INSPECTION</th>
         </tr>
         <tr><td colspan='3' style='text-align:center;'>
         <?php 
         if (isset($_POST['code'])&&$_POST['code']!='') {
             $oDB = new db();
-            $code = strtoupper($_POST['code']);
+            $code = $_POST['code'];
 
             # Kiểm tra xem tem này đã được khai báo tại công đoạn này chưa
             $labelhistory = $oDB->query('SELECT * FROM labelhistory WHERE TraceStationId = ? AND LabelHistoryLabelValue =? ', $stationid,$code)->fetchArray();
             //var_dump();
             if (isset($labelhistory['TraceStationId'])) {
                 $_SESSION['message'] = "<h1 style='background-color:red;'>Mã tem ".$labelhistory['LabelHistoryLabelValue']." đã được khai báo trên hệ thống : ".$labelhistory['LabelHistoryCreateDate']." </h1>";
-                header('Location:st.php');
+                header('Location:fi.php');
                 exit();
             }else{
                 // Chưa có thì tiếp tục
@@ -91,7 +91,7 @@ $stationid = 4;
 
                 if (strlen($pattern)!=strlen($code)) {
                     $_SESSION['message'] = "<h1 style='background-color:red;'>Độ dài tem ".$code." không hợp lệ .".$pattern."</h1>";
-                    header('Location:st.php');
+                    header('Location:fi.php');
                     exit();
                 }
 
@@ -108,7 +108,7 @@ $stationid = 4;
                 
                 if ($check == 0) {
                     $_SESSION['message'] = "<h1 style='background-color:red;'>Cấu trúc tem ".$code." không hợp lệ</h1>";
-                    header('Location:st.php');
+                    header('Location:fi.php');
                     exit();
                 }
             }
@@ -149,7 +149,7 @@ $stationid = 4;
 
 
                 // $_SESSION['message'] = "<h1 style='background-color:red;'>Mã tem ".$code." không được in ra từ hệ thống hợp lệ </h1>";
-                // header('Location:st.php');
+                // header('Location:fi.php');
                 // exit();
             }
             
@@ -157,7 +157,7 @@ $stationid = 4;
         } elseif(isset($_POST['mcode'])&&$_POST['mcode']!=''){
             //var_dump($_POST);
             $oDB = new db();
-            $mcode = strtoupper($_POST['mcode']);
+            $mcode = $_POST['mcode'];
             $quantity = $_POST['quantity'];
             $mothercode = $_POST['mothercode'];
 
@@ -176,7 +176,19 @@ $stationid = 4;
 
 
 
-            if (isset($mothercodeinfo['LabelListId'])&&$product['ProductsId']==$mothercodeinfo['ProductsId']) {
+            if (isset($mothercodeinfo['LabelListId'])) {
+                // Kiểm tra thông tin trong bom 
+                $bomid = $oDB->query('SELECT * FROM bomlist WHERE ProductsId = ?',$product['ProductsId'])->fetchArray();
+                $bomdetail = $oDB->query('SELECT * FROM boms WHERE BomListId = ? AND ProductsId = ?',$bomid['BomListId'],$mothercodeinfo['ProductsId'])->fetchArray();
+
+                //var_dump($bomdetail);
+                if (!isset($bomdetail['BomsId'])) {
+                    $_SESSION['message'] = "<h1 style='background-color:red;'>Không thành công, kiểm tra lại BOM </h1>";
+                    header('Location:fi.php');
+                    exit();
+                }
+                //exit();
+
 
                 #thêm bước kiểm tra số lượng
                 #Lấy về số lượng Ok gần nhất của motherlabel
@@ -198,7 +210,7 @@ $stationid = 4;
                 if (isset($total['total'])&&$total['total']==$motherquantity) {
                     # code...
                     $_SESSION['message'] = "<h1 style='background-color:red;'>Không thành công, bạn đã nhập ".$total['total']."/".$motherquantity." </h1>";
-                    header('Location:st.php');
+                    header('Location:fi.php');
                     exit();
                 }
 
@@ -207,18 +219,18 @@ $stationid = 4;
                 $mothercodeinfo['LabelListValue'].' hợp lệ';
 
                 # Chèn thông tin tem vào list và history
-                $oDB->query("INSERT INTO labellist (`ProductsId`,`LabelListValue`,`LabelListMotherId`) VALUES (?,?,?)",$mothercodeinfo['ProductsId'],$mcode,$mothercodeinfo['LabelListId']);
+                $oDB->query("INSERT INTO labellist (`ProductsId`,`LabelListValue`,`LabelListMotherId`) VALUES (?,?,?)",$product['ProductsId'],$mcode,$mothercodeinfo['LabelListId']);
                 $oDB->query("INSERT INTO labelhistory (`TraceStationId`,`LabelHistoryQuantityOk`,`LabelHistoryLabelValue`) VALUES (?,?,?)",$stationid,$quantity,$mcode);
 
                 $_SESSION['message'] = "<h1 style='background-color:green;'>Thêm thành công .".$mcode."</h1>";
-                header('Location:st.php');
+                header('Location:fi.php');
                 exit();
 
             } else {
                 # code...
                 
                 $_SESSION['message'] = "<h1 style='background-color:red;'>Đã có lỗi xảy ra </h1>";
-                header('Location:st.php');
+                header('Location:fi.php');
                 exit();
             }
             
@@ -230,10 +242,10 @@ $stationid = 4;
 
             //     $oDB->query("INSERT INTO labelhistory (`TraceStationId`,`LabelHistoryQuantityOk`,`LabelHistoryLabelValue`) VALUES (?,?,?)",$stationid,$quantity,$rcode);
             //     $_SESSION['message'] = "<h1 style='background-color:green;'>Thêm thành công mã tem ".$rcode." số lượng ".$quantity."</h1>";
-            //     header('Location:st.php');
+            //     header('Location:fi.php');
             // }else{
             //     $_SESSION['message'] = "<h1 style='background-color:red;'>Không thành công, bạn vừa nhập sai mã vào ô xác nhận, mã tại ô xác nhận phải trùng với mã ban đầu.</h1>";
-            //     header('Location:st.php');
+            //     header('Location:fi.php');
             // }
 
         } else {
@@ -257,5 +269,19 @@ $stationid = 4;
 </body>
 
 <script>
+// <?php
+// if (isset($_POST['code'])&&$_POST['code']!='') {
+// ?>
+//             $(document).ready(function() {
+//             $(window).keydown(function(event){
+//                 if(event.keyCode == 13) {
+//                 event.preventDefault();
+//                 return false;
+//                 }
+//             });
+//             });
+// <?php
+// }
+// ?>
 </script>
 </html>

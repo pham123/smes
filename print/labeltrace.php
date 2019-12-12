@@ -29,6 +29,9 @@ $oDB = new db();
 //   $sql = "Select * from ".$target;
 // }
 
+
+
+
 ?>
 
 <body id="page-top">
@@ -48,20 +51,46 @@ $oDB = new db();
 
         <!-- Begin Page Content -->
         <div class="container-fluid">
+        <form action="labeltrace.php" >
+          <input type="text" name="code" id="" class='form-control' autofocus>
+        </form>
 
         <?php 
-          $table_data = $oDB->sl_all('LabelPattern','1');
+        if (isset($_GET['code'])&&safe($_GET['code'])!="") {
+          # code...
+          $code = safe($_GET['code']);
+        }else{
+          exit();
+        }
+        $precode = $oDB->sl_one('labellist',"LabelListValue ='".$code."'");
 
-          $sql = "SELECT lh.*, ts.TraceStationName, prd.ProductsName, prd.ProductsNumber FROM labelhistory lh
-          inner join tracestation ts on ts.TraceStationId = lh.TraceStationId
-          inner join labellist lbl on lbl.LabelListValue = lh.LabelHistoryLabelValue
-          inner join products prd on prd.ProductsId = lbl.ProductsId
-          ORDER BY lh.LabelHistoryId DESC LIMIT 50";
+        $list = array();
+        $check = $precode['LabelListId'];
+        $list[] =  $precode['LabelListId'];
+        // echo "<br>";
+        for ($i=0; $i < 10; $i++) { 
+          $precode2 = $oDB->sl_one('labellist',"LabelListId ='".$check."'");
+          if (!isset($precode2['LabelListMotherId'])) {
+          break;
+          }
+          $check = $precode2['LabelListMotherId'];
+          $list[] = $check;
+          // echo "<br>";
+        }
+        //var_dump($list);
+        $text = implode(',',$list);
+        //echo $text;
 
-          $result = $oDB->fetchAll($sql);
-            // echo "<pre>";
-            // var_dump ($result);
-            // echo "</pre>";
+        $sql = "select lh.*,prd.ProductsName,prd.ProductsNumber,ts.TraceStationName from labelhistory lh
+        inner join labellist lbl on lbl.LabelListValue = lh.LabelHistoryLabelValue
+        inner join tracestation ts on ts.TraceStationId = lh.TraceStationId
+        inner join products prd on prd.ProductsId = lbl.ProductsId
+        WHERE lbl.LabelListId in (".$text.")
+        ORDER BY lh.LabelHistoryCreateDate DESC";
+
+        $result = $oDB->fetchAll($sql);
+
+        // var_dump($result);
         ?>
 
         <div class="table-responsive">
@@ -73,8 +102,7 @@ $oDB = new db();
             echo "<th>".$oDB->lang('Station')."</th>";
             echo "<th>".$oDB->lang('ProductName')."</th>";
             echo "<th>".$oDB->lang('ProductNumber')."</th>";
-            echo "<th>".$oDB->lang('Ok')."</th>";
-            echo "<th>".$oDB->lang('Ng')."</th>";
+            echo "<th>".$oDB->lang('Quantity')."</th>";
             echo "<th>".$oDB->lang('LabelValue')."</th>";
             echo "<th>".$oDB->lang('IssueDate')."</th>";
         echo "</tr>";
@@ -90,7 +118,6 @@ $oDB = new db();
             echo "<td>".$value['ProductsName']."</td>";
             echo "<td>".$value['ProductsNumber']."</td>";
             echo "<td>".$value['LabelHistoryQuantityOk']."</td>";
-            echo "<td>".$value['LabelHistoryQuantityNg']."</td>";
             echo "<td>".$value['LabelHistoryLabelValue']."</td>";
             echo "<td>".$value['LabelHistoryCreateDate']."</td>";
             echo "</tr>";

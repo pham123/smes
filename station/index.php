@@ -4,27 +4,6 @@ ob_start();
 date_default_timezone_set('Asia/Ho_Chi_Minh');
 require('../config.php');
 i_func('db');
-
-$stationid = 1;
-//MCK71113301-1211-17-01
-
-
-if (isset($_POST['code'])&&$_POST['code']!='') {
-    $oDB = new db();
-    $code = $_POST['code'];
-    # kiểm tra code có tồn tại trong hệ thống chưa?
-    $account = $oDB->query('SELECT * FROM labellist WHERE LabelListValue = ?', $code)->fetchArray();
-    if (isset($account['LabelListId'])) {
-        echo "đã được định danh";
-    } else {
-        echo "chưa được định danh";
-    }
-    
-
-} else {
-    # code...
-}
-
 ?>
 
 <!DOCTYPE html>
@@ -67,14 +46,27 @@ if (isset($_POST['code'])&&$_POST['code']!='') {
     <form action="" method="post">
     <table style='width:100%;body'>
         <tr>
-            <th style='font-size:30px;'>QR Code record</th>
+            <th style='font-size:30px;'>STATION</th>
             <th>
             <span style='text-align:center;font-size:25px;'>Time : <?php echo date("d-m-Y") ?> </span>
             <span id="txt" style='text-align:center;font-size:25px;'></span>
             </th>
-            <th style='font-size:30px;' >DIE CASTING</th>
         </tr>
-        <tr><td colspan='3' style='text-align:center;'><input type="text" name="code" id="" style='width:80%;padding:5px;margin:5px;font-size:40px;text-align:center;' autofocus></td></tr>
+        <tr><td colspan='2' style='text-align:left;'>
+            <a href="dc.php" target="_blank"><h1>DIE-CASTING</h1></a>
+        </td></tr>
+        <tr><td colspan='2' style='text-align:left;'>
+            <a href="nc.php" target="_blank"><h1>NC</h1></a>
+        </td></tr>
+        <tr><td colspan='2' style='text-align:left;'>
+            <a href="st1.php" target="_blank"><h1>ST-IN</h1></a>
+        </td></tr>
+        <tr><td colspan='2' style='text-align:left;'>
+            <a href="st.php" target="_blank"><h1>ST</h1></a>
+        </td></tr>
+        <tr><td colspan='2' style='text-align:left;'>
+            <a href="fi.php" target="_blank"><h1>FINAL INSPECTION</h1></a>
+        </td></tr>
     </table>
     </form>
 

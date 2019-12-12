@@ -5,7 +5,7 @@ date_default_timezone_set('Asia/Ho_Chi_Minh');
 require('../config.php');
 i_func('db');
 
-$stationid = 1;
+$stationid = 6;
 //MCK71113301-1211-17-01
 
 
@@ -58,7 +58,7 @@ $stationid = 1;
             <span style='text-align:center;font-size:25px;'>Time : <?php echo date("d-m-Y") ?> </span>
             <span id="txt" style='text-align:center;font-size:25px;'></span>
             </th>
-            <th style='font-size:30px;' >DIE CASTING</th>
+            <th style='font-size:30px;' >NC</th>
         </tr>
         <tr><td colspan='3' style='text-align:center;'>
         <?php 
@@ -70,7 +70,7 @@ $stationid = 1;
             //var_dump();
             if (isset($labelhistory['TraceStationId'])) {
                 $_SESSION['message'] = "<h1 style='background-color:red;'>Mã tem ".$labelhistory['LabelHistoryLabelValue']." đã được khai báo trên hệ thống : ".$labelhistory['LabelHistoryCreateDate']." </h1>";
-                header('Location:dc.php');
+                header('Location:st1.php');
                 exit();
             }else{
                 // Chưa có thì tiếp tục
@@ -96,7 +96,7 @@ $stationid = 1;
         
             } else {
                 $_SESSION['message'] = "<h1 style='background-color:red;'>Mã tem ".$code." không được in ra từ hệ thống hợp lệ </h1>";
-                header('Location:dc.php');
+                header('Location:st1.php');
                 exit();
             }
             
@@ -113,10 +113,10 @@ $stationid = 1;
 
                 $oDB->query("INSERT INTO labelhistory (`TraceStationId`,`LabelHistoryQuantityOk`,`LabelHistoryLabelValue`) VALUES (?,?,?)",$stationid,$quantity,$rcode);
                 $_SESSION['message'] = "<h1 style='background-color:green;'>Thêm thành công mã tem ".$rcode." số lượng ".$quantity."</h1>";
-                header('Location:dc.php');
+                header('Location:st1.php');
             }else{
                 $_SESSION['message'] = "<h1 style='background-color:red;'>Không thành công, bạn vừa nhập sai mã vào ô xác nhận, mã tại ô xác nhận phải trùng với mã ban đầu.</h1>";
-                header('Location:dc.php');
+                header('Location:st1.php');
             }
 
         } else {

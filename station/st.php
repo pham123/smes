@@ -64,7 +64,7 @@ $stationid = 4;
         <?php 
         if (isset($_POST['code'])&&$_POST['code']!='') {
             $oDB = new db();
-            $code = $_POST['code'];
+            $code = strtoupper($_POST['code']);
 
             # Kiểm tra xem tem này đã được khai báo tại công đoạn này chưa
             $labelhistory = $oDB->query('SELECT * FROM labelhistory WHERE TraceStationId = ? AND LabelHistoryLabelValue =? ', $stationid,$code)->fetchArray();
@@ -157,7 +157,7 @@ $stationid = 4;
         } elseif(isset($_POST['mcode'])&&$_POST['mcode']!=''){
             //var_dump($_POST);
             $oDB = new db();
-            $mcode = $_POST['mcode'];
+            $mcode = strtoupper($_POST['mcode']);
             $quantity = $_POST['quantity'];
             $mothercode = $_POST['mothercode'];
 
@@ -257,19 +257,5 @@ $stationid = 4;
 </body>
 
 <script>
-// <?php
-// if (isset($_POST['code'])&&$_POST['code']!='') {
-// ?>
-//             $(document).ready(function() {
-//             $(window).keydown(function(event){
-//                 if(event.keyCode == 13) {
-//                 event.preventDefault();
-//                 return false;
-//                 }
-//             });
-//             });
-// <?php
-// }
-// ?>
 </script>
 </html>

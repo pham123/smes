@@ -69,6 +69,7 @@ $oDB = new db();
         echo "<table class='table table-bordered' id='dataTable' width='100%' cellspacing='0'>";
         echo "<thead>";
         echo "<tr>";
+            echo "<th>".$oDB->lang('Index')."</th>";
             echo "<th>".$oDB->lang('Station')."</th>";
             echo "<th>".$oDB->lang('ProductName')."</th>";
             echo "<th>".$oDB->lang('ProductNumber')."</th>";
@@ -84,6 +85,7 @@ $oDB = new db();
 
         foreach ($result as $key => $value) {
             echo "<tr>";
+            echo "<td>".($key+1)."</td>";
             echo "<td>".$value['TraceStationName']."</td>";
             echo "<td>".$value['ProductsName']."</td>";
             echo "<td>".$value['ProductsNumber']."</td>";

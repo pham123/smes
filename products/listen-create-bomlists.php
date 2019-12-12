@@ -10,25 +10,26 @@ $user = New Users();
 $user->set($_SESSION[_site_]['userid']);
 $user->module = basename(dirname(__FILE__));
 check($user->acess());
+// $oDB = new db();
 $newDB = new MysqliDb(_DB_HOST_, _DB_USER_, _DB_PASS_,_DB_name_);
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-	
 	$data = array_filter($_POST);
-	
-	$bomid = $newDB->insert('boms', $data);
-
-	//update BOM path
-	if($bomid){
-		$newDB->where("BomsId", $_POST['BomsParentId']);
-		$parent_bom = $newDB->getOne("boms");
-		
-		$newDB->where('BomsId', $bomid);
-		$newDB->update('boms', ['BomsPath' => $parent_bom['BomsPath'].'-'.$bomid]);
+	$blid = $newDB->insert('bomlists', $data);
+	if($blid){
+		$data['BomsParentId'] = 0;
+		$data['BomlistsId'] = $blid;
+		$data['BomsPath'] = 'S';
+		if(isset($data['BomlistsInfo'])){
+			unset($data['BomlistsInfo']);
+		}
+		$bid = $newDB->insert('boms', $data);
+		if($bid){
+			$newDB->where('BomsId', $bid);
+			$newDB->update('boms', ['BomsPath' => $bid]);
+		}
 	}
 
-	$newDB = null;
-
-	header('Location:viewbom.php?id='.$_POST['BomlistsId']);
+	header('Location:bom_index.php');
 	
 }else{
 	header('Location:../404.html');

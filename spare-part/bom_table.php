@@ -106,7 +106,7 @@ foreach ($products_all as $key => $value) {
     echo "<option value='".$value['ProductsId']."'>".$value['ProductsNumber']."-".$value['ProductsName']."</option>";
 }
 echo "</select></td>";
-echo "<td><input style='max-width: 70px;' type='number' name='BomsQty' /></td>";
+echo "<td><input type='hidden' value='".$_GET['id']."' name='BomlistsId' /><input style='max-width: 70px;' type='number' name='BomsQty' /></td>";
 echo "<td><select name='ProcessesId' style='max-width: 120px'>";
 $processes_all = $oDB->sl_all('processes',1);
 echo "<option value=''>select process</option>";

@@ -14,9 +14,9 @@
 
       <!-- Nav Item - Dashboard -->
       <li class="nav-item active">
-        <a class="nav-link" style="padding: 5px 16px;" href="bom_list.php">
+        <a class="nav-link" style="padding: 5px 16px;" href="bom_index.php">
           <i class="fas fa-fw fa-list"></i>
-          <span>BOM</span></a>
+          <span>BOM List</span></a>
       </li>
 
       <!-- Divider -->

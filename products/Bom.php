@@ -10,6 +10,8 @@ $user->set($_SESSION[_site_]['userid']);
 $user->module = basename(dirname(__FILE__));
 check($user->acess());
 $pagetitle = $user->module;
+$heading_title = 'Add new BOM';
+$page_css = 'p{margin-bottom: 0px;}.col-md-6{padding-bottom: 10px;}';
 require('../views/template-header.php');
 require('../function/template.php');
 $oDB = new db();
@@ -35,16 +37,16 @@ $oDB = new db();
         <!-- Begin Page Content -->
         <div class="container-fluid">
         <div class="">
-          <form action="listen-create-bom.php" method="post" enctype="multipart/form-data">
+          <form action="listen-create-bomlists.php" method="post" enctype="multipart/form-data">
             <div class="row">
               <div class="col-md-6">
-                  <p><?php echo $oDB->lang('BomsDirectParent') ?></p>
-                  <select name="BomsParentId" id="" class='selectpicker show-tick' data-live-search="true" data-style="btn-info" data-width="100%">
+                  <p><?php echo $oDB->lang('Product') ?></p>
+                  <select name="ProductsId" id="" required class='selectpicker show-tick' data-live-search="true" data-style="btn-info" data-width="100%">
                     <?php 
-                    $model = $oDB->sl_all('boms',1);
-                    echo "<option value='0'>select parent BOM</option>";
+                    $model = $oDB->sl_all('products',1);
+                    echo "<option value=''>select Product</option>";
                     foreach ($model as $key => $value) {
-                      echo "<option value='".$value['BomsId']."'>".$value['BomsPartNo']."</option>";
+                      echo "<option value='".$value['ProductsId']."'>".$value['ProductsNumber'].'-'.$value['ProductsName']."</option>";
                     }
                     ?>
                     
@@ -52,63 +54,62 @@ $oDB = new db();
                 </div>
 
                 <div class="col-md-6">
-                  <p><?php echo $oDB->lang('BomsPartNo') ?></p>
-                  <input type="text" name="BomsPartNo" id="" class='form-control' required>
+                  <p>Version</p>
+                  <input type="text" name="BomlistsInfo" id="" class='form-control'>
+                </div>
+                <div class="col-md-6">
+                  <p>Quantity</p>
+                  <input type="number" name="BomsQty" id="" class='form-control'>
                 </div>
 
                 <div class="col-md-6">
-                  <p><?php echo $oDB->lang('BomsPartName') ?></p>
-                  <input type="text" name="BomsPartName" id="" class='form-control' required>
+                  <p><?php echo $oDB->lang('Process') ?></p>
+                  <select name="ProcessesId" id="" class='form-control'>
+                    <?php 
+                    $model = $oDB->sl_all('processes',1);
+                    echo "<option value=''>select Process</option>";
+                    foreach ($model as $key => $value) {
+                      echo "<option value='".$value['ProcessesId']."'>".$value['ProcessesName']."</option>";
+                    }
+                    ?>
+                  </select>
                 </div>
 
                 <div class="col-md-6">
-                  <p><?php echo $oDB->lang('BomsSize') ?></p>
-                  <input type="text" name="BomsSize" id="" class='form-control' required>
+                  <p><?php echo $oDB->lang('Maker') ?></p>
+                  <select name="MakersId" id="" class='form-control'>
+                    <?php 
+                    $model = $oDB->sl_all('makers',1);
+                    echo "<option value=''>select Maker</option>";
+                    foreach ($model as $key => $value) {
+                      echo "<option value='".$value['MakersId']."'>".$value['MakersName']."</option>";
+                    }
+                    ?>
+                  </select>
                 </div>
-
                 <div class="col-md-6">
-                  <p><?php echo $oDB->lang('BomsNet') ?>(Kg)</p>
-                  <input type="number" step=".001" name="BomsNet" id="" class='form-control' required>
+                  <p><?php echo $oDB->lang('ClassifiedMaterial') ?></p>
+                  <select name="ClassifiedMaterialsId" id="" class='form-control'>
+                    <?php 
+                    $model = $oDB->sl_all('classifiedmaterials',1);
+                    echo "<option value=''>select Classified Material</option>";
+                    foreach ($model as $key => $value) {
+                      echo "<option value='".$value['ClassifiedMaterialsId']."'>".$value['ClassifiedMaterialsName']."</option>";
+                    }
+                    ?>
+                  </select>
                 </div>
-
                 <div class="col-md-6">
-                  <p><?php echo $oDB->lang('BomsGloss') ?>(Kg)</p>
-                  <input type="number" step=".001" name="BomsGloss" id="" class='form-control' required>
-                </div>
-
-                <div class="col-md-6">
-                  <p><?php echo $oDB->lang('BomsMaterial') ?></p>
-                  <input type="text" name="BomsMaterial" id="" class='form-control' required>
-                </div>
-
-                <div class="col-md-6">
-                  <p><?php echo $oDB->lang('BomsUnit') ?></p>
-                  <input type="text" name="BomsUnit" id="" class='form-control' required>
-                </div>
-
-                <div class="col-md-6">
-                  <p><?php echo $oDB->lang('BomsQty') ?></p>
-                  <input type="number" name="BomsQty" id="" class='form-control' required>
-                </div>
-
-                <div class="col-md-6">
-                  <p><?php echo $oDB->lang('BomsProcess') ?></p>
-                  <input type="text" name="BomsProcess" id="" class='form-control' required>
-                </div>
-
-                <div class="col-md-6">
-                  <p><?php echo $oDB->lang('BomsMaker') ?></p>
-                  <input type="text" name="BomsMaker" id="" class='form-control' required>
-                </div>
-
-                <div class="col-md-6">
-                  <p><?php echo $oDB->lang('BomsClassifiedMaterial') ?></p>
-                  <input type="text" name="BomsClassifiedMaterial" id="" class='form-control' required>
-                </div>
-
-                <div class="col-md-6">
-                  <p><?php echo $oDB->lang('BomsMachine') ?></p>
-                  <input type="text" name="BomsMachine" id="" class='form-control' required>
+                  <p><?php echo $oDB->lang('Machine') ?></p>
+                  <select name="MachinesId" id="" class='form-control'>
+                    <?php 
+                    $model = $oDB->sl_all('machines',1);
+                    echo "<option value=''>select machine</option>";
+                    foreach ($model as $key => $value) {
+                      echo "<option value='".$value['MachinesId']."'>".$value['MachinesName']."</option>";
+                    }
+                    ?>
+                  </select>
                 </div>
 
                 <div class="col-md-6">

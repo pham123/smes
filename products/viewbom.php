@@ -13,10 +13,23 @@ check($user->acess());
 $pagetitle = $user->module;
 require('../views/template-header.php');
 require('../function/template.php');
-$heading_title = 'BillOfMaterials';
+
+$table_header  = 'BomsPartNo,BomsPartName,BomsSize,BomsNet,BomsGloss,BomsMaterial,BomsUnit,BomsQty,BomsProcess,BomsMaker,BomsClassifiedMaterial,BomsMachine';
+
+//using new db library
+$newDB = new MysqliDb(_DB_HOST_, _DB_USER_, _DB_PASS_,_DB_name_);
+$newDB->join("products p", "b.ProductsId=p.ProductsId", "LEFT");
+$newDB->join("processes pro", "b.ProcessesId=pro.ProcessesId", "LEFT");
+$newDB->join("makers m", "b.MakersId=m.MakersId", "LEFT");
+$newDB->join("classifiedmaterials c", "b.ClassifiedMaterialsId=c.ClassifiedMaterialsId", "LEFT");
+$newDB->join("machines ma", "b.MachinesId=ma.MachinesId", "LEFT");
+$newDB->where("b.BomlistsId", $_GET['id']);
+$table_data = $newDB->get ("boms b", null, "p.ProductsNumber,p.ProductsName,p.ProductsSize,p.ProductsNet,p.ProductsGloss,p.ProductsMaterial,p.ProductsUnit,b.BomsId,b.BomsQty,b.BomsParentId,b.BomsPath,pro.ProcessesName,m.MakersName,c.ClassifiedMaterialsName,ma.MachinesName");
+$table_link = "editbom.php?id=";
+
+$heading_title = strtolower($table_data[0]['ProductsNumber']);
 $oDB = new db();
 
-$newDB = new MysqliDb(_DB_HOST_, _DB_USER_, _DB_PASS_,_DB_name_);
 ?>
 
 <body id="page-top">
@@ -36,24 +49,6 @@ $newDB = new MysqliDb(_DB_HOST_, _DB_USER_, _DB_PASS_,_DB_name_);
 
         <!-- Begin Page Content -->
         <div class="container-fluid">
-        <?php 
-          $table_header  = 'BomsPartNo,BomsPartName,BomsSize,BomsNet,BomsGloss,BomsMaterial,BomsUnit,BomsQty,BomsProcess,BomsMaker,BomsClassifiedMaterial,BomsMachine';
-          // $table_data = $oDB->sl_all('Boms',1);
-
-          //using new db library
-          $newDB->join("products p", "b.ProductsId=p.ProductsId", "LEFT");
-          $newDB->join("processes pro", "b.ProcessesId=pro.ProcessesId", "LEFT");
-          $newDB->join("makers m", "b.MakersId=m.MakersId", "LEFT");
-          $newDB->join("classifiedmaterials c", "b.ClassifiedMaterialsId=c.ClassifiedMaterialsId", "LEFT");
-          $newDB->join("machines ma", "b.MachinesId=ma.MachinesId", "LEFT");
-          $table_data = $newDB->get ("boms b", null, "p.ProductsNumber,p.ProductsName,p.ProductsSize,p.ProductsNet,p.ProductsGloss,p.ProductsMaterial,p.ProductsUnit,b.BomsId,b.BomsQty,b.BomsParentId,b.BomsPath,pro.ProcessesName,m.MakersName,c.ClassifiedMaterialsName,ma.MachinesName");
-          // echo '<pre>';
-          // print_r ($boms);
-          // print_r($table_data);
-          // echo '</pre>';
-          // return;
-          $table_link = "editbom.php?id=";
-        ?>
 
         <div class="row">
           <div class="col-md-12">

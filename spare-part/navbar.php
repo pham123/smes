@@ -18,7 +18,14 @@
           </form> -->
 
           <!-- Topbar Navbar -->
-          <div class="sidebar-brand-text mx-3" Style='Color:#22356f;font-size: 3em'><?php echo $oDB->lang('SparePart')?></div>
+          <div class="sidebar-brand-text mx-3" Style='Color:#22356f;font-size: 3em'>
+          <?php
+          if(isset($page_heading)){
+            echo $oDB->lang($page_heading);
+          }else{
+            echo $oDB->lang('SparePart');
+          }
+          ?></div>
 
           <ul class="navbar-nav ml-auto">
 

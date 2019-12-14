@@ -11,12 +11,19 @@ $user->set($_SESSION[_site_]['userid']);
 $user->module = basename(dirname(__FILE__));
 check($user->acess());
 $pagetitle = $user->module;
+$page_heading = 'Import history';
 require('../views/template-header.php');
 require('../function/template.php');
-$heading_title = 'BillOfMaterials';
 $oDB = new db();
 
+$table_header  = 'ProductsNumber,ProductsName,ProductsDescription,ImportsDate,ProductsQty,ProductsUnit,ProductsUnitPrice,SupplyChainObjectName,ImportsNote';
+//using new db library
 $newDB = new MysqliDb(_DB_HOST_, _DB_USER_, _DB_PASS_,_DB_name_);
+$newDB->join("products p", "i.ProductsId=p.ProductsId", "LEFT");
+$newDB->join("supplychainobject s", "s.SupplyChainObjectId=i.SuppliersId", "LEFT");
+$newDB->orderBy('i.ImportsId', 'desc');
+$table_data = $newDB->get ("imports i", null, "i.ImportsId as id,p.ProductsNumber,p.ProductsName,p.ProductsDescription,p.ProductsUnit,i.ImportsPO,i.ImportsDate,i.ProductsQty,i.ProductsUnitPrice,s.SupplyChainObjectName,i.ImportsNote");
+$table_link = "editimport.php?id=";
 ?>
 
 <body id="page-top">
@@ -36,34 +43,9 @@ $newDB = new MysqliDb(_DB_HOST_, _DB_USER_, _DB_PASS_,_DB_name_);
 
         <!-- Begin Page Content -->
         <div class="container-fluid">
-        <?php 
-          $table_header  = 'BomsPartNo,BomsPartName,BomsSize,BomsNet,BomsGloss,BomsMaterial,BomsUnit,BomsQty,BomsProcess,BomsMaker,BomsClassifiedMaterial,BomsMachine';
-          // $table_data = $oDB->sl_all('Boms',1);
 
-          //using new db library
-          $newDB->join("products p", "b.ProductsId=p.ProductsId", "LEFT");
-          $newDB->join("processes pro", "b.ProcessesId=pro.ProcessesId", "LEFT");
-          $newDB->join("makers m", "b.MakersId=m.MakersId", "LEFT");
-          $newDB->join("classifiedmaterials c", "b.ClassifiedMaterialsId=c.ClassifiedMaterialsId", "LEFT");
-          $newDB->join("machines ma", "b.MachinesId=ma.MachinesId", "LEFT");
-          $table_data = $newDB->get ("boms b", null, "p.ProductsNumber,p.ProductsName,p.ProductsSize,p.ProductsNet,p.ProductsGloss,p.ProductsMaterial,p.ProductsUnit,b.BomsId,b.BomsQty,b.BomsParentId,b.BomsPath,pro.ProcessesName,m.MakersName,c.ClassifiedMaterialsName,ma.MachinesName");
-          // echo '<pre>';
-          // print_r ($boms);
-          // print_r($table_data);
-          // echo '</pre>';
-          // return;
-          $table_link = "editbom.php?id=";
-        ?>
-
-        <div class="row">
-          <div class="col-md-12">
-            <div class="table-responsive" style="max-width: 100%; over-flow: none;">
-          <?php 
-          // include('../views/template_table.php') 
-          include('bom_table.php') 
-          ?>
-            </div>
-          </div>
+        <div class="table-responsive">
+          <?php include('../views/template_table.php') ?>
         </div>
         </div>
         <!-- /.container-fluid -->

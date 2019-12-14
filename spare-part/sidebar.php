@@ -16,15 +16,15 @@
       <li class="nav-item active">
         <a class="nav-link" style="padding: 5px 16px;" href="index.php">
           <i class="fas fa-list"></i>
-          <span>Danh sách</span></a>
+          <span>Spare part list</span></a>
       </li>
       <li class="nav-item active">
-        <a class="nav-link" style="padding: 5px 16px;" href="bom_list.php">
+        <a class="nav-link" style="padding: 5px 16px;" href="import.php">
         <i class="far fa-arrow-alt-circle-right"></i>
           <span>Nhập</span></a>
       </li>
       <li class="nav-item active">
-        <a class="nav-link" style="padding: 5px 16px;" href="bom_list.php">
+        <a class="nav-link" style="padding: 5px 16px;" href="export.php">
         <i class="far fa-arrow-alt-circle-left"></i>
           <span>Xuất</span></a>
       </li>
@@ -32,6 +32,16 @@
         <a class="nav-link" style="padding: 5px 16px;" href="spare-part.php">
           <i class="fas fa-plus"></i>
           <span>Tạo mới</span></a>
+      </li>
+      <li class="nav-item active">
+        <a class="nav-link" style="padding: 5px 16px;" href="import-history.php">
+          <i class="fas fa-history"></i>
+          <span>Import history</span></a>
+      </li>
+      <li class="nav-item active">
+        <a class="nav-link" style="padding: 5px 16px;" href="export-history.php">
+          <i class="fas fa-history"></i>
+          <span>Export history</span></a>
       </li>
 
       <!-- Divider -->

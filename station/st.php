@@ -83,36 +83,9 @@ $stationid = 4;
 
             if (isset($product['ProductsId'])) {
                 # kiểm tra thông tin tem có hợp lệ hay không
-                $labelpattern = $oDB->query('SELECT * FROM labelpattern WHERE TraceStationId = ? AND ProductsId =? ', $stationid,$product['ProductsId'])->fetchArray();
-                //var_dump($labelpattern);
-                $pattern = $labelpattern['LabelPatternValue'];
-                //exit();
-                #Kiểm tra xem mã tem có đảm bảo không
-
-                if (strlen($pattern)!=strlen($code)) {
-                    $_SESSION['message'] = "<h1 style='background-color:red;'>Độ dài tem ".$code." không hợp lệ .".$pattern."</h1>";
-                    header('Location:st.php');
-                    exit();
-                }
-
-                $check = 1;
-                for ($i=0; $i < strlen($code) ; $i++) { 
-                    if ( $pattern[$i]!='*') {
-                      if ( $pattern[$i]!=$code[$i]) {
-                        //echo "</Br>".$code[$i];
-                        $check = 0;
-                        break;
-                      }
-                    }
-                  }
-                
-                if ($check == 0) {
-                    $_SESSION['message'] = "<h1 style='background-color:red;'>Cấu trúc tem ".$code." không hợp lệ</h1>";
-                    header('Location:st.php');
-                    exit();
-                }
+                i_func('station');
+                $labelpattern = checkpattern($stationid,$product['ProductsId'],$code);
             }
-            //exit();
              
 
 

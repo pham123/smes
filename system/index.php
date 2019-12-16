@@ -9,7 +9,7 @@ $user = New Users();
 $user->set($_SESSION[_site_]['userid']);
 $user->module = basename(dirname(__FILE__));
 check($user->acess());
-$pagetitle = $user->module;
+$pagetitle =basename(dirname(__FILE__));
 require('../views/template-header.php');
 require('../function/template.php');
 $oDB = new db();

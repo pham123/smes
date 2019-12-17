@@ -44,11 +44,11 @@ $newDB->where('ProductsOption', 4);
                   <form action="listen-import.php" method="post">
                     <div class="form-row">
                       <div class="form-group col-md-6">
-                        <label>Số PO</label>
+                        <label>Số PO <sup class="text-danger">*</sup></label>
                         <input type="text" class="form-control" required name="ImportsPO">
                       </div>
                       <div class="form-group col-md-6">
-                        <label>Nhà cung cấp</label>
+                        <label>Nhà cung cấp <sup class="text-danger">*</sup></label>
                         <select name="SuppliersId" class="form-control">
                           <?php 
                           $spls = $oDB->sl_all('supplychainobject',1);
@@ -62,7 +62,7 @@ $newDB->where('ProductsOption', 4);
                     </div>
                     <div class="form-row">
                       <div class="form-group col-md-6">
-                        <label>Ngày nhập</label>
+                        <label>Ngày nhập <sup class="text-danger">*</sup></label>
                         <input type="date" class="form-control" required name="ImportsDate">
                       </div>
                       <div class="form-group col-md-6">
@@ -72,7 +72,7 @@ $newDB->where('ProductsOption', 4);
                     </div>
                     <div class="form-row" v-for="(item, index) in items">
                       <div class="form-group col-md-3">
-                        <label>Mã hàng</label>
+                        <label>Mã hàng <sup class="text-danger">*</sup></label>
                         <v-select 
                         placeholder="chọn sản phẩm"
                         :options="products_data" 
@@ -95,7 +95,7 @@ $newDB->where('ProductsOption', 4);
                       </div>
                       <input type="hidden" name="ProductsId[]" required :value="item.ProductsId">
                       <div class="form-group col-md-3">
-                        <label>Số lượng</label>
+                        <label>Số lượng <sup class="text-danger">*</sup></label>
                         <input type="number" required name="ProductsQty[]" v-model="item.ProductsQty" class="form-control">
                       </div>
                       <div class="form-group col-md-3">

@@ -44,11 +44,11 @@ $newDB->where('ProductsOption', 4);
                   <form action="listen-export.php" method="post">
                     <div class="form-row">
                       <div class="form-group col-md-6">
-                        <label>Số PO</label>
+                        <label>Số PO <sup class="text-danger">*</sup></label>
                         <input type="text" class="form-control" required name="ExportsPO">
                       </div>
                       <div class="form-group col-md-6">
-                        <label>Bộ phận</label>
+                        <label>Bộ phận <sup class="text-danger">*</sup></label>
                         <select name="SectionId" class="form-control">
                           <?php 
                           $s = $oDB->sl_all('section',1);
@@ -62,7 +62,7 @@ $newDB->where('ProductsOption', 4);
                     </div>
                     <div class="form-row">
                       <div class="form-group col-md-4">
-                        <label>Ngày xuất</label>
+                        <label>Ngày xuất <sup class="text-danger">*</sup></label>
                         <input type="date" class="form-control" required name="ExportsDate">
                       </div>
                       <div class="form-group col-md-4">
@@ -76,7 +76,7 @@ $newDB->where('ProductsOption', 4);
                     </div>
                     <div class="form-row" v-for="(item, index) in items">
                       <div class="form-group col-md-4">
-                        <label>Mã hàng</label>
+                        <label>Mã hàng <sup class="text-danger">*</sup></label>
                         <v-select 
                         placeholder="chọn sản phẩm"
                         :options="products_data" 
@@ -98,12 +98,12 @@ $newDB->where('ProductsOption', 4);
                       </div>
                       <input type="hidden" name="ProductsId[]" required :value="item.ProductsId">
                       <div class="form-group col-md-4">
-                        <label>Số lượng</label>
-                        <input type="number" required name="ProductsQty[]" v-model="item.ProductsQty" class="form-control" placeholder="Nhập vào số lượng xuất">
+                        <label>Số lượng <sup class="text-danger">*</sup></label>
+                        <input type="number" required name="ProductsQty[]" v-model="item.ProductsQty" class="form-control" placeholder="Nhập vào số lượng xuất" :onkeyup="checkMaxVal(item)">
                       </div>
                       <div class="form-group col-md-4">
                         <label>Lý do xuất</label>
-                        <input type="text" placeholder="Nhập vào thông tin sử dụng" class="form-control">
+                        <input type="text" placeholder="Nhập vào thông tin sử dụng" class="form-control" name="ExportsReason[]" v-model="item.ExportsReason">
                       </div>
                     </div>
                     <small class="mb-3"><a href="#" class="text-primary" @click="addNewItem()">Add more product</a> | <a href="#" class="text-danger" @click="removeLastItem()">Remove last product</a></small>
@@ -163,7 +163,7 @@ $newDB->where('ProductsOption', 4);
 
   <?php require('../views/template-footer.php'); ?>
 
-  <script src="../js/vuejs.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
   <script src="../js/axios.min.js"></script>
 
   <!-- use the latest vue-select release -->
@@ -178,7 +178,7 @@ $newDB->where('ProductsOption', 4);
       new Vue({
         el: '#export_spare_part',
         data: {
-          items:[{ProductsId:'',ProductsQty: ''}],
+          items:[{ProductsId:'',ProductsQty: '', ExportsReason: ''}],
           products_data: []
         },
         methods: {
@@ -192,6 +192,16 @@ $newDB->where('ProductsOption', 4);
             }
             this.items.splice(-1,1);
           },
+          checkMaxVal(item){
+            let currentProduct = this.products_data.filter((i) => {
+              return i.ProductsId == item.ProductsId;
+            })[0];
+            if(currentProduct){
+              if(item.ProductsQty > currentProduct.ProductsStock){
+                item.ProductsQty = currentProduct.ProductsStock;
+              }
+            }
+          }
         },
         created: function(){
           axios.get('/smes/spare-part/ajaxload.php').then(({data}) => {

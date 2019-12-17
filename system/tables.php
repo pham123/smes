@@ -1,13 +1,5 @@
  <?php
- $sql = "Select *
- from ".$target." 
- WHERE ".$target."Id = 1
- ";
- $ketqua = $oDB-> fetchOne($sql);
- if ($ketqua==Null) {
-   exit();
- }
- $headerar = (array_keys($ketqua));
+ $headerar = $oDB-> getcol($target);
  $text1 = '';
  $text2 = '';
  foreach ($headerar as $key => $value) {
@@ -20,7 +12,6 @@
          Inner join '.$SelectTable.' on '.$target.'.'.$SelectTable.'Id = '.$SelectTable.'.'.$SelectTable.'Id' ;
          $text2=$text2.'
          '.$SelectTable.'.'.$SelectTable.'Name,';
-         
        }
  }
  $text2 =rtrim($text2, ',');
@@ -47,7 +38,12 @@
                     <tr>
 <?php
                     foreach ($headerar as $key => $value) {
+                      if (strpos( $value, 'CreateDate' ) !== false||strpos( $value, 'UpdateDate' ) !== false){
+
+                      }else{
                         echo "<th>".$oDB->lang($value)."</th>";
+                      }
+                        
                     }
                     echo "<th>".$oDB->lang("Edit")."</th>";
 ?>
@@ -58,14 +54,14 @@
                   for ($i=0; $i < count($ketqua); $i++) { 
                       echo "<tr>";
                     foreach ($headerar as $key2 => $value2) {
-                      if (strpos( $value2, 'Date' ) !== false) {
+                      if (strpos( $value2, 'CreateDate' ) !== false||strpos( $value2, 'UpdateDate' ) !== false) {
                         //$date = new DateTime($ketqua[$i][$value2]);
                         // $newDate = DateTime::createFromFormat("l dS F Y", $ketqua[$i][$value2]);
                         // $newDate = $newDate->format('d/m/Y'); // for example
                         //$date = new $ketqua[$i][$value2];
                         // echo "<td>".($ketqua[$i][$value2]->format('d-M-y'))."</td>";
                         // echo "<td>".$ketqua[$i][$value2]."</td>";
-                        echo "<td></td>";
+                        // echo "<td></td>";
                       }else{
                         echo "<td>".$ketqua[$i][$value2]."</td>";
                       }

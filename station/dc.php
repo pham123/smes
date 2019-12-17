@@ -5,12 +5,9 @@ date_default_timezone_set('Asia/Ho_Chi_Minh');
 require('../config.php');
 i_func('db');
 
+
 $stationid = 1;
 //MCK71113301-1211-17-01
-
-
-
-
 ?>
 
 <!DOCTYPE html>
@@ -19,8 +16,9 @@ $stationid = 1;
     <meta charset="UTF-8">
     <!-- <meta http-equiv="refresh" content="5"> -->
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/png" href="../img/halla.png" />
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Document</title>
+    <title>QR code record</title>
 
     <script>
         function startTime() {
@@ -70,7 +68,7 @@ $stationid = 1;
             //var_dump();
             if (isset($labelhistory['TraceStationId'])) {
                 $_SESSION['message'] = "<h1 style='background-color:red;'>Mã tem ".$labelhistory['LabelHistoryLabelValue']." đã được khai báo trên hệ thống : ".$labelhistory['LabelHistoryCreateDate']." </h1>";
-                header('Location:dc.php');
+                header('Location:?');
                 exit();
             }else{
                 // Chưa có thì tiếp tục
@@ -79,8 +77,11 @@ $stationid = 1;
             # kiểm tra code có tồn tại trong hệ thống chưa?
             $label = $oDB->query('SELECT * FROM labellist WHERE LabelListValue = ?', $code)->fetchArray();
             if (isset($label['LabelListId'])) {
+                //kiem tra 
+                i_func('station');
+                $labelpattern = checkpattern($stationid,$label['ProductsId'],$code);
                 //Lấy về thông tin 
-                $labelpattern = $oDB->query('SELECT * FROM labelpattern WHERE TraceStationId = ? AND ProductsId =? ', $stationid,$label['ProductsId'])->fetchArray();
+                // $labelpattern = $oDB->query('SELECT * FROM labelpattern WHERE TraceStationId = ? AND ProductsId =? ', $stationid,$label['ProductsId'])->fetchArray();
                 $products = $oDB->query('SELECT * FROM products WHERE ProductsId =? ', $label['ProductsId'])->fetchArray();
         
                 //Kiểm tra lại mẫu tem xem có phù hợp không
@@ -96,7 +97,7 @@ $stationid = 1;
         
             } else {
                 $_SESSION['message'] = "<h1 style='background-color:red;'>Mã tem ".$code." không được in ra từ hệ thống hợp lệ </h1>";
-                header('Location:dc.php');
+                header('Location:?');
                 exit();
             }
             
@@ -113,10 +114,10 @@ $stationid = 1;
 
                 $oDB->query("INSERT INTO labelhistory (`TraceStationId`,`LabelHistoryQuantityOk`,`LabelHistoryLabelValue`) VALUES (?,?,?)",$stationid,$quantity,$rcode);
                 $_SESSION['message'] = "<h1 style='background-color:green;'>Thêm thành công mã tem ".$rcode." số lượng ".$quantity."</h1>";
-                header('Location:dc.php');
+                header('Location:?');
             }else{
                 $_SESSION['message'] = "<h1 style='background-color:red;'>Không thành công, bạn vừa nhập sai mã vào ô xác nhận, mã tại ô xác nhận phải trùng với mã ban đầu.</h1>";
-                header('Location:dc.php');
+                header('Location:?');
             }
 
         } else {

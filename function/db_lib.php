@@ -113,12 +113,14 @@ class db {
 		public function getcol($table) {
 			$query = "SHOW COLUMNS FROM ".$table."";
 			$rs = mysqli_query($this->dbh,$query);
-			$text = '';
+			// $text = '';
+			$return = array();
 			while ($row = mysqli_fetch_assoc($rs)){
-				$text = $text.". ".$row['Field'];
+				// $text = $text.". ".$row['Field'];
+				$return[] = $row['Field'];
 			}
 			//$arr = mysqli_fetch_assoc($rs);
-			return $text;
+			return $return;
 			// return $rows;
 		}
 

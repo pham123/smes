@@ -62,6 +62,7 @@ $arr = array(
   array('?tables_LabelType', 'fa-angle-right',$oDB->lang("LabelType")),
   array('?tables_LabelCode', 'fa-angle-right',$oDB->lang("LabelCode")),
   array('?tables_UserAssignTraceStation', 'fa-angle-right',$oDB->lang("UserAssignTraceStation")),
+  array('?tables_Categories', 'fa-angle-right',$oDB->lang("SparePartCategories")),
 
 );
 echo nav_item($oDB->lang("Company"),$arr);

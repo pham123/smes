@@ -1,0 +1,4 @@
+ALTER TABLE labelpattern ADD CONSTRAINT UC_trace UNIQUE (TraceStationId,ProductsId);
+
+ALTER TABLE `labelpattern`  CHANGE COLUMN `TraceStationId` `TraceStationId` INT(6) UNSIGNED NOT NULL ;;
+ALTER TABLE labelpattern ADD CONSTRAINT FK_LabelPattern FOREIGN KEY (TraceStationId) REFERENCES tracestation(TraceStationId);;

@@ -70,7 +70,7 @@ $stationid = 3;
             //var_dump();
             if (isset($labelhistory['TraceStationId'])) {
                 $_SESSION['message'] = "<h1 style='background-color:red;'>Mã tem ".$labelhistory['LabelHistoryLabelValue']." đã được khai báo trên hệ thống : ".$labelhistory['LabelHistoryCreateDate']." </h1>";
-                header('Location:nc.php');
+                header('Location:?');
                 exit();
             }else{
                 // Chưa có thì tiếp tục
@@ -79,8 +79,10 @@ $stationid = 3;
             # kiểm tra code có tồn tại trong hệ thống chưa?
             $label = $oDB->query('SELECT * FROM labellist WHERE LabelListValue = ?', $code)->fetchArray();
             if (isset($label['LabelListId'])) {
+
+                i_func('station');
+                $labelpattern = checkpattern($stationid,$label['ProductsId'],$code);
                 //Lấy về thông tin 
-                $labelpattern = $oDB->query('SELECT * FROM labelpattern WHERE TraceStationId = ? AND ProductsId =? ', $stationid,$label['ProductsId'])->fetchArray();
                 $products = $oDB->query('SELECT * FROM products WHERE ProductsId =? ', $label['ProductsId'])->fetchArray();
         
                 //Kiểm tra lại mẫu tem xem có phù hợp không
@@ -96,7 +98,7 @@ $stationid = 3;
         
             } else {
                 $_SESSION['message'] = "<h1 style='background-color:red;'>Mã tem ".$code." không được in ra từ hệ thống hợp lệ </h1>";
-                header('Location:nc.php');
+                header('Location:?');
                 exit();
             }
             
@@ -113,10 +115,10 @@ $stationid = 3;
 
                 $oDB->query("INSERT INTO labelhistory (`TraceStationId`,`LabelHistoryQuantityOk`,`LabelHistoryLabelValue`) VALUES (?,?,?)",$stationid,$quantity,$rcode);
                 $_SESSION['message'] = "<h1 style='background-color:green;'>Thêm thành công mã tem ".$rcode." số lượng ".$quantity."</h1>";
-                header('Location:nc.php');
+                header('Location:?');
             }else{
                 $_SESSION['message'] = "<h1 style='background-color:red;'>Không thành công, bạn vừa nhập sai mã vào ô xác nhận, mã tại ô xác nhận phải trùng với mã ban đầu.</h1>";
-                header('Location:nc.php');
+                header('Location:?');
             }
 
         } else {

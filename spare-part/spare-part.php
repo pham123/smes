@@ -40,23 +40,23 @@ $oDB = new db();
           <form action="listen-create-sparepart.php" method="post" enctype="multipart/form-data">
               <div class="row">
                 <div class="col-md-6">
-                  <p><?php echo $oDB->lang('PartNo') ?></p>
+                  <p><?php echo $oDB->lang('PartNo') ?> <sup class="text-danger">*</sup></p>
                   <input type="text" name="ProductsNumber" id="" class='form-control' required>
                 </div>
                 <div class="col-md-6">
-                  <p><?php echo $oDB->lang('PartName') ?></p>
+                  <p><?php echo $oDB->lang('PartName') ?> <sup class="text-danger">*</sup></p>
                   <input type="text" name="ProductsName" id="" class='form-control' required>
                 </div>
                 <div class="col-md-6">
                   <p><?php echo $oDB->lang('EngName') ?></p>
-                  <input type="text" name="ProductsEngName" id="" class='form-control' required>
+                  <input type="text" name="ProductsEngName" id="" class='form-control'>
                 </div>
 
 
                 <div class="col-md-6">
                   <p><?php echo $oDB->lang('Description') ?></p>
                   <input type="text" name="ProductsDescription" id="" class='form-control'>
-                  <input type="hidden" name="ProductsOption" id="" value='4' class='form-control' required>
+                  <input type="hidden" name="ProductsOption" id="" value='4' class='form-control'>
                 </div>
 
                 <div class="col-md-6">
@@ -85,8 +85,8 @@ $oDB = new db();
                 </div>
 
                 <div class="col-md-6">
-                  <p><?php echo $oDB->lang('Category') ?></p>
-                  <select name="ProductsCategory" id="" class="form-control">
+                  <p><?php echo $oDB->lang('Category') ?> <sup class="text-danger">*</sup></p>
+                  <select name="ProductsCategory" id="" class="form-control" required>
                     <?php 
                     $ctes = $oDB->sl_all('categories',1);
                     echo "<option value=''>select category</option>";

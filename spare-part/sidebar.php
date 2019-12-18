@@ -43,6 +43,11 @@
           <i class="fas fa-history"></i>
           <span>Export history</span></a>
       </li>
+      <li class="nav-item active">
+        <a class="nav-link" style="padding: 5px 16px;" href="category_index.php">
+          <i class="fas fa-arrow-right"></i>
+          <span>Category</span></a>
+      </li>
 
       <!-- Divider -->
       <hr class="sidebar-divider d-none d-md-block">

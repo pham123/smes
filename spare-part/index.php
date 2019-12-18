@@ -4,6 +4,7 @@ ob_start();
 date_default_timezone_set('Asia/Ho_Chi_Minh');
 require('../config.php');
 require('../function/db_lib.php');
+require('../function/MysqliDb.php');
 require('../function/function.php');
 $user = New Users();
 $user->set($_SESSION[_site_]['userid']);
@@ -33,13 +34,68 @@ $oDB = new db();
         <!-- Begin Page Content -->
         <div class="container-fluid">
         <?php 
-          $table_header  = 'ProductsNumber,ProductsName,ProductsEngName,ProductsDescription,ProductsUnit,ProductsStock';
-          $table_data = $oDB->sl_col_all($table_header,'Products','ProductsOption = 4');
+          $table_header  = 'ProductsNumber,ProductsName,ProductsEngName,ProductsDescription,ProductsUnit,ProductsStock,ProductsSafetyStk,CategoriesName';
+          
+          $newDb = new MysqliDb(_DB_HOST_, _DB_USER_, _DB_PASS_,_DB_name_);
+          $newDb->where('p.ProductsOption', 4);
+          $newDb->join("categories c", "p.ProductsCategory=c.CategoriesId", "LEFT");
+          $table_data = $newDb->get ("products p", null, "p.ProductsId as id,p.ProductsNumber,p.ProductsName,p.ProductsEngName,p.ProductsDescription,p.ProductsUnit,p.ProductsStock,p.ProductsSafetyStk,c.CategoriesName");
           $table_link = "editsparepart.php?id=";
-        ?>
+          ?>
 
         <div class="table-responsive">
-          <?php include('../views/template_table.php') ?>
+        <table border="0" cellspacing="5" cellpadding="5">
+          <tbody><tr>
+              <td>Category:</td>
+              <td>
+              <select id="category_filter" class="form-control" required>
+                <?php 
+                $ctes = $oDB->sl_all('categories',1);
+                echo "<option value=''>all category</option>";
+                foreach ($ctes as $key => $value) {
+                  echo "<option value='".$value['CategoriesName']."'>".$value['CategoriesName']."</option>";
+                }
+                ?>
+                
+              </select>
+              </td>
+          </tr>
+        </tbody>
+      </table>
+        <?php
+          $tablearr = explode(',',$table_header);
+          echo "<table class='table table-bordered' id='dataTable' width='100%' cellspacing='0'>";
+          echo "<thead>";
+          echo "<tr>";
+          foreach ($tablearr as $key => $value) {
+              echo "<th>".$oDB->lang($value)."</th>";
+          }
+          echo "</tr>";
+          echo "</thead>";
+          echo "<tbody>";
+          foreach ($table_data as $key => $value) {
+            if($value['ProductsStock'] < $value['ProductsSafetyStk'] )
+            {
+              echo "<tr>";
+              foreach ($tablearr as $key2 => $value2) {
+                  if ($key2==0) {
+                          echo "<td><a href='".$table_link.$value['id']."'>".$value[$value2]."</a></td>";
+                  }else{
+                    if($key2 == 5){
+                      echo "<td class='bg-danger text-white'>".$value[$value2]."</td>";
+                    }else{
+                      echo "<td>".$value[$value2]."</td>";
+                    }
+                  }
+                
+              }
+              echo "</tr>";
+            }
+          }
+          echo "</tbody>";
+          echo "</table>";
+          ?>
+
         </div>
         </div>
         <!-- /.container-fluid -->
@@ -87,10 +143,42 @@ $oDB = new db();
     </div>
   </div>
 
-  <?php require('../views/template-footer.php'); ?>
+  <!-- Bootstrap core JavaScript-->
+  <script src="../vendor/jquery/jquery.min.js"></script>
+  <script src="../vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+  <!-- Core plugin JavaScript-->
+  <script src="../vendor/jquery-easing/jquery.easing.min.js"></script>
+  <!-- Custom scripts for all pages-->
+  <script src="../js/sb-admin-2.min.js"></script>
+  <script src="../vendor/datatables/jquery.dataTables.min.js"></script>
+  <script src="../vendor/datatables/dataTables.bootstrap4.min.js"></script> 
+  <!-- Latest compiled and minified JavaScript -->
+  <script src="../vendor/select/dist/js/bootstrap-select.min.js"></script>
+  <!-- (Optional) Latest compiled and minified JavaScript translation files -->
+  <script src="../vendor/select/dist/js/i18n/defaults-*.min.js"></script>
 
   <script>
+    $.fn.dataTable.ext.search.push(
+      function( settings, data, dataIndex ) {
+          var ct_filter = $('#category_filter').val();
+          var ct_value = data[7];
+          if(ct_filter == '')
+          {
+            return true;
+          }
+          if ( ct_filter == ct_value )
+          {
+              return true;
+          }
+          return false;
+      }
+    );
     $(function () {
+      var data_table = $('#dataTable').DataTable();
+      $('#category_filter').change(function(){
+        data_table.draw();
+      });
+
       $('selectpicker').selectpicker();
     });
   </script>

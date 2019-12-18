@@ -15,8 +15,8 @@ $sql[] = "CREATE TABLE Categories (
 $sql[] = "ALTER TABLE Products 
 ADD ProductsEngName VARCHAR(50) AFTER ProductsNumber, 
 ADD ProductsStock INT(6) NOT NULL DEFAULT 0 AFTER ProductsUnit,
-ADD ProductsSafetyStk VARCHAR(10) AFTER ProductsStock,
-ADD ProductsMinimumStk VARCHAR(10) AFTER ProductsSafetyStk,
+ADD ProductsSafetyStk INT(6) NOT NULL DEFAULT 0 AFTER ProductsStock,
+ADD ProductsMinimumStk INT(6) AFTER ProductsSafetyStk,
 ADD ProductsLocation VARCHAR(10) AFTER ProductsMinimumStk,
 ADD ProductsCategory int(6) AFTER ProductsLocation,
 ADD ProductsOrderStatus VARCHAR(20) AFTER ProductsCategory,

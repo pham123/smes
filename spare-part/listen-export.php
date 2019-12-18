@@ -25,23 +25,21 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 			$newDB->update('products', ['ProductsStock' => $stock]);
 
 			//CREATE NEW EXPORT HISTORY
-			$importData = [
+			$exportData = [
 				'ExportsPO' => $data['ExportsPO'],
 				'SectionId' => $data['SectionId'],
 				'ExportsDate' => $data['ExportsDate'],
 				'ProductsId' => $id,
-				'ProductsQty' => $data['ProductsQty'][$index]
+				'ProductsQty' => $data['ProductsQty'][$index],
+				'ExportsReason' => $data['ExportsReason'][$index]
 			];
 			if(array_key_exists('ExportsReceiver', $data)){
-				$importData['ExportsReceiver'] = $data['ExportsReceiver'];
+				$exportData['ExportsReceiver'] = $data['ExportsReceiver'];
 			}
 			if(array_key_exists('ExportsNote', $data)){
-				$importData['ExportsNote'] = $data['ExportsNote'];
+				$exportData['ExportsNote'] = $data['ExportsNote'];
 			}
-			if(array_key_exists('ExportsReason', $data)){
-				$importData['ExportsReason'] = $data['ExportsReason'];
-			}
-			$newDB->insert('exports', $importData);
+			$newDB->insert('exports', $exportData);
 		}
 	}
 }else{

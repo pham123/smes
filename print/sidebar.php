@@ -36,6 +36,12 @@
       </li>
 
       <li class="nav-item active">
+        <a class="nav-link" href="routelist.php">
+          <i class="fas fa-fw fa-chart-bar"></i>
+          <span><?php echo $oDB->lang('RoutingList')?></span></a>
+      </li>
+
+      <li class="nav-item active">
         <a class="nav-link" href="labelhistory.php">
           <i class="fas fa-fw fa-list"></i>
           <span><?php echo $oDB->lang('LabelHistory')?></span></a>
@@ -46,6 +52,12 @@
         <a class="nav-link" href="labeltrace.php">
           <i class="fas fa-fw fa-search"></i>
           <span><?php echo $oDB->lang('Search')?></span></a>
+      </li>
+
+      <li class="nav-item active">
+        <a class="nav-link" href="report.php">
+          <i class="fas fa-fw fa-chart-bar"></i>
+          <span><?php echo $oDB->lang('Report')?></span></a>
       </li>
 
 

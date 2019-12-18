@@ -2,3 +2,5 @@ ALTER TABLE labelpattern ADD CONSTRAINT UC_trace UNIQUE (TraceStationId,Products
 
 ALTER TABLE `labelpattern`  CHANGE COLUMN `TraceStationId` `TraceStationId` INT(6) UNSIGNED NOT NULL ;;
 ALTER TABLE labelpattern ADD CONSTRAINT FK_LabelPattern FOREIGN KEY (TraceStationId) REFERENCES tracestation(TraceStationId);;
+CREATE TABLE Test (             TestId INT(6) UNSIGNED AUTO_INCREMENT PRIMARY KEY,             TestName VARCHAR(50) NOT NULL UNIQUE,             TestDescription VARCHAR(100),             TestOption INT(2),             TestCreateDate TIMESTAMP DEFAULT CURRENT_TIMESTAMP ,             TestUpdateDate TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP);;
+DROP TABLE test;

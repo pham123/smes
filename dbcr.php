@@ -21,9 +21,10 @@ if (isset($_POST['update'])) {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Document</title>
+    <title>DATABASE</title>
 </head>
 <body>
+<div style='width:30%;float:left;'>
     <form action="" method="post">
         <p>Tạo 1 table mới ở đây</p>
         <input type="text" name="table" id="" required autofocus>
@@ -32,9 +33,24 @@ if (isset($_POST['update'])) {
 <br>
     <form action="" method="post">
     <p>Các lệnh update table ở đây</p>
-    <textarea name="update" id="" cols="30" rows="10"></textarea>
+    <textarea name="update" id="" style='width:100%' rows="10"></textarea>
         <input type="submit" value="Update">
     </form>
+</div>
+<div style="width:68%;float:left;">
+<?php
+$sql = "SELECT table_name FROM information_schema.tables
+WHERE table_schema = 'smes';";
+$rs = $crdb->query($sql)->fetchAll();
+$arr = array();
+foreach ($rs as $key => $value) {
+    $arr[]=$value['TABLE_NAME'];
+}
+
+echo implode(', ',$arr);
+?>
+</div>
+<div style='width:100%;float:left;'>
 <p>Lịch sử</p>
 <p style='font-size:10px;'>
 <?php
@@ -46,14 +62,14 @@ while (!feof($myfile)) {
     echo $line;
 }
 fclose($myfile);
-
-$sql = "SELECT table_name FROM information_schema.tables
-WHERE table_schema = 'smes';";
-$rs = $crdb->query($sql)->fetchAll();
-echo "<pre>";
-var_dump($rs);
-echo "</pre>";
 ?>
+</p>
+</div>
+<div>
+
+</div>
+<p>
+
 </p>
 
 </body>

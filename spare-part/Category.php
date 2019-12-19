@@ -104,8 +104,6 @@ $oDB = new db();
       $('selectpicker').selectpicker();
     });
 
-
-
   </script>
 
 </body>

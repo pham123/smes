@@ -15,15 +15,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 	
 	$data = array_filter($_POST);
 	
-	$bomid = $newDB->insert('boms', $data);
+	$bomid = $newDB->insert('Boms', $data);
 
 	//update BOM path
 	if($bomid){
 		$newDB->where("BomsId", $_POST['BomsParentId']);
-		$parent_bom = $newDB->getOne("boms");
+		$parent_bom = $newDB->getOne("Boms");
 		
 		$newDB->where('BomsId', $bomid);
-		$newDB->update('boms', ['BomsPath' => $parent_bom['BomsPath'].'-'.$bomid]);
+		$newDB->update('Boms', ['BomsPath' => $parent_bom['BomsPath'].'-'.$bomid]);
 	}
 
 	$newDB = null;

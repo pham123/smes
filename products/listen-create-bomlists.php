@@ -14,7 +14,7 @@ check($user->acess());
 $newDB = new MysqliDb(_DB_HOST_, _DB_USER_, _DB_PASS_,_DB_name_);
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 	$data = array_filter($_POST);
-	$blid = $newDB->insert('bomlists', $data);
+	$blid = $newDB->insert('Bomlists', $data);
 	if($blid){
 		$data['BomsParentId'] = 0;
 		$data['BomlistsId'] = $blid;
@@ -22,7 +22,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 		if(isset($data['BomlistsInfo'])){
 			unset($data['BomlistsInfo']);
 		}
-		$bid = $newDB->insert('boms', $data);
+		$bid = $newDB->insert('Boms', $data);
 		if($bid){
 			$newDB->where('BomsId', $bid);
 			$newDB->update('boms', ['BomsPath' => $bid]);

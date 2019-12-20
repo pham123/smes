@@ -22,7 +22,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 			$stock = $c_product['ProductsStock']?($c_product['ProductsStock'] + $data['ProductsQty'][$index]):$data['ProductsQty'][$index];
 
 			$newDB->where('ProductsId', $id);
-			$newDB->update('products', ['ProductsStock' => $stock]);
+			$newDB->update('Products', ['ProductsStock' => $stock]);
 
 			//CREATE NEW IMPORT HISTORY
 			$importData = [
@@ -36,7 +36,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 			if(array_key_exists('ImportsNote', $data)){
 				$importData['ImportsNote'] = $data['ImportsNote'];
 			}
-			$newDB->insert('imports', $importData);
+			$newDB->insert('Imports', $importData);
 		}
 	}
 }else{

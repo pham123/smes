@@ -36,7 +36,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 		}
 		$text = rtrim($text, ',');
 		
-		$update_sql = "Update products Set ".$text."
+		$update_sql = "Update Products Set ".$text."
 					  Where ProductsId = ".$product_id;
 		
 		// echo $update_sql;

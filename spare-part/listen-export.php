@@ -22,7 +22,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 			$stock = $c_product['ProductsStock']?($c_product['ProductsStock'] - $data['ProductsQty'][$index]):$data['ProductsQty'][$index];
 
 			$newDB->where('ProductsId', $id);
-			$newDB->update('products', ['ProductsStock' => $stock]);
+			$newDB->update('Products', ['ProductsStock' => $stock]);
 
 			//CREATE NEW EXPORT HISTORY
 			$exportData = [
@@ -39,7 +39,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 			if(array_key_exists('ExportsNote', $data)){
 				$exportData['ExportsNote'] = $data['ExportsNote'];
 			}
-			$newDB->insert('exports', $exportData);
+			$newDB->insert('Exports', $exportData);
 		}
 	}
 }else{

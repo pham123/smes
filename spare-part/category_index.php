@@ -35,7 +35,7 @@ $oDB = new db();
         <div class="container-fluid">
         <?php 
           $table_header  = 'CategoriesId,CategoriesName';
-          $table_data = $oDB->sl_col_all($table_header,'categories',1);
+          $table_data = $oDB->sl_col_all($table_header,'Categories',1);
         ?>
 
         <div class="table-responsive">

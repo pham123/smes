@@ -38,8 +38,8 @@ $oDB = new db();
           
           $newDb = new MysqliDb(_DB_HOST_, _DB_USER_, _DB_PASS_,_DB_name_);
           $newDb->where('p.ProductsOption', 4);
-          $newDb->join("categories c", "p.ProductsCategory=c.CategoriesId", "LEFT");
-          $table_data = $newDb->get ("products p", null, "p.ProductsId as id,p.ProductsNumber,p.ProductsName,p.ProductsEngName,p.ProductsDescription,p.ProductsUnit,p.ProductsStock,p.ProductsSafetyStk,c.CategoriesName");
+          $newDb->join("Categories c", "p.ProductsCategory=c.CategoriesId", "LEFT");
+          $table_data = $newDb->get ("Products p", null, "p.ProductsId as id,p.ProductsNumber,p.ProductsName,p.ProductsEngName,p.ProductsDescription,p.ProductsUnit,p.ProductsStock,p.ProductsSafetyStk,c.CategoriesName");
           $table_link = "editsparepart.php?id=";
           ?>
 

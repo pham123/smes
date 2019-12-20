@@ -8,7 +8,7 @@ include('function/db_lib.php');
 
 $oDB = new db();
 
-$sql[] = "ALTER TABLE products
+$sql[] = "ALTER TABLE Products
   ADD ProductsSize VARCHAR(50) AFTER ProductsNumber,
   ADD ProductsNet FLOAT AFTER ProductsSize,
   ADD ProductsGloss FLOAT AFTER ProductsNet,

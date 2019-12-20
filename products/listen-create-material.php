@@ -23,7 +23,7 @@ $ProductsOption = 1;
 $ModelsId = safe($_POST['ModelsId']);
 
 $field_values = "`ProductsName`='".$ProductsName."', `ProductsNumber`='".$ProductsNumber."', `ProductsDescription`='".$ProductsDescription."', `ProductsOption`=".$ProductsOption.", `ModelsId`=".$ModelsId ;
-$oDB->insert('products',$field_values);
+$oDB->insert('Products',$field_values);
 
 $products->getnum($ProductsNumber);
 

@@ -14,7 +14,7 @@ require('../views/template-header.php');
 require('../function/template.php');
 $oDB = new db();
 
-$product = $oDB->sl_one('products', 'ProductsId = '.$_GET['id']);
+$product = $oDB->sl_one('Products', 'ProductsId = '.$_GET['id']);
 ?>
 
 </style>

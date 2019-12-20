@@ -24,7 +24,7 @@ VALUES (2, 'Material')";
 $sql[] = "INSERT INTO MaterialTypes(`MaterialTypesId`,`MaterialTypesName`)
 VALUES (3, 'Spare Part')";
 
-$sql[] = "ALTER TABLE products
+$sql[] = "ALTER TABLE Products
   ADD MaterialTypesId INT(6) UNSIGNED DEFAULT 1
     AFTER ModelsId;";
 

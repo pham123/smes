@@ -39,7 +39,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 		}
 		$text = rtrim($text, ',');
 		
-		$update_sql = "Update imports Set ".$text."
+		$update_sql = "Update Imports Set ".$text."
 					  Where ImportsId = ".$import_id;
 		
 		// echo $update_sql;

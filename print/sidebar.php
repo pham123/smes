@@ -42,7 +42,7 @@
       </li>
 
       <li class="nav-item active">
-        <a class="nav-link" href="labelhistory.php">
+        <a class="nav-link" href="LabelHistory.php">
           <i class="fas fa-fw fa-list"></i>
           <span><?php echo $oDB->lang('LabelHistory')?></span></a>
       </li>

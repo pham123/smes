@@ -81,7 +81,7 @@ $oDB = new db();
                     date(LabelHistoryCreateDate) as crDate,
                     prd.ProductsName,
                     prd.ProductsNumber
-                    from labelhistory lh
+                    from LabelHistory lh
                     inner join TraceStation ts on ts.TraceStationId = lh.TraceStationId
                     inner join LabelList lbl on lbl.LabelListValue = lh.LabelHistoryLabelValue
                     inner join Products prd on prd.ProductsId = lbl.ProductsId

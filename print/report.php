@@ -51,25 +51,78 @@ $oDB = new db();
 
         <?php 
           $table_data = $oDB->sl_all('LabelPattern','1');
+          $startdate = (isset($_GET['start'])) ? $_GET['start'] : date('Y-m-d') ;
+          $enddate = (isset($_GET['end'])) ? $_GET['end'] : date('Y-m-d') ;
+          $productsid = (isset($_GET['productsid'])) ? $_GET['productsid'] : '' ;
 
-          $sql = "select SUM(lh.LabelHistoryQuantityOk) as totalOk,
-          SUM( CASE WHEN lh.TraceStationId = 1 THEN lh.LabelHistoryQuantityOk ELSE 0 END) AS DCOK, 
-          SUM( CASE WHEN lh.TraceStationId = 3 THEN lh.LabelHistoryQuantityOk ELSE 0 END) AS NCOK, 
-          SUM( CASE WHEN lh.TraceStationId = 4 THEN lh.LabelHistoryQuantityOk ELSE 0 END) AS STOK, 
-          SUM( CASE WHEN lh.TraceStationId = 5 THEN lh.LabelHistoryQuantityOk ELSE 0 END) AS FIOK, 
-          date(LabelHistoryCreateDate) as crDate from labelhistory lh
-          inner join tracestation ts on ts.TraceStationId = lh.TraceStationId
-          WHERE date(LabelHistoryCreateDate) between '2019-12-18' AND '".date("Y-m-d")."'
-          group by crDate
-          ORDER by crDate DESC
-          ";
+          if (isset($_GET['productsid'])||$productsid!='') {
+            $sql = "select SUM(lh.LabelHistoryQuantityOk) as totalOk,
+                    SUM( CASE WHEN lh.TraceStationId = 1 THEN lh.LabelHistoryQuantityOk ELSE 0 END) AS DCOK, 
+                    SUM( CASE WHEN lh.TraceStationId = 3 THEN lh.LabelHistoryQuantityOk ELSE 0 END) AS NCOK, 
+                    SUM( CASE WHEN lh.TraceStationId = 4 THEN lh.LabelHistoryQuantityOk ELSE 0 END) AS STOK, 
+                    SUM( CASE WHEN lh.TraceStationId = 5 THEN lh.LabelHistoryQuantityOk ELSE 0 END) AS FIOK, 
+                    date(LabelHistoryCreateDate) as crDate,
+                    prd.ProductsName,
+                    prd.ProductsNumber
+                    from labelhistory lh
+                    inner join tracestation ts on ts.TraceStationId = lh.TraceStationId
+                    inner join labellist lbl on lbl.LabelListValue = lh.LabelHistoryLabelValue
+                    inner join products prd on prd.ProductsId = lbl.ProductsId
+                    WHERE date(LabelHistoryCreateDate) between '".$startdate."' AND '".$enddate."' AND prd.ProductsId = ".$productsid."
+                    group by crDate, prd.ProductsName, prd.ProductsNumber
+                    ORDER by crDate DESC
+                    ";
+          } else {
+            $sql = "select SUM(lh.LabelHistoryQuantityOk) as totalOk,
+                    SUM( CASE WHEN lh.TraceStationId = 1 THEN lh.LabelHistoryQuantityOk ELSE 0 END) AS DCOK, 
+                    SUM( CASE WHEN lh.TraceStationId = 3 THEN lh.LabelHistoryQuantityOk ELSE 0 END) AS NCOK, 
+                    SUM( CASE WHEN lh.TraceStationId = 4 THEN lh.LabelHistoryQuantityOk ELSE 0 END) AS STOK, 
+                    SUM( CASE WHEN lh.TraceStationId = 5 THEN lh.LabelHistoryQuantityOk ELSE 0 END) AS FIOK, 
+                    date(LabelHistoryCreateDate) as crDate,
+                    prd.ProductsName,
+                    prd.ProductsNumber
+                    from labelhistory lh
+                    inner join tracestation ts on ts.TraceStationId = lh.TraceStationId
+                    inner join labellist lbl on lbl.LabelListValue = lh.LabelHistoryLabelValue
+                    inner join products prd on prd.ProductsId = lbl.ProductsId
+                    WHERE date(LabelHistoryCreateDate) between '".$startdate."' AND '".$enddate."'
+                    group by crDate, prd.ProductsName, prd.ProductsNumber
+                    ORDER by crDate DESC
+                    ";
+          }
+          
+          
 
           $result = $oDB->fetchAll($sql);
             // echo "<pre>";
             // var_dump ($result);
             // echo "</pre>";
         ?>
+        <div class='row'>
+          <form action="" style='width:100%'>
+              <div class="row">
+              <div class="col-md-3">
+              <!-- <span><?php echo $oDB->lang('StartDate') ?></span> -->
+              <!-- <input type="date" class='form-control' name='start'> -->
+                  <span><?php echo $oDB->lang('Products') ?></span>
+                  <select name="productsid" id="" class='selectpicker show-tick' data-live-search="true" data-style="btn-info" data-width="100%">
+                    <?php 
+                    $model = $oDB->sl_all('Products',1);
+                    foreach ($model as $key => $value) {
+                      echo "<option value='".$value['ProductsId']."'>".$value['ProductsNumber']."/".$value['ProductsName']."</option>";
+                    }
+                    ?>
+                    
+                  </select>
 
+              
+              </div>
+              <div class="col-md-3"><span><?php echo $oDB->lang('StartDate') ?></span><input type="date" class='form-control' name='start' value='<?php echo $startdate?>'></div>
+              <div class="col-md-3"><span><?php echo $oDB->lang('EndDate') ?></span><input type="date" class='form-control' name='end' value='<?php echo $enddate?>'></div>
+              <div class="col-md-3"><span>&nbsp;</span><button type="submit" class='form-control'><?php echo $oDB->lang('Submit') ?></button></div>
+              </div>
+          </form>
+        </div>
         <div class="table-responsive">
         <?php
         echo "<table class='table table-bordered' id='dataTable' width='100%' cellspacing='0'>";
@@ -77,6 +130,8 @@ $oDB = new db();
         echo "<tr>";
             echo "<th>".$oDB->lang('Index')."</th>";
             echo "<th>".$oDB->lang('Date')."</th>";
+            echo "<th>".$oDB->lang('ProductsName')."</th>";
+            echo "<th>".$oDB->lang('ProductsNumber')."</th>";
             echo "<th>".$oDB->lang('Dc')."</th>";
             echo "<th>".$oDB->lang('Nc')."</th>";
             echo "<th>".$oDB->lang('St')."</th>";
@@ -91,6 +146,8 @@ $oDB = new db();
             echo "<tr>";
             echo "<td>".($key+1)."</td>";
             echo "<td>".$value['crDate']."</td>";
+            echo "<td>".$value['ProductsName']."</td>";
+            echo "<td>".$value['ProductsNumber']."</td>";
             echo "<td>".$value['DCOK']."</td>";
             echo "<td>".$value['NCOK']."</td>";
             echo "<td>".$value['STOK']."</td>";

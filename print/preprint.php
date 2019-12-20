@@ -15,8 +15,8 @@ require('../function/template.php');
 
 $id = safe($_GET['id']);
 $oDB = new db();
-$products = new products();
-$products->get($id);
+$Products = new Products();
+$Products->get($id);
 
 // $actionar = (array_keys($_GET));
 // $actionkey = (isset($actionar[0])) ? $actionar[0] : 'content' ;
@@ -55,7 +55,7 @@ $products->get($id);
 
         <?php 
           
-          //var_dump($oDB->getcol('products'));
+          //var_dump($oDB->getcol('Products'));
 
         ?>
 
@@ -65,28 +65,28 @@ $products->get($id);
                
                 <div class="row">
                     <div class="form-group col-md-6" >
-                        <label for="exampleInputEmail1"><?php echo $products->lang("PartName") ?></label>
-                        <input type="text" class="form-control" id="exampleInputEmail1" value='<?php echo $products->name ?>' readonly>
+                        <label for="exampleInputEmail1"><?php echo $Products->lang("PartName") ?></label>
+                        <input type="text" class="form-control" id="exampleInputEmail1" value='<?php echo $Products->name ?>' readonly>
                     </div>
 
                     <div class="form-group col-md-6" >
-                        <label for="exampleInputEmail1"><?php echo $products->lang("PartNumber") ?></label>
-                        <input type="text" class="form-control" id="exampleInputEmail1" value='<?php echo $products->number ?>' readonly>
+                        <label for="exampleInputEmail1"><?php echo $Products->lang("PartNumber") ?></label>
+                        <input type="text" class="form-control" id="exampleInputEmail1" value='<?php echo $Products->number ?>' readonly>
                     </div>
                     <div class="form-group col-md-2" >
-                        <label for="exampleInputEmail1"><?php echo $products->lang("Cavity") ?></label>
+                        <label for="exampleInputEmail1"><?php echo $Products->lang("Cavity") ?></label>
                         <input type="number" name='cavity' class="form-control" required>
                     </div>
                     <div class="form-group col-md-4" >
-                        <label for="exampleInputEmail1"><?php echo $products->lang("Date") ?></label>
+                        <label for="exampleInputEmail1"><?php echo $Products->lang("Date") ?></label>
                         <input type="date" name='selectdate' class="form-control" value='<?php echo date('Y-m-d') ?>'>
                     </div>
                     <div class="form-group col-md-2" >
-                        <label for="exampleInputEmail1"><?php echo $products->lang("Lot") ?></label>
+                        <label for="exampleInputEmail1"><?php echo $Products->lang("Lot") ?></label>
                         <input type="number" name='lot' class="form-control" required>
                     </div>
                     <div class="form-group col-md-2" >
-                        <label for="exampleInputEmail1"><?php echo $products->lang("Shift") ?></label>
+                        <label for="exampleInputEmail1"><?php echo $Products->lang("Shift") ?></label>
                         <select name="shift" id="" class="form-control" required>
                             <option value=""></option>
                             <option value="01">01</option>
@@ -95,13 +95,13 @@ $products->get($id);
                         </select>
                     </div>
                     <div class="form-group col-md-2" >
-                        <label for="exampleInputEmail1"><?php echo $products->lang("Quantity") ?></label>
+                        <label for="exampleInputEmail1"><?php echo $Products->lang("Quantity") ?></label>
                         <input type="number" name='quantity' class="form-control" required>
                     </div>
 
                 </div>
 
-                <button type="submit" class="btn btn-primary"><?php echo $products->lang("Submit") ?></button>
+                <button type="submit" class="btn btn-primary"><?php echo $Products->lang("Submit") ?></button>
             </form>
         </div>
         </div>

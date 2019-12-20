@@ -52,9 +52,9 @@ $oDB = new db();
         <?php 
           $table_data = $oDB->sl_all('LabelPattern','1');
 
-          $sql = "Select lp.*,prd.ProductsName, prd.ProductsNumber,ts.TraceStationName from labelpattern lp 
-          inner join products prd on prd.ProductsId = lp.ProductsId
-          inner join tracestation ts on ts.TraceStationId = lp.TraceStationId";
+          $sql = "Select lp.*,prd.ProductsName, prd.ProductsNumber,ts.TraceStationName from LabelPattern lp 
+          inner join Products prd on prd.ProductsId = lp.ProductsId
+          inner join TraceStation ts on ts.TraceStationId = lp.TraceStationId";
 
           $result = $oDB->fetchAll($sql);
             // echo "<pre>";

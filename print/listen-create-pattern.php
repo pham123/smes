@@ -12,9 +12,9 @@ $LabelPatternValue = safe($_POST['LabelPatternValue']);
 $LabelPatternPackingStandard = safe($_POST['LabelPatternPackingStandard']);
 //LabelPatternPackingStandard
 
-// $sql = "INSERT INTO labelpattern (`TraceStationId`,`ProductsId`,`LabelPatternValue`) VALUE (".$TraceStationId.",".$ProductsId.",'".$LabelPatternValue."')";
+// $sql = "INSERT INTO LabelPattern (`TraceStationId`,`ProductsId`,`LabelPatternValue`) VALUE (".$TraceStationId.",".$ProductsId.",'".$LabelPatternValue."')";
 
 $field_values = "`TraceStationId`='".$TraceStationId."', `ProductsId`='".$ProductsId."', `LabelPatternPackingStandard`='".$LabelPatternPackingStandard."', `LabelPatternValue`='".$LabelPatternValue."'" ;
-$oDB->insert('labelpattern',$field_values);
+$oDB->insert('LabelPattern',$field_values);
 $oDB=Null;
 header('Location:product.php');

@@ -67,10 +67,10 @@ $prestation = 4;
             $code = $_POST['code'];
 
             # Kiểm tra xem tem này đã được khai báo tại công đoạn này chưa
-            $labelhistory = $oDB->query('SELECT * FROM labelhistory WHERE TraceStationId = ? AND LabelHistoryLabelValue =? ', $stationid,$code)->fetchArray();
+            $LabelHistory = $oDB->query('SELECT * FROM LabelHistory WHERE TraceStationId = ? AND LabelHistoryLabelValue =? ', $stationid,$code)->fetchArray();
             //var_dump();
-            if (isset($labelhistory['TraceStationId'])) {
-                $_SESSION['message'] = "<h1 style='background-color:red;'>Mã tem ".$labelhistory['LabelHistoryLabelValue']." đã được khai báo trên hệ thống : ".$labelhistory['LabelHistoryCreateDate']." </h1>";
+            if (isset($LabelHistory['TraceStationId'])) {
+                $_SESSION['message'] = "<h1 style='background-color:red;'>Mã tem ".$LabelHistory['LabelHistoryLabelValue']." đã được khai báo trên hệ thống : ".$LabelHistory['LabelHistoryCreateDate']." </h1>";
                 header('Location:?');
                 exit();
             }else{
@@ -84,18 +84,18 @@ $prestation = 4;
             if (isset($product['ProductsId'])) {
                 # kiểm tra thông tin tem có hợp lệ hay không
                 i_func('station');
-                $labelpattern = checkpattern($stationid,$product['ProductsId'],$code);
+                $LabelPattern = checkpattern($stationid,$product['ProductsId'],$code);
             }
             //exit();
              
 
 
             # kiểm tra code có tồn tại trong hệ thống chưa?
-            $label = $oDB->query('SELECT * FROM labellist WHERE LabelListValue = ?', $code)->fetchArray();
+            $label = $oDB->query('SELECT * FROM LabelList WHERE LabelListValue = ?', $code)->fetchArray();
             #nếu có rồi
             if (isset($label['LabelListId'])) {
                 //Lấy về thông tin 
-                $labelpattern = $oDB->query('SELECT * FROM labelpattern WHERE TraceStationId = ? AND ProductsId =? ', $stationid,$label['ProductsId'])->fetchArray();
+                $LabelPattern = $oDB->query('SELECT * FROM LabelPattern WHERE TraceStationId = ? AND ProductsId =? ', $stationid,$label['ProductsId'])->fetchArray();
                 $products = $oDB->query('SELECT * FROM products WHERE ProductsId =? ', $label['ProductsId'])->fetchArray();
         
                 //Kiểm tra lại mẫu tem xem có phù hợp không
@@ -103,7 +103,7 @@ $prestation = 4;
                 echo "<span style='width:10%'>Số lượng: <span><input type='text' name='rcode' id='' value='".$code."' style='width:80%;padding:5px;margin:5px;font-size:40px;text-align:center;' readonly>";
                 echo "<br>";
 
-                echo "<span style='width:10%'>Số lượng: <span><input type='number' name='quantity' id='' value='".$labelpattern['LabelPatternPackingStandard']."' style='width:80%;padding:5px;margin:5px;font-size:40px;text-align:center;' min='1' max='".$labelpattern['LabelPatternPackingStandard']."'>";
+                echo "<span style='width:10%'>Số lượng: <span><input type='number' name='quantity' id='' value='".$LabelPattern['LabelPatternPackingStandard']."' style='width:80%;padding:5px;margin:5px;font-size:40px;text-align:center;' min='1' max='".$LabelPattern['LabelPatternPackingStandard']."'>";
                 echo "<br>";
                 echo "<span style='width:10%'>Xác nhận: <input type='text' name='no' id='' value='' style='width:80%;padding:5px;margin:5px;font-size:40px;text-align:center;' autofocus required placeholder='Đọc lại mã tem 1 lần nữa'>";
                 echo "<br>";
@@ -115,7 +115,7 @@ $prestation = 4;
                 echo "<span style='width:10%'>Số lượng: <span><input type='text' name='mcode' id='' value='".$code."' style='width:80%;padding:5px;margin:5px;font-size:40px;text-align:center;' readonly>";
                 echo "<br>";
 
-                echo "<span style='width:10%'>Số lượng: <span><input type='number' name='quantity' id='' value='".$labelpattern['LabelPatternPackingStandard']."' style='width:80%;padding:5px;margin:5px;font-size:40px;text-align:center;' min='1' max='".$labelpattern['LabelPatternPackingStandard']."'>";
+                echo "<span style='width:10%'>Số lượng: <span><input type='number' name='quantity' id='' value='".$LabelPattern['LabelPatternPackingStandard']."' style='width:80%;padding:5px;margin:5px;font-size:40px;text-align:center;' min='1' max='".$LabelPattern['LabelPatternPackingStandard']."'>";
                 echo "<br>";
                 echo "<span style='width:10%'>Xác nhận: <input type='text' name='mothercode' id='' value='' style='width:80%;padding:5px;margin:5px;font-size:40px;text-align:center;' autofocus required placeholder='Đọc mã tem gốc'>";
                 echo "<br>";
@@ -139,7 +139,7 @@ $prestation = 4;
             $product = $oDB->query('SELECT * FROM products WHERE ProductsNumber = ?', $productsnumber)->fetchArray();
 
             #kiểm tra mother code có hợp lệ hay không
-            $mothercodeinfo = $oDB->query('SELECT * FROM labellist WHERE LabelListValue = ?', $mothercode)->fetchArray();
+            $mothercodeinfo = $oDB->query('SELECT * FROM LabelList WHERE LabelListValue = ?', $mothercode)->fetchArray();
 
             // echo $product['ProductsId'];
             // echo $mothercodeinfo['ProductsId'];
@@ -166,7 +166,7 @@ $prestation = 4;
 
                 #thêm bước kiểm tra số lượng
                 #Lấy về số lượng Ok gần nhất của motherlabel
-                $query = $oDB->query('SELECT * FROM labelhistory WHERE LabelHistoryLabelValue = ? AND TraceStationId = ? ORDER BY LabelHistoryId DESC LIMIT 1', $mothercode,$prestation)->fetchArray();
+                $query = $oDB->query('SELECT * FROM LabelHistory WHERE LabelHistoryLabelValue = ? AND TraceStationId = ? ORDER BY LabelHistoryId DESC LIMIT 1', $mothercode,$prestation)->fetchArray();
                 
                 if (isset($query['LabelHistoryQuantityOk'])) {
                     $motherquantity = $query['LabelHistoryQuantityOk'];                
@@ -179,8 +179,8 @@ $prestation = 4;
 
                 #lấy về tổng số lượng của các label con
 
-                $sql = "SELECT SUM(lh.LabelHistoryQuantityOk) as total FROM labelhistory lh
-                inner join labellist lbl on lbl.LabelListValue = lh.LabelHistoryLabelValue
+                $sql = "SELECT SUM(lh.LabelHistoryQuantityOk) as total FROM LabelHistory lh
+                inner join LabelList lbl on lbl.LabelListValue = lh.LabelHistoryLabelValue
                 Where lbl.LabelListMotherId = ?";
 
                 $total = $oDB->query($sql, $mothercodeinfo['LabelListId'])->fetchArray();
@@ -201,8 +201,8 @@ $prestation = 4;
                 $mothercodeinfo['LabelListValue'].' hợp lệ';
 
                 # Chèn thông tin tem vào list và history
-                $oDB->query("INSERT INTO labellist (`ProductsId`,`LabelListValue`,`LabelListMotherId`) VALUES (?,?,?)",$product['ProductsId'],$mcode,$mothercodeinfo['LabelListId']);
-                $oDB->query("INSERT INTO labelhistory (`TraceStationId`,`LabelHistoryQuantityOk`,`LabelHistoryLabelValue`) VALUES (?,?,?)",$stationid,$quantity,$mcode);
+                $oDB->query("INSERT INTO LabelList (`ProductsId`,`LabelListValue`,`LabelListMotherId`) VALUES (?,?,?)",$product['ProductsId'],$mcode,$mothercodeinfo['LabelListId']);
+                $oDB->query("INSERT INTO LabelHistory (`TraceStationId`,`LabelHistoryQuantityOk`,`LabelHistoryLabelValue`) VALUES (?,?,?)",$stationid,$quantity,$mcode);
 
                 $_SESSION['message'] = "<h1 style='background-color:green;'>Thêm thành công .".$mcode."</h1>";
                 header('Location:?');
@@ -222,7 +222,7 @@ $prestation = 4;
 
             // if($_POST['rcode']==$no){
 
-            //     $oDB->query("INSERT INTO labelhistory (`TraceStationId`,`LabelHistoryQuantityOk`,`LabelHistoryLabelValue`) VALUES (?,?,?)",$stationid,$quantity,$rcode);
+            //     $oDB->query("INSERT INTO LabelHistory (`TraceStationId`,`LabelHistoryQuantityOk`,`LabelHistoryLabelValue`) VALUES (?,?,?)",$stationid,$quantity,$rcode);
             //     $_SESSION['message'] = "<h1 style='background-color:green;'>Thêm thành công mã tem ".$rcode." số lượng ".$quantity."</h1>";
             //     header('Location:?');
             // }else{

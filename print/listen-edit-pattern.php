@@ -13,7 +13,7 @@ $LabelPatternId = safe($_POST['LabelPatternId']);
 $LabelPatternPackingStandard = safe($_POST['LabelPatternPackingStandard']);
 //LabelPatternPackingStandard
 
-// $sql = "INSERT INTO labelpattern (`TraceStationId`,`ProductsId`,`LabelPatternValue`) VALUE (".$TraceStationId.",".$ProductsId.",'".$LabelPatternValue."')";
+// $sql = "INSERT INTO LabelPattern (`TraceStationId`,`ProductsId`,`LabelPatternValue`) VALUE (".$TraceStationId.",".$ProductsId.",'".$LabelPatternValue."')";
 
 $field_values = "`TraceStationId`='".$TraceStationId."', `ProductsId`='".$ProductsId."', `LabelPatternPackingStandard`='".$LabelPatternPackingStandard."', `LabelPatternValue`='".$LabelPatternValue."'" ;
 $oDB->update('LabelPattern',$field_values,'LabelPatternId='.$LabelPatternId);

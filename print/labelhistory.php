@@ -52,10 +52,10 @@ $oDB = new db();
         <?php 
           $table_data = $oDB->sl_all('LabelPattern','1');
 
-          $sql = "SELECT lh.*, ts.TraceStationName, prd.ProductsName, prd.ProductsNumber FROM labelhistory lh
-          inner join tracestation ts on ts.TraceStationId = lh.TraceStationId
-          inner join labellist lbl on lbl.LabelListValue = lh.LabelHistoryLabelValue
-          inner join products prd on prd.ProductsId = lbl.ProductsId
+          $sql = "SELECT lh.*, ts.TraceStationName, prd.ProductsName, prd.ProductsNumber FROM LabelHistory lh
+          inner join TraceStation ts on ts.TraceStationId = lh.TraceStationId
+          inner join LabelList lbl on lbl.LabelListValue = lh.LabelHistoryLabelValue
+          inner join Products prd on prd.ProductsId = lbl.ProductsId
           ORDER BY lh.LabelHistoryId DESC LIMIT 50";
 
           $result = $oDB->fetchAll($sql);

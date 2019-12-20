@@ -62,14 +62,14 @@ $oDB = new db();
         }else{
           exit();
         }
-        $precode = $oDB->sl_one('labellist',"LabelListValue ='".$code."'");
+        $precode = $oDB->sl_one('LabelList',"LabelListValue ='".$code."'");
 
         $list = array();
         $check = $precode['LabelListId'];
         $list[] =  $precode['LabelListId'];
         // echo "<br>";
         for ($i=0; $i < 10; $i++) { 
-          $precode2 = $oDB->sl_one('labellist',"LabelListId ='".$check."'");
+          $precode2 = $oDB->sl_one('LabelList',"LabelListId ='".$check."'");
           if (!isset($precode2['LabelListMotherId'])) {
           break;
           }
@@ -81,10 +81,10 @@ $oDB = new db();
         $text = implode(',',$list);
         //echo $text;
 
-        $sql = "select lh.*,prd.ProductsName,prd.ProductsNumber,ts.TraceStationName from labelhistory lh
-        inner join labellist lbl on lbl.LabelListValue = lh.LabelHistoryLabelValue
-        inner join tracestation ts on ts.TraceStationId = lh.TraceStationId
-        inner join products prd on prd.ProductsId = lbl.ProductsId
+        $sql = "select lh.*,prd.ProductsName,prd.ProductsNumber,ts.TraceStationName from LabelHistory lh
+        inner join LabelList lbl on lbl.LabelListValue = lh.LabelHistoryLabelValue
+        inner join TraceStation ts on ts.TraceStationId = lh.TraceStationId
+        inner join Products prd on prd.ProductsId = lbl.ProductsId
         WHERE lbl.LabelListId in (".$text.")
         ORDER BY lh.LabelHistoryCreateDate DESC";
 

@@ -64,10 +64,10 @@ $stationid = 1;
             $oDB = new db();
             $code = strtoupper($_POST['code']);
             # Kiểm tra xem tem này đã được khai báo tại công đoạn này chưa
-            $labelhistory = $oDB->query('SELECT * FROM labelhistory WHERE TraceStationId = ? AND LabelHistoryLabelValue =? ', $stationid,$code)->fetchArray();
+            $LabelHistory = $oDB->query('SELECT * FROM LabelHistory WHERE TraceStationId = ? AND LabelHistoryLabelValue =? ', $stationid,$code)->fetchArray();
             //var_dump();
-            if (isset($labelhistory['TraceStationId'])) {
-                $_SESSION['message'] = "<h1 style='background-color:red;'>Mã tem ".$labelhistory['LabelHistoryLabelValue']." đã được khai báo trên hệ thống : ".$labelhistory['LabelHistoryCreateDate']." </h1>";
+            if (isset($LabelHistory['TraceStationId'])) {
+                $_SESSION['message'] = "<h1 style='background-color:red;'>Mã tem ".$LabelHistory['LabelHistoryLabelValue']." đã được khai báo trên hệ thống : ".$LabelHistory['LabelHistoryCreateDate']." </h1>";
                 header('Location:?');
                 exit();
             }else{
@@ -75,13 +75,13 @@ $stationid = 1;
             }
 
             # kiểm tra code có tồn tại trong hệ thống chưa?
-            $label = $oDB->query('SELECT * FROM labellist WHERE LabelListValue = ?', $code)->fetchArray();
+            $label = $oDB->query('SELECT * FROM LabelList WHERE LabelListValue = ?', $code)->fetchArray();
             if (isset($label['LabelListId'])) {
                 //kiem tra 
                 i_func('station');
-                $labelpattern = checkpattern($stationid,$label['ProductsId'],$code);
+                $LabelPattern = checkpattern($stationid,$label['ProductsId'],$code);
                 //Lấy về thông tin 
-                // $labelpattern = $oDB->query('SELECT * FROM labelpattern WHERE TraceStationId = ? AND ProductsId =? ', $stationid,$label['ProductsId'])->fetchArray();
+                // $LabelPattern = $oDB->query('SELECT * FROM LabelPattern WHERE TraceStationId = ? AND ProductsId =? ', $stationid,$label['ProductsId'])->fetchArray();
                 $products = $oDB->query('SELECT * FROM products WHERE ProductsId =? ', $label['ProductsId'])->fetchArray();
         
                 //Kiểm tra lại mẫu tem xem có phù hợp không
@@ -89,7 +89,7 @@ $stationid = 1;
                 echo "<span style='width:10%'>Số lượng: <span><input type='text' name='rcode' id='' value='".$code."' style='width:80%;padding:5px;margin:5px;font-size:40px;text-align:center;' readonly>";
                 echo "<br>";
 
-                echo "<span style='width:10%'>Số lượng: <span><input type='number' name='quantity' id='' value='".$labelpattern['LabelPatternPackingStandard']."' style='width:80%;padding:5px;margin:5px;font-size:40px;text-align:center;' min='1' max='".$labelpattern['LabelPatternPackingStandard']."'>";
+                echo "<span style='width:10%'>Số lượng: <span><input type='number' name='quantity' id='' value='".$LabelPattern['LabelPatternPackingStandard']."' style='width:80%;padding:5px;margin:5px;font-size:40px;text-align:center;' min='1' max='".$LabelPattern['LabelPatternPackingStandard']."'>";
                 echo "<br>";
                 echo "<span style='width:10%'>Xác nhận: <input type='text' name='no' id='' value='' style='width:80%;padding:5px;margin:5px;font-size:40px;text-align:center;' autofocus required placeholder='Đọc lại mã tem 1 lần nữa'>";
                 echo "<br>";
@@ -112,7 +112,7 @@ $stationid = 1;
 
             if($_POST['rcode']==$no){
 
-                $oDB->query("INSERT INTO labelhistory (`TraceStationId`,`LabelHistoryQuantityOk`,`LabelHistoryLabelValue`) VALUES (?,?,?)",$stationid,$quantity,$rcode);
+                $oDB->query("INSERT INTO LabelHistory (`TraceStationId`,`LabelHistoryQuantityOk`,`LabelHistoryLabelValue`) VALUES (?,?,?)",$stationid,$quantity,$rcode);
                 $_SESSION['message'] = "<h1 style='background-color:green;'>Thêm thành công mã tem ".$rcode." số lượng ".$quantity."</h1>";
                 header('Location:?');
             }else{

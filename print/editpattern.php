@@ -31,7 +31,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
 
 
 
-$pattern = $oDB->sl_one('labelpattern','LabelPatternId='.$id);
+$pattern = $oDB->sl_one('LabelPattern','LabelPatternId='.$id);
 //var_dump($pattern);
 ?>
 

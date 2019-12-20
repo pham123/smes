@@ -18,14 +18,14 @@ $lot = safe($_POST['lot']);
 $shift = safe($_POST['shift']);
 $quantity = safe($_POST['quantity']);
 $today = date("Y-m-d");
-$sql = "SELECT COUNT(*) as total From labellist where ProductsId=".$id." AND date(LabelListCreateDate)= '".$today."'";
+$sql = "SELECT COUNT(*) as total From LabelList where ProductsId=".$id." AND date(LabelListCreateDate)= '".$today."'";
 $start = $oDB->fetchOne($sql);
 $start['total'];
 $startlabel = $start['total'] + 1;
 // echo $startlabel;
 
-$products = new products();
-$products->get($id);
+$Products = new Products();
+$Products->get($id);
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -154,11 +154,11 @@ $page = 1;
                 <td>Shift</td>
                 <td colspan='2'>Lot No</td>
                 <?php
-                    $codevalue = $products->number."-".date("md",strtotime($date))."-".sprintf('%02d', $j)."-".$shift;
+                    $codevalue = $Products->number."-".date("md",strtotime($date))."-".sprintf('%02d', $j)."-".$shift;
                     // Insert thông tin vào bảng label list
-                    $kq = $oDB->in_table(`labellist`,"`LabelListValue`='".$codevalue."'");
+                    $kq = $oDB->in_table(`LabelList`,"`LabelListValue`='".$codevalue."'");
                     if ($kq==false) {
-                        $sql = "INSERT INTO labellist (`ProductsId`,`UsersId`,`LabelListValue`) VALUES (".$id.",".$_SESSION[_site_]['userid'].",'".$codevalue."')";
+                        $sql = "INSERT INTO LabelList (`ProductsId`,`UsersId`,`LabelListValue`) VALUES (".$id.",".$_SESSION[_site_]['userid'].",'".$codevalue."')";
                         $oDB->query($sql);
                     }else{
 
@@ -168,8 +168,8 @@ $page = 1;
                 <td rowspan='2'><img src="http://192.168.1.2:88/qr/?data=<?php echo $codevalue ?>" alt=""></td>
             </tr>
             <tr>
-                <td colspan='2'><?php echo $products->name ?></td>
-                <td colspan='2'><?php echo $products->number ?></td>
+                <td colspan='2'><?php echo $Products->name ?></td>
+                <td colspan='2'><?php echo $Products->number ?></td>
                 <td ><?php echo $cavity ?></td>
                 <td><?php echo date("Y-M-d",strtotime($date)) ?></td>
                 <td><?php echo $j ?></td>

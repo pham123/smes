@@ -51,7 +51,7 @@ $oDB = new db();
 
         <?php 
           
-          //var_dump($oDB->getcol('products'));
+          //var_dump($oDB->getcol('Products'));
           
           $table_header  = 'ProductsName,ProductsNumber,ProductsDescription';
           $table_data = $oDB->sl_col_all($table_header,'Products','ProductsOption=1');

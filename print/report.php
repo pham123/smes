@@ -53,9 +53,9 @@ $oDB = new db();
           $table_data = $oDB->sl_all('LabelPattern','1');
           $startdate = (isset($_GET['start'])) ? $_GET['start'] : date('Y-m-d') ;
           $enddate = (isset($_GET['end'])) ? $_GET['end'] : date('Y-m-d') ;
-          $productsid = (isset($_GET['productsid'])) ? $_GET['productsid'] : '' ;
+          $Productsid = (isset($_GET['Productsid'])) ? $_GET['Productsid'] : '' ;
 
-          if (isset($_GET['productsid'])||$productsid!='') {
+          if (isset($_GET['Productsid'])||$Productsid!='') {
             $sql = "select SUM(lh.LabelHistoryQuantityOk) as totalOk,
                     SUM( CASE WHEN lh.TraceStationId = 1 THEN lh.LabelHistoryQuantityOk ELSE 0 END) AS DCOK, 
                     SUM( CASE WHEN lh.TraceStationId = 3 THEN lh.LabelHistoryQuantityOk ELSE 0 END) AS NCOK, 
@@ -64,11 +64,11 @@ $oDB = new db();
                     date(LabelHistoryCreateDate) as crDate,
                     prd.ProductsName,
                     prd.ProductsNumber
-                    from labelhistory lh
-                    inner join tracestation ts on ts.TraceStationId = lh.TraceStationId
-                    inner join labellist lbl on lbl.LabelListValue = lh.LabelHistoryLabelValue
-                    inner join products prd on prd.ProductsId = lbl.ProductsId
-                    WHERE date(LabelHistoryCreateDate) between '".$startdate."' AND '".$enddate."' AND prd.ProductsId = ".$productsid."
+                    from LabelHistory lh
+                    inner join TraceStation ts on ts.TraceStationId = lh.TraceStationId
+                    inner join LabelList lbl on lbl.LabelListValue = lh.LabelHistoryLabelValue
+                    inner join Products prd on prd.ProductsId = lbl.ProductsId
+                    WHERE date(LabelHistoryCreateDate) between '".$startdate."' AND '".$enddate."' AND prd.ProductsId = ".$Productsid."
                     group by crDate, prd.ProductsName, prd.ProductsNumber
                     ORDER by crDate DESC
                     ";
@@ -82,9 +82,9 @@ $oDB = new db();
                     prd.ProductsName,
                     prd.ProductsNumber
                     from labelhistory lh
-                    inner join tracestation ts on ts.TraceStationId = lh.TraceStationId
-                    inner join labellist lbl on lbl.LabelListValue = lh.LabelHistoryLabelValue
-                    inner join products prd on prd.ProductsId = lbl.ProductsId
+                    inner join TraceStation ts on ts.TraceStationId = lh.TraceStationId
+                    inner join LabelList lbl on lbl.LabelListValue = lh.LabelHistoryLabelValue
+                    inner join Products prd on prd.ProductsId = lbl.ProductsId
                     WHERE date(LabelHistoryCreateDate) between '".$startdate."' AND '".$enddate."'
                     group by crDate, prd.ProductsName, prd.ProductsNumber
                     ORDER by crDate DESC
@@ -105,7 +105,7 @@ $oDB = new db();
               <!-- <span><?php echo $oDB->lang('StartDate') ?></span> -->
               <!-- <input type="date" class='form-control' name='start'> -->
                   <span><?php echo $oDB->lang('Products') ?></span>
-                  <select name="productsid" id="" class='selectpicker show-tick' data-live-search="true" data-style="btn-info" data-width="100%">
+                  <select name="Productsid" id="" class='selectpicker show-tick' data-live-search="true" data-style="btn-info" data-width="100%">
                     <?php 
                     $model = $oDB->sl_all('Products',1);
                     foreach ($model as $key => $value) {

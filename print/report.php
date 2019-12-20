@@ -52,11 +52,16 @@ $oDB = new db();
         <?php 
           $table_data = $oDB->sl_all('LabelPattern','1');
 
-          $sql = "SELECT lh.*, ts.TraceStationName, prd.ProductsName, prd.ProductsNumber FROM labelhistory lh
+          $sql = "select SUM(lh.LabelHistoryQuantityOk) as totalOk,
+          SUM( CASE WHEN lh.TraceStationId = 1 THEN lh.LabelHistoryQuantityOk ELSE 0 END) AS DCOK, 
+          SUM( CASE WHEN lh.TraceStationId = 3 THEN lh.LabelHistoryQuantityOk ELSE 0 END) AS NCOK, 
+          SUM( CASE WHEN lh.TraceStationId = 4 THEN lh.LabelHistoryQuantityOk ELSE 0 END) AS STOK, 
+          SUM( CASE WHEN lh.TraceStationId = 5 THEN lh.LabelHistoryQuantityOk ELSE 0 END) AS FIOK, 
+          date(LabelHistoryCreateDate) as crDate from labelhistory lh
           inner join tracestation ts on ts.TraceStationId = lh.TraceStationId
-          inner join labellist lbl on lbl.LabelListValue = lh.LabelHistoryLabelValue
-          inner join products prd on prd.ProductsId = lbl.ProductsId
-          ORDER BY lh.LabelHistoryId DESC LIMIT 50";
+          group by crDate
+          ORDER by crDate DESC
+          ";
 
           $result = $oDB->fetchAll($sql);
             // echo "<pre>";
@@ -70,13 +75,11 @@ $oDB = new db();
         echo "<thead>";
         echo "<tr>";
             echo "<th>".$oDB->lang('Index')."</th>";
-            echo "<th>".$oDB->lang('Station')."</th>";
-            echo "<th>".$oDB->lang('ProductName')."</th>";
-            echo "<th>".$oDB->lang('ProductNumber')."</th>";
-            echo "<th>".$oDB->lang('Ok')."</th>";
-            echo "<th>".$oDB->lang('Ng')."</th>";
-            echo "<th>".$oDB->lang('LabelValue')."</th>";
-            echo "<th>".$oDB->lang('IssueDate')."</th>";
+            echo "<th>".$oDB->lang('Date')."</th>";
+            echo "<th>".$oDB->lang('Dc')."</th>";
+            echo "<th>".$oDB->lang('Nc')."</th>";
+            echo "<th>".$oDB->lang('St')."</th>";
+            echo "<th>".$oDB->lang('Fi')."</th>";
         echo "</tr>";
         echo "</thead>";
 
@@ -86,13 +89,11 @@ $oDB = new db();
         foreach ($result as $key => $value) {
             echo "<tr>";
             echo "<td>".($key+1)."</td>";
-            echo "<td>".$value['TraceStationName']."</td>";
-            echo "<td>".$value['ProductsName']."</td>";
-            echo "<td>".$value['ProductsNumber']."</td>";
-            echo "<td>".$value['LabelHistoryQuantityOk']."</td>";
-            echo "<td>".$value['LabelHistoryQuantityNg']."</td>";
-            echo "<td>".$value['LabelHistoryLabelValue']."</td>";
-            echo "<td>".$value['LabelHistoryCreateDate']."</td>";
+            echo "<td>".$value['crDate']."</td>";
+            echo "<td>".$value['DCOK']."</td>";
+            echo "<td>".$value['NCOK']."</td>";
+            echo "<td>".$value['STOK']."</td>";
+            echo "<td>".$value['FIOK']."</td>";
             echo "</tr>";
         }
 

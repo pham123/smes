@@ -6,6 +6,7 @@ require('../config.php');
 i_func('db');
 
 $stationid = 3;
+$prestation = 1;
 //MCK71113301-1211-17-01
 
 
@@ -108,11 +109,22 @@ $stationid = 3;
             $oDB = new db();
             $rcode = strtoupper($_POST['rcode']);
             $quantity = $_POST['quantity'];
-            $quantitymax = $_POST['quantitymax'];
+           // $quantitymax = $_POST['quantitymax'];
             $no = $_POST['no'];
 
-            if($_POST['rcode']==$no){
+            //Kiểm tra code đã được đọc ở công đoạn trước chưa, nếu chưa đưa thông báo lỗi rồi đẩy lại
 
+            $sql = "select * from labelhistory where LabelHistoryLabelValue = ? AND TraceStationId = ?";
+            $prehistory = $oDB->query($sql, $no,$prestation)->fetchArray();
+
+           // var_dump($prehistory)
+            if (!isset($prehistory['LabelHistoryId'])) {
+                $_SESSION['message'] = "<h1 style='background-color:red;'>Mã tem ".$no." chưa được đọc tại công đoạn trước</h1>";
+                header('Location:?');
+                exit();
+            }
+
+            if($_POST['rcode']==$no){
                 $oDB->query("INSERT INTO labelhistory (`TraceStationId`,`LabelHistoryQuantityOk`,`LabelHistoryLabelValue`) VALUES (?,?,?)",$stationid,$quantity,$rcode);
                 $_SESSION['message'] = "<h1 style='background-color:green;'>Thêm thành công mã tem ".$rcode." số lượng ".$quantity."</h1>";
                 header('Location:?');

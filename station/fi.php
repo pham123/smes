@@ -7,7 +7,7 @@ i_func('db');
 
 $stationid = 5;
 //MCK71113301-1211-17-01
-
+$prestation = 4;
 
 
 
@@ -71,7 +71,7 @@ $stationid = 5;
             //var_dump();
             if (isset($labelhistory['TraceStationId'])) {
                 $_SESSION['message'] = "<h1 style='background-color:red;'>Mã tem ".$labelhistory['LabelHistoryLabelValue']." đã được khai báo trên hệ thống : ".$labelhistory['LabelHistoryCreateDate']." </h1>";
-                header('Location:fi.php');
+                header('Location:?');
                 exit();
             }else{
                 // Chưa có thì tiếp tục
@@ -123,7 +123,7 @@ $stationid = 5;
 
 
                 // $_SESSION['message'] = "<h1 style='background-color:red;'>Mã tem ".$code." không được in ra từ hệ thống hợp lệ </h1>";
-                // header('Location:fi.php');
+                // header('Location:?');
                 // exit();
             }
             
@@ -166,8 +166,16 @@ $stationid = 5;
 
                 #thêm bước kiểm tra số lượng
                 #Lấy về số lượng Ok gần nhất của motherlabel
-                $query = $oDB->query('SELECT * FROM labelhistory WHERE LabelHistoryLabelValue = ? ORDER BY LabelHistoryId DESC LIMIT 1', $mothercode)->fetchArray();
-                $motherquantity = $query['LabelHistoryQuantityOk'];
+                $query = $oDB->query('SELECT * FROM labelhistory WHERE LabelHistoryLabelValue = ? AND TraceStationId = ? ORDER BY LabelHistoryId DESC LIMIT 1', $mothercode,$prestation)->fetchArray();
+                
+                if (isset($query['LabelHistoryQuantityOk'])) {
+                    $motherquantity = $query['LabelHistoryQuantityOk'];                
+                }else{
+                    $_SESSION['message'] = "<h1 style='background-color:red;'>Không thành công, tem chưa được đọc ở công đoạn trước </h1>";
+                    header('Location:?');
+                    exit();
+                }
+                
 
                 #lấy về tổng số lượng của các label con
 
@@ -184,7 +192,7 @@ $stationid = 5;
                 if (isset($total['total'])&&$total['total']==$motherquantity) {
                     # code...
                     $_SESSION['message'] = "<h1 style='background-color:red;'>Không thành công, bạn đã nhập ".$total['total']."/".$motherquantity." </h1>";
-                    header('Location:fi.php');
+                    header('Location:?');
                     exit();
                 }
 
@@ -197,14 +205,14 @@ $stationid = 5;
                 $oDB->query("INSERT INTO labelhistory (`TraceStationId`,`LabelHistoryQuantityOk`,`LabelHistoryLabelValue`) VALUES (?,?,?)",$stationid,$quantity,$mcode);
 
                 $_SESSION['message'] = "<h1 style='background-color:green;'>Thêm thành công .".$mcode."</h1>";
-                header('Location:fi.php');
+                header('Location:?');
                 exit();
 
             } else {
                 # code...
                 
                 $_SESSION['message'] = "<h1 style='background-color:red;'>Đã có lỗi xảy ra </h1>";
-                header('Location:fi.php');
+                header('Location:?');
                 exit();
             }
             
@@ -216,10 +224,10 @@ $stationid = 5;
 
             //     $oDB->query("INSERT INTO labelhistory (`TraceStationId`,`LabelHistoryQuantityOk`,`LabelHistoryLabelValue`) VALUES (?,?,?)",$stationid,$quantity,$rcode);
             //     $_SESSION['message'] = "<h1 style='background-color:green;'>Thêm thành công mã tem ".$rcode." số lượng ".$quantity."</h1>";
-            //     header('Location:fi.php');
+            //     header('Location:?');
             // }else{
             //     $_SESSION['message'] = "<h1 style='background-color:red;'>Không thành công, bạn vừa nhập sai mã vào ô xác nhận, mã tại ô xác nhận phải trùng với mã ban đầu.</h1>";
-            //     header('Location:fi.php');
+            //     header('Location:?');
             // }
 
         } else {

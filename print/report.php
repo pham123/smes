@@ -59,6 +59,7 @@ $oDB = new db();
           SUM( CASE WHEN lh.TraceStationId = 5 THEN lh.LabelHistoryQuantityOk ELSE 0 END) AS FIOK, 
           date(LabelHistoryCreateDate) as crDate from labelhistory lh
           inner join tracestation ts on ts.TraceStationId = lh.TraceStationId
+          WHERE date(LabelHistoryCreateDate) between '2019-12-18' AND '".date("Y-m-d")."'
           group by crDate
           ORDER by crDate DESC
           ";

@@ -84,7 +84,7 @@ $prestation = 1;
                 i_func('station');
                 $LabelPattern = checkpattern($stationid,$label['ProductsId'],$code);
                 //Lấy về thông tin 
-                $products = $oDB->query('SELECT * FROM products WHERE ProductsId =? ', $label['ProductsId'])->fetchArray();
+                $Products = $oDB->query('SELECT * FROM Products WHERE ProductsId =? ', $label['ProductsId'])->fetchArray();
         
                 //Kiểm tra lại mẫu tem xem có phù hợp không
                 $_SESSION['message'] = "Xác nhận số lượng cho mã tem :".$code;

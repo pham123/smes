@@ -81,7 +81,7 @@ $stationid = 6;
             if (isset($label['LabelListId'])) {
                 //Lấy về thông tin 
                 $LabelPattern = $oDB->query('SELECT * FROM LabelPattern WHERE TraceStationId = ? AND ProductsId =? ', $stationid,$label['ProductsId'])->fetchArray();
-                $products = $oDB->query('SELECT * FROM products WHERE ProductsId =? ', $label['ProductsId'])->fetchArray();
+                $Products = $oDB->query('SELECT * FROM Products WHERE ProductsId =? ', $label['ProductsId'])->fetchArray();
         
                 //Kiểm tra lại mẫu tem xem có phù hợp không
                 $_SESSION['message'] = "Xác nhận số lượng cho mã tem :".$code;

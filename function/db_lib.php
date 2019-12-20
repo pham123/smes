@@ -132,7 +132,7 @@ class db {
 				$value = implode(" ",preg_split('/(?=[A-Z])/', $key, -1, PREG_SPLIT_NO_EMPTY));
 			}
 			$return = $value;
-			$query = "SELECT Lang".$ngongu." FROM " . _DB_PREFIX_ . "lang WHERE LangName='".$key."'" ;
+			$query = "SELECT Lang".$ngongu." FROM " . _DB_PREFIX_ . "Lang WHERE LangName='".$key."'" ;
 			$rs = mysqli_query($this->dbh,$query);
 			$result = $rs->fetch_array();
 			if (isset($result['Lang'.$ngongu])) {
@@ -168,13 +168,13 @@ class products extends db{
 	public $number;
 
 	public function get($id) {
-		$result = $this->sl_one('products','ProductsId='.$id);
+		$result = $this->sl_one('Products','ProductsId='.$id);
 		$this->name = $result['ProductsName'];
 		$this->number = $result['ProductsNumber'];
 	}
 
 	public function getnum($number) {
-		$result = $this->sl_one('products',"ProductsNumber='".$number."'");
+		$result = $this->sl_one('Products',"ProductsNumber='".$number."'");
 		$this->name = $result['ProductsName'];
 		$this->number = $result['ProductsNumber'];
 		$this->id = $result['ProductsId'];
@@ -191,13 +191,13 @@ class Users extends db{
 
 	public function set($id) {
 		$this->id = $id;
-		$user = $this->sl_one('users','UsersId='.$id);
+		$user = $this->sl_one('Users','UsersId='.$id);
 		$this->name = $user['UsersName'];
 		return $this;
 	}
 	public function acess() {
-		$result = $this->sl_one('modules','ModulesName="'.$this->module.'"');
-		$result2 = $this->sl_one('access','ModulesId='.$result['ModulesId'].' AND UsersId='.$this->id);
+		$result = $this->sl_one('Modules','ModulesName="'.$this->module.'"');
+		$result2 = $this->sl_one('Access','ModulesId='.$result['ModulesId'].' AND UsersId='.$this->id);
 		return $result2['AccessOption'];
 	}
 

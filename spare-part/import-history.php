@@ -19,10 +19,10 @@ $oDB = new db();
 $table_header  = 'ProductsNumber,ProductsName,ProductsDescription,ImportsDate,ProductsQty,ProductsUnit,ProductsUnitPrice,SupplyChainObjectName,ImportsNote';
 //using new db library
 $newDB = new MysqliDb(_DB_HOST_, _DB_USER_, _DB_PASS_,_DB_name_);
-$newDB->join("products p", "i.ProductsId=p.ProductsId", "LEFT");
-$newDB->join("supplychainobject s", "s.SupplyChainObjectId=i.SuppliersId", "LEFT");
+$newDB->join("Products p", "i.ProductsId=p.ProductsId", "LEFT");
+$newDB->join("SupplyChainObject s", "s.SupplyChainObjectId=i.SuppliersId", "LEFT");
 $newDB->orderBy('i.ImportsId', 'desc');
-$table_data = $newDB->get ("imports i", null, "i.ImportsId as id,p.ProductsNumber,p.ProductsName,p.ProductsDescription,p.ProductsUnit,i.ImportsPO,i.ImportsDate,i.ProductsQty,i.ProductsUnitPrice,s.SupplyChainObjectName,i.ImportsNote");
+$table_data = $newDB->get ("Imports i", null, "i.ImportsId as id,p.ProductsNumber,p.ProductsName,p.ProductsDescription,p.ProductsUnit,i.ImportsPO,i.ImportsDate,i.ProductsQty,i.ProductsUnitPrice,s.SupplyChainObjectName,i.ImportsNote");
 $table_link = "editimport.php?id=";
 ?>
 

@@ -25,7 +25,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 	$columns = rtrim($columns, ',');
 	$text = rtrim($text, ',');
 	
-	$create_sql = "INSERT INTO classifiedmaterials (".$columns.") VALUES(".$text.")";
+	$create_sql = "INSERT INTO ClassifiedMaterials (".$columns.") VALUES(".$text.")";
 
 	$oDB ->query($create_sql);
 	

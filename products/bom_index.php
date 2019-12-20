@@ -39,13 +39,13 @@ $newDB = new MysqliDb(_DB_HOST_, _DB_USER_, _DB_PASS_,_DB_name_);
           $table_header  = 'ProductsNumber,ProductsName,BomlistsInfo';
 
           //using new db library
-          $newDB->join("products p", "bl.ProductsId=p.ProductsId", "LEFT");
-          $table_data = $newDB->get("bomlists bl", null, "bl.BomlistsId as id, p.ProductsNumber, p.ProductsName, bl.BomlistsInfo");
+          $newDB->join("Products p", "bl.ProductsId=p.ProductsId", "LEFT");
+          $table_data = $newDB->get("Bomlists bl", null, "bl.BomlistsId as id, p.ProductsNumber, p.ProductsName, bl.BomlistsInfo");
           $table_link = "viewbom.php?id=";
         ?>
 
         <div class="table-responsive">
-          <a href="BOM.php" class="btn btn-secondary btn-sm">Add BOM</a>
+          <a href="Bom.php" class="btn btn-secondary btn-sm">Add BOM</a>
           <?php include('../views/template_table.php') ?>
         </div>
         </div>

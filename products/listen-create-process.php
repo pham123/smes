@@ -25,7 +25,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 	$columns = rtrim($columns, ',');
 	$text = rtrim($text, ',');
 	
-	$create_sql = "INSERT INTO processes (".$columns.") VALUES(".$text.")";
+	$create_sql = "INSERT INTO Processes (".$columns.") VALUES(".$text.")";
 	
 	// echo $create_sql;
 

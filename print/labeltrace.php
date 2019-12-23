@@ -117,7 +117,7 @@ $oDB = new db();
             echo "<td>".$value['TraceStationName']."</td>";
             echo "<td>".$value['ProductsName']."</td>";
             echo "<td>".$value['ProductsNumber']."</td>";
-            echo "<td>".$value['LabelHistoryQuantityOk']."</td>";
+            echo "<td style='background-color:#73E700;'>".$value['LabelHistoryQuantityOk']."</td>";
             echo "<td>".$value['LabelHistoryLabelValue']."</td>";
             echo "<td>".$value['LabelHistoryCreateDate']."</td>";
             echo "</tr>";

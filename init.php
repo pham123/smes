@@ -4,4 +4,5 @@ function i_func($func_name)
 {
     include ROOT_DIR.'/function/'.$func_name.'.php';
 }
+//test
 ?>

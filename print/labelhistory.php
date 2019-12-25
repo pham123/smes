@@ -61,12 +61,9 @@ $oDB = new db();
           inner join TraceStation ts on ts.TraceStationId = lh.TraceStationId
           inner join LabelList lbl on lbl.LabelListValue = lh.LabelHistoryLabelValue
           inner join Products prd on prd.ProductsId = lbl.ProductsId
-          ORDER BY lh.LabelHistoryId DESC LIMIT 50";
+          ORDER BY lh.LabelHistoryId DESC LIMIT 5000";
 
           $result = $oDB->fetchAll($sql);
-            // echo "<pre>";
-            // var_dump ($result);
-            // echo "</pre>";
         ?>
 
         <div class="table-responsive">

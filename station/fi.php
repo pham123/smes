@@ -86,9 +86,6 @@ $prestation = 4;
                 i_func('station');
                 $LabelPattern = checkpattern($stationid,$product['ProductsId'],$code);
             }
-            //exit();
-             
-
 
             # kiểm tra code có tồn tại trong hệ thống chưa?
             $label = $oDB->query('SELECT * FROM LabelList WHERE LabelListValue = ?', $code)->fetchArray();
@@ -121,10 +118,6 @@ $prestation = 4;
                 echo "<br>";
                 echo "<input type='submit' value='submit'>";
 
-
-                // $_SESSION['message'] = "<h1 style='background-color:red;'>Mã tem ".$code." không được in ra từ hệ thống hợp lệ </h1>";
-                // header('Location:?');
-                // exit();
             }
             
         
@@ -141,15 +134,6 @@ $prestation = 4;
             #kiểm tra mother code có hợp lệ hay không
             $mothercodeinfo = $oDB->query('SELECT * FROM LabelList WHERE LabelListValue = ?', $mothercode)->fetchArray();
 
-            // echo $product['ProductsId'];
-            // echo $mothercodeinfo['ProductsId'];
-
-            //exit();
-
-
-
-
-
             if (isset($mothercodeinfo['LabelListId'])) {
                 // Kiểm tra thông tin trong bom 
                 $bomid = $oDB->query('SELECT * FROM bomlists WHERE ProductsId = ?',$product['ProductsId'])->fetchArray();
@@ -161,8 +145,6 @@ $prestation = 4;
                     header('Location:fi.php');
                     exit();
                 }
-                //exit();
-
 
                 #thêm bước kiểm tra số lượng
                 #Lấy về số lượng Ok gần nhất của motherlabel
@@ -176,7 +158,6 @@ $prestation = 4;
                     exit();
                 }
                 
-
                 #lấy về tổng số lượng của các label con
 
                 $sql = "SELECT SUM(lh.LabelHistoryQuantityOk) as total FROM LabelHistory lh
@@ -184,10 +165,6 @@ $prestation = 4;
                 Where lbl.LabelListMotherId = ?";
 
                 $total = $oDB->query($sql, $mothercodeinfo['LabelListId'])->fetchArray();
-
-                // echo ($total['total']);
-                // echo "/";
-                // echo ($motherquantity);
 
                 if (isset($total['total'])&&$total['total']==$motherquantity) {
                     # code...
@@ -204,6 +181,21 @@ $prestation = 4;
                 $oDB->query("INSERT INTO LabelList (`ProductsId`,`LabelListValue`,`LabelListMotherId`) VALUES (?,?,?)",$product['ProductsId'],$mcode,$mothercodeinfo['LabelListId']);
                 $oDB->query("INSERT INTO LabelHistory (`TraceStationId`,`LabelHistoryQuantityOk`,`LabelHistoryLabelValue`) VALUES (?,?,?)",$stationid,$quantity,$mcode);
 
+                if (isset($_SESSION['Uploadlist'])) {
+                    $key = count($_SESSION['Uploadlist']);
+                    if ($key>20) {
+                        array_shift($_SESSION['Uploadlist']);
+                    }
+                    $_SESSION['Uploadlist'][$key]['value']=$mcode;
+                    $_SESSION['Uploadlist'][$key]['qty']=$quantity;
+                    $_SESSION['Uploadlist'][$key]['mother']=$mothercodeinfo['LabelListValue'];
+                } else {
+                    $_SESSION['Uploadlist'][0]['value']=$mcode;
+                    $_SESSION['Uploadlist'][0]['qty']=$quantity;
+                    $_SESSION['Uploadlist'][$key]['mother']=$mothercodeinfo['LabelListValue'];
+                }
+
+
                 $_SESSION['message'] = "<h1 style='background-color:green;'>Thêm thành công .".$mcode."</h1>";
                 header('Location:?');
                 exit();
@@ -216,22 +208,9 @@ $prestation = 4;
                 exit();
             }
             
-            #Hai bạn có cùng nằm trong BOM không
-
-
-
-            // if($_POST['rcode']==$no){
-
-            //     $oDB->query("INSERT INTO LabelHistory (`TraceStationId`,`LabelHistoryQuantityOk`,`LabelHistoryLabelValue`) VALUES (?,?,?)",$stationid,$quantity,$rcode);
-            //     $_SESSION['message'] = "<h1 style='background-color:green;'>Thêm thành công mã tem ".$rcode." số lượng ".$quantity."</h1>";
-            //     header('Location:?');
-            // }else{
-            //     $_SESSION['message'] = "<h1 style='background-color:red;'>Không thành công, bạn vừa nhập sai mã vào ô xác nhận, mã tại ô xác nhận phải trùng với mã ban đầu.</h1>";
-            //     header('Location:?');
-            // }
 
         } else {
-            //$_SESSION['message'] = "Đọc mã tem";
+
             echo "<input type='text' name='code' id='' style='width:80%;padding:5px;margin:5px;font-size:40px;text-align:center;' autofocus placeholder='Nhập mã tem'>";
         }
         ?>
@@ -246,24 +225,19 @@ $prestation = 4;
         
     </table>
     </form>
-
+    <?php
+        if (isset($_SESSION['Uploadlist'])) {
+            $newarray = array_reverse($_SESSION['Uploadlist'], true);
+            echo "<table style=''>";
+            echo "<tr><th>Code</th><th>QTy</th><th>Parent Code</th><th>Status</th></tr>";
+            foreach ($newarray as $key => $value) {
+                echo "<tr><td>".$value['value']."</td><td>".$value['qty']."</td><td>".$value['mother']."</td><td Style='background-color:green;'>Ok</td></tr>";
+            }
+            echo "</table>";
+        } 
+    ?>
 
 </body>
 
-<script>
-// <?php
-// if (isset($_POST['code'])&&$_POST['code']!='') {
-// ?>
-//             $(document).ready(function() {
-//             $(window).keydown(function(event){
-//                 if(event.keyCode == 13) {
-//                 event.preventDefault();
-//                 return false;
-//                 }
-//             });
-//             });
-// <?php
-// }
-// ?>
-</script>
+
 </html>

@@ -115,6 +115,21 @@ $stationid = 1;
                 $oDB->query("INSERT INTO LabelHistory (`TraceStationId`,`LabelHistoryQuantityOk`,`LabelHistoryLabelValue`) VALUES (?,?,?)",$stationid,$quantity,$rcode);
                 $_SESSION['message'] = "<h1 style='background-color:green;'>Thêm thành công mã tem ".$rcode." số lượng ".$quantity."</h1>";
                 header('Location:?');
+
+                if (isset($_SESSION['Uploadlist'])) {
+                    $key = count($_SESSION['Uploadlist']);
+                    if ($key>20) {
+                        array_shift($_SESSION['Uploadlist']);
+                    }
+                    $_SESSION['Uploadlist'][$key]['value']=$rcode;
+                    $_SESSION['Uploadlist'][$key]['qty']=$quantity;
+                    $_SESSION['Uploadlist'][$key]['mother']=$rcode;
+                } else {
+                    $_SESSION['Uploadlist'][0]['value']=$rcode;
+                    $_SESSION['Uploadlist'][0]['qty']=$quantity;
+                    $_SESSION['Uploadlist'][$key]['mother']=$rcode;
+                }
+
             }else{
                 $_SESSION['message'] = "<h1 style='background-color:red;'>Không thành công, bạn vừa nhập sai mã vào ô xác nhận, mã tại ô xác nhận phải trùng với mã ban đầu.</h1>";
                 header('Location:?');
@@ -137,23 +152,21 @@ $stationid = 1;
     </table>
     </form>
 
+    <?php
+        if (isset($_SESSION['Uploadlist'])) {
+            $newarray = array_reverse($_SESSION['Uploadlist'], true);
+            echo "<table style=''>";
+            echo "<tr><th>Code</th><th>QTy</th><th>Parent Code</th><th>Status</th></tr>";
+            foreach ($newarray as $key => $value) {
+                echo "<tr><td>".$value['value']."</td><td>".$value['qty']."</td><td>".$value['mother']."</td><td Style='background-color:green;'>Ok</td></tr>";
+            }
+            echo "</table>";
+        } 
+    ?>
 
 </body>
 
 <script>
-// <?php
-// if (isset($_POST['code'])&&$_POST['code']!='') {
-// ?>
-//             $(document).ready(function() {
-//             $(window).keydown(function(event){
-//                 if(event.keyCode == 13) {
-//                 event.preventDefault();
-//                 return false;
-//                 }
-//             });
-//             });
-// <?php
-// }
-// ?>
+
 </script>
 </html>

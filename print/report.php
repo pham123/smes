@@ -123,6 +123,7 @@ $oDB = new db();
               </div>
           </form>
         </div>
+        <br>
         <div class="table-responsive">
         <?php
         echo "<table class='table table-bordered' id='dataTable' width='100%' cellspacing='0'>";

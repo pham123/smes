@@ -1,0 +1,3 @@
+2019-12-25 14:19:32	quality	dongpx	Update	QualityIssuelistLotNo	ANBVNB	2
+2019-12-25 14:19:34	quality	dongpx	Update	QualityIssuelistNgQuantity	81	2
+2019-12-25 14:19:42	quality	dongpx	Update	QualityIssuelistDefectiveContent	dsjhfdjshf	2

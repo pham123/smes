@@ -71,8 +71,8 @@ $newDB->where('ProductsOption', 4);
                       </div>
                     </div>
                     <div class="form-row" v-for="(item, index) in items">
-                      <div class="form-group col-md-3">
-                        <label>Mã hàng <sup class="text-danger">*</sup></label>
+                      <div class="form-group col-12">
+                        <label>{{index+1}}.Mã hàng <sup class="text-danger">*</sup></label>
                         <v-select 
                         placeholder="chọn sản phẩm"
                         :options="products_data" 
@@ -81,8 +81,7 @@ $newDB->where('ProductsOption', 4);
                         class="form-control"
                         name="ProductsId[]"
                         required
-                        v-model="item.ProductsId"
-                        @input="onProductsChange(index)">
+                        v-model="item.ProductsId">
                           <template #search="{attributes, events}">
                           <input
                             class="vs__search"
@@ -94,20 +93,20 @@ $newDB->where('ProductsOption', 4);
                         </v-select>
                       </div>
                       <input type="hidden" name="ProductsId[]" required :value="item.ProductsId">
-                      <div class="form-group col-md-3">
+                      <div class="form-group col-md-4">
                         <label>Số lượng <sup class="text-danger">*</sup></label>
-                        <input type="number" required name="ProductsQty[]" v-model="item.ProductsQty" class="form-control">
+                        <input type="number" required name="ProductsQty[]" :onkeyup="calculateMoney(item)" v-model="item.ProductsQty" class="form-control">
                       </div>
-                      <div class="form-group col-md-3">
+                      <div class="form-group col-md-4">
                         <label>Đơn giá</label>
-                        <input type="number" name="ProductsUnitPrice[]" v-model="item.ProductsUnitPrice" class="form-control" required>
+                        <input type="number" name="ProductsUnitPrice[]" :onkeyup="calculateMoney(item)" v-model="item.ProductsUnitPrice" class="form-control" required>
                       </div>
-                      <div class="form-group col-md-3">
+                      <div class="form-group col-md-4">
                         <label>Thành tiền</label>
-                        <input type="number" v-model="item.ProductsPrice" class="form-control">
+                        <input type="text" readonly="true" v-model="item.ProducstMoney" class="form-control">
                       </div>
                     </div>
-                    <small class="mb-3"><a href="#" class="text-primary" @click="addNewItem()">Add more product</a> | <a href="#" class="text-danger" @click="removeLastItem()">Remove last product</a></small>
+                    <small class="d-block my-3"><a href="#" class="text-primary" @click="addNewItem()">Add more product</a> | <a href="#" class="text-danger" @click="removeLastItem()">Remove last product</a></small>
                     <div class="">
                       <button class="btn btn-primary float-right"><i class="fas fa-arrow-right"></i>&nbsp;Import</button>
                     </div>
@@ -177,12 +176,12 @@ $newDB->where('ProductsOption', 4);
       new Vue({
         el: '#import_spare_part',
         data: {
-          items:[{ProductsId:'',ProductsQty: '', ProductsUnitPrice:''}],
+          items:[{ProductsId:'',ProductsQty: '', ProductsUnitPrice:'', ProducstMoney:''}],
           products_data: []
         },
         methods: {
           addNewItem(){
-            this.items.push({ProductsId: null, ProductsQty: '', ProductUnitPrice: ''})
+            this.items.push({ProductsId: null, ProductsQty: '', ProductUnitPrice: '', ProducstMoney:''})
           },
           removeLastItem(){
             if(this.items.length == 1)
@@ -191,8 +190,8 @@ $newDB->where('ProductsOption', 4);
             }
             this.items.splice(-1,1);
           },
-          onProductsChange(index){
-            
+          calculateMoney(item){
+            item.ProducstMoney = parseFloat(item.ProductsQty) * parseFloat(item.ProductsUnitPrice);
           }
         },
         created: function(){

@@ -120,7 +120,9 @@ $prestation = 1;
                 header('Location:?');
                 exit();
             }
-
+            //Kiem tra so luong OK ko vuot qua so luong Ok cua cong doan truoc
+            
+            $stqty = $prehistory['LabelHistoryQuantityOk'];
             if($_POST['rcode']==$no){
                 //kiểm tra số lượng với số lượng tiêu chuẩn
                 if ($quantity >= 0 && $quantity <= $stqty ) {

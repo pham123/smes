@@ -75,8 +75,8 @@ $newDB->where('ProductsOption', 4);
                       </div>
                     </div>
                     <div class="form-row" v-for="(item, index) in items">
-                      <div class="form-group col-md-4">
-                        <label>Mã hàng <sup class="text-danger">*</sup></label>
+                      <div class="form-group col-md-12 ">
+                        <label>{{index+1}}. Mã hàng <sup class="text-danger">*</sup></label>
                         <v-select 
                         placeholder="chọn sản phẩm"
                         :options="products_data" 
@@ -97,16 +97,16 @@ $newDB->where('ProductsOption', 4);
                         </v-select>
                       </div>
                       <input type="hidden" name="ProductsId[]" required :value="item.ProductsId">
-                      <div class="form-group col-md-4">
+                      <div class="form-group col-md-6">
                         <label>Số lượng <sup class="text-danger">*</sup></label>
                         <input type="number" required name="ProductsQty[]" v-model="item.ProductsQty" class="form-control" placeholder="Nhập vào số lượng xuất" :onkeyup="checkMaxVal(item)">
                       </div>
-                      <div class="form-group col-md-4">
+                      <div class="form-group col-md-6">
                         <label>Lý do xuất</label>
                         <input type="text" placeholder="Nhập vào thông tin sử dụng" class="form-control" name="ExportsReason[]" v-model="item.ExportsReason">
                       </div>
                     </div>
-                    <small class="mb-3"><a href="#" class="text-primary" @click="addNewItem()">Add more product</a> | <a href="#" class="text-danger" @click="removeLastItem()">Remove last product</a></small>
+                    <small class="d-block my-3"><a href="#" class="text-primary" @click="addNewItem()">Add more product</a> | <a href="#" class="text-danger" @click="removeLastItem()">Remove last product</a></small>
                     <div class="">
                       <button class="btn btn-primary float-right"><i class="fas fa-arrow-right"></i>&nbsp;Export</button>
                     </div>

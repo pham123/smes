@@ -42,65 +42,6 @@ if (!isset($_SESSION[_site_]['userid'])) {
   <!-- Page Wrapper -->
   <div id="wrapper">
 
-    <!-- Sidebar -->
-    <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
-
-      <!-- Sidebar - Brand -->
-      <a class="sidebar-brand d-flex align-items-center justify-content-center" href="" Style='background-color:white;'>
-        <div class="sidebar-brand-icon rotate-n-15">
-          <img src="../img/hallalogo.png" alt="logo" height="45" >
-        </div>
-        <div class="sidebar-brand-text mx-3" Style='Color:#22356f;font-size: 3em'>HEV</div>
-      </a>
-
-      <!-- Divider -->
-      <hr class="sidebar-divider my-0">
-
-      <!-- Nav Item - Dashboard -->
-      <li class="nav-item active">
-        <a class="nav-link" href="index.html">
-          <i class="fas fa-fw fa-tachometer-alt"></i>
-          <span>Trang chủ</span></a>
-      </li>
-
-      <!-- Divider -->
-      <hr class="sidebar-divider">
-
-      <!-- Heading -->
-      <div class="sidebar-heading">
-        Thông tin
-      </div>
-      <!-- Nav Item - Charts -->
-      <li class="nav-item">
-          <a class="nav-link" href="#">
-          <i class="fas fa-fw fa-calendar-alt"></i>
-          <span><?php echo date('Y-m-d H:i') ?></span></a>
-      </li>
-
-      <!-- Nav Item - Tables -->
-      <!-- <li class="nav-item">
-        <a class="nav-link" href="#">
-          <i class="fas fa-fw fa-dollar-sign"></i>
-          <span>23,234.20 VNĐ</span></a>
-      </li>
-
-      <li class="nav-item">
-          <a class="nav-link" href="#">
-            <i class="fas fa-fw fa-won-sign"></i>
-            <span>19.25 VNĐ</span></a>
-        </li> -->
-
-      <!-- Divider -->
-      <hr class="sidebar-divider d-none d-md-block">
-
-      <!-- Sidebar Toggler (Sidebar) -->
-      <div class="text-center d-none d-md-inline">
-        <button class="rounded-circle border-0" id="sidebarToggle"></button>
-      </div>
-
-    </ul>
-    <!-- End of Sidebar -->
-
     <!-- Content Wrapper -->
     <div id="content-wrapper" class="d-flex flex-column">
 
@@ -108,27 +49,28 @@ if (!isset($_SESSION[_site_]['userid'])) {
       <div id="content">
 
         <!-- Topbar -->
-        <nav class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow">
+        <nav class="navbar navbar-expand navbar-light bg-primary text-white topbar mb-4 static-top shadow">
 
           <!-- Sidebar Toggle (Topbar) -->
           <button id="sidebarToggleTop" class="btn btn-link d-md-none rounded-circle mr-3">
             <i class="fa fa-bars"></i>
           </button>
+          <div class="navbar-brand rotate-n-15">
+            <img src="../img/hallalogo1.png" alt="logo" height="45" > <strong class="text-white">Halla Electronics Vina</strong>
+        </div>
 
           <!-- Topbar Search -->
           <!-- Topbar Navbar -->
-          <ul class="navbar-nav ml-auto">
+          <ul class="navbar-nav ml-auto text-white">
             <!-- Nav Item - Alerts -->
             <li class="nav-item dropdown no-arrow mx-1">
               
             </li>
 
-            <div class="topbar-divider d-none d-sm-block"></div>
-
             <!-- Nav Item - User Information -->
             <li class="nav-item dropdown no-arrow">
               <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                <span class="mr-2 d-none d-lg-inline text-gray-600 small"><?php echo $_SESSION[_site_]['userfullname']?></span>
+                <span class="mr-2 d-none d-lg-inline text-white small"><?php echo $_SESSION[_site_]['userfullname']?></span>
                 <?php
                 if(!file_exists('../user/image/user_'.$_SESSION[_site_]['userid'].'.jpg')){
                 ?>
@@ -184,7 +126,7 @@ $linkar =  array(
   // array('#',$oDB->lang('QulityList'),'Push QA issues alert','fa-list-ol'),
   array('../spare-part','SPARE PART','Control spare part','fa-boxes'),
   array('#','Tài liệu','BOM, ISO, PFMEA','fa-folder-open'),
-  array('#','Nhân viên','Information','fa-calendar'),
+  array('../employees/','Nhân viên','Information','fa-calendar'),
 
 );
 
@@ -218,18 +160,14 @@ foreach ($linkar as $key => $value) {
           <!-- Content Row -->
           <!-- Content Row -->
           <div class="row">
-              <!-- Illustrations -->
-              <div class="card shadow mb-4">
-              <!-- Approach -->
-              <div class="card shadow mb-4">
+              <div class="card shadow mb-4 w-100">
                 <div class="card-header py-3">
                   <h6 class="m-0 font-weight-bold text-primary">Thông báo</h6>
                 </div>
                 <div class="card-body">
-                  <h1>Thử nghiệm hệ thống nhập liệu sản lượng trên chuyền sản xuất</h1>
+                  <h4>Thử nghiệm hệ thống nhập liệu sản lượng trên chuyền sản xuất</h4>
                 </div>
               </div>
-            </div>
         </div>
         <!-- /.container-fluid -->
       </div>

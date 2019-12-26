@@ -190,8 +190,24 @@ $prestation = 3;
                 $oDB->query("INSERT INTO LabelList (`ProductsId`,`LabelListValue`,`LabelListMotherId`) VALUES (?,?,?)",$mothercodeinfo['ProductsId'],$mcode,$mothercodeinfo['LabelListId']);
                 $oDB->query("INSERT INTO LabelHistory (`TraceStationId`,`LabelHistoryQuantityOk`,`LabelHistoryLabelValue`) VALUES (?,?,?)",$stationid,$quantity,$mcode);
 
+
+                if (isset($_SESSION['Uploadlist'])) {
+                    $key = count($_SESSION['Uploadlist']);
+                    if ($key>20) {
+                        array_shift($_SESSION['Uploadlist']);
+                    }
+                    $_SESSION['Uploadlist'][$key]['value']=$mcode;
+                    $_SESSION['Uploadlist'][$key]['qty']=$quantity;
+                    $_SESSION['Uploadlist'][$key]['mother']=$mothercodeinfo['LabelListValue'];
+                } else {
+                    $_SESSION['Uploadlist'][0]['value']=$mcode;
+                    $_SESSION['Uploadlist'][0]['qty']=$quantity;
+                    $_SESSION['Uploadlist'][$key]['mother']=$mothercodeinfo['LabelListValue'];
+                }
+
                 $_SESSION['message'] = "<h1 style='background-color:green;'>Thêm thành công .".$mcode."</h1>";
                 header('Location:?');
+                
                 exit();
 
             } else {
@@ -232,6 +248,18 @@ $prestation = 3;
         
     </table>
     </form>
+
+    <?php
+        if (isset($_SESSION['Uploadlist'])) {
+            $newarray = array_reverse($_SESSION['Uploadlist'], true);
+            echo "<table style=''>";
+            echo "<tr><th>Code</th><th>QTy</th><th>Parent Code</th><th>Status</th></tr>";
+            foreach ($newarray as $key => $value) {
+                echo "<tr><td>".$value['value']."</td><td>".$value['qty']."</td><td>".$value['mother']."</td><td Style='background-color:green;'>Ok</td></tr>";
+            }
+            echo "</table>";
+        } 
+    ?>
 
 
 </body>

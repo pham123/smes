@@ -30,6 +30,11 @@ $oDB = new db();
 // }
 
 ?>
+<style>
+  td,th{
+    color:black;
+  }
+</style>
 
 <body id="page-top">
   <!-- Page Wrapper -->
@@ -56,12 +61,9 @@ $oDB = new db();
           inner join TraceStation ts on ts.TraceStationId = lh.TraceStationId
           inner join LabelList lbl on lbl.LabelListValue = lh.LabelHistoryLabelValue
           inner join Products prd on prd.ProductsId = lbl.ProductsId
-          ORDER BY lh.LabelHistoryId DESC LIMIT 50";
+          ORDER BY lh.LabelHistoryId DESC LIMIT 5000";
 
           $result = $oDB->fetchAll($sql);
-            // echo "<pre>";
-            // var_dump ($result);
-            // echo "</pre>";
         ?>
 
         <div class="table-responsive">
@@ -89,8 +91,8 @@ $oDB = new db();
             echo "<td>".$value['TraceStationName']."</td>";
             echo "<td>".$value['ProductsName']."</td>";
             echo "<td>".$value['ProductsNumber']."</td>";
-            echo "<td>".$value['LabelHistoryQuantityOk']."</td>";
-            echo "<td>".$value['LabelHistoryQuantityNg']."</td>";
+            echo "<td style='background-color:#73E700;'>".$value['LabelHistoryQuantityOk']."</td>";
+            echo "<td style='background-color:#F5413C;'>".$value['LabelHistoryQuantityNg']."</td>";
             echo "<td>".$value['LabelHistoryLabelValue']."</td>";
             echo "<td>".$value['LabelHistoryCreateDate']."</td>";
             echo "</tr>";

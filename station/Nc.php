@@ -17,7 +17,7 @@ $prestation = 1;
     <!-- <meta http-equiv="refresh" content="5"> -->
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Document</title>
+    <title>Trạm NC</title>
 
     <script>
         function startTime() {
@@ -40,7 +40,6 @@ $prestation = 1;
         table {
         border-collapse: collapse;
         }
-
         table, th, td {
         border: 1px solid black;
         }
@@ -72,7 +71,6 @@ $prestation = 1;
             }else{
                 // Chưa có thì tiếp tục
             }
-
             # kiểm tra code có tồn tại trong hệ thống chưa?
             $label = $oDB->query('SELECT * FROM LabelList WHERE LabelListValue = ?', $code)->fetchArray();
             if (isset($label['LabelListId'])) {
@@ -84,7 +82,6 @@ $prestation = 1;
                 $_SESSION['message'] = "Xác nhận số lượng cho mã tem :".$code;
                 echo "<span style='width:10%'>Số lượng: <span><input type='text' name='rcode' id='' value='".$code."' style='width:80%;padding:5px;margin:5px;font-size:40px;text-align:center;' readonly>";
                 echo "<br>";
-
                 echo "<span style='width:10%'>Số lượng đầu vào: <span><input type='number' name='stqty' id='' value='".$LabelPattern['LabelPatternPackingStandard']."' style='width:80%;padding:5px;margin:5px;font-size:40px;text-align:center;' readonly>";
                 echo "<br>";
                 echo "<span style='width:10%'>Số lượng: <span><input type='number' name='quantity' id='' value='' style='width:80%;padding:5px;margin:5px;font-size:40px;text-align:center;' min='1' max='".$LabelPattern['LabelPatternPackingStandard']."' autofocus required>";
@@ -92,14 +89,11 @@ $prestation = 1;
                 echo "<span style='width:10%'>Xác nhận: <input type='text' name='no' id='' value='' style='width:80%;padding:5px;margin:5px;font-size:40px;text-align:center;'  required placeholder='Đọc lại mã tem 1 lần nữa'>";
                 echo "<br>";
                 echo "<input type='submit' value='submit'>";
-        
             } else {
                 $_SESSION['message'] = "<h1 style='background-color:red;'>Mã tem ".$code." không được in ra từ hệ thống hợp lệ </h1>";
                 header('Location:?');
                 exit();
             }
-            
-        
         } elseif(isset($_POST['rcode'])&&$_POST['rcode']!=''){
             //var_dump($_POST);
             $oDB = new db();
@@ -108,9 +102,7 @@ $prestation = 1;
             $stqty = $_POST['stqty'];
            // $quantitymax = $_POST['quantitymax'];
             $no = $_POST['no'];
-
             //Kiểm tra code đã được đọc ở công đoạn trước chưa, nếu chưa đưa thông báo lỗi rồi đẩy lại
-
             $sql = "select * from LabelHistory where LabelHistoryLabelValue = ? AND TraceStationId = ?";
             $prehistory = $oDB->query($sql, $no,$prestation)->fetchArray();
 
@@ -132,10 +124,8 @@ $prestation = 1;
                     header('Location:?');
                     exit();
                 }
-
                 $oDB->query("INSERT INTO LabelHistory (`TraceStationId`,`LabelHistoryQuantityOk`,`LabelHistoryQuantityNg`,`LabelHistoryLabelValue`) VALUES (?,?,?,?)",$stationid,$quantity,$ngqty,$rcode);
                 $_SESSION['message'] = "<h1 style='background-color:green;'>Thêm thành công mã tem ".$rcode." số lượng ".$quantity."</h1>";
-
                 if (isset($_SESSION['Uploadlist'])) {
                     $key = count($_SESSION['Uploadlist']);
                     if ($key>20) {
@@ -149,9 +139,6 @@ $prestation = 1;
                     $_SESSION['Uploadlist'][0]['qty']=$quantity;
                     $_SESSION['Uploadlist'][$key]['mother']=$rcode;
                 }
-                
-                
-
                 header('Location:?');
             }else{
                 $_SESSION['message'] = "<h1 style='background-color:red;'>Không thành công, bạn vừa nhập sai mã vào ô xác nhận, mã tại ô xác nhận phải trùng với mã ban đầu.</h1>";
@@ -163,20 +150,13 @@ $prestation = 1;
             echo "<input type='text' name='code' id='' style='width:80%;padding:5px;margin:5px;font-size:40px;text-align:center;' autofocus placeholder='Nhập mã tem'>";
         }
         ?>
-        
-        
         </td></tr>
-
         <tr>
             <td colspan='3'><?php echo $mesage  = (isset($_SESSION['message'])) ? $_SESSION['message'] : '...' ;?></td>
         </tr>
 
-
-        
-        
     </table>
     </form>
-
     <?php
         if (isset($_SESSION['Uploadlist'])) {
             $newarray = array_reverse($_SESSION['Uploadlist'], true);
@@ -188,12 +168,7 @@ $prestation = 1;
             echo "</table>";
         } 
     ?>
-
-
-
-
 </body>
-
 <script>
 </script>
 </html>

@@ -20,7 +20,7 @@ $prestation = 4;
     <!-- <meta http-equiv="refresh" content="5"> -->
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Document</title>
+    <title>Trạm Final Inspection</title>
 
     <script>
         function startTime() {
@@ -65,7 +65,6 @@ $prestation = 4;
         if (isset($_POST['code'])&&$_POST['code']!='') {
             $oDB = new db();
             $code = $_POST['code'];
-
             # Kiểm tra xem tem này đã được khai báo tại công đoạn này chưa
             $LabelHistory = $oDB->query('SELECT * FROM LabelHistory WHERE TraceStationId = ? AND LabelHistoryLabelValue =? ', $stationid,$code)->fetchArray();
             //var_dump();
@@ -76,7 +75,6 @@ $prestation = 4;
             }else{
                 // Chưa có thì tiếp tục
             }
-
             # kiem tra mã sản phẩm
             $Productsnumber = substr($code, 0, 11);
             $product = $oDB->query('SELECT * FROM Products WHERE ProductsNumber = ?', $Productsnumber)->fetchArray();
@@ -86,7 +84,6 @@ $prestation = 4;
                 i_func('station');
                 $LabelPattern = checkpattern($stationid,$product['ProductsId'],$code);
             }
-
             # kiểm tra code có tồn tại trong hệ thống chưa?
             $label = $oDB->query('SELECT * FROM LabelList WHERE LabelListValue = ?', $code)->fetchArray();
             #nếu có rồi
@@ -99,25 +96,21 @@ $prestation = 4;
                 $_SESSION['message'] = "Xác nhận số lượng cho mã tem :".$code;
                 echo "<span style='width:10%'>Số lượng: <span><input type='text' name='rcode' id='' value='".$code."' style='width:80%;padding:5px;margin:5px;font-size:40px;text-align:center;' readonly>";
                 echo "<br>";
-
                 echo "<span style='width:10%'>Số lượng: <span><input type='number' name='quantity' id='' value='".$LabelPattern['LabelPatternPackingStandard']."' style='width:80%;padding:5px;margin:5px;font-size:40px;text-align:center;' min='1' max='".$LabelPattern['LabelPatternPackingStandard']."'>";
                 echo "<br>";
                 echo "<span style='width:10%'>Xác nhận: <input type='text' name='no' id='' value='' style='width:80%;padding:5px;margin:5px;font-size:40px;text-align:center;' autofocus required placeholder='Đọc lại mã tem 1 lần nữa'>";
                 echo "<br>";
                 echo "<input type='submit' value='submit'>";
-        
             } else {
                 #nếu mã tem chưa có trong hệ thống thì yêu cầu nhập mã mother
                 $_SESSION['message'] = "Nhập mã tem gốc cho tem :".$code;
                 echo "<span style='width:10%'>Số lượng: <span><input type='text' name='mcode' id='' value='".$code."' style='width:80%;padding:5px;margin:5px;font-size:40px;text-align:center;' readonly>";
                 echo "<br>";
-
                 echo "<span style='width:10%'>Số lượng: <span><input type='number' name='quantity' id='' value='".$LabelPattern['LabelPatternPackingStandard']."' style='width:80%;padding:5px;margin:5px;font-size:40px;text-align:center;' min='1' max='".$LabelPattern['LabelPatternPackingStandard']."'>";
                 echo "<br>";
                 echo "<span style='width:10%'>Xác nhận: <input type='text' name='mothercode' id='' value='' style='width:80%;padding:5px;margin:5px;font-size:40px;text-align:center;' autofocus required placeholder='Đọc mã tem gốc'>";
                 echo "<br>";
                 echo "<input type='submit' value='submit'>";
-
             }
             
         

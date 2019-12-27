@@ -224,7 +224,10 @@ $prestation = 4;
             echo "<table style=''>";
             echo "<tr><th>Code</th><th>QTy</th><th>Parent Code</th><th>Status</th></tr>";
             foreach ($newarray as $key => $value) {
-                echo "<tr><td>".$value['value']."</td><td>".$value['qty']."</td><td>".$value['mother']."</td><td Style='background-color:green;'>Ok</td></tr>";
+                $a = (isset($value['value'])) ? $value['value'] : '' ;
+                $b = (isset($value['mother'])) ? $value['mother'] : '' ;
+                $c = (isset($value['qty'])) ? $value['qty'] : '' ;
+                echo "<tr><td>".$a."</td><td>".$c."</td><td>".$b."</td><td Style='background-color:green;'>Ok</td></tr>";
             }
             echo "</table>";
         } 

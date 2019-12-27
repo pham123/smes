@@ -26,5 +26,8 @@
     echo $page_css;
   }
   ?>
+  tr,td{
+    color:black;
+  }
   </style>
 </head>

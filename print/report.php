@@ -55,7 +55,7 @@ $oDB = new db();
           $enddate = (isset($_GET['end'])) ? $_GET['end'] : date('Y-m-d') ;
           $Productsid = (isset($_GET['Productsid'])) ? $_GET['Productsid'] : '' ;
 
-          if (isset($_GET['Productsid'])||$Productsid!='') {
+          if (isset($_GET['Productsid'])&&$Productsid!='') {
             $sql = "select SUM(lh.LabelHistoryQuantityOk) as totalOk,
                     SUM( CASE WHEN lh.TraceStationId = 1 THEN lh.LabelHistoryQuantityOk ELSE 0 END) AS DCOK, 
                     SUM( CASE WHEN lh.TraceStationId = 3 THEN lh.LabelHistoryQuantityOk ELSE 0 END) AS NCOK, 
@@ -106,6 +106,7 @@ $oDB = new db();
               <!-- <input type="date" class='form-control' name='start'> -->
                   <span><?php echo $oDB->lang('Products') ?></span>
                   <select name="Productsid" id="" class='selectpicker show-tick' data-live-search="true" data-style="btn-info" data-width="100%">
+                    <option value=""></option>
                     <?php 
                     $model = $oDB->sl_all('Products',1);
                     foreach ($model as $key => $value) {

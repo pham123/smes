@@ -18,7 +18,7 @@ $stationid = 1;
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="icon" type="image/png" href="../img/halla.png" />
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>QR code record</title>
+    <title>Trạm Die Casting</title>
 
     <script>
         function startTime() {
@@ -73,7 +73,6 @@ $stationid = 1;
             }else{
                 // Chưa có thì tiếp tục
             }
-
             # kiểm tra code có tồn tại trong hệ thống chưa?
             $label = $oDB->query('SELECT * FROM LabelList WHERE LabelListValue = ?', $code)->fetchArray();
             if (isset($label['LabelListId'])) {
@@ -83,25 +82,20 @@ $stationid = 1;
                 //Lấy về thông tin 
                 // $LabelPattern = $oDB->query('SELECT * FROM LabelPattern WHERE TraceStationId = ? AND ProductsId =? ', $stationid,$label['ProductsId'])->fetchArray();
                 $Products = $oDB->query('SELECT * FROM Products WHERE ProductsId =? ', $label['ProductsId'])->fetchArray();
-        
                 //Kiểm tra lại mẫu tem xem có phù hợp không
                 $_SESSION['message'] = "Xác nhận số lượng cho mã tem :".$code;
                 echo "<span style='width:10%'>Số lượng: <span><input type='text' name='rcode' id='' value='".$code."' style='width:80%;padding:5px;margin:5px;font-size:40px;text-align:center;' readonly>";
                 echo "<br>";
-
                 echo "<span style='width:10%'>Số lượng: <span><input type='number' name='quantity' id='' value='".$LabelPattern['LabelPatternPackingStandard']."' style='width:80%;padding:5px;margin:5px;font-size:40px;text-align:center;' min='1' max='".$LabelPattern['LabelPatternPackingStandard']."'>";
                 echo "<br>";
                 echo "<span style='width:10%'>Xác nhận: <input type='text' name='no' id='' value='' style='width:80%;padding:5px;margin:5px;font-size:40px;text-align:center;' autofocus required placeholder='Đọc lại mã tem 1 lần nữa'>";
                 echo "<br>";
                 echo "<input type='submit' value='submit'>";
-        
             } else {
                 $_SESSION['message'] = "<h1 style='background-color:red;'>Mã tem ".$code." không được in ra từ hệ thống hợp lệ </h1>";
                 header('Location:?');
                 exit();
             }
-            
-        
         } elseif(isset($_POST['rcode'])&&$_POST['rcode']!=''){
             //var_dump($_POST);
             $oDB = new db();
@@ -129,29 +123,21 @@ $stationid = 1;
                     $_SESSION['Uploadlist'][0]['qty']=$quantity;
                     $_SESSION['Uploadlist'][$key]['mother']=$rcode;
                 }
-
             }else{
                 $_SESSION['message'] = "<h1 style='background-color:red;'>Không thành công, bạn vừa nhập sai mã vào ô xác nhận, mã tại ô xác nhận phải trùng với mã ban đầu.</h1>";
                 header('Location:?');
             }
-
         } else {
             //$_SESSION['message'] = "Đọc mã tem";
             echo "<input type='text' name='code' id='' style='width:80%;padding:5px;margin:5px;font-size:40px;text-align:center;' autofocus placeholder='Nhập mã tem'>";
         }
         ?>
-        
-        
         </td></tr>
-
         <tr>
             <td colspan='3'><?php echo $mesage  = (isset($_SESSION['message'])) ? $_SESSION['message'] : '...' ;?></td>
         </tr>
-        
-        
     </table>
     </form>
-
     <?php
         if (isset($_SESSION['Uploadlist'])) {
             $newarray = array_reverse($_SESSION['Uploadlist'], true);
@@ -163,10 +149,7 @@ $stationid = 1;
             echo "</table>";
         } 
     ?>
-
 </body>
-
 <script>
-
 </script>
 </html>

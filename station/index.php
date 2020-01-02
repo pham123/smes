@@ -15,7 +15,6 @@ i_func('db');
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Document</title>
-
     <script>
         function startTime() {
         var today = new Date();
@@ -70,7 +69,5 @@ i_func('db');
         </td></tr>
     </table>
     </form>
-
-
 </body>
 </html>

@@ -59,6 +59,8 @@ $oDB = new db();
                 
               </select>
               </td>
+              <td>Status:</td>
+              <td><select class="form-control" id="status_filter"><option value="0">All spare part</option><option value="1">Lower safety spare part</option></td>
           </tr>
         </tbody>
       </table>
@@ -74,15 +76,18 @@ $oDB = new db();
           echo "</thead>";
           echo "<tbody>";
           foreach ($table_data as $key => $value) {
-            if($value['ProductsStock'] < $value['ProductsSafetyStk'] )
-            {
+
               echo "<tr>";
               foreach ($tablearr as $key2 => $value2) {
                   if ($key2==0) {
                           echo "<td><a href='".$table_link.$value['id']."'>".$value[$value2]."</a></td>";
                   }else{
                     if($key2 == 5){
-                      echo "<td class='bg-danger text-white'>".$value[$value2]."</td>";
+                      if($value['ProductsStock'] < $value['ProductsSafetyStk'] ){
+                        echo "<td class='bg-danger text-white'>".$value[$value2]."</td>";
+                      }else{
+                        echo "<td class=''>".$value[$value2]."</td>";
+                      }
                     }else{
                       echo "<td>".$value[$value2]."</td>";
                     }
@@ -90,7 +95,6 @@ $oDB = new db();
                 
               }
               echo "</tr>";
-            }
           }
           echo "</tbody>";
           echo "</table>";
@@ -160,15 +164,30 @@ $oDB = new db();
   <script>
     $.fn.dataTable.ext.search.push(
       function( settings, data, dataIndex ) {
-          var ct_filter = $('#category_filter').val();
-          var ct_value = data[7];
-          if(ct_filter == '')
-          {
-            return true;
-          }
-          if ( ct_filter == ct_value )
-          {
+          let ct_filter = $('#category_filter').val();
+          let status = $('#status_filter').val();
+          let ct_value = data[7];
+          let stockValue = data[5];
+          let safeValue = data[6];
+          if(status == '0'){
+            if(ct_filter == '')
+            {
               return true;
+            }
+            if ( ct_filter == ct_value )
+            {
+                return true;
+            }
+          }
+          if(status == '1'){
+            if(ct_filter == '' && stockValue < safeValue)
+            {
+              return true;
+            }
+            if ( ct_filter == ct_value && stockValue < safeValue)
+            {
+                return true;
+            }
           }
           return false;
       }
@@ -176,6 +195,9 @@ $oDB = new db();
     $(function () {
       var data_table = $('#dataTable').DataTable();
       $('#category_filter').change(function(){
+        data_table.draw();
+      });
+      $('#status_filter').change(function(){
         data_table.draw();
       });
 

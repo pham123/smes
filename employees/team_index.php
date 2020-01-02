@@ -4,26 +4,17 @@ ob_start();
 date_default_timezone_set('Asia/Ho_Chi_Minh');
 require('../config.php');
 require('../function/db_lib.php');
-require('../function/MysqliDb.php');
 require('../function/function.php');
 $user = New Users();
 $user->set($_SESSION[_site_]['userid']);
 $user->module = basename(dirname(__FILE__));
 check($user->acess());
 $pagetitle = $user->module;
-$page_heading = 'Employees';
+$page_heading = 'Teams';
 require('../views/template-header.php');
 require('../function/template.php');
+$heading_title = 'Teams';
 $oDB = new db();
-
-$table_header  = 'EmployeesName,EmployeesCode,TeamsName,SectionName,EmployeesPosition,DivisionsName,Picture';
-//using new db library
-$newDB = new MysqliDb(_DB_HOST_, _DB_USER_, _DB_PASS_,_DB_name_);
-$newDB->join("divisions d", "e.DivisionsId=d.DivisionsId", "LEFT");
-$newDB->join("teams t", "e.TeamsId=t.TeamsId", "LEFT");
-$newDB->join("section s", "e.SectionId=s.SectionId", "LEFT");
-$table_data = $newDB->get ("employees e", null, "e.EmployeesId as id,e.EmployeesName,e.EmployeesCode,t.TeamsName,s.SectionName,e.EmployeesPosition,d.DivisionsName, concat('<img src=\"image/small/img_',e.EmployeesId, '.jpg\" style=\"height: 45px;\"/>') as Picture");
-$table_link = "editemployee.php?id=";
 ?>
 
 <body id="page-top">
@@ -43,8 +34,13 @@ $table_link = "editemployee.php?id=";
 
         <!-- Begin Page Content -->
         <div class="container-fluid">
+        <?php 
+          $table_header  = 'TeamsId,TeamsName';
+          $table_data = $oDB->sl_col_all($table_header,'teams',1);
+        ?>
 
         <div class="table-responsive">
+          <a href="Team.php" class="btn btn-secondary btn-sm"><?php echo $oDB->lang('AddTeam')?></a>
           <?php include('../views/template_table.php') ?>
         </div>
         </div>

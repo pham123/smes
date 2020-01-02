@@ -63,7 +63,7 @@ $employee = $oDB->sl_one('employees', 'EmployeesId = '.$_GET['id']);
                 <div class="col-md-6">
                   <p><?php echo $oDB->lang('EmployeesPosition') ?> <sup class="text-danger">*</sup></p>
                   <select name="EmployeesPosition" id="" class="form-control">
-                    <?php 
+                    <?php
                     $pos = $oDB->sl_all('positions',1);
                     echo "<option value=''>select position</option>";
                     foreach ($pos as $key => $value) {
@@ -89,6 +89,42 @@ $employee = $oDB->sl_one('employees', 'EmployeesId = '.$_GET['id']);
                         echo "<option selected value='".$value['DivisionsId']."'>".$value['DivisionsName']."</option>";
                       }else{
                         echo "<option value='".$value['DivisionsId']."'>".$value['DivisionsName']."</option>";
+                      }
+                    }
+                    ?>
+                    
+                  </select>
+                </div>
+
+                <div class="col-md-6">
+                  <p><?php echo $oDB->lang('Teams') ?> <sup class="text-danger">*</sup></p>
+                  <select name="TeamsId" id="" class="form-control">
+                    <?php 
+                    $tems = $oDB->sl_all('teams',1);
+                    echo "<option value=''>select team</option>";
+                    foreach ($tems as $key => $value) {
+                      if($employee['TeamsId'] == $value['TeamsId']){
+                        echo "<option selected value='".$value['TeamsId']."'>".$value['TeamsName']."</option>";
+                      }else{
+                        echo "<option value='".$value['TeamsId']."'>".$value['TeamsName']."</option>";
+                      }
+                    }
+                    ?>
+                    
+                  </select>
+                </div>
+
+                <div class="col-md-6">
+                  <p><?php echo $oDB->lang('Section') ?> <sup class="text-danger">*</sup></p>
+                  <select name="SectionId" id="" class="form-control">
+                    <?php 
+                    $secs = $oDB->sl_all('section',1);
+                    echo "<option value=''>select section</option>";
+                    foreach ($secs as $key => $value) {
+                      if($employee['SectionId'] == $value['SectionId']){
+                        echo "<option selected value='".$value['SectionId']."'>".$value['SectionName']."</option>";
+                      }else{
+                        echo "<option value='".$value['SectionId']."'>".$value['SectionName']."</option>";
                       }
                     }
                     ?>
@@ -163,8 +199,6 @@ $employee = $oDB->sl_one('employees', 'EmployeesId = '.$_GET['id']);
     $(function () {
       $('selectpicker').selectpicker();
     });
-
-
 
   </script>
 

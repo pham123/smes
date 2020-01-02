@@ -21,13 +21,24 @@
       <li class="nav-item active">
         <a class="nav-link" style="padding: 5px 16px;" href="employee.php">
           <i class="fas fa-plus"></i>
-          <span>Tạo mới</span></a>
+          <span>Add new employee</span></a>
       </li>
       <li class="nav-item active">
         <a class="nav-link" style="padding: 5px 16px;" href="position_index.php">
           <i class="fas fa-arrow-right"></i>
           <span>Position</span></a>
       </li>
+      <li class="nav-item active">
+        <a class="nav-link" style="padding: 5px 16px;" href="team_index.php">
+          <i class="fas fa-arrow-right"></i>
+          <span>Teams</span></a>
+      </li>
+      <li class="nav-item active">
+        <a class="nav-link" style="padding: 5px 16px;" href="section_index.php">
+          <i class="fas fa-arrow-right"></i>
+          <span>Sections</span></a>
+      </li>
+
 
       <!-- Divider -->
       <hr class="sidebar-divider d-none d-md-block">

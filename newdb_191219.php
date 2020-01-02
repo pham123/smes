@@ -17,6 +17,8 @@ $sql[] = "CREATE TABLE employees (
   EmployeesPosition VARCHAR(50),
   EmployeesInformation VARCHAR(100),
   DivisionsId INT(6) UNSIGNED,
+  TeamsId INT(6) UNSIGNED,
+  SectionId INT(6) UNSIGNED,
   EmployeesStatus TINYINT UNSIGNED DEFAULT 1,
   EmployeesEmail VARCHAR(30) UNIQUE NOT NULL,
   EmployeesImage VARCHAR(20),

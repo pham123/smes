@@ -4,28 +4,20 @@ ob_start();
 date_default_timezone_set('Asia/Ho_Chi_Minh');
 require('../config.php');
 require('../function/db_lib.php');
-require('../function/MysqliDb.php');
 require('../function/function.php');
 $user = New Users();
 $user->set($_SESSION[_site_]['userid']);
 $user->module = basename(dirname(__FILE__));
 check($user->acess());
 $pagetitle = $user->module;
-$page_heading = 'Employees';
+$page_heading = 'Add new section';
 require('../views/template-header.php');
 require('../function/template.php');
 $oDB = new db();
 
-$table_header  = 'EmployeesName,EmployeesCode,TeamsName,SectionName,EmployeesPosition,DivisionsName,Picture';
-//using new db library
-$newDB = new MysqliDb(_DB_HOST_, _DB_USER_, _DB_PASS_,_DB_name_);
-$newDB->join("divisions d", "e.DivisionsId=d.DivisionsId", "LEFT");
-$newDB->join("teams t", "e.TeamsId=t.TeamsId", "LEFT");
-$newDB->join("section s", "e.SectionId=s.SectionId", "LEFT");
-$table_data = $newDB->get ("employees e", null, "e.EmployeesId as id,e.EmployeesName,e.EmployeesCode,t.TeamsName,s.SectionName,e.EmployeesPosition,d.DivisionsName, concat('<img src=\"image/small/img_',e.EmployeesId, '.jpg\" style=\"height: 45px;\"/>') as Picture");
-$table_link = "editemployee.php?id=";
 ?>
 
+</style>
 <body id="page-top">
   <!-- Page Wrapper -->
   <div id="wrapper">
@@ -43,9 +35,21 @@ $table_link = "editemployee.php?id=";
 
         <!-- Begin Page Content -->
         <div class="container-fluid">
+        <div class="">
+          <form action="listen-create-section.php" method="post">
+              <div class="row">
+                <div class="col-md-6">
+                  <p><?php echo $oDB->lang('SectionName') ?></p>
+                  <input type="text" name="SectionName" id="" class='form-control' required>
+                </div>
 
-        <div class="table-responsive">
-          <?php include('../views/template_table.php') ?>
+                <div class="col-md-6">
+                  <p>&nbsp;</p>
+                  <button type="submit" class='btn btn-primary btn-block'><?php echo $oDB->lang('Submit') ?></button>
+                </div>
+
+              </div>
+          </form>
         </div>
         </div>
         <!-- /.container-fluid -->
@@ -99,6 +103,7 @@ $table_link = "editemployee.php?id=";
     $(function () {
       $('selectpicker').selectpicker();
     });
+
   </script>
 
 </body>

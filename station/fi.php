@@ -196,7 +196,7 @@ $prestation = 4;
             } else {
                 # code...
                 
-                $_SESSION['message'] = "<h1 style='background-color:red;'>Đã có lỗi xảy ra </h1>";
+                $_SESSION['message'] = "<h1 style='background-color:red;'>Đã có lỗi xảy ra, label gốc bạn vừa nhập vào là :".$mothercode." không hợp lệ</h1>";
                 header('Location:?');
                 exit();
             }

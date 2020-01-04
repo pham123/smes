@@ -35,12 +35,12 @@ $oDB = new db();
         <!-- Begin Page Content -->
         <div class="container-fluid">
         <?php 
-          $table_header  = 'ProductsNumber,ProductsName,ProductsEngName,ProductsDescription,ProductsUnit,ProductsStock,ProductsSafetyStk,CategoriesName';
+          $table_header  = 'ProductsNumber,ProductsName,ProductsEngName,ProductsLocation,ProductsDescription,ProductsUnit,ProductsStock,ProductsSafetyStk,CategoriesName';
           
           $newDb = new MysqliDb(_DB_HOST_, _DB_USER_, _DB_PASS_,_DB_name_);
           $newDb->where('p.ProductsOption', 4);
           $newDb->join("Categories c", "p.ProductsCategory=c.CategoriesId", "LEFT");
-          $table_data = $newDb->get ("Products p", null, "p.ProductsId as id,p.ProductsNumber,p.ProductsName,p.ProductsEngName,p.ProductsDescription,p.ProductsUnit,p.ProductsStock,p.ProductsSafetyStk,c.CategoriesName");
+          $table_data = $newDb->get ("Products p", null, "p.ProductsId as id,p.ProductsNumber,p.ProductsName,p.ProductsEngName,p.ProductsLocation,p.ProductsDescription,p.ProductsUnit,p.ProductsStock,p.ProductsSafetyStk,c.CategoriesName");
           $table_link = "editsparepart.php?id=";
           ?>
 

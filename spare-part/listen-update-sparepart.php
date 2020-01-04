@@ -47,7 +47,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 		$oDB ->query($update_sql);
 
 		if(isset($_FILES["fileToUpload"]["name"])){
-			uploadProductPicture($product_id);
+			uploadProductPicture();
 		}
 		
 		$_SESSION['last'] = $product_id;
@@ -63,7 +63,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 }
 
 // Phần này xử lý file upload lên
-function uploadProductPicture($product_id) {
+function uploadProductPicture() {
 			
 	$target_dir = "image/";
 	$target_file = $target_dir . basename($_FILES["fileToUpload"]["name"]);
@@ -88,16 +88,16 @@ function uploadProductPicture($product_id) {
 			echo "The file ". basename( $_FILES["fileToUpload"]["name"]). " has been uploaded.";
 			//Đổi tên
 			// rename($target_file, "image/".$_FILES["fileToUpload"]["name"].".jpg");
-			rename($target_file, "image/img_".$product_id.".jpg");
+			rename($target_file, "image/".$_POST['ProductsNumber'].".jpg");
 			
 			//thay doi kich thuoc anh
-				$resize = new ResizeImage("image/img_".$product_id.".jpg");
+				$resize = new ResizeImage("image/".$_POST['ProductsNumber'].".jpg");
 				$resize->resizeTo(1500, 1500, 'maxWidth');
-				$resize->saveImage("image/img_".$product_id.".jpg");
+				$resize->saveImage("image/".$_POST['ProductsNumber'].".jpg");
 
-				$resize = new ResizeImage("image/img_".$product_id.".jpg");
+				$resize = new ResizeImage("image/".$_POST['ProductsNumber'].".jpg");
 				$resize->resizeTo(100, 100, 'maxWidth');
-				$resize->saveImage("image/small/img_".$product_id.".jpg");
+				$resize->saveImage("image/small/".$_POST['ProductsNumber'].".jpg");
 
 			return true;
 

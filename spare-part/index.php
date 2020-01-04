@@ -45,7 +45,7 @@ $oDB = new db();
           ?>
 
         <div class="table-responsive">
-        <table border="0" cellspacing="5" cellpadding="5">
+        <table border="0" cellspacing="5" cellpadding="5" class="display nowrap">
           <tbody><tr>
               <td>Category:</td>
               <td>
@@ -155,9 +155,9 @@ $oDB = new db();
       function( settings, data, dataIndex ) {
           let ct_filter = $('#category_filter').val();
           let status = $('#status_filter').val();
-          let ct_value = data[7];
-          let stockValue = data[5];
-          let safeValue = data[6];
+          let ct_value = data[8];
+          let stockValue = data[6];
+          let safeValue = data[7];
           if(status == '0'){
             if(ct_filter == '')
             {

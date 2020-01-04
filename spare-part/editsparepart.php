@@ -101,7 +101,7 @@ $product = $oDB->sl_one('products', 'ProductsId = '.$_GET['id']);
                   <p><?php echo $oDB->lang('EditPicture', 'Edit Picture') ?></p>
                   <input type="file" id='ingredient_file' name='fileToUpload' class="form-control" >
                   <br>  
-                  <img style="max-height: 300px;" src="./image/img_<?php echo $product['ProductsId'] ?>.jpg" alt="">
+                  <img style="max-height: 300px;" src="./image/<?php echo $product['ProductsNumber'] ?>.jpg" alt="">
                 </div>
 
                 <div class="col-md-6">

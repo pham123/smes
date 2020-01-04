@@ -42,9 +42,10 @@ if (isset($_POST['update'])) {
 $sql = "SELECT table_name FROM information_schema.tables
 WHERE table_schema = 'smes';";
 $rs = $crdb->query($sql)->fetchAll();
+// var_dump($rs);
 $arr = array();
 foreach ($rs as $key => $value) {
-    $arr[]=$value['TABLE_NAME'];
+    $arr[]=$value['table_name'];
 }
 
 echo implode(', ',$arr);

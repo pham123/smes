@@ -37,6 +37,7 @@ $arr = array(
   array('?tables_Stations',$oDB->lang("Stations")),
   array('?tables_Machines',$oDB->lang("Machines")),
   array('?tables_Models',$oDB->lang("Models")),
+  array('?tables_Areas',$oDB->lang("Areas")),
 );
 echo nav_item_collapsed($oDB->lang("Company"),'fa-folder',$arr,'Company');
 ?>
@@ -48,10 +49,14 @@ $arr = array(
   array('?tables_Products',$oDB->lang("Products")),
 );
 echo nav_item_collapsed($oDB->lang('Products'),'fa-folder',$arr,'products');
-?>
 
-      <!-- Divider -->
-<?php
+$arr = array(
+  array('?tables_MemoReduce',$oDB->lang('MemoReduce')),
+  // MemoApplicability
+  array('?tables_MemoApplicability',$oDB->lang('MemoApplicability')),
+);
+echo nav_item_collapsed($oDB->lang('Memos'),'fa-folder',$arr,'Memos');
+
 $arr = array(
   array('?tables_Lang', 'fa-angle-right',$oDB->lang("Lang")),
   array('?tables_Shift', 'fa-angle-right',$oDB->lang("Shift")),

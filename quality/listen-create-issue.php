@@ -94,7 +94,7 @@ $id = $oDB->sl_id('QualityIssuelist');
 					$resize->resizeTo(100, 100, 'maxWidth');
 					$resize->saveImage("image/small/img_".$id.".jpg");
 
-		        header('Location: index.php');
+		        // header('Location: index.php');
 		    } else {
 		        echo "Sorry, there was an error uploading your file.";
 		    }
@@ -124,7 +124,7 @@ echo "</br>";
 				
 		        //thay doi kich thuoc anh
 
-		        header('Location: index.php');
+		        // header('Location: index.php');
 		    } else {
 		        echo "Sorry, there was an error uploading your file.";
 		    }

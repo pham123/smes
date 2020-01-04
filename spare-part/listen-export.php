@@ -14,6 +14,19 @@ $newDB = new MysqliDb(_DB_HOST_, _DB_USER_, _DB_PASS_,_DB_name_);
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 	$data = array_filter($_POST);
+	//CREATE NEW EXPORT HISTORY
+	$exportData = [
+		'ExportsPO' => $data['ExportsPO'],
+		'SectionId' => $data['SectionId'],
+		'ExportsDate' => $data['ExportsDate']
+	];
+	if(array_key_exists('ExportsReceiver', $data)){
+		$exportData['ExportsReceiver'] = $data['ExportsReceiver'];
+	}
+	if(array_key_exists('ExportsNote', $data)){
+		$exportData['ExportsNote'] = $data['ExportsNote'];
+	}
+	$export_id = $newDB->insert('Exports', $exportData);
 	foreach($data['ProductsId'] as $index => $id){
 		if($id){
 			//UPDATE PRODUCT STOCK
@@ -24,22 +37,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 			$newDB->where('ProductsId', $id);
 			$newDB->update('Products', ['ProductsStock' => $stock]);
 
-			//CREATE NEW EXPORT HISTORY
-			$exportData = [
-				'ExportsPO' => $data['ExportsPO'],
-				'SectionId' => $data['SectionId'],
-				'ExportsDate' => $data['ExportsDate'],
+			//CREATE NEW OUTPUT
+			$outputData = [
+				'ExportsId' => $export_id,
 				'ProductsId' => $id,
 				'ProductsQty' => $data['ProductsQty'][$index],
 				'ExportsReason' => $data['ExportsReason'][$index]
 			];
-			if(array_key_exists('ExportsReceiver', $data)){
-				$exportData['ExportsReceiver'] = $data['ExportsReceiver'];
-			}
-			if(array_key_exists('ExportsNote', $data)){
-				$exportData['ExportsNote'] = $data['ExportsNote'];
-			}
-			$newDB->insert('Exports', $exportData);
+			$newDB->insert('Outputs', $outputData);
 		}
 	}
 }else{

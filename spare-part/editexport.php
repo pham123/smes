@@ -65,32 +65,8 @@ $export = $oDB->sl_one('exports', 'ExportsId = '.$_GET['id']);
                   </select>
                 </div>
                 <div class="col-md-6">
-                  <p><?php echo $oDB->lang('Quantity') ?></p>
-                  <input type="number" name="ProductsQty" id="" class='form-control' value="<?php echo $export['ProductsQty'] ?>">
-                </div>
-                <div class="col-md-6">
-                  <p><?php echo $oDB->lang('Product') ?></p>
-                  <select name="ProductsId" id="" class='form-control'>
-                    <?php 
-                    $model = $oDB->sl_all('products','ProductsOption = 4');
-                    foreach ($model as $key => $value) {
-                      if($value['ProductsId'] == $export['ProductsId']){
-                        echo "<option selected value='".$value['ProductsId']."'>".$value['ProductsNumber']."</option>";
-                      } else {
-                        echo "<option value='".$value['ProductsId']."'>".$value['ProductsNumber']."</option>";
-                      }
-                    }
-                    ?>
-                    
-                  </select>
-                </div>
-                <div class="col-md-6">
                   <p><?php echo $oDB->lang('Note') ?></p>
                   <input type="text" name="ExportsNote" id="" class='form-control' value="<?php echo $export['ExportsNote'] ?>">
-                </div>
-                <div class="col-md-6">
-                  <p><?php echo $oDB->lang('Reason') ?></p>
-                  <input type="text" name="ExportsReason" id="" class='form-control' value="<?php echo $export['ExportsReason'] ?>">
                 </div>
 
                 <div class="col-md-6">

@@ -4,22 +4,30 @@ ob_start();
 date_default_timezone_set('Asia/Ho_Chi_Minh');
 require('../config.php');
 require('../function/db_lib.php');
+require('../function/MysqliDb.php');
 require('../function/function.php');
 $user = New Users();
 $user->set($_SESSION[_site_]['userid']);
 $user->module = basename(dirname(__FILE__));
 check($user->acess());
 $pagetitle = $user->module;
-$page_heading = 'UpdateImport';
-$page_css = 'p{margin-bottom: 0px;}.col-md-6{padding-bottom: 10px;}';
+$page_heading = 'Input list';
+$page_css = 'table th{font-size: 14px;}';
 require('../views/template-header.php');
 require('../function/template.php');
 $oDB = new db();
 
-$import = $oDB->sl_one('imports', 'ImportsId = '.$_GET['id']);
+$table_header  = 'ProductsNumber,ProductsName,ProductsDescription,ImportsDate,ProductsQty,ProductsUnit,ProductsUnitPrice,SupplyChainObjectName,ImportsNote';
+//using new db library
+$newDB = new MysqliDb(_DB_HOST_, _DB_USER_, _DB_PASS_,_DB_name_);
+$newDB->join("Imports im", "im.ImportsId=inp.ImportsId", "LEFT");
+$newDB->join("Products p", "p.ProductsId=inp.ProductsId", "LEFT");
+$newDB->join("SupplyChainObject su", "su.SupplyChainObjectId=im.SuppliersId", "LEFT");
+$newDB->orderBy('inp.InputsId', 'desc');
+$table_data = $newDB->get("Inputs inp", null, "inp.InputsId as id,p.ProductsNumber,p.ProductsName,p.ProductsDescription,im.ImportsDate,inp.ProductsQty,p.ProductsUnit,inp.ProductsUnitPrice,su.SupplyChainObjectName,im.ImportsNote");
+$table_link = "editinput.php?id=";
 ?>
 
-</style>
 <body id="page-top">
   <!-- Page Wrapper -->
   <div id="wrapper">
@@ -37,45 +45,9 @@ $import = $oDB->sl_one('imports', 'ImportsId = '.$_GET['id']);
 
         <!-- Begin Page Content -->
         <div class="container-fluid">
-        <div class="">
-          <form action="listen-update-import.php?id=<?php echo $_GET['id'] ?>" method="post" enctype="multipart/form-data">
-              <div class="row">
-                <div class="col-md-6">
-                  <p>Import PO</p>
-                  <input type="text" name="ImportsPO" id="" class='form-control' required value="<?php echo $import['ImportsPO'] ?>">
-                </div>
-                <div class="col-md-6">
-                  <p>Import Date</p>
-                  <input type="date" name="ImportsDate" id="" class='form-control' required value="<?php echo $import['ImportsDate'] ?>">
-                </div>
-                <div class="col-md-6">
-                  <p>Supplier</p>
-                  <select name="SuppliersId" id="" class='form-control'>
-                    <?php 
-                    $model = $oDB->sl_all('supplychainobject',1);
-                    foreach ($model as $key => $value) {
-                      if($value['SupplyChainObjectId'] == $import['SuppliersId']){
-                        echo "<option selected value='".$value['SupplyChainObjectId']."'>".$value['SupplyChainObjectName']."</option>";
-                      } else {
-                        echo "<option value='".$value['SupplyChainObjectId']."'>".$value['SupplyChainObjectName']."</option>";
-                      }
-                    }
-                    ?>
-                    
-                  </select>
-                </div>
-                <div class="col-md-6">
-                  <p><?php echo $oDB->lang('Note') ?></p>
-                  <input type="text" name="ImportsNote" id="" class='form-control' value="<?php echo $import['ImportsNote'] ?>">
-                </div>
 
-                <div class="col-md-6">
-                  <br>
-                  <button type="submit" class='btn btn-primary btn-block'><?php echo $oDB->lang('Submit') ?></button>
-                </div>
-
-              </div>
-          </form>
+        <div class="table-responsive">
+          <?php include('../views/template_table.php') ?>
         </div>
         </div>
         <!-- /.container-fluid -->
@@ -129,9 +101,6 @@ $import = $oDB->sl_one('imports', 'ImportsId = '.$_GET['id']);
     $(function () {
       $('selectpicker').selectpicker();
     });
-
-
-
   </script>
 
 </body>

@@ -13,37 +13,47 @@
       <hr class="sidebar-divider my-0">
 
       <!-- Nav Item - Dashboard -->
-      <li class="nav-item active">
+      <li class="nav-item">
         <a class="nav-link" style="padding: 5px 16px;" href="index.php">
           <i class="fas fa-list"></i>
           <span>Spare part list</span></a>
-      </li>
-      <li class="nav-item active">
-        <a class="nav-link" style="padding: 5px 16px;" href="import.php">
-        <i class="far fa-arrow-alt-circle-right"></i>
-          <span>Nhập</span></a>
-      </li>
-      <li class="nav-item active">
-        <a class="nav-link" style="padding: 5px 16px;" href="export.php">
-        <i class="far fa-arrow-alt-circle-left"></i>
-          <span>Xuất</span></a>
-      </li>
-      <li class="nav-item active">
+        </li>
+      <li class="nav-item">
         <a class="nav-link" style="padding: 5px 16px;" href="spare-part.php">
           <i class="fas fa-plus"></i>
           <span>Tạo mới</span></a>
       </li>
-      <li class="nav-item active">
+      <li class="nav-item">
+        <a class="nav-link" style="padding: 5px 16px;" href="import.php">
+        <i class="far fa-arrow-alt-circle-right"></i>
+          <span>Nhập</span></a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" style="padding: 5px 16px;" href="export.php">
+        <i class="far fa-arrow-alt-circle-left"></i>
+          <span>Xuất</span></a>
+      </li>
+      <li class="nav-item">
         <a class="nav-link" style="padding: 5px 16px;" href="import-history.php">
           <i class="fas fa-history"></i>
           <span>Import history</span></a>
       </li>
-      <li class="nav-item active">
+      <li class="nav-item">
         <a class="nav-link" style="padding: 5px 16px;" href="export-history.php">
           <i class="fas fa-history"></i>
           <span>Export history</span></a>
       </li>
-      <li class="nav-item active">
+      <li class="nav-item">
+        <a class="nav-link" style="padding: 5px 16px;" href="input-list.php">
+          <i class="fas fa-list"></i>
+          <span>Input list</span></a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" style="padding: 5px 16px;" href="output-list.php">
+          <i class="fas fa-list"></i>
+          <span>Output list</span></a>
+      </li>
+      <li class="nav-item">
         <a class="nav-link" style="padding: 5px 16px;" href="category_index.php">
           <i class="fas fa-arrow-right"></i>
           <span>Category</span></a>

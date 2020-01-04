@@ -16,13 +16,12 @@ require('../views/template-header.php');
 require('../function/template.php');
 $oDB = new db();
 
-$table_header  = 'ProductsNumber,ProductsName,ProductsDescription,ImportsDate,ProductsQty,ProductsUnit,ProductsUnitPrice,SupplyChainObjectName,ImportsNote';
+$table_header  = 'ImportsPO,ImportsDate,SupplyChainObjectName,ImportsNote,Print';
 //using new db library
 $newDB = new MysqliDb(_DB_HOST_, _DB_USER_, _DB_PASS_,_DB_name_);
-$newDB->join("Products p", "i.ProductsId=p.ProductsId", "LEFT");
-$newDB->join("SupplyChainObject s", "s.SupplyChainObjectId=i.SuppliersId", "LEFT");
+$newDB->join("SupplyChainObject su", "su.SupplyChainObjectId=i.SuppliersId", "LEFT");
 $newDB->orderBy('i.ImportsId', 'desc');
-$table_data = $newDB->get ("Imports i", null, "i.ImportsId as id,p.ProductsNumber,p.ProductsName,p.ProductsDescription,p.ProductsUnit,i.ImportsPO,i.ImportsDate,i.ProductsQty,i.ProductsUnitPrice,s.SupplyChainObjectName,i.ImportsNote");
+$table_data = $newDB->get ("Imports i", null, "i.ImportsId as id,i.ImportsPO,i.ImportsDate,su.SupplyChainObjectName,i.ImportsNote, CONCAT('<a href=\"printimport.php&quest;id=',i.ImportsId,'\" target=\"_blank\" >','<i class=\"fas fa-print\"></i>', '</a>') as Print");
 $table_link = "editimport.php?id=";
 ?>
 

@@ -1,6 +1,6 @@
 <?php
 $tablearr = explode(',',$table_header);
-echo "<table class='table table-bordered' id='dataTable' width='100%' cellspacing='0'>";
+echo "<table class='table table-bordered table-sm' id='dataTable' width='100%' cellspacing='0'>";
 echo "<thead>";
 echo "<tr>";
 foreach ($tablearr as $key => $value) {

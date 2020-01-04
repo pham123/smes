@@ -16,13 +16,12 @@ require('../views/template-header.php');
 require('../function/template.php');
 $oDB = new db();
 
-$table_header  = 'ProductsNumber,ProductsName,ProductsDescription,ExportsDate,ProductsQty,ProductsUnit,SectionName,ExportsReason,ExportsNote';
+$table_header  = 'ExportsPO,ExportsDate,SectionName,ExportsReceiver,ExportsNote,Print';
 //using new db library
 $newDB = new MysqliDb(_DB_HOST_, _DB_USER_, _DB_PASS_,_DB_name_);
-$newDB->join("Products p", "e.ProductsId=p.ProductsId", "LEFT");
 $newDB->join("Section s", "s.SectionId=e.SectionId", "LEFT");
 $newDB->orderBy('e.ExportsId', 'desc');
-$table_data = $newDB->get ("Exports e", null, "e.ExportsId as id,p.ProductsNumber,p.ProductsName,p.ProductsDescription,p.ProductsUnit,e.ExportsDate,e.ProductsQty,s.SectionName,e.ExportsNote,e.ExportsReason");
+$table_data = $newDB->get ("Exports e", null, "e.ExportsId as id,e.ExportsPO,e.ExportsDate,s.SectionName,e.ExportsNote,e.ExportsReceiver,CONCAT('<a href=\"printexport.php&quest;id=',e.ExportsId,'\" target=\"_blank\" >','<i class=\"fas fa-print\"></i>', '</a>') as Print");
 $table_link = "editexport.php?id=";
 ?>
 

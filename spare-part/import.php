@@ -49,7 +49,7 @@ $newDB->where('ProductsOption', 4);
                       </div>
                       <div class="form-group col-md-6">
                         <label>Nhà cung cấp <sup class="text-danger">*</sup></label>
-                        <select name="SuppliersId" class="form-control">
+                        <select name="SuppliersId" class="form-control" required>
                           <?php 
                           $spls = $oDB->sl_all('supplychainobject',1);
                           echo "<option value=''>select supplier</option>";

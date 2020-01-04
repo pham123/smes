@@ -14,6 +14,16 @@ $newDB = new MysqliDb(_DB_HOST_, _DB_USER_, _DB_PASS_,_DB_name_);
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 	$data = array_filter($_POST);
+	//CREATE NEW IMPORT HISTORY
+	$importData = [
+		'ImportsPO' => $data['ImportsPO'],
+		'SuppliersId' => $data['SuppliersId'],
+		'ImportsDate' => $data['ImportsDate']
+	];
+	if(array_key_exists('ImportsNote', $data)){
+		$importData['ImportsNote'] = $data['ImportsNote'];
+	}
+	$import_id = $newDB->insert('Imports', $importData);
 	foreach($data['ProductsId'] as $index => $id){
 		if($id){
 			//UPDATE PRODUCT STOCK
@@ -25,18 +35,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 			$newDB->update('Products', ['ProductsStock' => $stock]);
 
 			//CREATE NEW IMPORT HISTORY
-			$importData = [
-				'ImportsPO' => $data['ImportsPO'],
-				'SuppliersId' => $data['SuppliersId'],
-				'ImportsDate' => $data['ImportsDate'],
+			$inputData = [
+				'ImportsId' => $import_id,
 				'ProductsId' => $id,
 				'ProductsQty' => $data['ProductsQty'][$index],
 				'ProductsUnitPrice' => $data['ProductsUnitPrice'][$index]
 			];
-			if(array_key_exists('ImportsNote', $data)){
-				$importData['ImportsNote'] = $data['ImportsNote'];
-			}
-			$newDB->insert('Imports', $importData);
+			$newDB->insert('Inputs', $inputData);
 		}
 	}
 }else{

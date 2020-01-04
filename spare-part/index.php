@@ -11,6 +11,7 @@ $user->set($_SESSION[_site_]['userid']);
 $user->module = basename(dirname(__FILE__));
 check($user->acess());
 $pagetitle = $user->module;
+$page_css = 'table th,table td{font-size: 15px;}';
 require('../views/template-header.php');
 require('../function/template.php');
 $oDB = new db();

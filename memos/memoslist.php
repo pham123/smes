@@ -44,7 +44,7 @@ $oDB = new db();
           MemoApplicability.MemoApplicabilityName,
           Users.UsersFullName,
           Employees.EmployeesName
-          FROM `memos`
+          FROM `Memos`
           INNER JOIN Parts ON Parts.PartsId = Memos.PartsId
           INNER JOIN Areas ON Areas.AreasId = Memos.AreasId
           INNER JOIN MemoReduce ON MemoReduce.MemoReduceId = Memos.MemoReduceId
@@ -55,10 +55,6 @@ $oDB = new db();
           ";
 
           $MemosList = $oDB->fetchAll($sql);
-          // var_dump($MemosList);
-
-          // $col = $oDB->getcol('Memos');
-          // echo implode(', ',$col);
           
         ?>
         <div class="table-responsive">
@@ -103,12 +99,9 @@ $oDB = new db();
               echo "<td class='warning'>NA</td>";
               break;
           }
-          
-
           echo "<td>".$value['EmployeesName']."</td>";
           echo "<td>".$value['UsersFullName']."</td>";
           // echo "<td>".$value['MemosOption']."</td>";
-
           switch ($value['MemosOption']) {
             case '':
               echo "<td class=''>NA</td>";
@@ -126,12 +119,7 @@ $oDB = new db();
               echo "<td class='warning'>NA</td>";
               break;
           }
-
-
           echo "<td>".$value['MemosApplyDate']."</td>";
-          
-          
-
           // $status = color($value['QualityIssuelistStatus']);
           // echo "<td style='background-color:".$status[0]."'>".$oDB->lang($status[1])."</td>";
           if ($user->acess()==1||$user->acess()==2||$_SESSION[_site_]['userid']==$value['UsersId']) {

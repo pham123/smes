@@ -58,6 +58,11 @@
           <i class="fas fa-arrow-right"></i>
           <span>Category</span></a>
       </li>
+      <li class="nav-item">
+        <a class="nav-link" style="padding: 5px 16px;" href="supplier_index.php">
+          <i class="fas fa-award"></i>
+          <span>Supplier</span></a>
+      </li>
 
       <!-- Divider -->
       <hr class="sidebar-divider d-none d-md-block">

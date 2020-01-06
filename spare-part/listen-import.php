@@ -15,33 +15,59 @@ $newDB = new MysqliDb(_DB_HOST_, _DB_USER_, _DB_PASS_,_DB_name_);
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 	$data = array_filter($_POST);
 	//CREATE NEW IMPORT HISTORY
-	$importData = [
-		'ImportsPO' => $data['ImportsPO'],
-		'SuppliersId' => $data['SuppliersId'],
-		'ImportsDate' => $data['ImportsDate']
-	];
+	if(isset($_POST["saveBtn"])) {
+		$importData = [
+			'ImportsPO' => $data['ImportsPO'],
+			'ImportsDocNo' => $data['ImportsDocNo'],
+			'SuppliersId' => $data['SuppliersId'],
+			'ImportsDate' => $data['ImportsDate']
+		];
+	  }
+	if(isset($_POST["importBtn"])) {
+		$importData = [
+			'ImportsPO' => $data['ImportsPO'],
+			'ImportsDocNo' => $data['ImportsDocNo'],
+			'SuppliersId' => $data['SuppliersId'],
+			'ImportsDate' => $data['ImportsDate'],
+			'ImportsStatus' => 1
+		];
+	}
 	if(array_key_exists('ImportsNote', $data)){
 		$importData['ImportsNote'] = $data['ImportsNote'];
 	}
-	$import_id = $newDB->insert('Imports', $importData);
+	$import_id = $data['ImportsId'];
+	$newDB->where('ImportsId', $import_id);
+	$newDB->update('Imports', $importData);
+
+	$newDB->where('ImportsId', $import_id);
+	$newDB->delete('Inputs');
 	foreach($data['ProductsId'] as $index => $id){
 		if($id){
 			//UPDATE PRODUCT STOCK
+			if(isset($_POST["importBtn"])){
+				$newDB->where('ProductsId', $id);
+				$c_product = $newDB->getOne('products');
+				$stock = $c_product['ProductsStock']?($c_product['ProductsStock'] + $data['ProductsQty'][$index]):$data['ProductsQty'][$index];
+				
+				$newDB->where('ProductsId', $id);
+				$newDB->update('Products', ['ProductsStock' => $stock]);
+			}
+			
+			$newDB->where('ImportsId', $import_id);
 			$newDB->where('ProductsId', $id);
-			$c_product = $newDB->getOne('products');
-			$stock = $c_product['ProductsStock']?($c_product['ProductsStock'] + $data['ProductsQty'][$index]):$data['ProductsQty'][$index];
+			$result = $newDB->getOne('Inputs');
 
-			$newDB->where('ProductsId', $id);
-			$newDB->update('Products', ['ProductsStock' => $stock]);
+			//CREATE NEW INPUT
+			if(!$result){
+				$inputData = [
+					'ImportsId' => $import_id,
+					'ProductsId' => $id,
+					'ProductsQty' => $data['ProductsQty'][$index],
+					'ProductsUnitPrice' => str_replace(array('.', ','), '' , $data['ProductsUnitPrice'][$index])
+				];
+				$newDB->insert('Inputs', $inputData);
+			}
 
-			//CREATE NEW IMPORT HISTORY
-			$inputData = [
-				'ImportsId' => $import_id,
-				'ProductsId' => $id,
-				'ProductsQty' => $data['ProductsQty'][$index],
-				'ProductsUnitPrice' => $data['ProductsUnitPrice'][$index]
-			];
-			$newDB->insert('Inputs', $inputData);
 		}
 	}
 }else{

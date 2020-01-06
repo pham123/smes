@@ -41,8 +41,8 @@ $export = $oDB->sl_one('exports', 'ExportsId = '.$_GET['id']);
           <form action="listen-update-export.php?id=<?php echo $_GET['id'] ?>" method="post" enctype="multipart/form-data">
               <div class="row">
                 <div class="col-md-6">
-                  <p>Export PO</p>
-                  <input type="text" name="ExportsPO" id="" class='form-control' required value="<?php echo $export['ExportsPO'] ?>">
+                  <p>Export Doc No</p>
+                  <input type="text" name="ExportsDocNo" id="" class='form-control' required value="<?php echo $export['ExportsDocNo'] ?>">
                 </div>
                 <div class="col-md-6">
                   <p>Export Date</p>

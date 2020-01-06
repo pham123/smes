@@ -42,14 +42,19 @@ $newDB->where('ProductsOption', 4);
                 <h5 class="card-header">Nhập hàng</h5>
                 <div class="card-body">
                   <form action="listen-import.php" method="post">
+                    <input type="hidden" v-model="Import.ImportsId" name="ImportsId" />
                     <div class="form-row">
-                      <div class="form-group col-md-6">
+                      <div class="form-group col-md-4">
                         <label>Số PO <sup class="text-danger">*</sup></label>
-                        <input type="text" class="form-control" required name="ImportsPO">
+                        <input type="text" class="form-control" required name="ImportsPO" v-model="Import.ImportsPO" readonly>
                       </div>
-                      <div class="form-group col-md-6">
+                      <div class="form-group col-md-4">
+                        <label>Doc No <sup class="text-danger">*</sup></label>
+                        <input type="text" class="form-control" required name="ImportsDocNo" v-model="Import.ImportsDocNo" readonly>
+                      </div>
+                      <div class="form-group col-md-4">
                         <label>Nhà cung cấp <sup class="text-danger">*</sup></label>
-                        <select name="SuppliersId" class="form-control" required>
+                        <select name="SuppliersId" class="form-control" required v-model="Import.SuppliersId">
                           <?php 
                           $spls = $oDB->sl_all('supplychainobject',1);
                           echo "<option value=''>select supplier</option>";
@@ -63,15 +68,15 @@ $newDB->where('ProductsOption', 4);
                     <div class="form-row">
                       <div class="form-group col-md-6">
                         <label>Ngày nhập <sup class="text-danger">*</sup></label>
-                        <input type="date" class="form-control" required name="ImportsDate">
+                        <input type="date" class="form-control" required name="ImportsDate" v-model="Import.ImportsDate">
                       </div>
                       <div class="form-group col-md-6">
                         <label>Ghi chú</label>
-                        <input type="text" class="form-control" name="ImportsNote">
+                        <input type="text" class="form-control" name="ImportsNote" v-model="Import.ImportsNote">
                       </div>
                     </div>
                     <div class="form-row" v-for="(item, index) in items">
-                      <div class="form-group col-12">
+                      <div class="form-group col-6">
                         <label>{{index+1}}.Mã hàng <sup class="text-danger">*</sup></label>
                         <v-select 
                         placeholder="chọn sản phẩm"
@@ -93,22 +98,23 @@ $newDB->where('ProductsOption', 4);
                         </v-select>
                       </div>
                       <input type="hidden" name="ProductsId[]" required :value="item.ProductsId">
-                      <div class="form-group col-md-4">
+                      <div class="form-group col-md-2">
                         <label>Số lượng <sup class="text-danger">*</sup></label>
                         <input type="number" required name="ProductsQty[]" :onkeyup="calculateMoney(item)" v-model="item.ProductsQty" class="form-control">
                       </div>
-                      <div class="form-group col-md-4">
+                      <div class="form-group col-md-2">
                         <label>Đơn giá</label>
-                        <input type="number" name="ProductsUnitPrice[]" :onkeyup="calculateMoney(item)" v-model="item.ProductsUnitPrice" class="form-control" required>
+                        <money v-model="item.ProductsUnitPrice" v-bind="money" name="ProductsUnitPrice[]" @keyup.native="calculateMoney(item)" class="form-control" required></money>
                       </div>
-                      <div class="form-group col-md-4">
+                      <div class="form-group col-md-2">
                         <label>Thành tiền</label>
-                        <input type="text" readonly="true" v-model="item.ProducstMoney" class="form-control">
+                        <p><strong>{{item.ProducstMoney.format()}}</p>
                       </div>
                     </div>
-                    <small class="d-block my-3"><a href="#" class="text-primary" @click="addNewItem()">Add more product</a> | <a href="#" class="text-danger" @click="removeLastItem()">Remove last product</a></small>
+                    <small class="d-block mb-3 mt-5"><a href="#" class="text-primary" @click="addNewItem()">Add more product</a> | <a href="#" class="text-danger" @click="removeLastItem()">Remove last product</a></small>
                     <div class="">
-                      <button class="btn btn-primary float-right"><i class="fas fa-arrow-right"></i>&nbsp;Import</button>
+                      <input class="btn btn-sm btn-success float-right ml-2" type="submit" name="importBtn" value="Import" />
+                      <input class="btn btn-sm btn-primary float-right" type="submit" name="saveBtn" value="Save" />
                     </div>
                   </form>
                 </div>
@@ -165,19 +171,43 @@ $newDB->where('ProductsOption', 4);
 
   <script src="../js/vuejs.min.js"></script>
   <script src="../js/axios.min.js"></script>
-
+  
   <!-- use the latest vue-select release -->
   <script src="../js/vue-select.js"></script>
   <link rel="stylesheet" href="../css/vue-select.css">
+  <script type="module" src="../js/v-money.js">
+    import money from '../js/v-money.js';
+    Vue.use(money, {precision: 4});
+  </script>
 
   <script>
+    Number.prototype.format = function(n, x) {
+      var re = '\\d(?=(\\d{' + (x || 3) + '})+' + (n > 0 ? '\\.' : '$') + ')';
+      return this.toFixed(Math.max(0, ~~n)).replace(new RegExp(re, 'g'), '$&,');
+  };
     $(function () {
       Vue.component('v-select', VueSelect.VueSelect);
       new Vue({
         el: '#import_spare_part',
         data: {
           items:[{ProductsId:'',ProductsQty: '', ProductsUnitPrice:'', ProducstMoney:''}],
-          products_data: []
+          Import:{
+            ImportsId: '',
+            ImportsPO:'',
+            ImportsDocNo:'',
+            ImportsDate:'',
+            SuppliersId: 0,
+            ImportsNote: ''
+          },
+          products_data: [],
+          money: {
+            decimal: '.',
+            thousands: ',',
+            prefix: '',
+            suffix: '',
+            precision: 0,
+            masked: false /* doesn't work with directive */
+          }
         },
         methods: {
           addNewItem(){
@@ -195,10 +225,21 @@ $newDB->where('ProductsOption', 4);
           }
         },
         created: function(){
-          axios.get('/smes/spare-part/ajaxload.php').then(({data}) => {
+          axios.get('/smes/spare-part/importajax.php').then(({data}) => {
             this.products_data = data['products_data'];
-          }).catch(() => {
-            console.log('error');
+            this.Import.ImportsId = data['ImportsId'];
+            this.Import.ImportsPO = data['ImportsPO'];
+            this.Import.ImportsDocNo = data['ImportsDocNo'];
+            this.Import.SuppliersId = data['SuppliersId'];
+            this.Import.ImportsDate = data['ImportsDate'];
+            this.Import.ImportsNote = data['ImportsNote'];
+            if(data['inputs'].length>0){
+              this.items = data['inputs'];
+            }else{
+              this.items = [{ProductsId:'',ProductsQty: '', ProductsUnitPrice:'', ProducstMoney:''}];
+            }
+          }).catch((error) => {
+            console.log(error);
           });
         }
       })

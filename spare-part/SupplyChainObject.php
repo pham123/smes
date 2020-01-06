@@ -10,13 +10,10 @@ $user->set($_SESSION[_site_]['userid']);
 $user->module = basename(dirname(__FILE__));
 check($user->acess());
 $pagetitle = $user->module;
-$page_heading = 'UpdateImport';
-$page_css = 'p{margin-bottom: 0px;}.col-md-6{padding-bottom: 10px;}';
 require('../views/template-header.php');
 require('../function/template.php');
 $oDB = new db();
 
-$import = $oDB->sl_one('imports', 'ImportsId = '.$_GET['id']);
 ?>
 
 </style>
@@ -38,43 +35,16 @@ $import = $oDB->sl_one('imports', 'ImportsId = '.$_GET['id']);
         <!-- Begin Page Content -->
         <div class="container-fluid">
         <div class="">
-          <form action="listen-update-import.php?id=<?php echo $_GET['id'] ?>" method="post" enctype="multipart/form-data">
+          <h4>Add new supplier</h4>
+          <form action="listen-create-supplier.php" method="post">
               <div class="row">
                 <div class="col-md-6">
-                  <p>Import PO</p>
-                  <input type="text" name="ImportsPO" id="" class='form-control' required value="<?php echo $import['ImportsPO'] ?>">
-                </div>
-                <div class="col-md-6">
-                  <p>Import Doc No</p>
-                  <input type="text" name="ImportsDocNo" id="" class='form-control' required value="<?php echo $import['ImportsDocNo'] ?>">
-                </div>
-                <div class="col-md-6">
-                  <p>Import Date</p>
-                  <input type="date" name="ImportsDate" id="" class='form-control' required value="<?php echo $import['ImportsDate'] ?>">
-                </div>
-                <div class="col-md-6">
-                  <p>Supplier</p>
-                  <select name="SuppliersId" id="" class='form-control'>
-                    <?php 
-                    $model = $oDB->sl_all('supplychainobject',1);
-                    foreach ($model as $key => $value) {
-                      if($value['SupplyChainObjectId'] == $import['SuppliersId']){
-                        echo "<option selected value='".$value['SupplyChainObjectId']."'>".$value['SupplyChainObjectName']."</option>";
-                      } else {
-                        echo "<option value='".$value['SupplyChainObjectId']."'>".$value['SupplyChainObjectName']."</option>";
-                      }
-                    }
-                    ?>
-                    
-                  </select>
-                </div>
-                <div class="col-md-6">
-                  <p><?php echo $oDB->lang('Note') ?></p>
-                  <input type="text" name="ImportsNote" id="" class='form-control' value="<?php echo $import['ImportsNote'] ?>">
+                  <p><?php echo $oDB->lang('SupplyChainObjectName') ?></p>
+                  <input type="text" name="SupplyChainObjectName" id="" class='form-control' required>
                 </div>
 
                 <div class="col-md-6">
-                  <br>
+                  <p>&nbsp;</p>
                   <button type="submit" class='btn btn-primary btn-block'><?php echo $oDB->lang('Submit') ?></button>
                 </div>
 
@@ -133,8 +103,6 @@ $import = $oDB->sl_one('imports', 'ImportsId = '.$_GET['id']);
     $(function () {
       $('selectpicker').selectpicker();
     });
-
-
 
   </script>
 

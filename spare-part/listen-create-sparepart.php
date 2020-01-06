@@ -13,7 +13,12 @@ check($user->acess());
 $newDB = new MysqliDb(_DB_HOST_, _DB_USER_, _DB_PASS_,_DB_name_);
 
 // Ghi thông tin vào database
-$product_id = $newDB->insert('Products', array_filter($_POST));
+$post_data = array_filter($_POST);
+echo $post_data['ProductsNumber'];
+echo '<br>';
+echo $post_data['ProductsName'];
+
+$product_id = $newDB->insert('Products', $post_data);
 
 if(!$product_id)
 {

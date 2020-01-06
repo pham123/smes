@@ -138,6 +138,7 @@ $products = $newDB->get('Imports i',null,'p.ProductsNumber,p.ProductsName,p.Prod
         <h2 style='text-align: left;'>IMPORT SPARE PART</h2>
         <ul style="text-align: left;list-style:none;width: 300px;margin: 0 auto;margin-bottom: 20px;padding:0px;">
             <li><strong>PO:</strong> <?php echo $import['ImportsPO'] ?></li>
+            <li><strong>Doc No:</strong> <?php echo $import['ImportsDocNo'] ?></li>
             <li><strong>Date:</strong> <?php echo date('d-m-Y',strtotime($import['ImportsDate'])) ?></li>
             <li><strong>Supplier:</strong> <?php echo $import['SupplyChainObjectName'] ?></li>
             <li><strong>Note:</strong> <?php echo $import['ImportsNote'] ?></li>

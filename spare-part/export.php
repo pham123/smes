@@ -42,14 +42,15 @@ $newDB->where('ProductsOption', 4);
                 <h5 class="card-header">Xuất hàng</h5>
                 <div class="card-body">
                   <form action="listen-export.php" method="post">
+                    <input type="hidden" v-model="Export.ExportsId" name="ExportsId">
                     <div class="form-row">
                       <div class="form-group col-md-6">
-                        <label>Số PO <sup class="text-danger">*</sup></label>
-                        <input type="text" class="form-control" required name="ExportsPO">
+                        <label>Doc No <sup class="text-danger">*</sup></label>
+                        <input type="text" class="form-control" v-model="Export.ExportsDocNo" required name="ExportsDocNo" readonly>
                       </div>
                       <div class="form-group col-md-6">
                         <label>Bộ phận <sup class="text-danger">*</sup></label>
-                        <select name="SectionId" class="form-control">
+                        <select name="SectionId" class="form-control" v-model="Export.SectionId">
                           <?php 
                           $s = $oDB->sl_all('section',1);
                           echo "<option value=''>bộ phận</option>";
@@ -63,19 +64,19 @@ $newDB->where('ProductsOption', 4);
                     <div class="form-row">
                       <div class="form-group col-md-4">
                         <label>Ngày xuất <sup class="text-danger">*</sup></label>
-                        <input type="date" class="form-control" required name="ExportsDate">
+                        <input type="date" class="form-control" required name="ExportsDate" v-model="Export.ExportsDate">
                       </div>
                       <div class="form-group col-md-4">
                         <label>Người nhận</label>
-                        <input type="text" class="form-control" name="ExportsReceiver" required>
+                        <input type="text" class="form-control" name="ExportsReceiver" required v-model="Export.ExportsReceiver">
                       </div>
                       <div class="form-group col-md-4">
                         <label>Ghi chú</label>
-                        <input type="text" class="form-control" name="ExportsNote">
+                        <input type="text" class="form-control" name="ExportsNote" v-model="Export.ExportsNote">
                       </div>
                     </div>
                     <div class="form-row" v-for="(item, index) in items">
-                      <div class="form-group col-md-12 ">
+                      <div class="form-group col-md-7 ">
                         <label>{{index+1}}. Mã hàng <sup class="text-danger">*</sup></label>
                         <v-select 
                         placeholder="chọn sản phẩm"
@@ -97,18 +98,19 @@ $newDB->where('ProductsOption', 4);
                         </v-select>
                       </div>
                       <input type="hidden" name="ProductsId[]" required :value="item.ProductsId">
-                      <div class="form-group col-md-6">
+                      <div class="form-group col-md-2">
                         <label>Số lượng <sup class="text-danger">*</sup></label>
                         <input type="number" required name="ProductsQty[]" v-model="item.ProductsQty" class="form-control" placeholder="Nhập vào số lượng xuất" :onkeyup="checkMaxVal(item)">
                       </div>
-                      <div class="form-group col-md-6">
+                      <div class="form-group col-md-3">
                         <label>Lý do xuất</label>
                         <input type="text" placeholder="Nhập vào thông tin sử dụng" class="form-control" name="ExportsReason[]" v-model="item.ExportsReason">
                       </div>
                     </div>
                     <small class="d-block my-3"><a href="#" class="text-primary" @click="addNewItem()">Add more product</a> | <a href="#" class="text-danger" @click="removeLastItem()">Remove last product</a></small>
                     <div class="">
-                      <button class="btn btn-primary float-right"><i class="fas fa-arrow-right"></i>&nbsp;Export</button>
+                      <input class="btn btn-sm btn-success float-right ml-2" type="submit" name="exportBtn" value="Export" />
+                      <input class="btn btn-sm btn-primary float-right" type="submit" name="saveBtn" value="Save" />
                     </div>
                   </form>
                 </div>
@@ -178,6 +180,14 @@ $newDB->where('ProductsOption', 4);
       new Vue({
         el: '#export_spare_part',
         data: {
+          Export:{
+            ExportsId: '',
+            ExportsDocNo:'',
+            ExportsReceiver:'',
+            ExportsNote:'',
+            ExportsDate:'',
+            SectionId:0
+          },
           items:[{ProductsId:'',ProductsQty: '', ExportsReason: ''}],
           products_data: []
         },
@@ -204,8 +214,19 @@ $newDB->where('ProductsOption', 4);
           }
         },
         created: function(){
-          axios.get('/smes/spare-part/ajaxload.php').then(({data}) => {
+          axios.get('/smes/spare-part/exportajax.php').then(({data}) => {
             this.products_data = data['products_data'];
+            this.Export.ExportsId = data['ExportsId'];
+            this.Export.ExportsDocNo = data['ExportsDocNo'];
+            this.Export.SectionId = data['SectionId'];
+            this.Export.ExportsDate = data['ExportsDate'];
+            this.Export.ExportsReceiver = data['ExportsReceiver'];
+            this.Export.ExportsNote = data['ExportsNote'];
+            if(data['outputs'].length>0){
+              this.items = data['outputs'];
+            }else{
+              this.items = [{ProductsId:'',ProductsQty: '', ExportsReason: ''}];
+            }
           }).catch(() => {
             console.log('error');
           });

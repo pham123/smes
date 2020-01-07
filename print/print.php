@@ -18,7 +18,7 @@ $lot = safe($_POST['lot']);
 $shift = safe($_POST['shift']);
 $quantity = safe($_POST['quantity']);
 $today = date("Y-m-d");
-$sql = "SELECT COUNT(*) as total From LabelList where ProductsId=".$id." AND date(LabelListCreateDate)= '".$today."'";
+$sql = "SELECT COUNT(*) as total From LabelList where ProductsId=".$id." AND date(LabelListCreateDate)= '".$today."' AND LabelListMotherId is Null";
 $start = $oDB->fetchOne($sql);
 $start['total'];
 $startlabel = $start['total'] + 1;

@@ -36,10 +36,11 @@ $oDB = new db();
         <?php 
           $table_header  = 'CategoriesId,CategoriesName';
           $table_data = $oDB->sl_col_all($table_header,'Categories',1);
+          $table_link = "editcategory.php?id=";
         ?>
 
         <div class="table-responsive">
-          <a href="Category.php" class="btn btn-secondary btn-sm"><?php echo $oDB->lang('AddCategory')?></a>
+          <a href="Category.php" class="btn btn-secondary btn-sm mb-1"><?php echo $oDB->lang('AddCategory')?></a>
           <?php include('../views/template_table.php') ?>
         </div>
         </div>

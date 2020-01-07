@@ -12,7 +12,7 @@ check($user->acess());
 $pagetitle = $user->module;
 require('../views/template-header.php');
 require('../function/template.php');
-$heading_title = 'Suppliers';
+$heading_title = 'Section';
 $oDB = new db();
 ?>
 
@@ -34,13 +34,13 @@ $oDB = new db();
         <!-- Begin Page Content -->
         <div class="container-fluid">
         <?php 
-          $table_header  = 'SupplyChainObjectId,SupplyChainObjectName';
-          $table_data = $oDB->sl_col_all($table_header,'SupplyChainObject','SupplyChainTypeId = 3');
-          $table_link = "editsupplier.php?id=";
+          $table_header  = 'SectionId,SectionName';
+          $table_data = $oDB->sl_col_all($table_header,'Section',1);
+          $table_link = "editsection.php?id=";
         ?>
 
         <div class="table-responsive">
-          <a href="SupplyChainObject.php" class="btn btn-secondary btn-sm mb-1"><?php echo $oDB->lang('AddSupplier')?></a>
+          <a href="Section.php" class="btn btn-secondary btn-sm mb-1"><?php echo $oDB->lang('AddSection')?></a>
           <?php include('../views/template_table.php') ?>
         </div>
         </div>

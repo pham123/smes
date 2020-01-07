@@ -10,12 +10,15 @@ $user->set($_SESSION[_site_]['userid']);
 $user->module = basename(dirname(__FILE__));
 check($user->acess());
 $pagetitle = $user->module;
+$page_css = 'p{margin-bottom: 0px;}.col-md-6{padding-bottom: 10px;}';
 require('../views/template-header.php');
 require('../function/template.php');
-$heading_title = 'Suppliers';
 $oDB = new db();
+
+$category = $oDB->sl_one('Categories', 'CategoriesId = '.$_GET['id']);
 ?>
 
+</style>
 <body id="page-top">
   <!-- Page Wrapper -->
   <div id="wrapper">
@@ -33,15 +36,21 @@ $oDB = new db();
 
         <!-- Begin Page Content -->
         <div class="container-fluid">
-        <?php 
-          $table_header  = 'SupplyChainObjectId,SupplyChainObjectName';
-          $table_data = $oDB->sl_col_all($table_header,'SupplyChainObject','SupplyChainTypeId = 3');
-          $table_link = "editsupplier.php?id=";
-        ?>
+        <div class="">
+          <form action="listen-update-category.php?id=<?php echo $_GET['id'] ?>" method="post" enctype="multipart/form-data">
+              <div class="row">
+                <div class="col-md-6">
+                  <p><?php echo $oDB->lang('CategoryName') ?></p>
+                  <input type="text" name="CategoriesName" id="" class='form-control' required value="<?php echo $category['CategoriesName'] ?>">
+                </div>
 
-        <div class="table-responsive">
-          <a href="SupplyChainObject.php" class="btn btn-secondary btn-sm mb-1"><?php echo $oDB->lang('AddSupplier')?></a>
-          <?php include('../views/template_table.php') ?>
+                <div class="col-md-6">
+                  <br>
+                  <button type="submit" class='btn btn-primary btn-block'><?php echo $oDB->lang('Submit') ?></button>
+                </div>
+
+              </div>
+          </form>
         </div>
         </div>
         <!-- /.container-fluid -->
@@ -95,6 +104,9 @@ $oDB = new db();
     $(function () {
       $('selectpicker').selectpicker();
     });
+
+
+
   </script>
 
 </body>

@@ -53,6 +53,7 @@
           <i class="fas fa-list"></i>
           <span>Output list</span></a>
       </li>
+      <hr class="sidebar-divider d-none d-md-block mb-0">
       <li class="nav-item">
         <a class="nav-link" style="padding: 5px 16px;" href="category_index.php">
           <i class="fas fa-arrow-right"></i>
@@ -62,6 +63,17 @@
         <a class="nav-link" style="padding: 5px 16px;" href="supplier_index.php">
           <i class="fas fa-award"></i>
           <span>Supplier</span></a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" style="padding: 5px 16px;" href="section_index.php">
+          <i class="fas fa-fan"></i>
+          <span>Section</span></a>
+      </li>
+      <hr class="sidebar-divider d-none d-md-block mb-0">
+      <li class="nav-item">
+        <a class="nav-link" style="padding: 5px 16px;" href="tinhtoantonkho.php">
+          <i class="fab fa-docker"></i>
+          <span>Tính tồn kho tháng <?php echo date('m/Y') ?></span></a>
       </li>
 
       <!-- Divider -->

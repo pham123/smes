@@ -37,6 +37,8 @@ $oDB = new db();
         <div class="">
           <h4>Add new supplier</h4>
           <form action="listen-create-supplier.php" method="post">
+              <input type="hidden" name="SupplyChainTypeId" value="3">
+              <input type="hidden" name="SupplyChainObjectOption" value="1">
               <div class="row">
                 <div class="col-md-6">
                   <p><?php echo $oDB->lang('SupplyChainObjectName') ?></p>

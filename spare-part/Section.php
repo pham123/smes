@@ -12,10 +12,11 @@ check($user->acess());
 $pagetitle = $user->module;
 require('../views/template-header.php');
 require('../function/template.php');
-$heading_title = 'Suppliers';
 $oDB = new db();
+
 ?>
 
+</style>
 <body id="page-top">
   <!-- Page Wrapper -->
   <div id="wrapper">
@@ -33,15 +34,22 @@ $oDB = new db();
 
         <!-- Begin Page Content -->
         <div class="container-fluid">
-        <?php 
-          $table_header  = 'SupplyChainObjectId,SupplyChainObjectName';
-          $table_data = $oDB->sl_col_all($table_header,'SupplyChainObject','SupplyChainTypeId = 3');
-          $table_link = "editsupplier.php?id=";
-        ?>
+        <div class="">
+          <h4>Add new section</h4>
+          <form action="listen-create-section.php" method="post">
+              <div class="row">
+                <div class="col-md-6">
+                  <p><?php echo $oDB->lang('SectionName') ?></p>
+                  <input type="text" name="SectionName" id="" class='form-control' required>
+                </div>
 
-        <div class="table-responsive">
-          <a href="SupplyChainObject.php" class="btn btn-secondary btn-sm mb-1"><?php echo $oDB->lang('AddSupplier')?></a>
-          <?php include('../views/template_table.php') ?>
+                <div class="col-md-6">
+                  <p>&nbsp;</p>
+                  <button type="submit" class='btn btn-primary btn-block'><?php echo $oDB->lang('Submit') ?></button>
+                </div>
+
+              </div>
+          </form>
         </div>
         </div>
         <!-- /.container-fluid -->
@@ -95,6 +103,7 @@ $oDB = new db();
     $(function () {
       $('selectpicker').selectpicker();
     });
+
   </script>
 
 </body>

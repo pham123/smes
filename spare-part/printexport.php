@@ -136,7 +136,7 @@ $products = $newDB->get('Exports e',null,'p.ProductsNumber,p.ProductsName,p.Prod
     <div style='width:100%; padding-bottom:20px;padding-left:10px;padding-right:10px;box-sizing: border-box;'>
         <h2 style='text-align: left;'>EXPORT SPARE PART</h2>
         <ul style="text-align: left;list-style:none;width: 300px;margin: 0 auto;margin-bottom: 20px;padding:0px;">
-            <li><strong>PO:</strong> <?php echo $export['ExportsPO'] ?></li>
+            <li><strong>Doc No:</strong> <?php echo $export['ExportsDocNo'] ?></li>
             <li><strong>Date:</strong> <?php echo date('d-m-Y',strtotime($export['ExportsDate'])) ?></li>
             <li><strong>Section:</strong> <?php echo $export['SectionName'] ?></li>
             <li><strong>Note:</strong> <?php echo $export['ExportsNote'] ?></li>

@@ -27,6 +27,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 		$section_id = (int)$_GET['id'];
 		
 		$text = '';
+		//old output
+		$newDB->where('InputsId', $input_id);
+		$oldInput = $newDB->getOne('Inputs');
+		$product_id = $oldInput['ProductsId'];
+		$newDB->where('ProductsId', $product_id);
+		$product = $newDB->getOne('Products');
 
 		foreach ($_POST as $key => $value) {
 			if ($key=='action'||$key=='target'||$key=='SectionId') {

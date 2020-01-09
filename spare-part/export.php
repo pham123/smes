@@ -46,7 +46,7 @@ $newDB->where('ProductsOption', 4);
                     <div class="form-row">
                       <div class="form-group col-md-6">
                         <label>Doc No <sup class="text-danger">*</sup></label>
-                        <input type="text" class="form-control" v-model="Export.ExportsDocNo" name="ExportsDocNo">
+                        <input type="text" class="form-control" required v-model="Export.ExportsDocNo" name="ExportsDocNo">
                       </div>
                       <div class="form-group col-md-6">
                         <label>Bộ phận <sup class="text-danger">*</sup></label>
@@ -77,7 +77,7 @@ $newDB->where('ProductsOption', 4);
                     </div>
                     <div class="form-row" v-for="(item, index) in items">
                       <div class="form-group col-md-7 ">
-                        <label>{{index+1}}. Mã hàng <sup class="text-danger">*</sup></label>
+                        <label v-if="index==0">Mã hàng <sup class="text-danger">*</sup></label>
                         <v-select 
                         placeholder="chọn sản phẩm"
                         :options="products_data" 
@@ -99,11 +99,11 @@ $newDB->where('ProductsOption', 4);
                       </div>
                       <input type="hidden" name="ProductsId[]" required :value="item.ProductsId">
                       <div class="form-group col-md-2">
-                        <label>Số lượng <sup class="text-danger">*</sup></label>
+                        <label v-if="index==0">Số lượng <sup class="text-danger">*</sup></label>
                         <input type="number" required name="ProductsQty[]" v-model="item.ProductsQty" class="form-control" placeholder="Nhập vào số lượng xuất" :onkeyup="checkMaxVal(item)">
                       </div>
                       <div class="form-group col-md-3">
-                        <label>Lý do xuất</label>
+                        <label v-if="index==0">Lý do xuất</label>
                         <input type="text" placeholder="Nhập vào thông tin sử dụng" class="form-control" name="ExportsReason[]" v-model="item.ExportsReason">
                       </div>
                     </div>

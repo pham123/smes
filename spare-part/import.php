@@ -46,11 +46,11 @@ $newDB->where('ProductsOption', 4);
                     <div class="form-row">
                       <div class="form-group col-md-4">
                         <label>Số PO <sup class="text-danger">*</sup></label>
-                        <input type="text" class="form-control" name="ImportsPO" v-model="Import.ImportsPO">
+                        <input type="text" class="form-control" name="ImportsPO" v-model="Import.ImportsPO" required>
                       </div>
                       <div class="form-group col-md-4">
                         <label>Doc No <sup class="text-danger">*</sup></label>
-                        <input type="text" class="form-control" name="ImportsDocNo" v-model="Import.ImportsDocNo">
+                        <input type="text" class="form-control" name="ImportsDocNo" v-model="Import.ImportsDocNo" required>
                       </div>
                       <div class="form-group col-md-4">
                         <label>Nhà cung cấp <sup class="text-danger">*</sup></label>
@@ -77,7 +77,7 @@ $newDB->where('ProductsOption', 4);
                     </div>
                     <div class="form-row" v-for="(item, index) in items">
                       <div class="form-group col-6">
-                        <label>{{index+1}}.Mã hàng <sup class="text-danger">*</sup></label>
+                        <label v-if="index==0">Mã hàng <sup class="text-danger">*</sup></label>
                         <v-select 
                         placeholder="chọn sản phẩm"
                         :options="products_data" 
@@ -99,15 +99,15 @@ $newDB->where('ProductsOption', 4);
                       </div>
                       <input type="hidden" name="ProductsId[]" required :value="item.ProductsId">
                       <div class="form-group col-md-2">
-                        <label>Số lượng <sup class="text-danger">*</sup></label>
+                        <label v-if="index==0">Số lượng <sup class="text-danger">*</sup></label>
                         <input type="number" required name="ProductsQty[]" :onkeyup="calculateMoney(item)" v-model="item.ProductsQty" class="form-control">
                       </div>
                       <div class="form-group col-md-2">
-                        <label>Đơn giá</label>
+                        <label v-if="index==0">Đơn giá</label>
                         <money v-model="item.ProductsUnitPrice" v-bind="money" name="ProductsUnitPrice[]" @keyup.native="calculateMoney(item)" class="form-control" required></money>
                       </div>
                       <div class="form-group col-md-2">
-                        <label>Thành tiền</label>
+                        <label v-if="index==0">Thành tiền</label>
                         <p><strong>{{item.ProducstMoney.format()}}</p>
                       </div>
                     </div>

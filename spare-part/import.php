@@ -46,11 +46,11 @@ $newDB->where('ProductsOption', 4);
                     <div class="form-row">
                       <div class="form-group col-md-4">
                         <label>Số PO <sup class="text-danger">*</sup></label>
-                        <input type="text" class="form-control" required name="ImportsPO" v-model="Import.ImportsPO" readonly>
+                        <input type="text" class="form-control" name="ImportsPO" v-model="Import.ImportsPO">
                       </div>
                       <div class="form-group col-md-4">
                         <label>Doc No <sup class="text-danger">*</sup></label>
-                        <input type="text" class="form-control" required name="ImportsDocNo" v-model="Import.ImportsDocNo" readonly>
+                        <input type="text" class="form-control" name="ImportsDocNo" v-model="Import.ImportsDocNo">
                       </div>
                       <div class="form-group col-md-4">
                         <label>Nhà cung cấp <sup class="text-danger">*</sup></label>

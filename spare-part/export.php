@@ -46,7 +46,7 @@ $newDB->where('ProductsOption', 4);
                     <div class="form-row">
                       <div class="form-group col-md-6">
                         <label>Doc No <sup class="text-danger">*</sup></label>
-                        <input type="text" class="form-control" v-model="Export.ExportsDocNo" required name="ExportsDocNo" readonly>
+                        <input type="text" class="form-control" v-model="Export.ExportsDocNo" name="ExportsDocNo">
                       </div>
                       <div class="form-group col-md-6">
                         <label>Bộ phận <sup class="text-danger">*</sup></label>

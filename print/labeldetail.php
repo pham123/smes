@@ -51,9 +51,9 @@ $oDB = new db();
 
         <!-- Begin Page Content -->
         <div class="container-fluid">
-        <form action="labeltrace.php" >
+        <!-- <form action="labeltrace.php" >
           <input type="text" name="code" id="" class='form-control' autofocus>
-        </form>
+        </form> -->
 
         <?php 
         if (isset($_GET['code'])&&safe($_GET['code'])!="") {
@@ -81,7 +81,39 @@ $oDB = new db();
         $text = implode(',',$list);
         //echo $text;
 
-        $sql = "select lh.*,prd.ProductsName,prd.ProductsNumber,ts.TraceStationName from LabelHistory lh
+        $sql = "select lh.*,prd.ProductsName,prd.ProductsNumber,ts.TraceStationName,lbl.LabelListId as DcLabelId from LabelHistory lh
+        inner join LabelList lbl on lbl.LabelListValue = lh.LabelHistoryLabelValue
+        inner join TraceStation ts on ts.TraceStationId = lh.TraceStationId
+        inner join Products prd on prd.ProductsId = lbl.ProductsId
+        WHERE lbl.LabelListId in (".$text.")
+        ORDER BY lh.LabelHistoryCreateDate DESC";
+
+        $result = $oDB->fetchAll($sql);
+        $lastarr = end($result);
+        //var_dump(end($result));
+        $dclabel = $lastarr['DcLabelId'];
+        $keyarr[]=$dclabel;
+
+        $sql = "SELECT `LabelListId` FROM `labellist` WHERE `LabelListMotherId` =".$dclabel;
+
+        $list1 = $oDB->fetchAll($sql);
+        foreach ($list1 as $key => $value) {
+          $keyarr[] = $value['LabelListId'];  
+        }
+
+        $sql = "SELECT `LabelListId` FROM `labellist` 
+                WHERE `LabelListMotherId` 
+                in (SELECT `LabelListId` FROM `labellist` WHERE `LabelListMotherId` = ".$dclabel.")";
+
+        $list2 = $oDB->fetchAll($sql);
+
+        foreach ($list2 as $key => $value) {
+          $keyarr[] = $value['LabelListId'];  
+        }
+        $text =  implode(', ',$keyarr);
+        // var_dump($keyarr);
+
+        $sql = "select lh.*,prd.ProductsName,prd.ProductsNumber,ts.TraceStationName,lbl.LabelListId as DcLabelId from LabelHistory lh
         inner join LabelList lbl on lbl.LabelListValue = lh.LabelHistoryLabelValue
         inner join TraceStation ts on ts.TraceStationId = lh.TraceStationId
         inner join Products prd on prd.ProductsId = lbl.ProductsId
@@ -90,8 +122,51 @@ $oDB = new db();
 
         $result = $oDB->fetchAll($sql);
 
-        // var_dump($result);
+        $sql = "select lh.TraceStationId,sum(lh.LabelHistoryQuantityOk) as qtyOk ,prd.ProductsName,prd.ProductsNumber,ts.TraceStationName 
+        from LabelHistory lh 
+        inner join LabelList lbl on lbl.LabelListValue = lh.LabelHistoryLabelValue 
+        inner join TraceStation ts on ts.TraceStationId = lh.TraceStationId 
+        inner join Products prd on prd.ProductsId = lbl.ProductsId 
+        WHERE lbl.LabelListId in (".$text.") 
+        Group by lh.TraceStationId,prd.ProductsName,prd.ProductsNumber,ts.TraceStationName";
+        $total = $oDB->fetchAll($sql);
         ?>
+
+        <div class="table-responsive">
+
+        <?php
+        echo "<table class='table table-bordered' id='' width='100%' cellspacing='0'>";
+        echo "<thead>";
+        echo "<tr>";
+            echo "<th>".$oDB->lang('Index')."</th>";
+            echo "<th>".$oDB->lang('Station')."</th>";
+            echo "<th>".$oDB->lang('ProductName')."</th>";
+            echo "<th>".$oDB->lang('ProductNumber')."</th>";
+            echo "<th>".$oDB->lang('Quantity')."</th>";
+        echo "</tr>";
+        echo "</thead>";
+
+
+        echo "<tbody>";
+
+        foreach ($total as $key => $value) {
+            echo "<tr>";
+            echo "<td>".($key+1)."</td>";
+            echo "<td>".$value['TraceStationName']."</td>";
+            echo "<td>".$value['ProductsName']."</td>";
+            echo "<td>".$value['ProductsNumber']."</td>";
+            echo "<td>".$value['qtyOk']."</td>";
+
+            echo "</tr>";
+        }
+
+        echo "</tbody>";
+
+        echo "</table>";
+
+          ?>
+
+        </div>
 
         <div class="table-responsive">
         <?php
@@ -118,7 +193,7 @@ $oDB = new db();
             echo "<td>".$value['ProductsName']."</td>";
             echo "<td>".$value['ProductsNumber']."</td>";
             echo "<td style='background-color:#73E700;'>".$value['LabelHistoryQuantityOk']."</td>";
-            echo "<td><a href='labeldetail.php?code=".$value['LabelHistoryLabelValue']."'>".$value['LabelHistoryLabelValue']."</a></td>";
+            echo "<td>".$value['LabelHistoryLabelValue']."</td>";
             echo "<td>".$value['LabelHistoryCreateDate']."</td>";
             echo "</tr>";
         }
@@ -129,8 +204,6 @@ $oDB = new db();
 
           ?>
         </div>
-        <!-- labeltrace.php?code=ACQ30002201_0107_00267 -->
-        
         </div>
         <!-- /.container-fluid -->
 

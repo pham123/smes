@@ -126,6 +126,7 @@ $linkar =  array(
   // array('#',$oDB->lang('QulityList'),'Push QA issues alert','fa-list-ol'),
   array('../spare-part','SPARE PART','Control spare part','fa-boxes'),
   array('#','Tài liệu','BOM, ISO, PFMEA','fa-folder-open'),
+  array('../memos/','Memos','Memo Suggestion','fa-lightbulb'),
   array('../employees/','Nhân viên','Information','fa-calendar'),
 
 );

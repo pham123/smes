@@ -36,10 +36,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 		$old_product_id = $oldInput['ProductsId'];
 		$newDB->where('ProductsId', $old_product_id);
 		$old_product = $newDB->getOne('Products');
-
+		
 		foreach ($_POST as $key => $value) {
 			if ($key=='action'||$key=='target'||$key=='InputsId') {
-			
+				
 			}else{
 				if($value){
 					$text = $text.$key." = '".$value."',";
@@ -49,19 +49,19 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 		$text = rtrim($text, ',');
 		
 		$update_sql = "Update Inputs Set ".$text."
-					  Where InputsId = ".$input_id;
+		Where InputsId = ".$input_id;
 		
 		// echo $update_sql;
-
+		
 		$oDB ->query($update_sql);
-
 		//update stock
-		if($old_product_id == $_POST['ProducstId']){
-			$newstock = $old_product['ProductsStock'] - $oldInput['ProductsQty'] + $_POST['ProductsQty'];
+		if($old_product_id == $_POST['ProductsId']){
+			$newstock = $old_product['ProductsStock'] - $oldInput['ProductsQty'] + intval($_POST['ProductsQty']);
+
 			$newDB->where('ProductsId', $old_product_id);
 			$newDB->update('Products', ['ProductsStock' => $newstock]);
 		}else{
-			$newstock1 = $old_product['ProductsStock'] - $oldOutput['ProductsQty'];
+			$newstock1 = $old_product['ProductsStock'] - $oldInput['ProductsQty'];
 			$newDB->where('ProductsId', $old_product_id);
 			$newDB->update('Products', ['ProductsStock' => $newstock1]);
 

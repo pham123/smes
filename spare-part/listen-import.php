@@ -51,23 +51,23 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 				
 				$newDB->where('ProductsId', $id);
 				$newDB->update('Products', ['ProductsStock' => $stock]);
-			
-			
-				$newDB->where('ImportsId', $import_id);
-				$newDB->where('ProductsId', $id);
-				$result = $newDB->getOne('Inputs');
-
-				//CREATE NEW INPUT
-				if(!$result){
-					$inputData = [
-						'ImportsId' => $import_id,
-						'ProductsId' => $id,
-						'ProductsQty' => $data['ProductsQty'][$index],
-						'ProductsUnitPrice' => str_replace(array('.', ','), '' , $data['ProductsUnitPrice'][$index])
-					];
-					$newDB->insert('Inputs', $inputData);
-				}
 			}
+			
+			
+			$newDB->where('ImportsId', $import_id);
+			$newDB->where('ProductsId', $id);
+			$result = $newDB->delete('Inputs');
+
+			//CREATE NEW INPUT
+
+			$inputData = [
+				'ImportsId' => $import_id,
+				'ProductsId' => $id,
+				'ProductsQty' => $data['ProductsQty'][$index],
+				'ProductsUnitPrice' => str_replace(array('.', ','), '' , $data['ProductsUnitPrice'][$index])
+			];
+			$newDB->insert('Inputs', $inputData);
+
 
 		}
 	}

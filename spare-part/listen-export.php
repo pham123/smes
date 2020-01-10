@@ -52,16 +52,19 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
 				$newDB->where('ProductsId', $id);
 				$newDB->update('Products', ['ProductsStock' => $stock]);
-				
-				//CREATE NEW OUTPUT
-				$outputData = [
-					'ExportsId' => $export_id,
-					'ProductsId' => $id,
-					'ProductsQty' => $data['ProductsQty'][$index],
-					'ExportsReason' => $data['ExportsReason'][$index]
-				];
-				$newDB->insert('Outputs', $outputData);
 			}
+			
+			$newDB->where('ExportsId', $export_id);
+			$newDB->where('ProductsId', $id);
+			$newDB->delete('Outputs');
+			//CREATE NEW OUTPUT
+			$outputData = [
+				'ExportsId' => $export_id,
+				'ProductsId' => $id,
+				'ProductsQty' => $data['ProductsQty'][$index],
+				'ExportsReason' => $data['ExportsReason'][$index]
+			];
+			$newDB->insert('Outputs', $outputData);
 		}
 	}
 }else{

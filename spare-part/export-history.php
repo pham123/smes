@@ -21,8 +21,8 @@ $table_header  = 'ExportsDocNo,ExportsDate,SectionName,ExportsReceiver,ExportsNo
 $newDB = new MysqliDb(_DB_HOST_, _DB_USER_, _DB_PASS_,_DB_name_);
 $newDB->join("Section s", "s.SectionId=e.SectionId", "LEFT");
 $newDB->where('ExportsStatus', 1);
-$newDB->orderBy('e.ExportsId', 'desc');
-$table_data = $newDB->get ("Exports e", null, "e.ExportsId as id,e.ExportsDocNo,e.ExportsDate,s.SectionName,e.ExportsNote,e.ExportsReceiver,CONCAT('<a href=\"printexport.php&quest;id=',e.ExportsId,'\" target=\"_blank\" >','<i class=\"fas fa-print\"></i>', '</a>') as Print");
+$newDB->orderBy('e.ExportsId', 'DESC');
+$table_data = $newDB->get("Exports e", 500, "e.ExportsId as id,e.ExportsDocNo,e.ExportsDate,s.SectionName,e.ExportsNote,e.ExportsReceiver,CONCAT('<a href=\"printexport.php&quest;id=',e.ExportsId,'\" target=\"_blank\" >','<i class=\"fas fa-print\"></i>', '</a>') as Print");
 $table_link = "editexport.php?id=";
 ?>
 
@@ -93,11 +93,26 @@ $table_link = "editexport.php?id=";
     </div>
   </div>
 
-  <?php require('../views/template-footer.php'); ?>
+  <?php require('../views/template-footer-order.php'); ?>
 
   <script>
     $(function () {
       $('selectpicker').selectpicker();
+      $('#dataTable').DataTable( {
+      dom: "<'row'<'col-md-10 pull-left'f><'col-md-2 pull-right'B>>" +
+            "<'row'<'col-sm-12'tr>>" +
+            "<'row'<'col-sm-5'i><'col-sm-7'p>>",
+      buttons: [
+          // 'copy', 'csv', 'excel', 'pdf', 'print'
+          'excel','copy'
+      ],
+      language: {
+          search: "",
+          searchPlaceholder: "Search..."
+      },
+      order: [[0,"desc"]]
+      //"paging": false
+  } );
     });
   </script>
 

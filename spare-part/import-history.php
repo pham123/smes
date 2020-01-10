@@ -21,8 +21,8 @@ $table_header  = 'ImportsPO,ImportsDocNo,ImportsDate,SupplyChainObjectName,Impor
 $newDB = new MysqliDb(_DB_HOST_, _DB_USER_, _DB_PASS_,_DB_name_);
 $newDB->join("SupplyChainObject su", "su.SupplyChainObjectId=i.SuppliersId", "LEFT");
 $newDB->where('ImportsStatus', 1);
-$newDB->orderBy('i.ImportsId', 'desc');
-$table_data = $newDB->get ("Imports i", null, "i.ImportsId as id,i.ImportsPO,i.ImportsDocNo,i.ImportsDate,su.SupplyChainObjectName,i.ImportsNote, CONCAT('<a href=\"printimport.php&quest;id=',i.ImportsId,'\" target=\"_blank\" >','<i class=\"fas fa-print\"></i>', '</a>') as Print");
+$newDB->orderBy('i.ImportsPO', 'DESC');
+$table_data = $newDB->get ("Imports i", 500, "i.ImportsId as id,i.ImportsPO,i.ImportsDocNo,i.ImportsDate,su.SupplyChainObjectName,i.ImportsNote, CONCAT('<a href=\"printimport.php&quest;id=',i.ImportsId,'\" target=\"_blank\" >','<i class=\"fas fa-print\"></i>', '</a>') as Print");
 $table_link = "editimport.php?id=";
 ?>
 
@@ -93,11 +93,26 @@ $table_link = "editimport.php?id=";
     </div>
   </div>
 
-  <?php require('../views/template-footer.php'); ?>
+  <?php require('../views/template-footer-order.php'); ?>
 
   <script>
     $(function () {
       $('selectpicker').selectpicker();
+      $('#dataTable').DataTable( {
+          dom: "<'row'<'col-md-10 pull-left'f><'col-md-2 pull-right'B>>" +
+                "<'row'<'col-sm-12'tr>>" +
+                "<'row'<'col-sm-5'i><'col-sm-7'p>>",
+          buttons: [
+              // 'copy', 'csv', 'excel', 'pdf', 'print'
+              'excel','copy'
+          ],
+          language: {
+              search: "",
+              searchPlaceholder: "Search..."
+          },
+          order: [[0, "desc"]]
+          //"paging": false
+      } );
     });
   </script>
 

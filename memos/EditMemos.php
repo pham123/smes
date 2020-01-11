@@ -96,14 +96,14 @@ p{margin:5px;}
                 <td><?php echo $oDB->lang('Areas') ?></td><td colspan=''><?php echo $issue['AreasName'] ?></td>
                 </tr>
 
-                <tr><td><?php echo $oDB->lang('Location') ?></td><td colspan='3'>
+                <tr><td><?php echo $oDB->lang('Location') ?></td><td colspan='3'><input type="text" name="MemosLocation" id="" class='form-control' value='<?php echo $issue['MemosLocation'] ?>'>
+                </td></tr>
 
                 <tr><td><?php echo $oDB->lang('MemoReduce') ?></td><td colspan=''><?php echo $issue['MemoReduceName'] ?></td>
                 <td><?php echo $oDB->lang('MemoApplicability') ?></td><td colspan=''><?php echo $issue['MemoApplicabilityName'] ?></td>
                 </tr>
                 
-                <input type="text" name="MemosLocation" id="" class='form-control' value='<?php echo $issue['MemosLocation'] ?>'>
-                </td></tr>
+                
                 <tr><td><?php echo $oDB->lang('MemosIssue') ?></td><td colspan='3'>
                 <textarea name="MemosIssue" id="" cols="30" class='form-control' rows="5"><?php echo $issue['MemosIssue'] ?></textarea>
                 </td></tr>

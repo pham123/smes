@@ -22,9 +22,7 @@
  ";
 
  $ketqua = $oDB-> fetchAll($sql);
- $headerar = (array_keys($ketqua[0]));
-
- //var_dump($ketqua);
+//  $headerar = (array_keys($ketqua[0]));
  
  ?>
  

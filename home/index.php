@@ -121,7 +121,7 @@ $linkar =  array(
   array('#',$oDB->lang('Productivity','Sản lượng'),$oDB->lang('Quantity'),'fa-pallet'),
   array('../print/',$oDB->lang('Print'),$oDB->lang('PrintLabel'),'fa-barcode'),
   array('../products/',$oDB->lang('Products'),'Part Name, Part No','fa-dolly'),
-  array('#',$oDB->lang('LinePatrol','Báo cáo'),$oDB->lang('LinePatrol','Báo cáo'),'fa-camera'),
+  array('../patrols',$oDB->lang('LinePatrol','Báo cáo'),$oDB->lang('LinePatrol','Báo cáo'),'fa-camera'),
   array('../quality/',$oDB->lang('Quality'),$oDB->lang('QualityIssueControl'),'fa-bullhorn'),
   // array('#',$oDB->lang('QulityList'),'Push QA issues alert','fa-list-ol'),
   array('../spare-part','SPARE PART','Control spare part','fa-boxes'),

@@ -56,7 +56,7 @@ $newDB->where('ProductsOption', 4);
                         <label>Nhà cung cấp <sup class="text-danger">*</sup></label>
                         <select name="SuppliersId" class="form-control" required v-model="Import.SuppliersId">
                           <?php 
-                          $spls = $oDB->sl_all('supplychainobject',1);
+                          $spls = $oDB->sl_all('supplychainobject','SupplyChainTypeId = 3');
                           echo "<option value=''>select supplier</option>";
                           foreach ($spls as $key => $value) {
                             echo "<option value='".$value['SupplyChainObjectId']."'>".$value['SupplyChainObjectName']."</option>";

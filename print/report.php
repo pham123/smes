@@ -76,7 +76,8 @@ $oDB = new db();
             $sql = "select SUM(lh.LabelHistoryQuantityOk) as totalOk,
                     SUM( CASE WHEN lh.TraceStationId = 1 THEN lh.LabelHistoryQuantityOk ELSE 0 END) AS DCOK, 
                     SUM( CASE WHEN lh.TraceStationId = 3 THEN lh.LabelHistoryQuantityOk ELSE 0 END) AS NCOK, 
-                    SUM( CASE WHEN lh.TraceStationId = 4 THEN lh.LabelHistoryQuantityOk ELSE 0 END) AS STOK, 
+                    SUM( CASE WHEN lh.TraceStationId = 4 THEN lh.LabelHistoryQuantityOk ELSE 0 END) AS STOK,
+                    SUM( CASE WHEN lh.TraceStationId = 7 THEN lh.LabelHistoryQuantityOk ELSE 0 END) AS HMOK, 
                     SUM( CASE WHEN lh.TraceStationId = 5 THEN lh.LabelHistoryQuantityOk ELSE 0 END) AS FIOK, 
                     date(LabelHistoryCreateDate) as crDate,
                     prd.ProductsName,
@@ -137,6 +138,7 @@ $oDB = new db();
             echo "<th>".$oDB->lang('Dc')."</th>";
             echo "<th>".$oDB->lang('Nc')."</th>";
             echo "<th>".$oDB->lang('St')."</th>";
+            echo "<th>".$oDB->lang('Hanmi')."</th>";
             echo "<th>".$oDB->lang('Fi')."</th>";
         echo "</tr>";
         echo "</thead>";
@@ -153,6 +155,7 @@ $oDB = new db();
             echo "<td>".$value['DCOK']."</td>";
             echo "<td>".$value['NCOK']."</td>";
             echo "<td>".$value['STOK']."</td>";
+            echo "<td>".$value['HMOK']."</td>";
             echo "<td>".$value['FIOK']."</td>";
             echo "</tr>";
         }

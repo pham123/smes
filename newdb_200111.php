@@ -10,20 +10,21 @@ $oDB = new db();
 
 $sql[] = "CREATE TABLE PatrolItems (
     PatrolItemsId INT(9) UNSIGNED AUTO_INCREMENT PRIMARY KEY,
-    PatrolItemsName VARCHAR(255) NOT NULL
+    PatrolItemsName VARCHAR(255) NOT NULL,
+    PatrolItemsDescription VARCHAR(255)
     );";
-$sql[] = "INSERT INTO PatrolItems(PatrolItemsName) 
+$sql[] = "INSERT INTO PatrolItems(PatrolItemsName,PatrolItemsDescription) 
         VALUES
-        ('Basic order(Working time, uniform, appearance)'),
-        ('5S3R(5S3R, Visual managemen, red tag)'),
-        ('ESH(Safety, environment, health)'),
-        ('Sub production(Raw material, mold breakdown, repairing, technology)'),
-        ('Process loss(Motion, Foolproof, MFA, Re-handling)'),
-        ('Logictics loss(FIFO, stock, in-house transportation, unloading, loading)'),
-        ('6 tools(defect, self/sequence check, inspection motion, quality process)'),
-        ('Equipment loss(Machine trouble, maintenance, spare part)'),
-        ('GD patrol(GD patrol)'),
-        ('Other(Other)');";
+        ('Basic order','Working time, uniform, appearance'),
+        ('5S3R','5S3R, Visual managemen, red tag'),
+        ('ESH','Safety, environment, health'),
+        ('Sub production','Raw material, mold breakdown, repairing, technology'),
+        ('Process loss','Motion, Foolproof, MFA, Re-handling'),
+        ('Logictics loss','FIFO, stock, in-house transportation, unloading, loading'),
+        ('6 tools','defect, self/sequence check, inspection motion, quality process'),
+        ('Equipment loss','Machine trouble, maintenance, spare part'),
+        ('GD patrol','GD patrol'),
+        ('Other','Other');";
 $sql[] = "CREATE TABLE PatrolLosses (
     PatrolLossesId INT(9) UNSIGNED AUTO_INCREMENT PRIMARY KEY,
     PatrolLossesName VARCHAR(255) NOT NULL
@@ -41,10 +42,14 @@ $sql[] = "INSERT INTO PatrolLosses(PatrolLossesName)
 $sql[] = "CREATE TABLE Patrols (
     PatrolsId INT(9) UNSIGNED AUTO_INCREMENT PRIMARY KEY,
     PatrolItemsId INT(9) NOT NULL,
+    AreasId INT(6) NOT NULL,
     PatrolLossesId INT(9) NOT NULL,
     PatrolsLocation VARCHAR(255) NOT NULL,
     PatrolsContent TEXT NOT NULL,
     UsersId INT(9) NOT NULL,
+    PatrolsOption TINYINT NOT NULL,
+    PatrolsStatus TINYINT NOT NULL DEFAULT 0,
+    PatrolsCreator INT(9),
     PatrolsCreateDate TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     PatrolsUpdateDate TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
     );";

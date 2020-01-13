@@ -26,7 +26,7 @@ $arr = array(
   array('createMemos.php', 'fas fa-plus-square',$oDB->lang('AddMemos')),
   array('Memoslist.php', 'fas fa-list-ol',$oDB->lang('MemosList')),
   array('#', 'fas fa-search',$oDB->lang('FindMemos')),
-  array('#', 'fas fa-chart-bar',$oDB->lang('Report')),
+  array('MonthlyReport.php', 'fas fa-chart-bar',$oDB->lang('MonthlyReport')),
 );
 echo nav_item($oDB->lang('Material'),$arr);
 ?>

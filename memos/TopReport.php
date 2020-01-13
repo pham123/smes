@@ -25,21 +25,47 @@ $enddate = (isset($_GET['enddate'])) ? safe($_GET['enddate']) : date('Y-m-t') ;
 // $DatePoint = date("Y-m");
 // var_dump ($datear);
 
+switch ($gettop) {
+  case 'creator':
+    $sql = "select 
+            Memos.MemosCreator,
+            Employees.EmployeesName As Name,
+            Count(*) as MemosTotal,
+            SUM(case when MemosOption = 1 then 1 else 0 end) as MemosDoing,
+            SUM(case when MemosOption = 2 then 1 else 0 end) as MemosDone,
+            SUM(case when MemosOption = 3 then 1 else 0 end) as MemosDelay,
+            SUM(case when MemosOption = 4 then 1 else 0 end) as MemosCancel
+            from Memos
+            INNER JOIN Employees ON Employees.EmployeesId = Memos.MemosCreator
+            WHERE date(Memos.MemosCreateDate) BETWEEN '".$startdate."' AND '".$enddate."'
+            Group by Memos.MemosCreator,Employees.EmployeesName
+            Order by MemosTotal DESC
+            ";
+    break;
 
-$sql = "select 
-Memos.MemosCreator,
-Employees.EmployeesName,
-Count(*) as MemosTotal,
-SUM(case when MemosOption = 1 then 1 else 0 end) as MemosDoing,
-SUM(case when MemosOption = 2 then 1 else 0 end) as MemosDone,
-SUM(case when MemosOption = 3 then 1 else 0 end) as MemosDelay,
-SUM(case when MemosOption = 4 then 1 else 0 end) as MemosCancel
-from Memos
-INNER JOIN Employees ON Employees.EmployeesId = Memos.MemosCreator
-WHERE date(Memos.MemosCreateDate) BETWEEN '".$startdate."' AND '".$enddate."'
-Group by Memos.MemosCreator,Employees.EmployeesName
-Order by MemosTotal DESC
-";
+    case 'pic':
+      $sql = "select 
+              Memos.MemosPic,
+              Users.UsersFullName As Name,
+              Count(*) as MemosTotal,
+              SUM(case when MemosOption = 1 then 1 else 0 end) as MemosDoing,
+              SUM(case when MemosOption = 2 then 1 else 0 end) as MemosDone,
+              SUM(case when MemosOption = 3 then 1 else 0 end) as MemosDelay,
+              SUM(case when MemosOption = 4 then 1 else 0 end) as MemosCancel
+              from Memos
+              INNER JOIN Users ON Users.UsersId = Memos.MemosPic
+              WHERE date(Memos.MemosCreateDate) BETWEEN '".$startdate."' AND '".$enddate."'
+              Group by Memos.MemosPic,Users.UsersFullName
+              Order by MemosTotal DESC
+              ";
+      break;
+  
+  default:
+    # code...
+    break;
+}
+
+
 
 $report = $oDB->fetchAll($sql);
 // var_dump($report);
@@ -77,7 +103,8 @@ $report = $oDB->fetchAll($sql);
               </div>
               <div class="col-md-2">
               <select name="top" id="" class='selectpicker show-tick form-control' data-live-search="true" data-style="btn-info" data-width="100%">
-                  <option value="creator">Creator</option>
+                  <option value="creator" <?php echo $retVal = ($gettop=='creator') ? 'selected' : '' ;?>>Creator</option>
+                  <option value="pic" <?php echo $retVal = ($gettop=='pic') ? 'selected' : '' ;?>>Pic</option>
               </select>
             </div>
             <div class="col-md-2">
@@ -124,7 +151,7 @@ $report = $oDB->fetchAll($sql);
                     $Cancel += $value['MemosCancel'];
                    ?>
                     <tr class='text-center align-middle'>
-                      <td ><?php echo $value['EmployeesName'] ?></td>
+                      <td ><?php echo $value['Name'] ?></td>
                       <td ><?php echo $value['MemosTotal'] ?></td>
                       <td class='bg-success'><?php echo $value['MemosDone'] ?></td>
                       <td class='bg-warning'><?php echo $value['MemosDoing'] ?></td>

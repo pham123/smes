@@ -128,7 +128,7 @@ p{margin:5px;}
                   $model = $oDB->sl_all('Employees',1);
                   foreach ($model as $key => $value) {
                     $select = ($user->id==$value['EmployeesId']) ? 'selected' : '' ;
-                    echo "<option value='".$value['EmployeesId']."' ".$select.">".$value['EmployeesName']."</option>";
+                    echo "<option value='".$value['EmployeesId']."' ".$select.">".$value['EmployeesCode']."-".$value['EmployeesName']."</option>";
                   }
                   ?>
                 </select>

@@ -83,7 +83,7 @@ $oDB = new db();
                   if ($key2==0) {
                           echo "<td><a href='".$table_link.$value['id']."'>".$value[$value2]."</a></td>";
                   }else{
-                    if($key2 == 5){
+                    if($key2 == 6){
                       if($value['ProductsStock'] < $value['ProductsSafetyStk'] ){
                         echo "<td class='bg-danger text-white'>".$value[$value2]."</td>";
                       }else{

@@ -50,7 +50,7 @@ $newDb = new MysqliDb(_DB_HOST_, _DB_USER_, _DB_PASS_, _DB_name_);
   <!-- Page Content -->
   <div class="container-fluid">
   <?php 
-        $table_header  = 'id,location,area,item,loss,issue,creator,pic';
+        $table_header  = 'id,location,area,item,loss,issue,creator,pic,picture';
         
         $newDb->where('PatrolsStatus', 1);
         $newDb->join("PatrolItems pi", "pt.PatrolItemsId=pi.PatrolItemsId", "LEFT");
@@ -58,8 +58,8 @@ $newDb = new MysqliDb(_DB_HOST_, _DB_USER_, _DB_PASS_, _DB_name_);
         $newDb->join("Users u", "pt.PatrolsCreator=u.UsersId", "LEFT");
         $newDb->join("Users u2", "pt.UsersId=u2.UsersId", "LEFT");
         $newDb->join("Areas a", "pt.AreasId=a.AreasId", "LEFT");
-        $table_data = $newDb->get ("Patrols pt", null, "pt.PatrolsId as id,pt.PatrolsLocation as location,a.AreasName as area,pi.PatrolItemsName as item,pl.PatrolLossesName as loss,pt.PatrolsContent as issue,u.UsersFullName as creator,u2.UsersFullName as pic");
-        $table_link = "editsparepart.php?id=";
+        $table_data = $newDb->get ("Patrols pt", null, "pt.PatrolsId as id,pt.PatrolsLocation as location,a.AreasName as area,pi.PatrolItemsName as item,pl.PatrolLossesName as loss,pt.PatrolsContent as issue,u.UsersFullName as creator,u2.UsersFullName as pic, CONCAT('<img src=\'image/small/',pt.PatrolsId, '.jpg\' style=\'max-height: 45px;\'/>') AS picture");
+        $table_link = "editpatrol.php?id=";
         ?>
 
     <div class="table-responsive">
@@ -128,6 +128,30 @@ $newDb = new MysqliDb(_DB_HOST_, _DB_USER_, _DB_PASS_, _DB_name_);
 
   <script src="../vendor/jquery/jquery.min.js"></script>
   <script src="../vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+
+  <script src="../vendor/datatables/jquery.dataTables.min.js"></script>
+  <script src="../vendor/datatables/dataTables.bootstrap4.min.js"></script> 
+  <script>
+    $.fn.dataTable.ext.search.push(
+      function( settings, data, dataIndex ) {
+          let i_filter = $('#item_filter').val();
+          let l_filter = $('#loss_filter').val();
+          let i_value = data[3];
+          let l_value = data[4];
+
+          return i_value.includes(i_filter) && l_value.includes(l_filter);
+      }
+    );
+    $(function () {
+      var data_table = $('#dataTable').DataTable();
+      $('#item_filter').change(function(){
+        data_table.draw();
+      });
+      $('#loss_filter').change(function(){
+        data_table.draw();
+      });
+    });
+    </script>
 
 </body>
 

@@ -71,7 +71,11 @@ $oDB = new db();
           echo "<thead>";
           echo "<tr>";
           foreach ($tablearr as $key => $value) {
+            if($key == 1){
+              echo "<th style='min-width: 200px'>".$oDB->lang($value)."</th>";
+            }else{
               echo "<th>".$oDB->lang($value)."</th>";
+            }
           }
           echo "</tr>";
           echo "</thead>";

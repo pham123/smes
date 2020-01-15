@@ -70,6 +70,16 @@
           <i class="fab fa-docker"></i>
           <span>Tính tồn kho tháng <?php echo date('m/Y') ?></span></a>
       </li>
+      <li class="nav-item">
+        <a class="nav-link" style="padding: 5px 16px;" href="section_report.php">
+          <i class="far fa-futbol"></i>
+          <span>Section report <?php echo date('Y') ?></span></a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" style="padding: 5px 16px;" href="code_report.php">
+          <i class="fas fa-bicycle"></i>
+          <span>Code report <?php echo date('Y') ?></span></a>
+      </li>
 
       <!-- Divider -->
       <hr class="sidebar-divider d-none d-md-block">

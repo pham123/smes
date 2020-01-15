@@ -20,6 +20,13 @@
   <!-- Custom styles for this template-->
   <link href="../css/sb-admin-2.css" rel="stylesheet">
   <link href="../css/custom.css" rel="stylesheet">
+  <?php
+  if(isset($has_chart)){
+ 
+  echo '<link href="../css/highchart.css" rel="stylesheet">';
+
+  }
+  ?>
   <style>
   <?php
   if(isset($page_css)){

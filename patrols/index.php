@@ -20,9 +20,9 @@ $newDb = new MysqliDb(_DB_HOST_, _DB_USER_, _DB_PASS_, _DB_name_);
 <body>
 
   <!-- Navigation -->
-  <nav class="navbar navbar-expand-lg navbar-dark bg-primary static-top">
+  <nav class="navbar navbar-expand-lg navbar-dark bg-primary static-top py-0">
     <div class="container">
-      <a class="navbar-brand" href="/smes/home"><img src="../img/hallalogo1.png" alt="logo" height="45" >Line Patrol</a>
+      <a class="navbar-brand" href="/smes/home"><img src="../img/hallalogo1.png" alt="logo" height="45" >&nbsp;<strong>Line Patrol</strong></a>
       <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
       </button>
@@ -75,6 +75,19 @@ $newDb = new MysqliDb(_DB_HOST_, _DB_USER_, _DB_PASS_, _DB_name_);
                     echo "<option value='".$value['PatrolItemsName']."'>".$value['PatrolItemsName']."</option>";
                 }
                 ?>
+                
+                </select>
+            </td>
+            <td style="padding:1px 0;">area:</td>
+            <td style="padding:1px 5px;">
+                <select id="area_filter" class="form-control" style="max-width: 150px;">
+                    <?php 
+                    $areas = $oDB->sl_all('Areas',1);
+                    echo "<option value=''>all area</option>";
+                    foreach ($areas as $key => $value) {
+                        echo "<option value='".$value['AreasName']."'>".$value['AreasName']."</option>";
+                    }
+                    ?>
                 
                 </select>
             </td>
@@ -136,10 +149,12 @@ $newDb = new MysqliDb(_DB_HOST_, _DB_USER_, _DB_PASS_, _DB_name_);
       function( settings, data, dataIndex ) {
           let i_filter = $('#item_filter').val();
           let l_filter = $('#loss_filter').val();
+          let a_filter = $('#area_filter').val();
           let i_value = data[3];
           let l_value = data[4];
+          let a_value = data[2];
 
-          return i_value.includes(i_filter) && l_value.includes(l_filter);
+          return i_value.includes(i_filter) && l_value.includes(l_filter) && a_value.includes(a_filter);
       }
     );
     $(function () {
@@ -148,6 +163,9 @@ $newDb = new MysqliDb(_DB_HOST_, _DB_USER_, _DB_PASS_, _DB_name_);
         data_table.draw();
       });
       $('#loss_filter').change(function(){
+        data_table.draw();
+      });
+      $('#area_filter').change(function(){
         data_table.draw();
       });
     });

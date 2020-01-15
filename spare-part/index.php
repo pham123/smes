@@ -67,7 +67,7 @@ $oDB = new db();
       </table>
         <?php
           $tablearr = explode(',',$table_header);
-          echo "<table class='table table-bordered' id='dataTable' width='100%' cellspacing='0'>";
+          echo "<table class='table table-bordered table-sm' id='dataTable' width='100%' cellspacing='0'>";
           echo "<thead>";
           echo "<tr>";
           foreach ($tablearr as $key => $value) {
@@ -169,11 +169,11 @@ $oDB = new db();
             }
           }
           if(status == '1'){
-            if(ct_filter == '' && stockValue < safeValue)
+            if(ct_filter == '' && (parseInt(stockValue) < parseInt(safeValue)))
             {
               return true;
             }
-            if ( ct_filter == ct_value && stockValue < safeValue)
+            if ( ct_filter == ct_value && (parseInt(stockValue) < parseInt(safeValue)))
             {
                 return true;
             }

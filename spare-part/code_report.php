@@ -66,15 +66,28 @@ $newDb = new MysqliDb(_DB_HOST_, _DB_USER_, _DB_PASS_, _DB_name_);
                                   ON op.ExportsId = ep.ExportsId
                                   AND ep.ExportsDate like ?
                                 WHERE op.ProductsId = ?',[$month.'-%', $pid]);
-                                $sum = 0;
+      $prices = $newDb->rawQuery('select inp.ProductsUnitPrice
+                                from Inputs inp
+                                LEFT JOIN Imports imp
+                                ON imp.ImportsId = inp.ImportsId
+                                AND imp.ImportsDate like ?
+                                WHERE inp.ProductsId = ?',[$month.'-%',$pid]);
+      $sum = 0;
       foreach ($items as $value) {
         $sum += array_sum($value);
       }
-      return $sum;
+      $price = 0;
+      foreach($prices as $v){
+        $price += array_sum($v);
+      }
+      return ["qty" => $sum, "price" => $price/count($prices)];
 
     }
     function calculateAmount($pid,$monthVal){
       return 3000;
+    }
+    function averageUnitPrice($pid, $monthVal){
+
     }
   ?>
 
@@ -105,13 +118,12 @@ $newDb = new MysqliDb(_DB_HOST_, _DB_USER_, _DB_PASS_, _DB_name_);
           echo "<td>".$value['ProductsNumber'].'</td>';
           echo "<td>".$value['ProductsName'].'</td>';
           echo "<td>".$value['ProductsDescription'].'</td>';
-          echo '<td>'.calculateQty($value['ProductsId'], $i).'</td>';
-          echo '<td>'.calculateAmount($value['ProductsId'], $i).'</td>';
+          echo '<td>'.'total qty'.'</td>';
+          echo '<td>'.'total amount'.'</td>';
           for ($j=1; $j <=intval(date('m')) ; $j++) { 
-            $qty = calculateQty($value['ProductsId'], $j);
-            $u_price = 3333;
-            echo '<td>'.$qty.'</td>';
-            echo '<td>'.number_format($qty * $u_price, 0, '.',',').'</td>';
+            $temp = calculateQty($value['ProductsId'], $j);
+            echo '<td>'.$temp['qty'].'</td>';
+            echo '<td>'.number_format($temp['qty'] * $temp['price'], 0, '.',',').'</td>';
           }
           echo "</tr>";
         }

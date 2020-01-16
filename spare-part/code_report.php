@@ -48,18 +48,32 @@ $newDb = new MysqliDb(_DB_HOST_, _DB_USER_, _DB_PASS_, _DB_name_);
     $newDb->where('p.ProductsOption', 4);
     // $newDb->join("Exports e", "op.ExportsId=e.ExportsId", "LEFT");
     // $newDb->join("Outputs op", "p.ProductsId=op.ProductsId", "LEFT");
-    $spareparts = $newDb->get ("Products p", null, "p.ProductsNumber,p.ProductsName,p.ProductsDescription");
-    function calculateQty($code,$monthVal){
+    $spareparts = $newDb->get ("Products p", null, "p.ProductsId,p.ProductsNumber,p.ProductsName,p.ProductsDescription");
+    function calculateQty($pid,$monthVal){
       if($monthVal < 10){
         $month = date('Y').'-0'.$monthVal;
       }else{
         $month = date('Y').'-'.$monthVal;
       }
-      // $newDb->where('p.ProductsCode', $code);
-      // $items = $newDb->get('Products p', null, '');
-      return $code;
+      global $newDb;
+      // $newDb->where('op.ProductsId', $pid);
+      // $newDb->join("Exports e", "op.ExportsId=e.ExportsId", "LEFT");
+      // $newDb->joinWhere("Exports e", "e.ExportsDate", $month.'-%', 'like');
+      // $items = $newDb->get('Outputs op', null, 'op.ProductsQty');
+      $items = $newDb->rawQuery('select op.ProductsQty
+                                from Outputs op
+                                LEFT JOIN Exports ep
+                                  ON op.ExportsId = ep.ExportsId
+                                  AND ep.ExportsDate like ?
+                                WHERE op.ProductsId = ?',[$month.'-%', $pid]);
+                                $sum = 0;
+      foreach ($items as $value) {
+        $sum += array_sum($value);
+      }
+      return $sum;
+
     }
-    function calculateAmount($code,$monthVal){
+    function calculateAmount($pid,$monthVal){
       return 3000;
     }
   ?>
@@ -91,11 +105,13 @@ $newDb = new MysqliDb(_DB_HOST_, _DB_USER_, _DB_PASS_, _DB_name_);
           echo "<td>".$value['ProductsNumber'].'</td>';
           echo "<td>".$value['ProductsName'].'</td>';
           echo "<td>".$value['ProductsDescription'].'</td>';
-          echo '<td>'.calculateQty($value['ProductsNumber'], $i).'</td>';
-          echo '<td>'.calculateAmount($value['ProductsNumber'], $i).'</td>';
+          echo '<td>'.calculateQty($value['ProductsId'], $i).'</td>';
+          echo '<td>'.calculateAmount($value['ProductsId'], $i).'</td>';
           for ($j=1; $j <=intval(date('m')) ; $j++) { 
-            echo '<td>'.calculateQty($value['ProductsNumber'], $j).'</td>';
-            echo '<td>'.calculateAmount($value['ProductsNumber'], $j).'</td>';
+            $qty = calculateQty($value['ProductsId'], $j);
+            $u_price = 3333;
+            echo '<td>'.$qty.'</td>';
+            echo '<td>'.number_format($qty * $u_price, 0, '.',',').'</td>';
           }
           echo "</tr>";
         }

@@ -48,7 +48,7 @@ $newDb = new MysqliDb(_DB_HOST_, _DB_USER_, _DB_PASS_, _DB_name_);
     $newDb->where('p.ProductsOption', 4);
     // $newDb->join("Exports e", "op.ExportsId=e.ExportsId", "LEFT");
     // $newDb->join("Outputs op", "p.ProductsId=op.ProductsId", "LEFT");
-    $spareparts = $newDb->get ("Products p", null, "p.ProductsId,p.ProductsNumber,p.ProductsName,p.ProductsDescription");
+    $spareparts = $newDb->get ("Products p", 50, "p.ProductsId,p.ProductsNumber,p.ProductsName,p.ProductsDescription");
     function calculateQty($pid,$monthVal){
       if($monthVal < 10){
         $month = date('Y').'-0'.$monthVal;

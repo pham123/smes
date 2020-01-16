@@ -87,7 +87,7 @@ $newDb = new MysqliDb(_DB_HOST_, _DB_USER_, _DB_PASS_, _DB_name_);
         echo "<th rowspan='2'>Code</th>";
         echo "<th rowspan='2'>Part Name</th>";
         echo "<th rowspan='2'>Spec</th>";
-        echo "<th colspan='2'>Sumary</th>";
+        echo "<th colspan='2'>Total ".date('Y')."</th>";
         for ($i=1; $i <=intval(date('m')) ; $i++) { 
           echo '<th colspan="2">'.$monthName[$i].'-'.date('y').'</th>';
         }

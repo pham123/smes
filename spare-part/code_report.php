@@ -101,10 +101,10 @@ $newDb = new MysqliDb(_DB_HOST_, _DB_USER_, _DB_PASS_, _DB_name_);
         echo "<th rowspan='2'>Code</th>";
         echo "<th rowspan='2'>Part Name</th>";
         echo "<th rowspan='2'>Spec</th>";
-        echo "<th colspan='2'>Total ".date('Y')."</th>";
         for ($i=1; $i <=intval(date('m')) ; $i++) { 
           echo '<th colspan="2">'.$monthName[$i].'-'.date('y').'</th>';
         }
+        echo "<th colspan='2'>Total ".date('Y')."</th>";
         echo "</tr>";
         echo "<tr>";
         for ($i=1; $i <= intval(date('m'))+1; $i++) { 
@@ -119,13 +119,17 @@ $newDb = new MysqliDb(_DB_HOST_, _DB_USER_, _DB_PASS_, _DB_name_);
           echo "<td>".$value['ProductsNumber'].'</td>';
           echo "<td>".$value['ProductsName'].'</td>';
           echo "<td>".$value['ProductsDescription'].'</td>';
-          echo '<td>'.'total qty'.'</td>';
-          echo '<td>'.'total amount'.'</td>';
+          $totalQty = 0;
+          $totalAmount = 0;
           for ($j=1; $j <=intval(date('m')) ; $j++) { 
             $temp = calculateQty($value['ProductsId'], $j);
-            echo '<td>'.$temp['qty'].'</td>';
+            $totalQty += $temp['qty'];
+            $totalAmount += $temp['qty'] * $temp['price'];
+            echo '<td class="text-center">'.$temp['qty'].'</td>';
             echo '<td>'.number_format($temp['qty'] * $temp['price'], 0, '.',',').'</td>';
           }
+          echo '<td class="text-center">'.$totalQty.'</td>';
+          echo '<td>'.number_format($totalAmount, 0, '.', ',').'</td>';
           echo "</tr>";
         }
         echo "</tbody>";

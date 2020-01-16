@@ -64,14 +64,12 @@ $newDb = new MysqliDb(_DB_HOST_, _DB_USER_, _DB_PASS_, _DB_name_);
                                 from Outputs op
                                 LEFT JOIN Exports ep
                                   ON op.ExportsId = ep.ExportsId
-                                  AND ep.ExportsDate like ?
-                                WHERE op.ProductsId = ?',[$month.'-%', $pid]);
+                                WHERE op.ProductsId = ? AND ep.ExportsDate like ?',[$pid,$month.'-%']);
       $prices = $newDb->rawQuery('select inp.ProductsUnitPrice
                                 from Inputs inp
                                 LEFT JOIN Imports imp
                                 ON imp.ImportsId = inp.ImportsId
-                                AND imp.ImportsDate like ?
-                                WHERE inp.ProductsId = ?',[$month.'-%',$pid]);
+                                WHERE inp.ProductsId = ? AND imp.ImportsDate like ?',[$pid,$month.'-%']);
       $sum = 0;
       foreach ($items as $value) {
         $sum += array_sum($value);
@@ -95,19 +93,20 @@ $newDb = new MysqliDb(_DB_HOST_, _DB_USER_, _DB_PASS_, _DB_name_);
     <div class="table-responsive">
     <?php
         $monthName = ['1' => 'Jan', '2' => 'Feb', '3' => 'Mar', '4' => 'Apr', '5' => 'May', '6' => 'Jun', '7' => 'Jul', '8' => 'Aug', '9' => 'Sep', '10' => 'Oct', '11' => 'Nov', '12' => 'Dec'];
+        $m_val = intval(date('m'));
         echo "<table class='table table-bordered table-sm table-striped' id='dataTable' width='100%' cellspacing='0'>";
         echo "<thead>";
         echo "<tr>";
         echo "<th rowspan='2'>Code</th>";
-        echo "<th rowspan='2'>Part Name</th>";
+        echo "<th rowspan='2' style='min-width: 200px'>Part Name</th>";
         echo "<th rowspan='2'>Spec</th>";
-        for ($i=1; $i <=intval(date('m')) ; $i++) { 
+        for ($i=1; $i <=$m_val ; $i++) { 
           echo '<th colspan="2">'.$monthName[$i].'-'.date('y').'</th>';
         }
         echo "<th colspan='2'>Total ".date('Y')."</th>";
         echo "</tr>";
         echo "<tr>";
-        for ($i=1; $i <= intval(date('m'))+1; $i++) { 
+        for ($i=1; $i <= $m_val+1; $i++) { 
           echo '<th>Qty</th>';
           echo '<th>Amount</th>';
         }
@@ -121,7 +120,7 @@ $newDb = new MysqliDb(_DB_HOST_, _DB_USER_, _DB_PASS_, _DB_name_);
           echo "<td>".$value['ProductsDescription'].'</td>';
           $totalQty = 0;
           $totalAmount = 0;
-          for ($j=1; $j <=intval(date('m')) ; $j++) { 
+          for ($j=1; $j <=$m_val ; $j++) { 
             $temp = calculateQty($value['ProductsId'], $j);
             $totalQty += $temp['qty'];
             $totalAmount += $temp['qty'] * $temp['price'];

@@ -80,7 +80,8 @@ $newDb = new MysqliDb(_DB_HOST_, _DB_USER_, _DB_PASS_, _DB_name_);
       foreach($prices as $v){
         $price += array_sum($v);
       }
-      return ["qty" => $sum, "price" => $price/count($prices)];
+
+      return ["qty" => $sum, "price" => $price/(count($prices) == 0?1:count($prices))];
 
     }
     function calculateAmount($pid,$monthVal){

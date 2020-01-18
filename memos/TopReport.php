@@ -22,6 +22,9 @@ $datear = monthar($getdate,1);
 $startdate = (isset($_GET['startdate'])) ? safe($_GET['startdate']) : date('Y-m-01') ;
 $enddate = (isset($_GET['enddate'])) ? safe($_GET['enddate']) : date('Y-m-t') ;
 
+$_SESSION[_site_]['startdate']=$startdate;
+$_SESSION[_site_]['enddate']=$enddate;
+
 // $DatePoint = date("Y-m");
 // var_dump ($datear);
 
@@ -29,6 +32,7 @@ switch ($gettop) {
   case 'creator':
     $sql = "select 
             Memos.MemosCreator,
+            Employees.EmployeesId As Id,
             Employees.EmployeesName As Name,
             Count(*) as MemosTotal,
             SUM(case when MemosOption = 1 then 1 else 0 end) as MemosDoing,
@@ -41,11 +45,13 @@ switch ($gettop) {
             Group by Memos.MemosCreator,Employees.EmployeesName
             Order by MemosTotal DESC
             ";
+    $get = 'cr';
     break;
 
     case 'pic':
       $sql = "select 
               Memos.MemosPic,
+              Users.UsersId as Id,
               Users.UsersFullName As Name,
               Count(*) as MemosTotal,
               SUM(case when MemosOption = 1 then 1 else 0 end) as MemosDoing,
@@ -58,6 +64,7 @@ switch ($gettop) {
               Group by Memos.MemosPic,Users.UsersFullName
               Order by MemosTotal DESC
               ";
+      $get = 'pic';
       break;
   
   default:
@@ -151,12 +158,12 @@ $report = $oDB->fetchAll($sql);
                     $Cancel += $value['MemosCancel'];
                    ?>
                     <tr class='text-center align-middle'>
-                      <td ><?php echo $value['Name'] ?></td>
-                      <td ><?php echo $value['MemosTotal'] ?></td>
-                      <td class='bg-success'><?php echo $value['MemosDone'] ?></td>
-                      <td class='bg-warning'><?php echo $value['MemosDoing'] ?></td>
-                      <td class='bg-danger'><?php echo $value['MemosDelay'] ?></td>
-                      <td><?php echo $value['MemosCancel'] ?></td>
+                      <td><?php echo $value['Name'] ?></td>
+                      <td><a href="Memoslist.php?<?php echo $get ?>=<?php echo $value['Id'] ?>"><?php echo $value['MemosTotal'] ?></a></td>
+                      <td class='bg-success'><a href="Memoslist.php?<?php echo $get ?>=<?php echo $value['Id'] ?>&st=2"><?php echo $value['MemosDone'] ?></a></td>
+                      <td class='bg-warning'><a href="Memoslist.php?<?php echo $get ?>=<?php echo $value['Id'] ?>&st=1"><?php echo $value['MemosDoing'] ?></a></td>
+                      <td class='bg-danger'><a href="Memoslist.php?<?php echo $get ?>=<?php echo $value['Id'] ?>&st=3"><?php echo $value['MemosDelay'] ?></a></td>
+                      <td><a href="Memoslist.php?<?php echo $get ?>=<?php echo $value['Id'] ?>&st=4"><?php echo $value['MemosCancel'] ?></a></td>
                     </tr>
                    <?php
                   }

@@ -47,6 +47,18 @@
           <span><?php echo $oDB->lang('LabelHistory')?></span></a>
       </li>
 
+      <li class="nav-item active">
+        <a class="nav-link" href="LabelHistoryfi.php">
+          <i class="fas fa-fw fa-list"></i>
+          <span><?php echo $oDB->lang('LabelHistoryFi')?></span></a>
+      </li>
+
+      <li class="nav-item active">
+        <a class="nav-link" href="labelhistoryfi2.php">
+          <i class="fas fa-fw fa-chart-bar"></i>
+          <span><?php echo $oDB->lang('LabelHistoryFi2')?></span></a>
+      </li>
+
       
       <li class="nav-item active">
         <a class="nav-link" href="labeltrace.php">
@@ -59,6 +71,14 @@
           <i class="fas fa-fw fa-chart-bar"></i>
           <span><?php echo $oDB->lang('Report')?></span></a>
       </li>
+
+      <li class="nav-item active">
+        <a class="nav-link" href="labelhistorynoneunique.php">
+          <i class="fas fa-fw fa-chart-bar"></i>
+          <span><?php echo $oDB->lang('ReportFi2')?></span></a>
+      </li>
+
+     
 
 
 

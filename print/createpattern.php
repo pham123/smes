@@ -51,7 +51,7 @@ $oDB = new db();
                   <p><?php echo $oDB->lang('Products') ?></p>
                   <select name="ProductsId" id="" class='selectpicker show-tick' data-live-search="true" data-style="btn-info" data-width="100%">
                     <?php 
-                    $model = $oDB->sl_all('Products',1);
+                    $model = $oDB->sl_all('Products','ProductsOption = 1 OR ProductsOption = 2');
                     foreach ($model as $key => $value) {
                       echo "<option value='".$value['ProductsId']."'>".$value['ProductsNumber']."/".$value['ProductsName']."</option>";
                     }

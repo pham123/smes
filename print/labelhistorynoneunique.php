@@ -57,11 +57,11 @@ $oDB = new db();
         <?php 
           $table_data = $oDB->sl_all('LabelPattern','1');
 
-          $sql = "SELECT lh.*, ts.TraceStationName, prd.ProductsName, prd.ProductsNumber FROM LabelHistory lh
+          $sql = "SELECT count(*) as total, lh.LabelHistoryLabelValue, ts.TraceStationName, prd.ProductsName, prd.ProductsNumber FROM LabelHistory lh
           inner join TraceStation ts on ts.TraceStationId = lh.TraceStationId
-          inner join LabelList lbl on lbl.LabelListValue = lh.LabelHistoryLabelValue
-          inner join Products prd on prd.ProductsId = lbl.ProductsId AND prd.ProductsOption <> 4
-          Where lh.ProductsId is Null
+          inner join Products prd on prd.ProductsId = lh.ProductsId AND prd.ProductsOption <> 4
+          Where lh.ProductsId is not Null
+          Group by lh.LabelHistoryLabelValue, ts.TraceStationName, prd.ProductsName, prd.ProductsNumber
           ORDER BY lh.LabelHistoryId DESC LIMIT 5000";
 
           $result = $oDB->fetchAll($sql);
@@ -76,10 +76,8 @@ $oDB = new db();
             echo "<th>".$oDB->lang('Station')."</th>";
             echo "<th>".$oDB->lang('ProductName')."</th>";
             echo "<th>".$oDB->lang('ProductNumber')."</th>";
-            echo "<th>".$oDB->lang('Ok')."</th>";
-            echo "<th>".$oDB->lang('Ng')."</th>";
             echo "<th>".$oDB->lang('LabelValue')."</th>";
-            echo "<th>".$oDB->lang('IssueDate')."</th>";
+            echo "<th>".$oDB->lang('Total')."</th>";
         echo "</tr>";
         echo "</thead>";
 
@@ -92,10 +90,9 @@ $oDB = new db();
             echo "<td>".$value['TraceStationName']."</td>";
             echo "<td>".$value['ProductsName']."</td>";
             echo "<td>".$value['ProductsNumber']."</td>";
-            echo "<td style='background-color:#73E700;'>".$value['LabelHistoryQuantityOk']."</td>";
-            echo "<td style='background-color:#F5413C;'>".$value['LabelHistoryQuantityNg']."</td>";
             echo "<td>".$value['LabelHistoryLabelValue']."</td>";
-            echo "<td>".$value['LabelHistoryCreateDate']."</td>";
+            echo "<td style='background-color:#73E700;'>".$value['total']."</td>";
+
             echo "</tr>";
         }
 

@@ -1,0 +1,3 @@
+ALTER TABLE Memos ADD MemosPicOption TINYINT AFTER MemosPic ;
+ALTER TABLE Memos ADD MemosPicExplain VARCHAR(255) AFTER MemosPicOption;
+ALTER TABLE Memos ADD MemosScore INT(10) AFTER MemosPicExplain;

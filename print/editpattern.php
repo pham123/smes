@@ -91,6 +91,16 @@ $pattern = $oDB->sl_one('LabelPattern','LabelPatternId='.$id);
                   <input type="text" name="LabelPatternPackingStandard" id="" class='form-control' value="<?php echo $pattern['LabelPatternPackingStandard'] ?>" required>
                 </div>
 
+                <div class="col-md-6">
+                  <p><?php echo $oDB->lang('PackingUnique') ?></p>
+                  <select name="LabelPatternUnique" id="">
+                    <option value="" <?php echo $retVal = ($pattern['LabelPatternUnique']=='') ? 'selected' : '' ; ?>><?php echo $oDB->lang('NotSet') ?></option>
+                    <option value="1" <?php echo $retVal = ($pattern['LabelPatternUnique']==1) ? 'selected' : '' ; ?>><?php echo $oDB->lang('Yes') ?></option>
+                    <option value="2" <?php echo $retVal = ($pattern['LabelPatternUnique']==2) ? 'selected' : '' ; ?>><?php echo $oDB->lang('No') ?></option>
+                    <option value="3" <?php echo $retVal = ($pattern['LabelPatternUnique']==3) ? 'selected' : '' ; ?>><?php echo $oDB->lang('Yes - Not Trace') ?></option>
+                  </select>
+                </div>
+
 
                 <input type="hidden" name="LabelPatternId" value='<?php echo $pattern['LabelPatternId'] ?>'>
                 <div class="col-md-6">

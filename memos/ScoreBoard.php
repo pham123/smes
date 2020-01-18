@@ -13,15 +13,47 @@ $pagetitle = $user->module;
 require('../views/template-header.php');
 require('../function/template.php');
 $oDB = new db();
+
+
 getfunc('monthar');
 $getdate = (isset($_GET['date'])) ? safe($_GET['date']) : date('Y-m-d') ;
-$datear = monthar($getdate,1);
-// $_SESSION[_site_]['startdate']=$datear[0]['start'];
-// $_SESSION[_site_]['enddate']=$datear[0]['end'];
 
-$_SESSION[_site_]['startdate'] = (isset($_SESSION[_site_]['startdate'])) ? $_SESSION[_site_]['startdate'] : $datear[0]['start'] ;
-$_SESSION[_site_]['enddate'] = (isset($_SESSION[_site_]['enddate'])) ? $_SESSION[_site_]['enddate'] : $datear[0]['end'] ;
+$datear = monthar($getdate,1);
+$startdate = (isset($_GET['startdate'])) ? safe($_GET['startdate']) : date('Y-m-01') ;
+$enddate = (isset($_GET['enddate'])) ? safe($_GET['enddate']) : date('Y-m-t') ;
+
+$_SESSION[_site_]['startdate']=$startdate;
+$_SESSION[_site_]['enddate']=$enddate;
+
+// $DatePoint = date("Y-m");
+// var_dump ($datear);
+
+
+$sql = "select 
+        Memos.MemosCreator,
+        Employees.EmployeesId As Id,
+        Employees.EmployeesName As Name,
+        Count(*) as MemosTotal,
+        SUM(case when MemosOption = 1 then 1 else 0 end) as MemosDoing,
+        SUM(case when MemosOption = 2 then 1 else 0 end) as MemosDone,
+        SUM(case when MemosOption = 3 then 1 else 0 end) as MemosDelay,
+        SUM(case when MemosOption = 4 then 1 else 0 end) as MemosCancel
+        from Memos
+        INNER JOIN Employees ON Employees.EmployeesId = Memos.MemosCreator
+        WHERE date(Memos.MemosCreateDate) BETWEEN '".$startdate."' AND '".$enddate."'
+        Group by Memos.MemosCreator,Employees.EmployeesName
+        Order by MemosTotal DESC
+        ";
+$get = 'cr';
+    
+
+
+
+$report = $oDB->fetchAll($sql);
+// var_dump($report);
 ?>
+
+
 
 <body id="page-top">
   <!-- Page Wrapper -->
@@ -31,15 +63,39 @@ $_SESSION[_site_]['enddate'] = (isset($_SESSION[_site_]['enddate'])) ? $_SESSION
 
     <!-- Content Wrapper -->
     <div id="content-wrapper" class="d-flex flex-column">
-
+      
       <!-- Main Content -->
       <div id="content">
-
+        
         <!-- Topbar -->
         <?php require('navbar.php') ?>
 
         <!-- Begin Page Content -->
         <div class="container-fluid">
+
+
+        <form action="" method="get">
+            <div class="row">
+
+              <div class="col-md-2">
+                <input type="date" name="startdate" class='form-control' id="" value='<?php echo date("Y-m-01") ?>'>
+              </div>
+              <div class="col-md-2">
+                <input type="date" name="enddate" class='form-control' id="" value='<?php echo date("Y-m-t") ?>'>
+              </div>
+              
+            <div class="col-md-2">
+            <button type="submit" class='form-control'>Submit</button>
+            </div>
+            </div>
+        </form>
+      
+
+        <!-- <div class="table-responsive">
+          <div id="chart_div" style="width: 100%; height: 500px;"></div>
+        </div> -->
+
+        </br>
         <?php 
           $table_header  = 'Index,IssueDate,Dept,Area,Location,title,Picture,PictureAfter,Efficiency,ResultOfReview,Maker,Pic,Status,Plan,Score,Edit';
           
@@ -67,7 +123,7 @@ $_SESSION[_site_]['enddate'] = (isset($_SESSION[_site_]['enddate'])) ? $_SESSION
           INNER JOIN Employees ON Employees.EmployeesId = Memos.MemosCreator ".$creator."
           WHERE MemosCreateDate Between '".$_SESSION[_site_]['startdate']." 00:00:01' AND '".$_SESSION[_site_]['enddate']." 23:59:59'
           ".$status."
-          Order by Memos.MemosId DESC
+          Order by Memos.MemosScore DESC LIMIT 10
           ";
 
           $MemosList = $oDB->fetchAll($sql);
@@ -214,13 +270,7 @@ $_SESSION[_site_]['enddate'] = (isset($_SESSION[_site_]['enddate'])) ? $_SESSION
     </div>
   </div>
 
-  <?php require('../views/template-footer.php'); ?>
-
-  <script>
-    $(function () {
-      $('selectpicker').selectpicker();
-    });
-  </script>
+  <?php require('../views/template-footer.php'); ?>  
 
 </body>
 

@@ -1,0 +1,1 @@
+ALTER TABLE LabelPattern ADD LabelPatternUnique TINYINT AFTER LabelPatternPackingStandard ;

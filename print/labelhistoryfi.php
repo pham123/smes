@@ -12,6 +12,7 @@ check($user->acess());
 $pagetitle = $user->module;
 require('../views/template-header.php');
 require('../function/template.php');
+$stationid = 5;
 $oDB = new db();
 
 // $actionar = (array_keys($_GET));
@@ -58,7 +59,7 @@ $oDB = new db();
           $table_data = $oDB->sl_all('LabelPattern','1');
 
           $sql = "SELECT lh.*, ts.TraceStationName, prd.ProductsName, prd.ProductsNumber FROM LabelHistory lh
-          inner join TraceStation ts on ts.TraceStationId = lh.TraceStationId
+          inner join TraceStation ts on ts.TraceStationId = lh.TraceStationId AND ts.TraceStationId = ".$stationid."
           inner join LabelList lbl on lbl.LabelListValue = lh.LabelHistoryLabelValue
           inner join Products prd on prd.ProductsId = lbl.ProductsId AND prd.ProductsOption <> 4
           Where lh.ProductsId is Null

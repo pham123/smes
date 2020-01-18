@@ -16,30 +16,52 @@ $oDB = new db();
 
 
 getfunc('monthar');
-$getdate = (isset($_GET['date'])) ? safe($_GET['date']) : date('Y-m-d') ;
-$datear = monthar($getdate,1);
-$_SESSION[_site_]['startdate']=$datear[0]['start'];
-$_SESSION[_site_]['enddate']=$datear[0]['end'];
+$getdate = (isset($_GET['year'])) ? safe($_GET['year']) : date('Y') ;
+$starty = $getdate."-01-01";
+$endy = $getdate."-12-31";
+// $datear = monthar($getdate,1);
+$_SESSION[_site_]['startdate']=$starty;
+$_SESSION[_site_]['enddate']=$endy;
 
 // $DatePoint = date("Y-m");
 // var_dump ($datear);
 
+$text = '';
+// for ($i=1; $i < 13 ; $i++) { 
+//   $datetext = $getdate."-".$i."-01";
+//   $text .= "
+//   SUM(case when MemosOption = 1 AND then 1 else 0 end) as MemosDoing,
+//   SUM(case when MemosOption = 2 AND then 1 else 0 end) as MemosDone,
+//   SUM(case when MemosOption = 3 AND then 1 else 0 end) as MemosDelay,
+//   SUM(case when MemosOption = 4 AND then 1 else 0 end) as MemosCancel,
+//   ";
+// }
+
+for ($i=1; $i < 13 ; $i++) { 
+  $datetext = $getdate."-".$i."-01";
+  $text .= "
+  SUM(case when MemosCreateDate between '".$datetext."' AND '".date("Y-m-t",strtotime($datetext))."' then 1 else 0 end) as Memos".date("M",strtotime($datetext)).",";
+}
+
+
 
 $sql = "select 
-Memos.PartsId,
-Parts.PartsName,
-Count(*) as MemosTotal,
-SUM(case when MemosOption = 1 then 1 else 0 end) as MemosDoing,
-SUM(case when MemosOption = 2 then 1 else 0 end) as MemosDone,
-SUM(case when MemosOption = 3 then 1 else 0 end) as MemosDelay,
-SUM(case when MemosOption = 4 then 1 else 0 end) as MemosCancel
+  Memos.PartsId,
+  ".$text."
+  SUM(case when MemosOption = 1 then 1 else 0 end) as MemosDoing,
+  SUM(case when MemosOption = 2 then 1 else 0 end) as MemosDone,
+  SUM(case when MemosOption = 3 then 1 else 0 end) as MemosDelay,
+  SUM(case when MemosOption = 4 then 1 else 0 end) as MemosCancel,
+  Parts.PartsName,
+  Count(*) as MemosTotal
 from Memos
 INNER JOIN Parts ON Parts.PartsId = Memos.PartsId
-WHERE date(Memos.MemosCreateDate) BETWEEN '".$datear[0]['start']."' AND '".$datear[0]['end']."'
+WHERE date(Memos.MemosCreateDate) BETWEEN '".$starty."' AND '".$endy."'
 Group by Memos.PartsId,Parts.PartsName
 Order by MemosTotal DESC
 ";
-
+// echo $sql;
+// exit();
 $report = $oDB->fetchAll($sql);
 // var_dump($report);
 ?>
@@ -69,16 +91,17 @@ $report = $oDB->fetchAll($sql);
               <div class="row">
               <div class="col-md-3 text-right">Select Month</div>
               <div class="col-md-3">
-              <select name="date" id="" class='selectpicker show-tick form-control' data-live-search="true" data-style="btn-info" data-width="100%">
+              <select name="year" id="" class='selectpicker show-tick form-control' data-live-search="true" data-style="btn-info" data-width="100%">
                   <?php
-                  $monthlist = monthback(date('Y-m-d'),12);
+                  $monthlist = array('2020','2021','2022','2023');
+
                   foreach ($monthlist as $key => $value) {
-                    if (date("M-y",strtotime($getdate))==date("M-y",strtotime($value['start']))) {
+                    if ($getdate==$value) {
                       $selected = "selected";
                     }else{
                       $selected = "";
                     }
-                    echo "<option value='".$value['start']."' ".$selected.">".date("M-y",strtotime($value['start']))."</option>";
+                    echo "<option value='".$value."' ".$selected.">".$value."</option>";
                   }
                   ?>
               </select>
@@ -96,21 +119,32 @@ $report = $oDB->fetchAll($sql);
 
         </br>
         <div class="row">
-        <div class="col-md-6">
+        <div class="col-md-12">
+        <div id="chart" style="width: 100%; height: 500px;"></div>
+        </div>
+        <div class="col-md-12">
         <table class='table table-bordered table-sm' id='' width='100%' cellspacing='0'>
                   <thead>
                     <tr>
                       <th rowspan='2' class='text-center align-middle'>Item</th>
                       <th rowspan='2' class='text-center align-middle'>Total</th>
+                      <th colspan='12' class='text-center align-middle'><?php echo $getdate ?></th>
                       <th colspan='4' class='text-center align-middle'>Status</th>
                     </tr>
                     <tr>
+                    <?php
+                      for ($i=1; $i <13 ; $i++) { 
+                        $datetext = $getdate."-".$i."-01";
+                        echo "<td>".date("M",strtotime($datetext))."</td>";
+                      }
+                      ?>
                       <th class='text-center align-middle'>Done</th>
                       <th class='text-center align-middle'>Doing</th>
                       <th class='text-center align-middle'>Delay</th>
                       <th class='text-center align-middle'>Cancel</th>
                     </tr>
                   </thead>
+                  
 
                   <tbody>
                   <?php
@@ -119,6 +153,14 @@ $report = $oDB->fetchAll($sql);
                   $Doing = 0;
                   $Delay = 0;
                   $Cancel = 0;
+                  $monthtotal = array();
+
+                  for ($i=1; $i < 13; $i++) { 
+                    $datetext = $getdate."-".$i."-01";
+                    $monthtotal[date("M",strtotime($datetext))] = 0;
+                  }
+                  
+                  
                   foreach ($report as $key => $value) {
                     $Total += $value['MemosTotal'];
                     $Done += $value['MemosDone'];
@@ -129,6 +171,14 @@ $report = $oDB->fetchAll($sql);
                     <tr class='text-center align-middle'>
                       <td ><?php echo $value['PartsName'] ?></td>
                       <td ><a href="Memoslist.php?part=<?php echo $value['PartsId'] ?>"><?php echo $value['MemosTotal'] ?></a></td>
+                      <?php
+                      for ($i=1; $i < 13; $i++) { 
+                        $datetext = $getdate."-".$i."-01";
+                        echo "<td>".$value['Memos'.date("M",strtotime($datetext))]."</td>";
+                        $monthtotal[date("M",strtotime($datetext))] += $value['Memos'.date("M",strtotime($datetext))];
+                      }
+                      
+                      ?>
                       <td class='bg-success'><a href="Memoslist.php?part=<?php echo $value['PartsId'] ?>&st=2"><?php echo $value['MemosDone'] ?></a></td>
                       <td class='bg-warning'><a href="Memoslist.php?part=<?php echo $value['PartsId'] ?>&st=1"><?php echo $value['MemosDoing'] ?></a></td>
                       <td class='bg-danger'><a href="Memoslist.php?part=<?php echo $value['PartsId'] ?>&st=3"><?php echo $value['MemosDelay'] ?></a></td>
@@ -140,6 +190,13 @@ $report = $oDB->fetchAll($sql);
                     <tr class='text-center align-middle'>
                       <td style='font-weight:bold'><?php echo $oDB->lang('Total') ?></td>
                       <td style='font-weight:bold'><a href="Memoslist.php"><?php echo $Total ?></a></td>
+                      <?php
+                      for ($i=1; $i < 13; $i++) { 
+                        $datetext = $getdate."-".$i."-01";
+                        echo "<td><a href='MonthlyReport.php?date=".$datetext."'>".$monthtotal[date("M",strtotime($datetext))]."</a></td>";
+                      }
+                      
+                      ?>
                       <td style='font-weight:bold' class='bg-success'><a href="Memoslist.php?st=2"><?php echo $Done ?></a></td>
                       <td style='font-weight:bold' class='bg-warning'><a href="Memoslist.php?st=1"><?php echo $Doing ?></a></td>
                       <td style='font-weight:bold' class='bg-danger'><a href="Memoslist.php?st=3"><?php echo $Delay ?></a></td>
@@ -151,9 +208,7 @@ $report = $oDB->fetchAll($sql);
         </table>    
         </div>
 
-        <div class="col-md-6">
-        <div id="chart" style="width: 100%; height: 500px;"></div>
-        </div>
+
           
         </div>
         </div>

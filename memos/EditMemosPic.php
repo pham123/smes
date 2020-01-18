@@ -79,14 +79,13 @@ p{margin:5px;}
         <!-- Begin Page Content -->
         <div class="container-fluid">
             <div class="row">
-            <!-- . QualityIssuelistId. QualityIssuelistTitle. QualityIssuelistDate. SupplyChainObjectId. ProductsId. QualityIssuelistCreator. QualityIssuelistLotNo. QualityIssuelistProductionDate. QualityIssuelistDefectiveContent. QualityIssuelistLotQuantity. QualityIssuelistNgQuantity. QualityIssuelistTimesOccurs. QualityIssuelistDocNo. QualityIssuelistDueDate. QualityIssuelistFinishDate. QualityIssuelistRootCause. QualityIssuelistAction. UsersId. QualityIssuelistStatus. QualityIssuelistOption. QualityIssuelistCreateDate. QualityIssuelistUpdateDate -->
               <div class="col-md-12">
-              <form action="listen-edit-memos.php?id=<?php echo $issue['MemosId'] ?>" method="post" enctype="multipart/form-data">
+              <form action="listen-edit-memos-pic.php?id=<?php echo $issue['MemosId'] ?>" method="post" enctype="multipart/form-data">
               <table class='table table-bordered' id='dataTable' width='100%' cellspacing='0'>
               
                 <tr>
                   <td><?php echo $oDB->lang('Title') ?></td>
-                  <td colspan='3'><input type="text" class='form-control' name='MemosName' value='<?php echo $issue['MemosName'] ?>'></td>
+                  <td colspan='3'><?php echo $issue['MemosName'] ?></td>
                   <td rowspan="16"><img src="./image/img_<?php echo $issue['MemosId']?>.jpg" style='width:400px'></td>
                 </tr>
 
@@ -96,7 +95,7 @@ p{margin:5px;}
                 <td><?php echo $oDB->lang('Areas') ?></td><td colspan=''><?php echo $issue['AreasName'] ?></td>
                 </tr>
 
-                <tr><td><?php echo $oDB->lang('Location') ?></td><td colspan='3'><input type="text" name="MemosLocation" id="" class='form-control' value='<?php echo $issue['MemosLocation'] ?>'>
+                <tr><td><?php echo $oDB->lang('Location') ?></td><td colspan='3'><?php echo $issue['MemosLocation'] ?>
                 </td></tr>
 
                 <tr><td><?php echo $oDB->lang('MemoReduce') ?></td><td colspan=''><?php echo $issue['MemoReduceName'] ?></td>
@@ -105,19 +104,19 @@ p{margin:5px;}
                 
                 
                 <tr><td><?php echo $oDB->lang('MemosIssue') ?></td><td colspan='3'>
-                <textarea name="MemosIssue" id="" cols="30" class='form-control' rows="5"><?php echo $issue['MemosIssue'] ?></textarea>
+                <?php echo $issue['MemosIssue'] ?>
                 </td></tr>
 
                 <tr><td><?php echo $oDB->lang('MemosContent') ?></td><td colspan='3'>
-                <textarea name="MemosContent" id="" cols="30" class='form-control' rows="5"><?php echo $issue['MemosContent'] ?></textarea>
+                <?php echo $issue['MemosContent'] ?>
                 </td></tr>
                 <tr><td><?php echo $oDB->lang('MemosEfficiency') ?></td><td colspan='3'>               
-                <input type="text" name="MemosEfficiency" id="" class='form-control' value='<?php echo $issue['MemosEfficiency'] ?>'>
+                <?php echo $issue['MemosEfficiency'] ?>
                 </td></tr>
 
                 <tr><td><?php echo $oDB->lang('MemosCreator') ?></td><td colspan='3'><?php echo $issue['EmployeesName'] ?></td></tr>
-                <tr><td><?php echo $oDB->lang('MemosPic') ?></td><td colspan='1'>
-                <select name="MemosPic" id="" class='selectpicker show-tick' data-live-search="true" data-style="btn-info" data-width="100%">
+                <tr><td><?php echo $oDB->lang('MemosPic') ?></td><td colspan=''>
+                <select name="MemosPic" id="" class='selectpicker show-tick' data-live-search="true" data-style="btn-info" data-width="100%" disabled>
                   <?php 
                   $Users = $oDB->sl_all('Users',1);
                   foreach ($Users as $key => $value) {
@@ -128,43 +127,30 @@ p{margin:5px;}
                 </select>
                 
                 </td>
-                <td><?php echo $oDB->lang('MemosScore') ?></td>
+                <td>Pic's Accept</td>
                 <td>
-                <input type="number" name="MemosScore" id="" class='form-control' value='<?php echo $issue['MemosScore'] ?>' MIN='0' MAX = '100'>
-                </td>
-                </tr>
-
-
-
-                <tr><td><?php echo $oDB->lang('MemosApplyDate') ?></td><td colspan=''><input type="date" name='MemosApplyDate' class='form-control' value='<?php echo $issue['MemosApplyDate'] ?>'></td>
-                <td><?php echo $oDB->lang('ResultOfReview') ?></td>
-                <td>
-                  <select name="MemosStatus" id="" class='selectpicker show-tick' data-live-search="true" data-style="btn-info" data-width="100%">
-                      <option value="1" <?php echo $retVal = ($issue['MemosStatus']==1) ? 'Selected' : '' ; ?>>Xem xét</option>
-                      <option value="2" <?php echo $retVal = ($issue['MemosStatus']==2) ? 'Selected' : '' ; ?>>Duyệt</option>
-                      <option value="3" <?php echo $retVal = ($issue['MemosStatus']==3) ? 'Selected' : '' ; ?>>Hủy</option>
-                      <option value="4" <?php echo $retVal = ($issue['MemosStatus']==4||$issue['MemosStatus']=='') ? 'Selected' : '' ; ?>>NA</option>
-                  </select>
-                </td>
-                </tr>
-                
-                <tr><td><?php echo $oDB->lang('ReportFile') ?></td><td><a href="./files/files_<?php echo $issue['MemosId'] ?>.pptx">Report</a></td>
-                <td><?php echo $oDB->lang('ApplyStatus') ?></td>
-                <td>
-                <?php
-                $readonly = ($access==1||$access==2) ? '' : 'disabled' ;
-                ?>
-                  <select name="MemosOption" id="" class='selectpicker show-tick' data-live-search="true" data-style="btn-info" data-width="100%" <?php echo $readonly ?>>
-                      <option value="1" <?php echo $retVal = ($issue['MemosOption']==1) ? 'Selected' : '' ; ?>>Doing</option>
-                      <option value="2" <?php echo $retVal = ($issue['MemosOption']==2) ? 'Selected' : '' ; ?>>Done</option>
-                      <option value="3" <?php echo $retVal = ($issue['MemosOption']==3) ? 'Selected' : '' ; ?>>Delay</option>
-                      <option value="4" <?php echo $retVal = ($issue['MemosOption']==4||$issue['MemosOption']=='') ? 'Selected' : '' ; ?>>Cancel</option>
+                  <select name="MemosPicOption" id="">
+                    <option value="1" <?php echo $retVal = ($issue['MemosPicOption']==1) ? 'Selected' : '' ; ?>>Đồng ý</option>
+                    <option value="2" <?php echo $retVal = ($issue['MemosPicOption']==2) ? 'Selected' : '' ; ?>>Không đồng ý</option>
                   </select>
                 </td>
                 </tr>
 
                 <tr>
-                  <td><?php echo $oDB->lang('UpdatePicture') ?></td><td><input type="file" id='ingredient_file' name='MemosPicture' class="form-control" ></td>
+                <td>Explain</td>
+                <td colspan='3'>
+                <textarea name="MemosPicExplain" id="" class='form-control' ><?php echo $issue['MemosPicExplain'] ?></textarea>
+                </td>
+                </tr>
+
+
+
+                <tr><td><?php echo $oDB->lang('MemosApplyDate') ?></td><td colspan=''><?php echo $issue['MemosApplyDate'] ?></td>
+                <td><?php echo $oDB->lang('ReportFile') ?></td><td><a href="./files/files_<?php echo $issue['MemosId'] ?>.pptx">Report</a></td>
+                </tr>
+
+                <tr>
+                  <td><?php echo $oDB->lang('UpdatePicture') ?></td><td><input type="file" id='ingredient_file' name='MemosPictureAfter' class="form-control" ></td>
                   <td><?php echo $oDB->lang('UpdateFile') ?></td><td><input type="file" id='ingredient_file' name='MemosReport' class="form-control" ></td>
                 </tr>
 

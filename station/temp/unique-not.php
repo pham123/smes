@@ -107,11 +107,11 @@
                 $date_2 = date('Y-m-d h:i:s');
                 $datedif = dateDifference($date_1 , $date_2);
 
-                if ($datedif<6) {
-                    $_SESSION['message'] = "<h1 style='background-color:red;'>Tem vừa được đọc lúc ".$date_1.", đợi 5s để đọc lại.</h1>";
-                    header('Location: ?');
-                    exit();
-                }
+                // if ($datedif<6) {
+                //     $_SESSION['message'] = "<h1 style='background-color:red;'>Tem vừa được đọc lúc ".$date_1.", đợi 5s để đọc lại.</h1>";
+                //     header('Location: ?');
+                //     exit();
+                // }
 
                 }else{
                     $_SESSION['station']['lasttime'] = date('Y-m-d h:i:s');

@@ -69,7 +69,7 @@ if (isset($setunique)&&is_numeric($setunique)) {
 <body>
     <h1>Nhập vào mã sản phẩm cần nhập</h1>
     <form action="" method="post">
-        <input name='prdnumber' pattern="^[A-Z0-9]{5,15}$" type="text" >
+        <input name='prdnumber' pattern="^[A-Z0-9]{5,15}$" type="text" style='font-size:50px;text-align:center;'>
     </form>
 </body>
 </html>

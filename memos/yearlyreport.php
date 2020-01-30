@@ -125,13 +125,13 @@ $report = $oDB->fetchAll($sql);
         <div class="col-md-12">
         <table class='table table-bordered table-sm' id='' width='100%' cellspacing='0'>
                   <thead>
-                    <tr>
+                    <tr style='background-color:#CDCDCD;'>
                       <th rowspan='2' class='text-center align-middle'>Item</th>
                       <th rowspan='2' class='text-center align-middle'>Total</th>
                       <th colspan='12' class='text-center align-middle'><?php echo $getdate ?></th>
                       <th colspan='4' class='text-center align-middle'>Status</th>
                     </tr>
-                    <tr>
+                    <tr style='background-color:#CDCDCD;'>
                     <?php
                       for ($i=1; $i <13 ; $i++) { 
                         $datetext = $getdate."-".$i."-01";

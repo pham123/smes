@@ -64,7 +64,7 @@ $oDB = new db();
         <!-- Begin Page Content -->
         <div class="container-fluid">
         <div style='text-align:center;'>
-          <img src="idea.jpg" alt="" style='width:80%'>
+          <img src="idea.jpg" alt="" style='width:100%'>
         </div>
 
 

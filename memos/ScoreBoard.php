@@ -134,7 +134,7 @@ $report = $oDB->fetchAll($sql);
         $tablearr = explode(',',$table_header);
         echo "<table class='table table-bordered' id='dataTable' width='100%' cellspacing='0'>";
         echo "<thead>";
-        echo "<tr>";
+        echo "<tr style='background-color:#CDCDCD;'>";
         foreach ($tablearr as $key => $value) {
             echo "<th>".$oDB->lang($value)."</th>";
         }

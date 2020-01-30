@@ -98,7 +98,7 @@ $_SESSION[_site_]['enddate'] = (isset($_SESSION[_site_]['enddate'])) ? $_SESSION
         $tablearr = explode(',',$table_header);
         echo "<table class='table table-bordered' id='dataTable' width='100%' cellspacing='0'>";
         echo "<thead>";
-        echo "<tr style='background-color:#CDCDCD;vertical-align:middle;'>";
+        echo "<tr style='background-color:#CDCDCD;'>";
         foreach ($tablearr as $key => $value) {
             echo "<th style='vertical-align: middle;'>".$oDB->lang($value)."</th>";
         }

@@ -1,11 +1,11 @@
 <table class='table table-bordered table-sm' id='' width='100%' cellspacing='0'>
                   <thead>
-                    <tr>
+                    <tr style='background-color:#CDCDCD;'>
                       <th rowspan='2' class='text-center align-middle'>Name</th>
                       <th rowspan='2' class='text-center align-middle'>Total</th>
                       <th colspan='4' class='text-center align-middle'>Status</th>
                     </tr>
-                    <tr>
+                    <tr style='background-color:#CDCDCD;'>
                       <th class='text-center align-middle'>Done</th>
                       <th class='text-center align-middle'>Doing</th>
                       <th class='text-center align-middle'>Delay</th>

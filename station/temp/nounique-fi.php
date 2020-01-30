@@ -143,6 +143,24 @@
 
     </form>
     <?php
+    //code lay ve thoi gian cac ca lam viec
+    $hientai = date("Y-m-d H:i:s");
+    $mocthoigian = date("Y-m-d 16:00:00");
+    $yesterday = date ("Y-m-d 16:00:00",strtotime('-1 days'));
+    $tomorrow = date ("Y-m-d 16:00:00",strtotime('+1 days'));
+    $shiftarray = array();
+    if ($hientai<$mocthoigian) {
+        $shiftarray[0]['start']= date("Y-m-d 08:00:00");
+        $shiftarray[0]['end']= date("Y-m-d 16:00:00");
+        $shiftarray[1]['start']= date ("Y-m-d 16:00:00",strtotime('-1 days'));
+        $shiftarray[1]['end']= date("Y-m-d 08:00:00");
+    }else{
+        $shiftarray[0]['start']= date("Y-m-d 08:00:00");
+        $shiftarray[0]['end']= date("Y-m-d 16:00:00");
+        $shiftarray[0]['start']= date("Y-m-d 16:00:00");
+        $shiftarray[0]['end']= date("Y-m-d H:i:s");
+    }
+    
     if (isset($_SESSION['station']['lastcode'])) {
         # code...
        $total =  $oDB->query('Select count(*) as total, date(LabelHistoryCreateDate) as Date, hour(LabelHistoryCreateDate) as Hour from LabelHistory where LabelHistoryLabelValue = ? AND TraceStationId =? AND date(LabelHistoryCreateDate) = ? Group By Date,Hour Order by Hour DESC',$_SESSION['station']['lastcode'],$stationid,date("Y-m-d"))->fetchAll();

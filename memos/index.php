@@ -63,9 +63,9 @@ $oDB = new db();
 
         <!-- Begin Page Content -->
         <div class="container-fluid">
-        <!-- <div class="table-responsive">
-          <div id="chart_div" style="width: 100%; height: 500px;"></div>
-        </div> -->
+        <div style='text-align:center;'>
+          <img src="idea.jpg" alt="" style='width:80%'>
+        </div>
 
 
         <div class="table-responsive">

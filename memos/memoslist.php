@@ -41,7 +41,7 @@ $_SESSION[_site_]['enddate'] = (isset($_SESSION[_site_]['enddate'])) ? $_SESSION
         <!-- Begin Page Content -->
         <div class="container-fluid">
         <?php 
-          $table_header  = 'Index,IssueDate,Dept,Area,Location,title,Picture,PictureAfter,Efficiency,ResultOfReview,Maker,Pic,Status,Plan,Score,Edit';
+          $table_header  = 'Index,IssueDate,Dept,Location,title,issue,Picture,PictureAfter,Efficiency,ResultOfReview,Maker,Pic,Status,Plan,Score,Edit';
           
           $PartId = (isset($_GET['part'])) ? 'AND Memos.PartsId = '.safe($_GET['part']) : '' ;
           $MemosPic = (isset($_GET['pic'])) ? 'AND Memos.MemosPic = '.safe($_GET['pic']) : '' ;
@@ -111,10 +111,11 @@ $_SESSION[_site_]['enddate'] = (isset($_SESSION[_site_]['enddate'])) ? $_SESSION
           echo "<td>".($key+1)."</td>";
           echo "<td>".date("d/m/y",strtotime($value['MemosCreateDate']))."</td>";
           echo "<td>".$value['PartsName']."</td>";
-          echo "<td>".$value['AreasName']."</td>";
+          // echo "<td>".$value['AreasName']."</td>";
           
           echo "<td>".$value['MemosLocation']."</td>";
           echo "<td><a href='ViewMemos.php?id=".$value['MemosId']."'>".$value['MemosName']."</a></td>";
+          echo "<td>".$value['MemosIssue']."</td>";
           echo "<td><img src='image/small/img_".$value['MemosId'].".jpg' alt=''></td>";
           echo "<td><img src='image/small/imgafter_".$value['MemosId'].".jpg' alt=''></td>";
           echo "<td>".$value['MemosEfficiency']."</td>";

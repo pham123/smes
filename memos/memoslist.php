@@ -41,7 +41,7 @@ $_SESSION[_site_]['enddate'] = (isset($_SESSION[_site_]['enddate'])) ? $_SESSION
         <!-- Begin Page Content -->
         <div class="container-fluid">
         <?php 
-          $table_header  = 'Index,IssueDate,Dept,Location,title,issue,Picture,PictureAfter,Efficiency,ResultOfReview,Maker,Pic,Status,Plan,Score,Edit';
+          $table_header  = 'No.,IssueDate,Dept,Location,title,issue,Picture,PictureAfter,Efficiency,ResultOfReview,Maker,Pic,Status,Plan,Score,Edit';
           
           $PartId = (isset($_GET['part'])) ? 'AND Memos.PartsId = '.safe($_GET['part']) : '' ;
           $MemosPic = (isset($_GET['pic'])) ? 'AND Memos.MemosPic = '.safe($_GET['pic']) : '' ;
@@ -98,9 +98,9 @@ $_SESSION[_site_]['enddate'] = (isset($_SESSION[_site_]['enddate'])) ? $_SESSION
         $tablearr = explode(',',$table_header);
         echo "<table class='table table-bordered' id='dataTable' width='100%' cellspacing='0'>";
         echo "<thead>";
-        echo "<tr>";
+        echo "<tr style='background-color:#CDCDCD;vertical-align:middle;'>";
         foreach ($tablearr as $key => $value) {
-            echo "<th>".$oDB->lang($value)."</th>";
+            echo "<th style='vertical-align: middle;'>".$oDB->lang($value)."</th>";
         }
 
         echo "</tr>";

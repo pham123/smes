@@ -145,7 +145,6 @@
     <?php
     if (isset($_SESSION['station']['lastcode'])) {
         # code...
-    
        $total =  $oDB->query('Select count(*) as total, date(LabelHistoryCreateDate) as Date, hour(LabelHistoryCreateDate) as Hour from LabelHistory where LabelHistoryLabelValue = ? AND TraceStationId =? AND date(LabelHistoryCreateDate) = ? Group By Date,Hour Order by Hour DESC',$_SESSION['station']['lastcode'],$stationid,date("Y-m-d"))->fetchAll();
        echo "<h1>Mã tem : ".$_SESSION['station']['lastcode']."</h1>";
        foreach ($total as $key => $value) {

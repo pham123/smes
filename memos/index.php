@@ -120,7 +120,7 @@ $oDB = new db();
   <?php require('../views/template-footer.php'); ?>
 
   <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
-  <script>
+  <!-- <script>
     var options = {
             chart: {
                 height: 350,
@@ -190,7 +190,7 @@ $oDB = new db();
         );
         
         chart.render();
-  </script>
+  </script> -->
 
 </body>
 

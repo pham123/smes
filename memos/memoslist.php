@@ -109,16 +109,16 @@ $_SESSION[_site_]['enddate'] = (isset($_SESSION[_site_]['enddate'])) ? $_SESSION
         foreach ($MemosList as $key => $value) {
           echo "<tr>";
           echo "<td>".($key+1)."</td>";
-          echo "<td>".date("d/m/y",strtotime($value['MemosCreateDate']))."</td>";
+          echo "<td>".date("d M",strtotime($value['MemosCreateDate']))."</td>";
           echo "<td>".$value['PartsName']."</td>";
           // echo "<td>".$value['AreasName']."</td>";
           
           echo "<td>".$value['MemosLocation']."</td>";
           echo "<td><a href='ViewMemos.php?id=".$value['MemosId']."'>".$value['MemosName']."</a></td>";
-          echo "<td>".$value['MemosIssue']."</td>";
+          echo "<td style='width:25%;'>".$value['MemosIssue']."</td>";
           echo "<td><img src='image/small/img_".$value['MemosId'].".jpg' alt=''></td>";
           echo "<td><img src='image/small/imgafter_".$value['MemosId'].".jpg' alt=''></td>";
-          echo "<td>".$value['MemosEfficiency']."</td>";
+          echo "<td style='width:20%;'>".$value['MemosEfficiency']."</td>";
 
           switch ($value['MemosStatus']) {
             case '':

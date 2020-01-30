@@ -47,6 +47,25 @@ $_SESSION[_site_]['enddate'] = (isset($_SESSION[_site_]['enddate'])) ? $_SESSION
           $MemosPic = (isset($_GET['pic'])) ? 'AND Memos.MemosPic = '.safe($_GET['pic']) : '' ;
           $creator = (isset($_GET['cr'])) ? 'AND Memos.MemosCreator = '.safe($_GET['cr']) : '' ;
           $status = (isset($_GET['st'])) ? 'AND Memos.MemosOption = '.safe($_GET['st']) : '' ;
+          $scoretext='';
+          // $score = (isset($_GET['score'])) ? safe($_GET['score']) : '' ;
+          if (isset($_GET['score'])) {
+            $score = safe($_GET['score']);
+            switch ($score) {
+              case '1':
+                $scoretext = "AND Memos.MemosScore Between 80 AND 120";
+                break;
+              case '2':
+                $scoretext = "AND Memos.MemosScore Between 50 AND 79";
+                break;
+              case '3':
+                $scoretext = "AND (Memos.MemosScore < 50 OR Memos.MemosScore is Null)";
+                break;                
+              default:
+                # code...
+                break;
+            }
+          }
 
           $sql = "
           SELECT 
@@ -67,6 +86,7 @@ $_SESSION[_site_]['enddate'] = (isset($_SESSION[_site_]['enddate'])) ? $_SESSION
           INNER JOIN Employees ON Employees.EmployeesId = Memos.MemosCreator ".$creator."
           WHERE MemosCreateDate Between '".$_SESSION[_site_]['startdate']." 00:00:01' AND '".$_SESSION[_site_]['enddate']." 23:59:59'
           ".$status."
+          ".$scoretext."
           Order by Memos.MemosId DESC
           ";
 

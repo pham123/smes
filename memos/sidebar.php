@@ -28,7 +28,7 @@ $arr = array(
   array('#', 'fas fa-search',$oDB->lang('FindMemos')),
   array('MonthlyReport.php', 'fas fa-chart-bar',$oDB->lang('MonthlyReport')),
   array('yearlyReport.php', 'fas fa-chart-bar',$oDB->lang('YearlyReport')),
-  array('TopReport.php', 'fas fa-chart-bar',$oDB->lang('TopReport')),
+  array('TopReport.php', 'fas fa-chart-bar',$oDB->lang('Top')),
   array('ScoreBoard.php', 'fas fa-chart-bar',$oDB->lang('ScoreBoard'))
 );
 echo nav_item($oDB->lang('Material'),$arr);

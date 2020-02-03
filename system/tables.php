@@ -61,7 +61,11 @@
                         // echo "<td>".$ketqua[$i][$value2]."</td>";
                         // echo "<td></td>";
                       }else{
-                        echo "<td>".$ketqua[$i][$value2]."</td>";
+                        if($value2 == 'UsersName' && $target == 'Users'){
+                          echo "<td><a href='manage_user_module.php?uid=".$ketqua[$i]['UsersId']."'>".$ketqua[$i][$value2]."</a></td>";
+                        }else{
+                          echo "<td>".$ketqua[$i][$value2]."</td>";
+                        }
                       }
                     }
                       echo "<td><a href='?update_".$target."_".$ketqua[$i][$target.'Id']."'><i class='fas fa-fw fa-edit'></i></a></td>";

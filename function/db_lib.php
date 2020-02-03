@@ -39,6 +39,9 @@ class db {
 			
 		}
 		public function sl_one($table,$where) {
+			if(!isset($_SESSION[_site_])){
+				header('Location: ../login.php');
+			}
 			$query = 'SELECT * FROM ' . _DB_PREFIX_ . $table . ' WHERE ' . $where;
 			$rs = mysqli_query($this->dbh,$query);
 			$result = $rs->fetch_array();

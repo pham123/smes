@@ -39,7 +39,7 @@ class db {
 			
 		}
 		public function sl_one($table,$where) {
-			if(!isset($_SESSION[_site_])){
+			if(!isset($_SESSION[_site_]['userid'])){
 				header('Location: ../login.php');
 			}
 			$query = 'SELECT * FROM ' . _DB_PREFIX_ . $table . ' WHERE ' . $where;

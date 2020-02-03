@@ -35,9 +35,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
       }
     }else{
       if($a){
-
+        $newDB->where('UsersId', $uid);
+        $newDB->where('ModulesId', $mid);
+        $newDB->update('access', ['AccessOption' => $mvalues[$key]]);
       }else{
-        $newDB->insert('access', ['ModulesId' => $mid, 'UsersId' => $uid, 'AccessOption' => 1, 'AccessCreateDate' => date("Y-m-d H:i:s"), 'AccessUpdateDate' => date("Y-m-d H:i:s")]);
+        $newDB->insert('access', ['ModulesId' => $mid, 'UsersId' => $uid, 'AccessOption' => $mvalues[$key], 'AccessCreateDate' => date("Y-m-d H:i:s"), 'AccessUpdateDate' => date("Y-m-d H:i:s")]);
       }
     }
   }
@@ -87,11 +89,20 @@ $access = $newDB->get('access', null, 'ModulesId,UsersId');
               <tr><td><?php echo ++$key ?></td><td><?php echo $m['ModulesName'] ?><input type="hidden" name="mids[]" value="<?php echo $m['ModulesId']?>"></td><td><select class="form-control" name="mvalues[]">
                 <?php
                   if(in_array(['ModulesId' => $m['ModulesId'], 'UsersId' => intval($uid)], $access)){
+                    $newDB->where('UsersId', $uid);
+                    $newDB->where('ModulesId', $m['ModulesId']);
+                    $option = $newDB->getOne('access','AccessOption')['AccessOption'];
                     echo "<option value='NA'>NA</option>";
-                    echo "<option value='1' selected>Allow</option>";
+                    echo "<option value='1' ".($option==1?'selected':'').">1</option>";
+                    echo "<option value='2' ".($option==2?'selected':'').">2</option>";
+                    echo "<option value='3' ".($option==3?'selected':'').">3</option>";
+                    echo "<option value='4' ".($option==4?'selected':'').">4</option>";
                   }else{
                     echo "<option value='NA' selected>NA</option>";
-                    echo "<option value='1'>Allow</option>";
+                    echo "<option value='1'>1</option>";
+                    echo "<option value='2'>2</option>";
+                    echo "<option value='3'>3</option>";
+                    echo "<option value='4'>4</option>";
                   }
                 ?>
               </select></td></tr>

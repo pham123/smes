@@ -39,7 +39,7 @@ class db {
 			
 		}
 		public function sl_one($table,$where) {
-			if(!isset($_SESSION[_site_])){
+			if(!isset($_SESSION[_site_]['userid'])){
 				header('Location: ../login.php');
 			}
 			$query = 'SELECT * FROM ' . _DB_PREFIX_ . $table . ' WHERE ' . $where;
@@ -200,6 +200,9 @@ class Users extends db{
 	}
 	public function acess() {
 		$result = $this->sl_one('Modules','ModulesName="'.$this->module.'"');
+		if(!$result){
+			header('Location: ../403.php');
+		}
 		$result2 = $this->sl_one('Access','ModulesId='.$result['ModulesId'].' AND UsersId='.$this->id);
 		return $result2['AccessOption'];
 	}

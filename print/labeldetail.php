@@ -122,13 +122,20 @@ $oDB = new db();
 
         $result = $oDB->fetchAll($sql);
 
-        $sql = "select lh.TraceStationId,sum(lh.LabelHistoryQuantityOk) as qtyOk ,prd.ProductsName,prd.ProductsNumber,ts.TraceStationName 
+        $sql = "select 
+        lh.TraceStationId,
+        sum(lh.LabelHistoryQuantityOk) as qtyOk,
+        sum(lh.LabelHistoryQuantityNG) as qtyNg,
+        prd.ProductsName,prd.ProductsNumber,
+        ts.TraceStationName,
+        ts.TraceStationPosition 
         from LabelHistory lh 
         inner join LabelList lbl on lbl.LabelListValue = lh.LabelHistoryLabelValue 
         inner join TraceStation ts on ts.TraceStationId = lh.TraceStationId 
         inner join Products prd on prd.ProductsId = lbl.ProductsId 
         WHERE lbl.LabelListId in (".$text.") 
-        Group by lh.TraceStationId,prd.ProductsName,prd.ProductsNumber,ts.TraceStationName";
+        Group by lh.TraceStationId,prd.ProductsName,prd.ProductsNumber,ts.TraceStationName,ts.TraceStationPosition
+        Order By ts.TraceStationPosition";
         $total = $oDB->fetchAll($sql);
         ?>
 
@@ -137,27 +144,45 @@ $oDB = new db();
         <?php
         echo "<table class='table table-bordered' id='' width='100%' cellspacing='0'>";
         echo "<thead>";
-        echo "<tr>";
-            echo "<th>".$oDB->lang('Index')."</th>";
-            echo "<th>".$oDB->lang('Station')."</th>";
-            echo "<th>".$oDB->lang('ProductName')."</th>";
-            echo "<th>".$oDB->lang('ProductNumber')."</th>";
-            echo "<th>".$oDB->lang('Quantity')."</th>";
+        echo "<tr style='text-align:center;background-color:#DDDEE0'>";
+            echo "<th rowspan='2' style='vertical-align:middle;'>".$oDB->lang('Index')."</th>";
+            echo "<th rowspan='2' style='vertical-align:middle;'>".$oDB->lang('Station')."</th>";
+            echo "<th rowspan='2' style='vertical-align:middle;'>".$oDB->lang('ProductName')."</th>";
+            echo "<th rowspan='2' style='vertical-align:middle;'>".$oDB->lang('ProductNumber')."</th>";
+            echo "<th colspan='3' style='vertical-align:middle;'>".$oDB->lang('Quantity')."</th>";
+
         echo "</tr>";
-        echo "</thead>";
+        
+
+        echo "<tr style='text-align:center;background-color:#DDDEE0'>";
+        echo "<th style='vertical-align:middle;'>".$oDB->lang('Ok')."</th>";
+        echo "<th style='vertical-align:middle;'>".$oDB->lang('Ng')."</th>";
+        echo "<th style='vertical-align:middle;'>".$oDB->lang('Wip')."</th>";
+    echo "</tr>";
+    echo "</thead>";
 
 
         echo "<tbody>";
-
+        $wip = 0;
+        $lastqty = 0;
         foreach ($total as $key => $value) {
-            echo "<tr>";
+            echo "<tr style='text-align:center;'>";
             echo "<td>".($key+1)."</td>";
             echo "<td>".$value['TraceStationName']."</td>";
             echo "<td>".$value['ProductsName']."</td>";
             echo "<td>".$value['ProductsNumber']."</td>";
-            echo "<td>".$value['qtyOk']."</td>";
-
+            echo "<td style='background-color:green;'>".$value['qtyOk']."</td>";
+            echo "<td style='background-color:Red;'>".$value['qtyNg']."</td>";
+            if ($lastqty==0) {
+              $wip = 0;
+            }else{
+              $wip = $lastqty - $value['qtyOk'] - $value['qtyNg'];
+            }
+            
+            echo "<td style='background-color:yellow;'>".$wip."</td>";
             echo "</tr>";
+            
+            $lastqty =  $value['qtyOk'];
         }
 
         echo "</tbody>";
@@ -177,7 +202,8 @@ $oDB = new db();
             echo "<th>".$oDB->lang('Station')."</th>";
             echo "<th>".$oDB->lang('ProductName')."</th>";
             echo "<th>".$oDB->lang('ProductNumber')."</th>";
-            echo "<th>".$oDB->lang('Quantity')."</th>";
+            echo "<th>".$oDB->lang('Ok')."</th>";
+            echo "<th>".$oDB->lang('Ng')."</th>";
             echo "<th>".$oDB->lang('LabelValue')."</th>";
             echo "<th>".$oDB->lang('IssueDate')."</th>";
         echo "</tr>";
@@ -193,6 +219,7 @@ $oDB = new db();
             echo "<td>".$value['ProductsName']."</td>";
             echo "<td>".$value['ProductsNumber']."</td>";
             echo "<td style='background-color:#73E700;'>".$value['LabelHistoryQuantityOk']."</td>";
+            echo "<td style='background-color:red;'>".$value['LabelHistoryQuantityNg']."</td>";
             echo "<td>".$value['LabelHistoryLabelValue']."</td>";
             echo "<td>".$value['LabelHistoryCreateDate']."</td>";
             echo "</tr>";

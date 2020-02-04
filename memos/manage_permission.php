@@ -42,7 +42,7 @@ foreach($users_have_permission as $key => $value){
 
 // $newDB->where('a.ModulesId', $module['ModulesId']);
 $newDB->where('UsersId', $uids_have_permission, 'NOT IN');
-$users = $newDB->get("users u", null, "u.UsersId,u.UsersName");
+$users = $newDB->get("users u", null, "u.UsersId,u.UsersName,u.UsersFullName");
 
 ?>
 
@@ -71,13 +71,14 @@ $users = $newDB->get("users u", null, "u.UsersId,u.UsersName");
               <tr class="bg-secondary text-white">
                 <th>#</th>
                 <th>user</th>
+                <th>name</th>
                 <th>permission</th>
               </tr>
             <?php
             foreach($users as $key => $u)
             {
             ?>
-              <tr><td><?php echo ++$key ?></td><td><?php echo $u['UsersName'] ?></td><td><input type="checkbox" name='uids[]' value="<?php echo $u['UsersId']?>"> allow access</td></tr>
+              <tr><td><?php echo ++$key ?></td><td><?php echo $u['UsersName'] ?></td><td><?php echo $u['UsersFullName'] ?></td><td><input type="checkbox" name='uids[]' value="<?php echo $u['UsersId']?>"> allow access</td></tr>
             <?php
             }
             ?>

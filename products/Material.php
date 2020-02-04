@@ -74,7 +74,7 @@ $oDB = new db();
 
                 <div class="col-md-6">
                   <p><?php echo $oDB->lang('ProductDescription') ?></p>
-                  <input type="text" name="ProductsDescription" id="" class='form-control' required>
+                  <input type="text" name="ProductsDescription" class='form-control'>
                   <input type="hidden" name="ProductsOption" id="" value='1' class='form-control' required>
                 </div>
 

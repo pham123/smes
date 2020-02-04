@@ -4,12 +4,14 @@ ob_start();
 date_default_timezone_set('Asia/Ho_Chi_Minh');
 require('../config.php');
 require('../function/db_lib.php');
+require('../function/MysqliDb.php');
 require('../function/function.php');
 $user = New Users();
 $user->set($_SESSION[_site_]['userid']);
 $user->module = basename(dirname(__FILE__));
 check($user->acess());
 $oDB = new db();
+$newDB = new MysqliDb(_DB_HOST_, _DB_USER_, _DB_PASS_, _DB_name_);
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 	//CHECK ID IS VALID
@@ -24,6 +26,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
 	} else {
 		$product_id = (int)$_GET['id'];
+		$newDB->where('ProductsId', $product_id);
+		$old_product = $newDB->getOne('products');
 		
 		$text = '';
 
@@ -42,6 +46,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 		// echo $update_sql;
 
 		$oDB ->query($update_sql);
+
+		$newDB->where('ProductsId', $product_id);
+		$new_product = $newDB->getOne('products');
+		//log
+		$logs_content = 'products '.$_SESSION[_site_]['username'].' update ProductsNumber('.$old_product['ProductsNumber'].'=>'.$new_product['ProductsNumber'].')'.' ProductsName('.$old_product['ProductsName'].'=>'.$new_product['ProductsName'].') ModelsId('.$old_product['ModelsId'].'=>'.$new_product['ModelsId'].') file='.basename($_SERVER['PHP_SELF']);
+		w_logs(__DIR__."\logs\\", $logs_content);
 
 		if(isset($_FILES["fileToUpload"]["name"])){
 			uploadProductPicture($product_id);

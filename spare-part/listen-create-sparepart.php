@@ -14,9 +14,9 @@ $newDB = new MysqliDb(_DB_HOST_, _DB_USER_, _DB_PASS_,_DB_name_);
 
 // Ghi thông tin vào database
 $post_data = array_filter($_POST);
-echo $post_data['ProductsNumber'];
-echo '<br>';
-echo $post_data['ProductsName'];
+// echo $post_data['ProductsNumber'];
+// echo '<br>';
+// echo $post_data['ProductsName'];
 
 $product_id = $newDB->insert('Products', $post_data);
 
@@ -25,6 +25,9 @@ if(!$product_id)
 	echo 'Error when add new spare part';
 	return;
 }
+
+$logs_content = 'products '.$_SESSION[_site_]['username'].' create ProductsNumber='.$post_data['ProductsNumber'].' ProductsName='.$post_data['ProductsName'].' Category='.$post_data['ProductsCategory'].' file='.basename($_SERVER['PHP_SELF']);
+w_logs(__DIR__."\logs\\", $logs_content);
 
 // Phần này xử lý file upload lên
 

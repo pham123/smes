@@ -14,6 +14,7 @@ $newDB = new MysqliDb(_DB_HOST_, _DB_USER_, _DB_PASS_,_DB_name_);
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 	$data = array_filter($_POST);
+	$export_id = $data['ExportsId'];
 	//CREATE NEW EXPORT HISTORY
 	if(isset($_POST["saveBtn"])) {
 		$exportData = [
@@ -29,6 +30,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 			'ExportsDate' => $data['ExportsDate'],
 			'ExportsStatus' => 1
 		];
+		$logs_content = 'exports '.$_SESSION[_site_]['username'].' create '.$export_id.' DocNo('.$exportData['ExportsDocNo'].')'.' SectionId('.$exportData['SectionId'].')'.' Date('.$exportData['ExportsDate'].') ';
 	}
 	if(array_key_exists('ExportsReceiver', $data)){
 		$exportData['ExportsReceiver'] = $data['ExportsReceiver'];
@@ -36,7 +38,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 	if(array_key_exists('ExportsNote', $data)){
 		$exportData['ExportsNote'] = $data['ExportsNote'];
 	}
-	$export_id = $data['ExportsId'];
 	$newDB->where('ExportsId', $export_id);
 	$newDB->update('Exports', $exportData);
 
@@ -52,6 +53,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
 				$newDB->where('ProductsId', $id);
 				$newDB->update('Products', ['ProductsStock' => $stock]);
+
+				if($index == 0){
+					$logs_content .= 'Products('.$id.','.$data['ProductsQty'][$index].') ';
+				}else{
+					$logs_content .= '('.$id.','.$data['ProductsQty'][$index].') ';
+				}
 			}
 			
 			$newDB->where('ExportsId', $export_id);
@@ -66,6 +73,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 			];
 			$newDB->insert('Outputs', $outputData);
 		}
+	}
+	if(isset($_POST["exportBtn"])) {
+		$logs_content .= 'file='.basename($_SERVER['PHP_SELF']);
+		w_logs(__DIR__."\logs\\", $logs_content);
 	}
 }else{
 	header('Location:../404.html');

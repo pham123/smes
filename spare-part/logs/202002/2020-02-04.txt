@@ -1,0 +1,8 @@
+2020-02-04 11:12:11	imports dongpx update PO(SP20200204_7=>SP20200204_7) DocNo(SP20200204_7=>SP20200204_7) SuppliersId(0=>1) Date(=>2020-02-14)Products[1,23,23000] Products[13,44,44444]  file=listen-import.php
+2020-02-04 11:13:48	imports dongpx update PO(SP20200204_8=>SP20200204_8) DocNo(SP20200204_8=>SP20200204_8) SuppliersId(0=>1) Date(=>2020-02-15) Products[2,34,34444] Products[12,32,343434] file=listen-import.php
+2020-02-04 11:22:17	imports dongpx create PO(SP20200204_9) DocNo(SP20200204_9) SuppliersId(1) Date(2020-02-21) Products[2,23,233232] Products[13,33,33333] file=listen-import.php
+2020-02-04 11:23:01	imports dongpx create PO(SP20200204_10) DocNo(SP20200204_10) SuppliersId(1) Date(2020-02-21) Products[2,23,232332] Products[13,33,333333] file=listen-import.php
+2020-02-04 11:33:50	imports dongpx create PO(SP20200204_11) DocNo(SP20200204_11) SuppliersId(1) Date(2020-02-20) Products[2,23,233.232] Products[13,23,232.323] file=listen-import.php
+2020-02-04 11:37:41	imports dongpx create 12 PO(SP20200204_12) DocNo(SP20200204_12) SuppliersId(1) Date(2020-02-14) Products[2,23,2.323] Products[12,23,2.323] file=listen-import.php
+2020-02-04 11:41:50	imports dongpx create 13 PO(SP20200204_13) DocNo(SP20200204_13) SuppliersId(1) Date(2020-02-15) Products[2,23,232.332] [12,23,232.332] [13,23,2.323] file=listen-import.php
+2020-02-04 11:53:20	exports dongpx create 4 DocNo(ESP20200117_4) SectionId(1) Date(2020-02-14) Products(2,23,) (12,33,) file=listen-export.php

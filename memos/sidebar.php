@@ -29,7 +29,8 @@ $arr = array(
   array('MonthlyReport.php', 'fas fa-chart-bar',$oDB->lang('MonthlyReport')),
   array('yearlyReport.php', 'fas fa-chart-bar',$oDB->lang('YearlyReport')),
   array('TopReport.php', 'fas fa-chart-bar',$oDB->lang('Top')),
-  array('ScoreBoard.php', 'fas fa-chart-bar',$oDB->lang('ScoreBoard'))
+  array('ScoreBoard.php', 'fas fa-chart-bar',$oDB->lang('ScoreBoard')),
+  array('manage_permission.php', 'fas fa-check-square',$oDB->lang('Permission')),
 );
 echo nav_item($oDB->lang('Material'),$arr);
 ?>

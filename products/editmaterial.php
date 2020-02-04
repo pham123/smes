@@ -50,17 +50,17 @@ $product = $oDB->sl_one('Products', 'ProductsId = '.$_GET['id']);
 
                 <div class="col-md-6">
                   <p><?php echo $oDB->lang('ProductSize') ?></p>
-                  <input type="text" name="ProductsSize" id="" class='form-control' required value="<?php echo $product['ProductsSize'] ?>">
+                  <input type="text" name="ProductsSize" id="" class='form-control' value="<?php echo $product['ProductsSize'] ?>">
                 </div>
 
                 <div class="col-md-6">
                   <p><?php echo $oDB->lang('ProductNet') ?>(Kg)</p>
-                  <input type="number" step="0.001" name="ProductsNet" id="" class='form-control' value="<?php echo $product['ProductsNet']?>">
+                  <input type="number" value="0" min='0' step="0.001" name="ProductsNet" id="" class='form-control' value="<?php echo $product['ProductsNet']?>">
                 </div>
 
                 <div class="col-md-6">
                   <p><?php echo $oDB->lang('ProductGloss') ?>(Kg)</p>
-                  <input type="number" step="0.001" name="ProductsGloss" id="" class='form-control' value="<?php echo $product['ProductsGloss']?>">
+                  <input type="number" value="0" min='0' step="0.001" name="ProductsGloss" id="" class='form-control' value="<?php echo $product['ProductsGloss']?>">
                 </div>
 
                 <div class="col-md-6">

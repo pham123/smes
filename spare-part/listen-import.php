@@ -14,6 +14,7 @@ $newDB = new MysqliDb(_DB_HOST_, _DB_USER_, _DB_PASS_,_DB_name_);
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 	$data = array_filter($_POST);
+	$import_id = $data['ImportsId'];
 	//CREATE NEW IMPORT HISTORY
 	if(isset($_POST["saveBtn"])) {
 		$importData = [
@@ -31,11 +32,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 			'ImportsDate' => $data['ImportsDate'],
 			'ImportsStatus' => 1
 		];
+
+		$logs_content = 'imports '.$_SESSION[_site_]['username'].' create '.$import_id.' PO('.$importData['ImportsPO'].')'.' DocNo('.$importData['ImportsDocNo'].')'.' SuppliersId('.$importData['SuppliersId'].')'.' Date('.$importData['ImportsDate'].') ';
 	}
 	if(array_key_exists('ImportsNote', $data)){
 		$importData['ImportsNote'] = $data['ImportsNote'];
 	}
-	$import_id = $data['ImportsId'];
+
 	$newDB->where('ImportsId', $import_id);
 	$newDB->update('Imports', $importData);
 
@@ -51,6 +54,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 				
 				$newDB->where('ProductsId', $id);
 				$newDB->update('Products', ['ProductsStock' => $stock]);
+
+				if($index == 0){
+					$logs_content .= 'Products['.$id.','.$data['ProductsQty'][$index].','.str_replace(array('.', ','), '.' , $data['ProductsUnitPrice'][$index]).'] ';
+				}else{
+					$logs_content .= '['.$id.','.$data['ProductsQty'][$index].','.str_replace(array('.', ','), '.' , $data['ProductsUnitPrice'][$index]).'] ';
+				}
 			}
 			
 			
@@ -71,6 +80,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
 		}
 	}
+
+	if(isset($_POST["importBtn"])) {
+		$logs_content .= 'file='.basename($_SERVER['PHP_SELF']);
+		w_logs(__DIR__."\logs\\", $logs_content);
+	}
+
+
+
 }else{
 	header('Location:../404.html');
 }

@@ -25,7 +25,9 @@ $ModelsId = safe($_POST['ModelsId']);
 $field_values = "`ProductsName`='".$ProductsName."', `ProductsNumber`='".$ProductsNumber."', `ProductsDescription`='".$ProductsDescription."', `ProductsOption`=".$ProductsOption.", `ModelsId`=".$ModelsId ;
 $oDB->insert('Products',$field_values);
 
-$products->getnum($ProductsNumber);
+$pnum = $products->getnum($ProductsNumber);
+$logs_content = 'products '.$_SESSION[_site_]['username'].' create ProductsNumber='.$ProductsNumber.' ModelsId='.$ModelsId.' file='.basename($_SERVER['PHP_SELF']);
+w_logs(__DIR__."\logs\\", $logs_content);
 
 // Phần này xử lý file upload lên
 

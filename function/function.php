@@ -49,7 +49,7 @@ function w_logs($dir,$content){
 		mkdir($dir.$foldername, 0700);
 	}
 	$content = preg_replace('~[\r\n]+~', ' ', $content);
-	$dir = $dir.$foldername.'/';
+	$dir = $dir.$foldername.'\\';
 	$now = date("Y-m-d H:i:s");
 	$text = $now."\t".$content.PHP_EOL;
 	if (!file_exists ($dir.$name.".txt")) {

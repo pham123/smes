@@ -21,10 +21,12 @@ $newDB->where('ModulesName', 'memos');
 $module = $newDB->getOne('modules');
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-  $uids = $_POST['uids'];
-
-  foreach($uids as $key => $uid){
-    $newDB->insert('access', ['UsersId' => $uid, 'ModulesId' => $module['ModulesId'], 'AccessOption' => 3]);
+    
+    if(isset($_POST['uids'])){
+        $uids = $_POST['uids'];
+        foreach($uids as $key => $uid){
+        $newDB->insert('access', ['UsersId' => $uid, 'ModulesId' => $module['ModulesId'], 'AccessOption' => 3]);
+        }
   }
  
 } else {
@@ -65,15 +67,18 @@ $users = $newDB->get("users u", null, "u.UsersId,u.UsersName,u.UsersFullName");
         <div class="container-fluid">
 
         <form action="manage_permission.php" method="Post">
-          <div class="form-group row">
+          <div>
             <p class="mb-0">All users not have permission</p>  
-          <table class="table table-sm table-striped table-bordered">
+          <table class="table table-striped table-bordered" id="dataTable">
+              <thead>
               <tr class="bg-secondary text-white">
                 <th>#</th>
                 <th>user</th>
                 <th>name</th>
                 <th>permission</th>
               </tr>
+            </thead>
+            <tbody>
             <?php
             foreach($users as $key => $u)
             {
@@ -82,6 +87,7 @@ $users = $newDB->get("users u", null, "u.UsersId,u.UsersName,u.UsersFullName");
             <?php
             }
             ?>
+            </tbody>
             </table>
           </div>
           <div class="form-group row">

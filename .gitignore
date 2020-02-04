@@ -4,3 +4,7 @@ products/image
 spare-part/image
 employees/image
 patrols/image
+products/logs
+spare-part/logs
+memos/logs
+patrols/logs

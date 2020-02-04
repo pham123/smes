@@ -138,7 +138,8 @@ p{margin:5px;}
                 <p><?php echo $oDB->lang('Pic') ?></p>
                 <select name="MemosPic" id="" class='selectpicker show-tick' data-live-search="true" data-style="btn-info" data-width="100%">
                   <?php 
-                  $model = $oDB->sl_all('Users',1);
+                  // $model = $oDB->sl_all('Users',1);
+                  $model = $oDB->sl_user_module('Memos');
                   foreach ($model as $key => $value) {
                     $select = ($user->id==$value['UsersId']) ? 'selected' : '' ;
                     echo "<option value='".$value['UsersId']."' ".$select.">".$value['UsersFullName']."</option>";

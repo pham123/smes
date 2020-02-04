@@ -102,6 +102,18 @@ class db {
 			return $rows;
 		}
 
+		public function sl_user_module($module) {
+			$query = "select Users.* from Users
+			inner join Access on Access.UsersId = Users.UsersId
+			inner join Modules on Access.ModulesId = Modules.ModulesId AND Modules.ModulesName ='".$module."'";
+			$rs = mysqli_query($this->dbh,$query);
+			$rows = [];
+			while ($row = mysqli_fetch_assoc($rs)){
+				$rows[] = $row;
+			}
+			return $rows;
+		}
+
 		public function sl_col_all($colar,$table,$where) {
 			$query = 'SELECT '.$table.'Id as id,' .$colar .' FROM ' . _DB_PREFIX_ . $table . ' WHERE ' . $where;
 			$rs = mysqli_query($this->dbh,$query);

@@ -120,14 +120,14 @@ $linkar =  array(
   // array('../Approval/','APPROVAL','Request everything!','fa-check-square'),
   array('#',$oDB->lang('Productivity','Sản lượng'),$oDB->lang('Quantity'),'fa-pallet'),
   array('../print/',$oDB->lang('Print'),$oDB->lang('PrintLabel'),'fa-barcode'),
-  array('../products/',$oDB->lang('Products'),'Products Information','fa-dolly'),
+  array('../products/',$oDB->lang('Products'),$oDB->lang('ProductsInformation'),'fa-dolly'),
   array('../patrols',$oDB->lang('LinePatrol'),$oDB->lang('FactoryIssueReport'),'fa-camera'),
   array('../quality/',$oDB->lang('Qbank',"Q-Bank"),$oDB->lang('QualityIssueControl'),'fa-bullhorn'),
   // array('#',$oDB->lang('QulityList'),'Push QA issues alert','fa-list-ol'),
-  array('../spare-part',$oDB->lang('SparePart'),'Control spare part','fa-boxes'),
-  array('#',$oDB->lang('Document',"Document"),'BOM, ISO, PFMEA','fa-folder-open'),
-  array('../memos/',$oDB->lang('MemoSuggestion'),'Memo Suggestion','fa-lightbulb'),
-  array('../employees/',$oDB->lang('Employees'),'Employees Information','fa-calendar'),
+  array('../spare-part',$oDB->lang('SparePart'),$oDB->lang('ControlSparePart'),'fa-boxes'),
+  array('#',$oDB->lang('Document',"Document"),$oDB->lang('DocumentEx'),'fa-folder-open'),
+  array('../memos/',$oDB->lang('MemoSuggestion'),$oDB->lang('MemoSuggestion'),'fa-lightbulb'),
+  array('../employees/',$oDB->lang('Employees'),$oDB->lang('EmployeesInformation'),'fa-calendar'),
 
 );
 

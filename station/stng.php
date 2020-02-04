@@ -41,6 +41,9 @@ $prestation = 3;
         table, th, td {
         border: 1px solid black;
         }
+        body{
+            background-color:#C20037;
+        }
     </style>
 </head>
 <body onload="startTime()">
@@ -91,6 +94,8 @@ $prestation = 3;
                 echo "<br>";
                 echo "<span style='width:10%'>Số lượng: <span><input type='number' name='quantity' id='' value='".$LabelPattern['LabelPatternPackingStandard']."' style='width:80%;padding:5px;margin:5px;font-size:40px;text-align:center;' min='1' max='".$LabelPattern['LabelPatternPackingStandard']."'>";
                 echo "<br>";
+                echo "<span style='width:10%'>Lỗi: <span><input type='text' name='defect' id='' value='".$LabelPattern['LabelPatternPackingStandard']."' style='width:80%;padding:5px;margin:5px;font-size:40px;text-align:center;' min='1' max='".$LabelPattern['LabelPatternPackingStandard']."'>";
+                echo "<br>";
                 echo "<span style='width:10%'>Xác nhận: <input type='text' name='no' id='' value='' style='width:80%;padding:5px;margin:5px;font-size:40px;text-align:center;' autofocus required placeholder='Đọc lại mã tem 1 lần nữa'>";
                 echo "<br>";
                 echo "<input type='submit' value='submit'>";
@@ -99,9 +104,9 @@ $prestation = 3;
                 $_SESSION['message'] = "Nhập mã tem gốc cho tem :".$code;
                 echo "<span style='width:10%'>Số lượng: <span><input type='text' name='mcode' id='' value='".$code."' style='width:80%;padding:5px;margin:5px;font-size:40px;text-align:center;' readonly>";
                 echo "<br>";
-                echo "<span style='width:10%'>Số lượng: <span><input type='number' name='quantity' id='' value='".$LabelPattern['LabelPatternPackingStandard']."' style='width:80%;padding:5px;margin:5px;font-size:40px;text-align:center;' min='1' max='".$LabelPattern['LabelPatternPackingStandard']."'>";
+                echo "<span style='width:10%'>Số lượng: <span><input type='number' name='quantity' id='' value='' style='width:80%;padding:5px;margin:5px;font-size:40px;text-align:center;' min='1' max='' autofocus required>";
                 echo "<br>";
-                echo "<span style='width:10%'>Xác nhận: <input type='text' name='mothercode' id='' value='' style='width:80%;padding:5px;margin:5px;font-size:40px;text-align:center;' autofocus required placeholder='Đọc mã tem gốc'>";
+                echo "<span style='width:10%'>Xác nhận: <input type='text' name='mothercode' id='' value='' style='width:80%;padding:5px;margin:5px;font-size:40px;text-align:center;' required placeholder='Đọc mã tem gốc'>";
                 echo "<br>";
                 echo "<input type='submit' value='submit'>";
             }
@@ -129,8 +134,8 @@ $prestation = 3;
                 #lấy về tổng số lượng của các label con
                 $sql = "SELECT SUM(lh.LabelHistoryQuantityOk)+SUM(lh.LabelHistoryQuantityNg) as total FROM LabelHistory lh
                 inner join LabelList lbl on lbl.LabelListValue = lh.LabelHistoryLabelValue
-                Where lbl.LabelListMotherId = ?";
-                $total = $oDB->query($sql, $mothercodeinfo['LabelListId'])->fetchArray();
+                Where lbl.LabelListMotherId = ? AND lh.TraceStationId = ?";
+                $total = $oDB->query($sql, $mothercodeinfo['LabelListId'],$stationid)->fetchArray();
                 if (isset($total['total'])&&$total['total']>=$motherquantity) {
                     # code...
                     $_SESSION['message'] = "<h1 style='background-color:red;'>Không thành công, bạn đã nhập ".$total['total']."/".$motherquantity." </h1>";
@@ -141,7 +146,7 @@ $prestation = 3;
                 $mothercodeinfo['LabelListValue'].' hợp lệ';
                 # Chèn thông tin tem vào list và history
                 $oDB->query("INSERT INTO LabelList (`ProductsId`,`LabelListValue`,`LabelListMotherId`) VALUES (?,?,?)",$mothercodeinfo['ProductsId'],$mcode,$mothercodeinfo['LabelListId']);
-                $oDB->query("INSERT INTO LabelHistory (`TraceStationId`,`LabelHistoryQuantityOk`,`LabelHistoryLabelValue`) VALUES (?,?,?)",$stationid,$quantity,$mcode);
+                $oDB->query("INSERT INTO LabelHistory (`TraceStationId`,`LabelHistoryQuantityNg`,`LabelHistoryLabelValue`) VALUES (?,?,?)",$stationid,$quantity,$mcode);
                 if (isset($_SESSION['Uploadlist'])) {
                     $key = count($_SESSION['Uploadlist']);
                     if ($key>20) {

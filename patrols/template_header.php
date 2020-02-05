@@ -10,7 +10,7 @@
   <link rel="icon" type="image/png" href="../img/halla.png" />
 
   <title>Line Patrol</title>
-
+  <link href="../vendor/country-picker-flags/css/countrySelect.min.css" rel="stylesheet" type="text/css">
   <link href="../css/sb-admin-2.css" rel="stylesheet">
   <style>
   <?php

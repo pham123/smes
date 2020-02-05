@@ -13,11 +13,30 @@
   <!-- (Optional) Latest compiled and minified JavaScript translation files -->
   <!-- <script src="../vendor/select/dist/js/i18n/defaults-*.min.js"></script> -->
 
-
+  <script src="../vendor/country-picker-flags/js/countrySelect.js"></script>
   <script src="../vendor/datatables/dataTables.buttons.min.js"></script>
   <script src="../vendor/datatables/jszip.min.js"></script>
   <script src="../vendor/datatables/buttons.html5.min.js"></script>
 
     <!-- Page level custom scripts -->
-    <script src="../js/demo/datatables-demo.js"></script>
+  <script src="../js/demo/datatables-demo.js"></script>
+  <script>
+     $(document).on('test', function(e,code){
+      $.ajax({
+        url: 'ajaxupdatelang.php?code='+code,
+        type: 'get',
+        success: function(){
+          location.reload(true);
+        }
+      })
+    });
+
+    $("#country_selector").countrySelect({
+      onlyCountries: ['en','vi','kr','cn'],
+      preferredCountries: []
+    });
+    $('.country-list').css('overflow','hidden');
+    $("#country_selector").countrySelect("selectCountry",<?php echo json_encode($oDB->lang); ?>);
+
+  </script>
   

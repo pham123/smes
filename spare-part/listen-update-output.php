@@ -27,6 +27,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
 	} else {
 		$output_id = (int)$_GET['id'];
+
+		$newDB->where('OutputsId', $output_id);
+		$old_o = $newDB->getOne('outputs');
 		
 		$text = '';
 		//old output
@@ -51,6 +54,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 					  Where OutputsId = ".$output_id;
 
 		$oDB ->query($update_sql);
+
+		//logs
+		$newDB->where('OutputsId', $output_id);
+		$new_o = $newDB->getOne('outputs');
+		$logs_content = 'outputs '.$_SESSION[_site_]['username'].' update '.$output_id.' Product('.$old_o['ProductsId'].'=>'.$new_o['ProductsId'].')'.' Qty('.$old_o['ProductsQty'].'=>'.$new_o['ProductsQty'].')'.' file='.basename($_SERVER['PHP_SELF']);
+		w_logs(__DIR__."\logs\\", $logs_content);
 		//update stock
 		if($old_product_id == $_POST['ProductsId']){
 			$newstock = $old_product['ProductsStock'] + $oldOutput['ProductsQty'] - $_POST['ProductsQty'];

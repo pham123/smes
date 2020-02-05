@@ -5,13 +5,14 @@ date_default_timezone_set('Asia/Ho_Chi_Minh');
 require('../config.php');
 require('../function/db_lib.php');
 $oDB = new db();
-$oDB->lang = 'En';
-//echo $currentlocation;
-// var_dump($_SESSION);
+
 if (!isset($_SESSION[_site_]['userid'])) {
   # code...
   header('Location:../login.php');
   exit();
+}
+if(isset($_SESSION[_site_]['userlang'])){
+  $oDB->lang = ucfirst($_SESSION[_site_]['userlang']);
 }
 ?>
 <!DOCTYPE html>
@@ -26,12 +27,12 @@ if (!isset($_SESSION[_site_]['userid'])) {
   <meta name="description" content="">
   <meta name="author" content="">
 
-  <title><?php $oDB->lang('HallaElectronicsVina') ?></title>
+  <title><?php echo $oDB->lang('HallaElectronicsVina'); ?></title>
 
   <!-- Custom fonts for this template-->
+  <link href="../vendor/country-picker-flags/css/countrySelect.min.css" rel="stylesheet" type="text/css">
   <link href="../vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
   <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
-
   <!-- Custom styles for this template-->
   <link href="../css/sb-admin-2.css" rel="stylesheet">
 
@@ -68,7 +69,8 @@ if (!isset($_SESSION[_site_]['userid'])) {
             </li>
 
             <!-- Nav Item - User Information -->
-            <li class="nav-item dropdown no-arrow">
+            <span id="country_selector"></span>
+            <li class="nav-item dropdown no-arrow" style="margin-left: 40px;">
               <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                 <span class="mr-2 d-none d-lg-inline text-white small"><?php echo $_SESSION[_site_]['userfullname']?></span>
                 <?php
@@ -217,9 +219,30 @@ foreach ($linkar as $key => $value) {
   <script src="../js/sb-admin-2.min.js"></script>
   <!-- Page level plugins -->
   <script src="../vendor/chart.js/Chart.min.js"></script>
+  <script src="../vendor/country-picker-flags/js/countrySelect.js"></script>
   <!-- Page level custom scripts -->
   <script src="../js/demo/chart-area-demo.js"></script>
   <script src="../js/demo/chart-pie-demo.js"></script>
+
+  <script>
+     $(document).on('test', function(e,code){
+      $.ajax({
+        url: 'ajaxupdatelang.php?code='+code,
+        type: 'get',
+        success: function(){
+          location.reload(true);
+        }
+      })
+    });
+
+    $("#country_selector").countrySelect({
+      onlyCountries: ['en','vi','kr','cn'],
+      preferredCountries: []
+    });
+    $('.country-list').css('overflow','hidden');
+    $("#country_selector").countrySelect("selectCountry",<?php echo json_encode($oDB->lang); ?>);
+
+  </script>
 
 </body>
 

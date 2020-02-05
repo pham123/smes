@@ -15,7 +15,9 @@ $page_css='.vs__dropdown-toggle {border: 0px !important;margin-top: -4px;}';
 require('./template_header.php');
 $oDB = new db();
 $newDb = new MysqliDb(_DB_HOST_, _DB_USER_, _DB_PASS_, _DB_name_);
-// $newDB->where('ProductsOption', 4);
+if(isset($_SESSION[_site_]['userlang'])){
+  $oDB->lang = ucfirst($_SESSION[_site_]['userlang']);
+}
 ?>
 <body>
 
@@ -42,6 +44,7 @@ $newDb = new MysqliDb(_DB_HOST_, _DB_USER_, _DB_PASS_, _DB_name_);
           <li class="nav-item">
             <a class="nav-link" href="#">summary</a>
           </li>
+          <span id="country_selector"></span>
         </ul>
       </div>
     </div>
@@ -144,6 +147,7 @@ $newDb = new MysqliDb(_DB_HOST_, _DB_USER_, _DB_PASS_, _DB_name_);
 
   <script src="../vendor/datatables/jquery.dataTables.min.js"></script>
   <script src="../vendor/datatables/dataTables.bootstrap4.min.js"></script> 
+  <script src="../vendor/country-picker-flags/js/countrySelect.js"></script>
   <script>
     $.fn.dataTable.ext.search.push(
       function( settings, data, dataIndex ) {
@@ -169,7 +173,25 @@ $newDb = new MysqliDb(_DB_HOST_, _DB_USER_, _DB_PASS_, _DB_name_);
         data_table.draw();
       });
     });
-    </script>
+
+     $(document).on('test', function(e,code){
+      $.ajax({
+        url: 'ajaxupdatelang.php?code='+code,
+        type: 'get',
+        success: function(){
+          location.reload(true);
+        }
+      })
+    });
+
+    $("#country_selector").countrySelect({
+      onlyCountries: ['en','vi','kr','cn'],
+      preferredCountries: []
+    });
+    $('.country-list').css('overflow','hidden');
+    $("#country_selector").countrySelect("selectCountry",<?php echo json_encode($oDB->lang); ?>);
+
+  </script>
 
 </body>
 

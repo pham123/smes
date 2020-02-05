@@ -30,6 +30,7 @@ if (isset($_POST['username'])) {
     $_SESSION[_site_]['userfullname']=$ketqua['UsersFullName'];
     $_SESSION[_site_]['useroption']=$ketqua['UsersOption'];
     $_SESSION[_site_]['useremail'] = $ketqua['UsersEmail'];
+    $_SESSION[_site_]['userlang'] = $ketqua['UsersLang'];
 
      header("Location: home/");
      die(); 

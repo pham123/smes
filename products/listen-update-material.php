@@ -50,7 +50,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 		$newDB->where('ProductsId', $product_id);
 		$new_product = $newDB->getOne('products');
 		//log
-		$logs_content = 'products '.$_SESSION[_site_]['username'].' update ProductsNumber('.$old_product['ProductsNumber'].'=>'.$new_product['ProductsNumber'].')'.' ProductsName('.$old_product['ProductsName'].'=>'.$new_product['ProductsName'].') ModelsId('.$old_product['ModelsId'].'=>'.$new_product['ModelsId'].') file='.basename($_SERVER['PHP_SELF']);
+		$logs_content = 'products '.$_SESSION[_site_]['username'].' update '.$product_id.' ProductsNumber('.$old_product['ProductsNumber'].'=>'.$new_product['ProductsNumber'].')'.' ProductsName('.$old_product['ProductsName'].'=>'.$new_product['ProductsName'].')'.' ModelsId('.$old_product['ModelsId'].'=>'.$new_product['ModelsId'].') file='.basename($_SERVER['PHP_SELF']);
 		w_logs(__DIR__."\logs\\", $logs_content);
 
 		if(isset($_FILES["fileToUpload"]["name"])){

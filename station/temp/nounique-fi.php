@@ -182,8 +182,14 @@
     <tr>
         <th rowspan='2'>Tên sản phẩm</th>
         <th rowspan='2'>Mã sản phẩm</th>
-        <th colspan='2'>Ca từ <?php echo $shiftarray[1]['start']?> đến <?php echo $shiftarray[1]['end']?></th>
-        <th colspan='2'>Ca từ <?php echo $shiftarray[0]['start']?> đến <?php echo $shiftarray[0]['end']?></th>
+        <th colspan='3'>CA1</th>
+        <th colspan='3'>CA2</th>
+    </tr>
+    <tr>
+        <th><?php echo $shiftarray[1]['start']?></th>
+        <th><?php echo $shiftarray[1]['end']?></th>
+        <th><?php echo $shiftarray[0]['start']?></th>
+        <th><?php echo $shiftarray[0]['end']?></th>
     </tr>
     <tr>
         <th>Kế hoạch</th>

@@ -143,33 +143,71 @@
 
     </form>
     <?php
-    //code lay ve thoi gian cac ca lam viec
-    $hientai = date("Y-m-d H:i:s");
-    $mocthoigian = date("Y-m-d 16:00:00");
-    $yesterday = date ("Y-m-d 16:00:00",strtotime('-1 days'));
-    $tomorrow = date ("Y-m-d 16:00:00",strtotime('+1 days'));
-    $shiftarray = array();
-    if ($hientai<$mocthoigian) {
-        $shiftarray[0]['start']= date("Y-m-d 08:00:00");
-        $shiftarray[0]['end']= date("Y-m-d 16:00:00");
-        $shiftarray[1]['start']= date ("Y-m-d 16:00:00",strtotime('-1 days'));
-        $shiftarray[1]['end']= date("Y-m-d 08:00:00");
-    }else{
-        $shiftarray[0]['start']= date("Y-m-d 08:00:00");
-        $shiftarray[0]['end']= date("Y-m-d 16:00:00");
-        $shiftarray[0]['start']= date("Y-m-d 16:00:00");
-        $shiftarray[0]['end']= date("Y-m-d H:i:s");
+        $hientai = date("Y-m-d H:i:s");
+        $mocthoigian = date("Y-m-d 20:00:00");
+        $yesterday = date ("Y-m-d 20:00:00",strtotime('-1 days'));
+        $tomorrow = date ("Y-m-d 20:00:00",strtotime('+1 days'));
+        $shiftarray = array();
+        if ($hientai<$mocthoigian) {
+            $shiftarray[0]['start']= date("Y-m-d 08:00:00");
+            $shiftarray[0]['end']= date("Y-m-d 20:00:00");
+            $shiftarray[1]['start']= date ("Y-m-d 16:00:00",strtotime('-1 days'));
+            $shiftarray[1]['end']= date("Y-m-d 08:00:00");
+        }else{
+            $shiftarray[0]['start']= date("Y-m-d 20:00:00");
+            $shiftarray[0]['end']= date("Y-m-d H:i:s");
+            $shiftarray[1]['start']= date("Y-m-d 08:00:00");
+            $shiftarray[1]['end']= date("Y-m-d 20:00:00");
+        }
+        
+        # code...
+
+        $sql="SELECT 
+        prd.ProductsName,
+        prd.ProductsNumber,
+        ts.TraceStationName,
+        SUM(CASE WHEN lh.LabelHistoryCreateDate BETWEEN '".$shiftarray[0]['start']."' AND '".$shiftarray[0]['end']."' THEN lh.LabelHistoryQuantityOk ELSE 0 END) AS TotalOk1,
+        SUM(CASE WHEN lh.LabelHistoryCreateDate BETWEEN '".$shiftarray[1]['start']."' AND '".$shiftarray[1]['end']."' THEN lh.LabelHistoryQuantityOk ELSE 0 END) AS TotalOk2
+        FROM LabelHistory lh
+        INNER JOIN Products prd ON prd.ProductsId = lh.ProductsId
+        INNER JOIN TraceStation ts ON ts.TraceStationId = lh.TraceStationId AND ts.TraceStationId = ?
+        WHERE lh.LabelHistoryCreateDate BETWEEN '".$shiftarray[1]['start']."' AND '".$shiftarray[0]['end']."'
+        GROUP BY prd.ProductsName, prd.ProductsNumber, ts.TraceStationName";
+       $total =  $oDB->query($sql,$stationid)->fetchAll();
+
+       //var_dump($total);
+    ?>
+
+    <table>
+    <tr>
+        <th rowspan='2'>Tên sản phẩm</th>
+        <th rowspan='2'>Mã sản phẩm</th>
+        <th colspan='2'>Ca từ <?php echo $shiftarray[1]['start']?> đến <?php echo $shiftarray[1]['end']?></th>
+        <th colspan='2'>Ca từ <?php echo $shiftarray[0]['start']?> đến <?php echo $shiftarray[0]['end']?></th>
+    </tr>
+    <tr>
+        <th>Kế hoạch</th>
+        <th>Kết quả</th>
+        <th>Kế hoạch</th>
+        <th>Kết quả</th>
+    </tr>
+    <?php
+    foreach ($total as $key => $value) {
+        ?>
+            <tr>
+                <td><?php echo $value['ProductsName'] ?></td>
+                <td><?php echo $value['ProductsNumber'] ?></td>
+                <td>-</td>
+                <td><?php echo $value['TotalOk2'] ?></td>
+                <td>-</td>
+                <td><?php echo $value['TotalOk1'] ?></td>
+            </tr>
+
+        <?php
     }
     
-    if (isset($_SESSION['station']['lastcode'])) {
-        # code...
-       $total =  $oDB->query('Select count(*) as total, date(LabelHistoryCreateDate) as Date, hour(LabelHistoryCreateDate) as Hour from LabelHistory where LabelHistoryLabelValue = ? AND TraceStationId =? AND date(LabelHistoryCreateDate) = ? Group By Date,Hour Order by Hour DESC',$_SESSION['station']['lastcode'],$stationid,date("Y-m-d"))->fetchAll();
-       echo "<h1>Mã tem : ".$_SESSION['station']['lastcode']."</h1>";
-       foreach ($total as $key => $value) {
-            echo "<h1>".$value['Date']." - ".$value['Hour'].":00 : ".$value['total']." EA</h1>";
-        }
-       
-    }
     ?>
+    
+    </table>
 </body>
 </html>

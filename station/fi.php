@@ -44,12 +44,15 @@ if (isset($setunique)&&is_numeric($setunique)) {
     
     switch ($setunique) {
         case 1:
+            // echo "1";
             include('temp/unique-fi.php');
             break;
         case 2:
+            // echo "2";
             include('temp/nounique-fi.php');
             break;
         case 3:
+            // echo "3";
             include('temp/unique-not.php');
             break;
         default:

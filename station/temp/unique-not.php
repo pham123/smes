@@ -159,7 +159,7 @@
         if ($hientai<$mocthoigian) {
             $shiftarray[0]['start']= date("Y-m-d 08:00:00");
             $shiftarray[0]['end']= date("Y-m-d 20:00:00");
-            $shiftarray[1]['start']= date ("Y-m-d 16:00:00",strtotime('-1 days'));
+            $shiftarray[1]['start']= date ("Y-m-d 20:00:00",strtotime('-1 days'));
             $shiftarray[1]['end']= date("Y-m-d 08:00:00");
         }else{
             $shiftarray[0]['start']= date("Y-m-d 20:00:00");

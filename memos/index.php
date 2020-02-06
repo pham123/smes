@@ -13,6 +13,9 @@ $pagetitle = $user->module;
 require('../views/template-header.php');
 require('../function/template.php');
 $oDB = new db();
+if(isset($_SESSION[_site_]['userlang'])){
+  $oDB->lang = ucfirst($_SESSION[_site_]['userlang']);
+}
 ?>
 
 <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>

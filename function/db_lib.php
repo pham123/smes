@@ -203,11 +203,13 @@ class Users extends db{
 	public $access;
 	public $module;
 	public $name;
+	public $lang;
 
 	public function set($id) {
 		$this->id = $id;
 		$user = $this->sl_one('Users','UsersId='.$id);
 		$this->name = $user['UsersName'];
+		$this->lang= $user['UsersLang'];
 		return $this;
 	}
 	public function acess() {

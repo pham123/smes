@@ -180,10 +180,10 @@
 
     <table>
     <tr>
-        <th rowspan='2'>Tên sản phẩm</th>
-        <th rowspan='2'>Mã sản phẩm</th>
-        <th colspan='3'>CA1</th>
-        <th colspan='3'>CA2</th>
+        <th rowspan='3'>Tên sản phẩm</th>
+        <th rowspan='3'>Mã sản phẩm</th>
+        <th colspan='2'>CA1</th>
+        <th colspan='2'>CA2</th>
     </tr>
     <tr>
         <th><?php echo $shiftarray[1]['start']?></th>

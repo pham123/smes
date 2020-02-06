@@ -130,6 +130,7 @@ $linkar =  array(
   array('#',$oDB->lang('Document',"Document"),$oDB->lang('DocumentEx'),'fa-folder-open'),
   array('../memos/',$oDB->lang('MemoSuggestion'),$oDB->lang('MemoSuggestion'),'fa-lightbulb'),
   array('../employees/',$oDB->lang('Employees'),$oDB->lang('EmployeesInformation'),'fa-calendar'),
+  array('../news/',$oDB->lang('News'),$oDB->lang('News'),'fa-news'),
 
 );
 

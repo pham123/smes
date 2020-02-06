@@ -5,14 +5,19 @@ date_default_timezone_set('Asia/Ho_Chi_Minh');
 require('../config.php');
 require('../function/db_lib.php');
 $oDB = new db();
+$user = new Users();
 
 if (!isset($_SESSION[_site_]['userid'])) {
   # code...
   header('Location:../login.php');
   exit();
+}else{
+  $user->set($_SESSION[_site_]['userid']);
 }
 if(isset($_SESSION[_site_]['userlang'])){
   $oDB->lang = ucfirst($_SESSION[_site_]['userlang']);
+}else{
+  $_SESSION[_site_]['userlang'] = $user->lang;
 }
 ?>
 <!DOCTYPE html>
@@ -120,7 +125,7 @@ if(isset($_SESSION[_site_]['userlang'])){
 
 $linkar =  array(
   // array('../Approval/','APPROVAL','Request everything!','fa-check-square'),
-  array('#',$oDB->lang('Productivity','Sản lượng'),$oDB->lang('Quantity'),'fa-pallet'),
+  array('../Productivity/',$oDB->lang('Productivity','Sản lượng'),$oDB->lang('Quantity'),'fa-pallet'),
   array('../print/',$oDB->lang('Print'),$oDB->lang('PrintLabel'),'fa-barcode'),
   array('../products/',$oDB->lang('Products'),$oDB->lang('ProductsInformation'),'fa-dolly'),
   array('../patrols',$oDB->lang('LinePatrol'),$oDB->lang('FactoryIssueReport'),'fa-camera'),

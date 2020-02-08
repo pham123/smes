@@ -18,9 +18,11 @@
     echo $page_css;
   }
   ?>
-  .ck-editor__editable {
-    min-height: 450px;
-  }
+  .cke_editable
+{
+    font-size: 13px;
+    line-height: 1.0;
+}
   </style>
 
 </head>

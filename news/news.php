@@ -67,10 +67,14 @@ if(isset($_SESSION[_site_]['userlang'])){
 
   <script src="../vendor/jquery/jquery.min.js"></script>
   <script src="../vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
-  <script src="//cdn.ckeditor.com/4.13.1/standard/ckeditor.js"></script>
+  <script src="../vendor/ckeditor/ckeditor.js"></script>
 
   <script>
-      CKEDITOR.replace('editor');
+    CKEDITOR.plugins.addExternal( 'lineheight', 'plugins/lineheight/', 'plugin.js' );
+    CKEDITOR.replace( 'editor', {
+      extraPlugins: 'lineheight',
+      line_height:"1px;1.1px;1.2px;1.3px;1.4px;1.5px"
+    });
 
   </script>
 

@@ -116,7 +116,7 @@ require('config.php');
         <!-- End of Topbar -->
 
         <!-- Begin Page Content -->
-        <div class="container-fluid">
+        <div class="container-fluid" style="height: 100vh;">
 
           <!-- 404 Error Text -->
           <div class="text-center">

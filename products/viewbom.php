@@ -27,7 +27,7 @@ $newDB->where("b.BomlistsId", $_GET['id']);
 $table_data = $newDB->get ("boms b", null, "p.ProductsNumber,p.ProductsName,p.ProductsSize,p.ProductsNet,p.ProductsGloss,p.ProductsMaterial,p.ProductsUnit,b.BomsId,b.BomsQty,b.BomsParentId,b.BomsPath,pro.ProcessesName,m.MakersName,c.ClassifiedMaterialsName,ma.MachinesName");
 $table_link = "editbom.php?id=";
 
-$heading_title = strtolower($table_data[0]['ProductsNumber']);
+$heading_title = 'BOM';
 $oDB = new db();
 
 ?>
@@ -53,6 +53,7 @@ $oDB = new db();
         <div class="row">
           <div class="col-md-12">
             <div class="table-responsive" style="max-width: 100%; over-flow: none;">
+            <h4><?php echo strtoupper($table_data[0]['ProductsNumber'])?></h4>
           <?php 
           // include('../views/template_table.php') 
           include('bom_table.php') 

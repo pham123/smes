@@ -142,7 +142,11 @@ class db {
 		//Lấy thông tin
 		public function lang($key,$value=Null) {
 			$ngongu = $this->lang;
-			
+			if (isset($_SESSION[_site_]['userlang'])) {
+				$ngongu = ucfirst($_SESSION[_site_]['userlang']);
+			}else{
+				$ngongu = 'En';
+			}
 			if ($value==Null) {
 				$value = implode(" ",preg_split('/(?=[A-Z])/', $key, -1, PREG_SPLIT_NO_EMPTY));
 			}
@@ -160,6 +164,9 @@ class db {
 			return $return;
 		}
 
+		// public function test_test($a){
+		// 	return $_SESSION[_site_]['userlang'];
+		// }
 		//
 		public function sl_id($table) {
 			$query = 'SELECT MAX('.$table.'Id) As '.$table.'Id FROM ' . _DB_PREFIX_ . $table . ' WHERE 1';

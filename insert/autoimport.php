@@ -1138,9 +1138,9 @@ $arr= array(
     array('MO94','Ty đẩy','4x250','Ea','','20')
 );
 
-$db = new db();
+// $db = new db();
 
-foreach ($arr as $key => $value) {
-    $sql = "INSERT INTO `products`(`ProductsName`, `ProductsNumber`, `ProductsEngName`,`ProductsUnit`, `ProductsStock`, `ProductsSafetyStk`, `ProductsLocation`, `ProductsDescription`, `ProductsOption`, `ModelsId`,`ProductsCategory`) VALUES (?,?,'NA',?,?,0,?,?,4,3,1)";
-    $db -> query($sql,$value[1],$value[0],$value[3],$value[5],$value[4],$value[4]);
-}
+// foreach ($arr as $key => $value) {
+//     $sql = "INSERT INTO `products`(`ProductsName`, `ProductsNumber`, `ProductsEngName`,`ProductsUnit`, `ProductsStock`, `ProductsSafetyStk`, `ProductsLocation`, `ProductsDescription`, `ProductsOption`, `ModelsId`,`ProductsCategory`) VALUES (?,?,'NA',?,?,0,?,?,4,3,1)";
+//     $db -> query($sql,$value[1],$value[0],$value[3],$value[5],$value[4],$value[4]);
+// }

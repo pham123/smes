@@ -504,10 +504,10 @@ $arr = array(
     array('News','Tin tức','News','뉴스','新闻')
 );
 
-$db = new db();
+// $db = new db();
 
-foreach ($arr as $key => $value) {
-$sql = "UPDATE `lang` SET `LangVi`=?,`LangEn`=?,`LangCn`=?,`LangKr`=? WHERE `LangName` =?";
-$db -> query($sql,$value[1],$value[2],$value[4],$value[3],$value[0]);
-}
+// foreach ($arr as $key => $value) {
+// $sql = "UPDATE `lang` SET `LangVi`=?,`LangEn`=?,`LangCn`=?,`LangKr`=? WHERE `LangName` =?";
+// $db -> query($sql,$value[1],$value[2],$value[4],$value[3],$value[0]);
+// }
 

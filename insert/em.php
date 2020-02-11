@@ -366,10 +366,10 @@ $arr= array(
     array('HL0654','NGUYỄN THỊ LỘC','8'),
 );
 
-$db = new db();
+// $db = new db();
 
-foreach ($arr as $key => $value) {
-    $sql = "INSERT INTO `employees`( `EmployeesName`, `EmployeesFirstName`, `EmployeesLastName`, `EmployeesCode`, `EmployeesPosition`, `EmployeesInformation`, `DivisionsId`, `TeamsId`, `SectionId`, `EmployeesStatus`,`EmployeesEmail`) VALUES (?, ?, ?,?, 1, 'NA', 1, 1, 1, 1,?)";
-    $db -> query($sql,$value[1],$value[1],$value[1],$value[0],$key);
+// foreach ($arr as $key => $value) {
+//     $sql = "INSERT INTO `employees`( `EmployeesName`, `EmployeesFirstName`, `EmployeesLastName`, `EmployeesCode`, `EmployeesPosition`, `EmployeesInformation`, `DivisionsId`, `TeamsId`, `SectionId`, `EmployeesStatus`,`EmployeesEmail`) VALUES (?, ?, ?,?, 1, 'NA', 1, 1, 1, 1,?)";
+//     $db -> query($sql,$value[1],$value[1],$value[1],$value[0],$key);
     
-}
+// }

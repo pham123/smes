@@ -1145,14 +1145,14 @@ array('MO94','Ejector pin','4x250','10','3'),
 
 $db = new db();
 
-foreach ($arr as $key => $value) {
-    $sql = "UPDATE `products` 
-    SET
-    `ProductsEngName`=?,
-    `ProductsSafetyStk`=?,
-    `ProductsMinimumStk` =?,
-    `ProductsDescription`=?
-    WHERE 
-    `ProductsNumber`=?";
-    $db -> query($sql,$value[1],$value[3],$value[4],$value[2],$value[0]);
-}
+// foreach ($arr as $key => $value) {
+//     $sql = "UPDATE `products` 
+//     SET
+//     `ProductsEngName`=?,
+//     `ProductsSafetyStk`=?,
+//     `ProductsMinimumStk` =?,
+//     `ProductsDescription`=?
+//     WHERE 
+//     `ProductsNumber`=?";
+//     $db -> query($sql,$value[1],$value[3],$value[4],$value[2],$value[0]);
+// }

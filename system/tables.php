@@ -1,5 +1,8 @@
  <?php
- $headerar = $oDB-> getcol($target);
+ $headerar = $oDB->getcol($target);
+ if($target=='Users'){
+  $headerar = array_diff($headerar, array("EmployeesId"));
+ }
  $text1 = '';
  $text2 = '';
  foreach ($headerar as $key => $value) {

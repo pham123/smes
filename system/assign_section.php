@@ -62,7 +62,7 @@ $employees = $newDB->get('employees');
             <h3>Section: <?php echo $section['SectionName']?></strong></h3>
           </div>
           <div class="form-group row">
-          <p class="mb-0">All users in section</p>
+          <p class="mb-0">All users in section(<?php echo count($c_empls)?>)</p>
           <select class="form-control">
             <?php 
             foreach ($c_empls as $key => $value) {

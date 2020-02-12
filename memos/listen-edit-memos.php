@@ -98,4 +98,6 @@ echo "</br>";
         }
         
         $oDB = Null;
-header('Location:EditMemos.php?id='.$id);
+// header('Location:EditMemos.php?id='.$id);
+// Memoslist.php
+header('Location:Memoslist.php');

@@ -63,7 +63,10 @@
                       }else{
                         if($value2 == 'UsersName' && $target == 'Users'){
                           echo "<td><a href='manage_user_module.php?uid=".$ketqua[$i]['UsersId']."'>".$ketqua[$i][$value2]."</a></td>";
-                        }else{
+                        }elseif($value2 == 'SectionName' && $target == 'Section'){
+                          echo "<td><a href='assign_section.php?sid=".$ketqua[$i]['SectionId']."'>".$ketqua[$i][$value2]."</a></td>";
+                        }
+                        else{
                           echo "<td>".$ketqua[$i][$value2]."</td>";
                         }
                       }

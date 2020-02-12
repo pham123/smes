@@ -17,6 +17,7 @@
   <script src="../vendor/datatables/dataTables.buttons.min.js"></script>
   <script src="../vendor/datatables/jszip.min.js"></script>
   <script src="../vendor/datatables/buttons.html5.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/select2@4.0.13/dist/js/select2.min.js"></script>
 
     <!-- Page level custom scripts -->
   <script src="../js/demo/datatables-demo.js"></script>

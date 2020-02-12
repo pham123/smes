@@ -93,7 +93,7 @@ $_SESSION[_site_]['enddate'] = (isset($_SESSION[_site_]['enddate'])) ? $_SESSION
           $MemosList = $oDB->fetchAll($sql);
           
         ?>
-        <div class="table-responsive">
+        <div class="table-responsive" style="font-size: 80%;">
         <?php
         $tablearr = explode(',',$table_header);
         echo "<table class='table table-bordered' id='dataTable' width='100%' cellspacing='0'>";
@@ -114,11 +114,11 @@ $_SESSION[_site_]['enddate'] = (isset($_SESSION[_site_]['enddate'])) ? $_SESSION
           // echo "<td>".$value['AreasName']."</td>";
           
           echo "<td>".$value['MemosLocation']."</td>";
-          echo "<td><a href='ViewMemos.php?id=".$value['MemosId']."'>".$value['MemosName']."</a></td>";
-          echo "<td style='width:25%;'>".$value['MemosIssue']."</td>";
+          echo "<td style='min-width: 100px'><a href='ViewMemos.php?id=".$value['MemosId']."'>".$value['MemosName']."</a></td>";
+          echo "<td style='min-width:180px;'>".$value['MemosIssue']."</td>";
           echo "<td><img src='image/small/img_".$value['MemosId'].".jpg' alt=''></td>";
           echo "<td><img src='image/small/imgafter_".$value['MemosId'].".jpg' alt=''></td>";
-          echo "<td style='width:20%;'>".$value['MemosEfficiency']."</td>";
+          echo "<td style='min-width:150px;'>".$value['MemosEfficiency']."</td>";
 
           switch ($value['MemosStatus']) {
             case '':
@@ -137,7 +137,7 @@ $_SESSION[_site_]['enddate'] = (isset($_SESSION[_site_]['enddate'])) ? $_SESSION
               echo "<td class='warning'>NA</td>";
               break;
           }
-          echo "<td>".$value['EmployeesName']." - ".$value['EmployeesCode']."</td>";
+          echo "<td style='min-width: 100px'>".$value['EmployeesName']." - ".$value['EmployeesCode']."</td>";
           if ($value['MemosPic']==$_SESSION[_site_]['userid']) {
             if ($value['MemosPicOption']==2) {
               echo "<td style='background-color:red;'><a href='EditMemosPic.php?id=".$value['MemosId']."'>".$value['UsersFullName']."</a></td>";

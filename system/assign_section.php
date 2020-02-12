@@ -10,25 +10,32 @@ $user = New Users();
 $user->set($_SESSION[_site_]['userid']);
 $user->module = basename(dirname(__FILE__));
 check($user->acess());
-$pagetitle = $user->module;
+$pagetitle =basename(dirname(__FILE__));
 require('../views/template-header.php');
 require('../function/template.php');
-
-$table_header  = 'BomsPartNo,BomsPartName,BomsSize,BomsNet,BomsGloss,BomsMaterial,BomsUnit,BomsQty,BomsProcess,BomsMaker,BomsClassifiedMaterial,BomsMachine';
-
-//using new db library
-$newDB = new MysqliDb(_DB_HOST_, _DB_USER_, _DB_PASS_,_DB_name_);
-$newDB->join("products p", "b.ProductsId=p.ProductsId", "LEFT");
-$newDB->join("processes pro", "b.ProcessesId=pro.ProcessesId", "LEFT");
-$newDB->join("makers m", "b.MakersId=m.MakersId", "LEFT");
-$newDB->join("classifiedmaterials c", "b.ClassifiedMaterialsId=c.ClassifiedMaterialsId", "LEFT");
-$newDB->join("machines ma", "b.MachinesId=ma.MachinesId", "LEFT");
-$newDB->where("b.BomlistsId", $_GET['id']);
-$table_data = $newDB->get ("boms b", null, "p.ProductsNumber,p.ProductsName,p.ProductsSize,p.ProductsNet,p.ProductsGloss,p.ProductsMaterial,p.ProductsUnit,b.BomsId,b.BomsQty,b.BomsParentId,b.BomsPath,pro.ProcessesName,m.MakersName,c.ClassifiedMaterialsName,ma.MachinesName");
-$table_link = "editbom.php?id=";
-
-$heading_title = 'BOM';
 $oDB = new db();
+$newDB = new MysqliDb(_DB_HOST_, _DB_USER_, _DB_PASS_,_DB_name_);
+
+$sid = $_GET['sid'];
+$newDB->where('SectionId', $sid);
+$section = $newDB->getOne('Section');
+
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+  $employees = $_POST['employees'];
+  foreach($employees as $k=>$e){
+    $newDB->where('EmployeesId', $e);
+    $newDB->update('employees',['SectionId' => intval($sid)]);
+  }
+  
+} else {
+  //echo 'NA';
+}
+$newDB->where('SectionId', $sid);
+$c_empls = $newDB->get('employees');
+
+$newDB->where('SectionId', null,'IS');
+$employees = $newDB->get('employees');
+
 
 ?>
 
@@ -50,17 +57,37 @@ $oDB = new db();
         <!-- Begin Page Content -->
         <div class="container-fluid">
 
-        <div class="row">
-          <div class="col-md-12">
-            <div class="table-responsive" style="max-width: 100%; over-flow: none;">
-            <h4><?php echo strtoupper($table_data[0]['ProductsNumber'])?></h4>
-          <?php 
-          // include('../views/template_table.php') 
-          include('bom_table.php') 
-          ?>
-            </div>
+        <form action="assign_section.php?sid=<?php echo $sid ?>" method="Post">
+          <div class="form-group row">
+            <h3>Section: <?php echo $section['SectionName']?></strong></h3>
           </div>
-        </div>
+          <div class="form-group row">
+          <p class="mb-0">All users in section</p>
+          <select class="form-control">
+            <?php 
+            foreach ($c_empls as $key => $value) {
+              echo "<option value='".$value['EmployeesId']."'>".$value['EmployeesCode'].'-'.$value['EmployeesName']."</option>";
+            }
+            ?>            
+          </select>
+          </div>
+          <div class="form-group row">
+            <p class="mb-0">Add employees to section</p>
+          <select id="employees_list" class="form-control" required name="employees[]" multiple="multiple">
+            <?php 
+            echo "<option value=''>select employees</option>";
+            foreach ($employees as $key => $value) {
+              echo "<option value='".$value['EmployeesId']."'>".$value['EmployeesCode'].'-'.$value['EmployeesName']."</option>";
+            }
+            ?>            
+          </select>
+          </div>
+          <div class="form-group row">
+            <button type="submit" class='btn btn-success form-control'>Submit</button>
+          </div>
+        </form>
+
+
         </div>
         <!-- /.container-fluid -->
 
@@ -111,10 +138,11 @@ $oDB = new db();
 
   <script>
     $(function () {
-      $('selectpicker').selectpicker();
+      $('#employees_list').select2();
     });
   </script>
 
 </body>
 
 </html>
+

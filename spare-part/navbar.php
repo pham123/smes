@@ -54,7 +54,7 @@
               </div>
             </li> -->
 
-            <span id="country_selector"></span>
+            <!-- <span id="country_selector"></span> -->
             <!-- Nav Item - User Information -->
             <li class="nav-item dropdown no-arrow" style="margin-left: 40px;">
               <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">

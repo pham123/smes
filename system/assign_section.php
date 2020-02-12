@@ -17,16 +17,21 @@ $oDB = new db();
 $newDB = new MysqliDb(_DB_HOST_, _DB_USER_, _DB_PASS_,_DB_name_);
 
 $sid = $_GET['sid'];
+$newDB->where('SectionId', $sid);
+$section = $newDB->getOne('Section');
+
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
   $employees = $_POST['employees'];
   foreach($employees as $k=>$e){
     $newDB->where('EmployeesId', $e);
-    $newDB->update('employees',['SectionId' => $sid]);
+    $newDB->update('employees',['SectionId' => intval($sid)]);
   }
- 
+  
 } else {
   //echo 'NA';
 }
+$newDB->where('SectionId', $sid);
+$c_empls = $newDB->get('employees');
 
 $newDB->where('SectionId', null,'IS');
 $employees = $newDB->get('employees');
@@ -54,14 +59,25 @@ $employees = $newDB->get('employees');
 
         <form action="assign_section.php?sid=<?php echo $sid ?>" method="Post">
           <div class="form-group row">
-            <p class="mb-0">All users not in any section</p> 
+            <h3>Section: <?php echo $section['SectionName']?></strong></h3>
           </div>
           <div class="form-group row">
+          <p class="mb-0">All users in section</p>
+          <select class="form-control">
+            <?php 
+            foreach ($c_empls as $key => $value) {
+              echo "<option value='".$value['EmployeesId']."'>".$value['EmployeesCode'].'-'.$value['EmployeesName']."</option>";
+            }
+            ?>            
+          </select>
+          </div>
+          <div class="form-group row">
+            <p class="mb-0">Add employees to section</p>
           <select id="employees_list" class="form-control" required name="employees[]" multiple="multiple">
             <?php 
             echo "<option value=''>select employees</option>";
             foreach ($employees as $key => $value) {
-              echo "<option value='".$value['EmployeesId']."'>".$value['EmployeesName']."</option>";
+              echo "<option value='".$value['EmployeesId']."'>".$value['EmployeesCode'].'-'.$value['EmployeesName']."</option>";
             }
             ?>            
           </select>

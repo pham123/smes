@@ -23,12 +23,11 @@
 <?php
 
 $arr = array(
-  array('#', 'fas fa-plus-square',$oDB->lang('AddPlan')),
-  array('fi.php', 'fas fa-plus-square',$oDB->lang('FiReport')),
-  array('daily.php', 'fas fa-plus-square',$oDB->lang('FiDailyReport'))
-
+  array('#', 'fas fa-plus-square',$oDB->lang('AddDocument')),
+  array('#', 'fas fa-plus-square',$oDB->lang('DocumentType')),
+  array('#', 'fas fa-plus-square',$oDB->lang('DocumentList'))
 );
-echo nav_item($oDB->lang('Plan'),$arr);
+echo nav_item($oDB->lang('Purchase'),$arr);
 ?>
 
       <!-- Divider -->

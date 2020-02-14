@@ -133,10 +133,10 @@ $linkar =  array(
   // array('#',$oDB->lang('QulityList'),'Push QA issues alert','fa-list-ol'),
   array('../Purchase',$oDB->lang('Purchase'),$oDB->lang('Purchase'),'fa-cart-plus'),
   array('../spare-part',$oDB->lang('SparePart'),$oDB->lang('ControlSparePart'),'fa-boxes'),
-  array('#',$oDB->lang('Document',"Document"),$oDB->lang('DocumentEx'),'fa-folder-open'),
+  array('../document/',$oDB->lang('Document',"Document"),$oDB->lang('DocumentEx'),'fa-folder-open'),
   array('../memos/',$oDB->lang('MemoSuggestion'),$oDB->lang('MemoSuggestion'),'fa-lightbulb'),
   array('../employees/',$oDB->lang('Employees'),$oDB->lang('EmployeesInformation'),'fa-calendar'),
-  array('../news/',$oDB->lang('News'),$oDB->lang('News'),'fa-news'),
+  array('../news/',$oDB->lang('News'),$oDB->lang('News'),'fa-newspaper')
   // 
 
 );

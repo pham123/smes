@@ -39,84 +39,7 @@ if(isset($_SESSION[_site_]['userlang'])){
 
         <!-- Begin Page Content -->
         <div class="container-fluid">
-          <div style='text-align:center;'>
-            <div class="row">
-              <div class="col-12">
-                <div class="card" id="proplan">
-                  <h5 class="card-header">Production plan</h5>
-                  <div class="card-body">
-                    <form action="listen-proplan.php" method="post">
-                      <div class="form-row">
-                        <div class="form-group col-md-6">
-                          <label>Trace Station</label>
-                          <select name="TraceStationId" class="form-control" v-model="TraceStationId" @change="loadPlans()" required>
-                            <?php 
-                            $s = $oDB->sl_all('tracestation',1);
-                            echo "<option value=''>trace station</option>";
-                            foreach ($s as $key => $value) {
-                              echo "<option value='".$value['TraceStationId']."'>".$value['TraceStationName']."</option>";
-                            }
-                            ?>
-                          </select>
-                        </div>
-                        <div class="form-group col-md-6">
-                          <label>Date</label>
-                          <input type="date" class="form-control" required v-model="ProPlanDate" name="ProPlanDate" @change="loadPlans()">
-                        </div>
-                      </div>
-                      <div class="form-row" v-for="(item, index) in plans">
-                        <div class="form-group col-md-1">
-                          <label v-if="index==0" for="">#</label>
-                          <span class="d-block">{{index+1}}</span>
-                        </div>
-                        <div class="form-group" style="flex-grow: 1;">
-                          <label v-if="index==0">Sản phẩm</label>
-                          <v-select 
-                          placeholder="chọn sản phẩm"
-                          :options="products_data" 
-                          :get-option-label="option => option.ProductsName+'/'+option.ProductsNumber"
-                          :reduce="product => product.ProductsId" 
-                          class="form-control"
-                          name="ProductsId[]"
-                          required
-                          v-model="item.ProductsId">
-                            <template #search="{attributes, events}">
-                            <input
-                              class="vs__search"
-                              :required="!item.ProductsId"
-                              v-bind="attributes"
-                              v-on="events"
-                            />
-                          </template>
-                          </v-select>
-                        </div>
-                        <input type="hidden" name="ProductsId[]" required :value="item.ProductsId">
-                        <?php
-                          foreach($shifts as $key => $sh)
-                          {
-                        ?>
-                        <div class="form-group col-md-2">
-                          <label v-if="index==0" style="font-size: 14px;"><?php echo $sh['ShiftName'].'('.date('H:i',strtotime($sh['ShiftStart'])).'-'.date('H:i',strtotime($sh['ShiftEnd'])).')'?></label>
-                          <input type="number" required name="shift_<?php echo $sh['ShiftId']?>[]" class="form-control" placeholder="SL <?php echo $sh['ShiftInformation'] ?>" v-model="item.<?php echo 'shift_'.$sh['ShiftId']?>">
-                        </div>
-                        <?php
-                          }
-                        ?>
-                        <div class="form-group col-md-1">
-                          <label v-if="index==0" style="font-size: 14px;">Remove</label>
-                          <a href="#" @click="removeItem(index)" class="d-block"><i style="margin-top: 5px;" class="text-danger fas fa-times"></i></a>
-                        </div>
-                      </div>
-                      <small class="d-block my-3"><a href="#" class="text-primary" @click="addNewItem()"><i class="fas fa-plus"></i> Add new product</a></small>
-                      <div class="">
-                        <input class="btn btn-sm btn-primary float-right" type="submit" value="Save" />
-                      </div>
-                    </form>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
+
         </div>
         <!-- /.container-fluid -->
 
@@ -171,70 +94,7 @@ if(isset($_SESSION[_site_]['userlang'])){
   <script src="../js/vue-select.js"></script>
   <link rel="stylesheet" href="../css/vue-select.css">
 
-  <script>
-    $(function () {
-      Vue.component('v-select', VueSelect.VueSelect);
-      new Vue({
-        el: '#proplan',
-        data: {
-          ProPlanId: '',
-          TraceStationId: '',
-          ProPlanDate:'',
-          plans:[],
-          products_data: [],
-          shifts_data: []
-        },
-        methods: {
-          addNewItem(){
-            if(this.TraceStationId=='' || this.ProPlanDate==''){
-              alert('Please select station and date');
-              return;
-            }
-            let plan = {ProductsId: null};
-            this.shifts_data.forEach((value,key) => {
-              let plan_shift_key = 'shift_'+value['ShiftId'];
-              plan[plan_shift_key] = 0;
-            })
-            this.plans.push(plan);
-          },
-          removeLastItem(){
-            if(this.plans.length == 0)
-            {
-              return;
-            }
-            this.plans.splice(-1,1);
-          },
-          removeItem(index){
-            if(this.plans.length == 0)
-            {
-              return;
-            }
-            this.plans.splice(index,1);
-          },
-          loadPlans(){
-            if(this.TraceStationId && this.ProPlanDate){
-              axios.get('/smes/productivity/loadplanajax.php?tracestationid='+this.TraceStationId+'&date='+this.ProPlanDate).then(({data}) => {
-                console.log(data);
-                this.plans = data['plans'];
-              }).catch(() => {
-                console.log('error');
-              });
-            }else{
-              console.log('station or date not select');
-            }
-          }
-        },
-        created: function(){
-          axios.get('/smes/productivity/proplanajax.php').then(({data}) => {
-            this.products_data = data['products_data'];
-            this.shifts_data = data['shifts_data'];
-          }).catch(() => {
-            console.log('error');
-          });
-        }
-    });
-    })
-  </script>
+
 
 </body>
 

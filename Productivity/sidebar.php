@@ -25,6 +25,7 @@
 $arr = array(
   array('#', 'fas fa-plus-square',$oDB->lang('AddPlan')),
   array('fi.php', 'fas fa-plus-square',$oDB->lang('FiReport')),
+  array('daily.php', 'fas fa-plus-square',$oDB->lang('FiDailyReport'))
 
 );
 echo nav_item($oDB->lang('Plan'),$arr);

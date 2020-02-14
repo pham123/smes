@@ -75,6 +75,7 @@ $stationid = 1;
             }
             # kiểm tra code có tồn tại trong hệ thống chưa?
             $label = $oDB->query('SELECT * FROM LabelList WHERE LabelListValue = ?', $code)->fetchArray();
+            $_SESSION['ProductsId'] = $label['ProductsId'];
             if (isset($label['LabelListId'])) {
                 //kiem tra 
                 i_func('station');
@@ -106,7 +107,7 @@ $stationid = 1;
 
             if($_POST['rcode']==$no){
 
-                $oDB->query("INSERT INTO LabelHistory (`TraceStationId`,`LabelHistoryQuantityOk`,`LabelHistoryLabelValue`) VALUES (?,?,?)",$stationid,$quantity,$rcode);
+                $oDB->query("INSERT INTO LabelHistory (`TraceStationId`,`LabelHistoryQuantityOk`,`LabelHistoryLabelValue`,`ProductsId`) VALUES (?,?,?,?)",$stationid,$quantity,$rcode,$_SESSION['ProductsId']);
                 $_SESSION['message'] = "<h1 style='background-color:green;'>Thêm thành công mã tem ".$rcode." số lượng ".$quantity."</h1>";
                 header('Location:?');
 

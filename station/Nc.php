@@ -74,6 +74,7 @@ $prestation = 1;
             # kiểm tra code có tồn tại trong hệ thống chưa?
             $label = $oDB->query('SELECT * FROM LabelList WHERE LabelListValue = ?', $code)->fetchArray();
             if (isset($label['LabelListId'])) {
+                $_SESSION['ProductsId'] = $label['ProductsId'];
                 i_func('station');
                 $LabelPattern = checkpattern($stationid,$label['ProductsId'],$code);
                 //Lấy về thông tin 
@@ -124,7 +125,7 @@ $prestation = 1;
                     header('Location:?');
                     exit();
                 }
-                $oDB->query("INSERT INTO LabelHistory (`TraceStationId`,`LabelHistoryQuantityOk`,`LabelHistoryQuantityNg`,`LabelHistoryLabelValue`) VALUES (?,?,?,?)",$stationid,$quantity,$ngqty,$rcode);
+                $oDB->query("INSERT INTO LabelHistory (`TraceStationId`,`LabelHistoryQuantityOk`,`LabelHistoryQuantityNg`,`LabelHistoryLabelValue`,`ProductsId`) VALUES (?,?,?,?,?)",$stationid,$quantity,$ngqty,$rcode,$_SESSION['ProductsId']);
                 $_SESSION['message'] = "<h1 style='background-color:green;'>Thêm thành công mã tem ".$rcode." số lượng ".$quantity."</h1>";
                 if (isset($_SESSION['Uploadlist'])) {
                     $key = count($_SESSION['Uploadlist']);

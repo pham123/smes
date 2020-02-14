@@ -141,7 +141,7 @@ $prestation = 3;
                 $mothercodeinfo['LabelListValue'].' hợp lệ';
                 # Chèn thông tin tem vào list và history
                 $oDB->query("INSERT INTO LabelList (`ProductsId`,`LabelListValue`,`LabelListMotherId`) VALUES (?,?,?)",$mothercodeinfo['ProductsId'],$mcode,$mothercodeinfo['LabelListId']);
-                $oDB->query("INSERT INTO LabelHistory (`TraceStationId`,`LabelHistoryQuantityOk`,`LabelHistoryLabelValue`) VALUES (?,?,?)",$stationid,$quantity,$mcode);
+                $oDB->query("INSERT INTO LabelHistory (`TraceStationId`,`LabelHistoryQuantityOk`,`LabelHistoryLabelValue`,`ProductsId`) VALUES (?,?,?,?)",$stationid,$quantity,$mcode,$mothercodeinfo['ProductsId']);
                 if (isset($_SESSION['Uploadlist'])) {
                     $key = count($_SESSION['Uploadlist']);
                     if ($key>20) {

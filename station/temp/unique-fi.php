@@ -67,7 +67,7 @@
             # kiem tra mã sản phẩm
             $Productsnumber = substr($code, 0, 11);
             $product = $oDB->query('SELECT * FROM Products WHERE ProductsNumber = ?', $Productsnumber)->fetchArray();
-
+            // $_SESSION['ProductsId'] = $product['ProductsId'];
             if (isset($product['ProductsId'])) {
                 # kiểm tra thông tin tem có hợp lệ hay không
                 i_func('station');
@@ -113,6 +113,7 @@
             $Productsnumber = substr($mcode, 0, 11);
             $product = $oDB->query('SELECT * FROM Products WHERE ProductsNumber = ?', $Productsnumber)->fetchArray();
 
+            // $_SESSION['ProductsId'] = $product['ProductsId'];
             #kiểm tra mother code có hợp lệ hay không
             $mothercodeinfo = $oDB->query('SELECT * FROM LabelList WHERE LabelListValue = ?', $mothercode)->fetchArray();
 
@@ -161,7 +162,7 @@
 
                 # Chèn thông tin tem vào list và history
                 $oDB->query("INSERT INTO LabelList (`ProductsId`,`LabelListValue`,`LabelListMotherId`) VALUES (?,?,?)",$product['ProductsId'],$mcode,$mothercodeinfo['LabelListId']);
-                $oDB->query("INSERT INTO LabelHistory (`TraceStationId`,`LabelHistoryQuantityOk`,`LabelHistoryLabelValue`) VALUES (?,?,?)",$stationid,$quantity,$mcode);
+                $oDB->query("INSERT INTO LabelHistory (`TraceStationId`,`LabelHistoryQuantityOk`,`LabelHistoryLabelValue`,`ProductsId`) VALUES (?,?,?,?)",$stationid,$quantity,$mcode,$product['ProductsId']);
 
                 if (isset($_SESSION['Uploadlist'])) {
                     $key = count($_SESSION['Uploadlist']);

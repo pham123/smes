@@ -10,33 +10,20 @@ $user = New Users();
 $user->set($_SESSION[_site_]['userid']);
 $user->module = basename(dirname(__FILE__));
 check($user->acess());
-$pagetitle =basename(dirname(__FILE__));
+$pagetitle = $user->module;
+$page_heading = 'Import history';
 require('../views/template-header.php');
 require('../function/template.php');
 $oDB = new db();
+
+$table_header  = 'PurchasesNo,PurchasesDate,RequestSection,ReceiveSection,Urgent,Print';
+//using new db library
 $newDB = new MysqliDb(_DB_HOST_, _DB_USER_, _DB_PASS_,_DB_name_);
-
-$sid = $_GET['sid'];
-$newDB->where('SectionId', $sid);
-$section = $newDB->getOne('Section');
-
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-  $employees = $_POST['employees'];
-  foreach($employees as $k=>$e){
-    $newDB->where('EmployeesId', $e);
-    $newDB->update('employees',['SectionId' => intval($sid)]);
-  }
-  
-} else {
-  //echo 'NA';
-}
-$newDB->where('SectionId', $sid);
-$c_empls = $newDB->get('employees');
-
-$newDB->where('SectionId', null,'IS');
-$employees = $newDB->get('employees');
-
-
+$newDB->join("Section s", "s.SectionId=p.RequestSectionId", "LEFT");
+$newDB->where('PurchasesStatus', 1);
+$newDB->where('UsersId', $_SESSION[_site_]['userid']);
+$newDB->orderBy('p.PurchasesDate', 'DESC');
+$table_data = $newDB->get ("Purchases p", null, "p.PurchasesNo,p.PurchasesDate,s.SectionName as RequestSection, CONCAT('Purchase','') as ReceiveSection, p.IsUrgent as Urgent,CONCAT('<a href=\"print-purchase.php&quest;id=',p.PurchasesId,'\" target=\"_blank\" >','<i class=\"fas fa-print\"></i>', '</a>') as Print");
 ?>
 
 <body id="page-top">
@@ -50,44 +37,17 @@ $employees = $newDB->get('employees');
 
       <!-- Main Content -->
       <div id="content">
-
-        <!-- Topbar -->
-        <?php require('navbar.php') ?>
-
-        <!-- Begin Page Content -->
-        <div class="container-fluid">
-
-        <form action="assign_section.php?sid=<?php echo $sid ?>" method="Post">
-          <div class="form-group row">
-            <h3>Section: <?php echo $section['SectionName']?></strong></h3>
-          </div>
-          <div class="form-group row">
-          <p class="mb-0">All users in section(<?php echo count($c_empls)?>)</p>
-          <select class="form-control">
-            <?php 
-            foreach ($c_empls as $key => $value) {
-              echo "<option value='".$value['EmployeesId']."'>".$value['EmployeesCode'].'-'.$value['EmployeesName']."</option>";
-            }
-            ?>            
-          </select>
-          </div>
-          <div class="form-group row">
-            <p class="mb-0">Add employees to section</p>
-          <select id="employees_list" class="form-control" required name="employees[]" multiple="multiple">
-            <?php 
-            echo "<option value=''>select employees</option>";
-            foreach ($employees as $key => $value) {
-              echo "<option value='".$value['EmployeesId']."'>".$value['EmployeesCode'].'-'.$value['EmployeesName']."</option>";
-            }
-            ?>            
-          </select>
-          </div>
-          <div class="form-group row">
-            <button type="submit" class='btn btn-success form-control'>Submit</button>
-          </div>
-        </form>
-
-
+          
+          <!-- Topbar -->
+          <?php require('navbar.php') ?>
+          
+          <!-- Begin Page Content -->
+          <div class="container-fluid">
+              
+            <div class="table-responsive">
+                <a href="purchaserequest.php" class="text-primary">Add request</a>
+                <?php include('../views/template_table.php') ?>
+            </div> 
         </div>
         <!-- /.container-fluid -->
 
@@ -134,15 +94,29 @@ $employees = $newDB->get('employees');
     </div>
   </div>
 
-  <?php require('../views/template-footer.php'); ?>
+  <?php require('../views/template-footer-order.php'); ?>
 
   <script>
     $(function () {
-      $('#employees_list').select2();
+      $('selectpicker').selectpicker();
+      $('#dataTable').DataTable( {
+          dom: "<'row'<'col-md-10 pull-left'f><'col-md-2 pull-right'B>>" +
+                "<'row'<'col-sm-12'tr>>" +
+                "<'row'<'col-sm-5'i><'col-sm-7'p>>",
+          buttons: [
+              // 'copy', 'csv', 'excel', 'pdf', 'print'
+              'excel','copy'
+          ],
+          language: {
+              search: "",
+              searchPlaceholder: "Search..."
+          },
+          order: [[0, "desc"]]
+          //"paging": false
+      } );
     });
   </script>
 
 </body>
 
 </html>
-

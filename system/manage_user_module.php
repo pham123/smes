@@ -18,6 +18,11 @@ $newDB = new MysqliDb(_DB_HOST_, _DB_USER_, _DB_PASS_,_DB_name_);
 
 $uid = $_GET['uid'];
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+  //update employee
+  $newDB->where('UsersId', $uid);
+  $newDB->update('users', ['EmployeesId' => $_POST['EmployeesId']]);
+
+  //update role
   $mids = $_POST['mids'];
   $mvalues = $_POST['mvalues'];
   foreach($mids as $key => $mid){
@@ -52,6 +57,8 @@ $user= $newDB->where('UsersId', $uid)->getOne('Users');
 $modules = $newDB->get('modules',null,'ModulesId,ModulesName');
 $access = $newDB->get('access', null, 'ModulesId,UsersId');
 
+$employees = $newDB->get('employees');
+
 
 ?>
 
@@ -72,9 +79,23 @@ $access = $newDB->get('access', null, 'ModulesId,UsersId');
 
         <!-- Begin Page Content -->
         <div class="container-fluid">
-
         <form action="manage_user_module.php?uid=<?php echo $uid ?>" method="Post">
           <div class="form-group row">
+            Employee:&nbsp;
+            <select required class="form-control" name="EmployeesId">
+            <?php
+            echo "<option value=''>select employee</option>";
+            foreach ($employees as $key => $value) {
+              if($user['EmployeesId'] == $value['EmployeesId']){
+                echo "<option selected value='".$value['EmployeesId']."'>".$value['EmployeesCode'].'-'.$value['EmployeesName']."</option>";
+              }else{
+                echo "<option value='".$value['EmployeesId']."'>".$value['EmployeesCode'].'-'.$value['EmployeesName']."</option>";
+              }
+            }
+            ?>            
+            </select>
+          </div>
+        <div class="form-group row">
             <p class="mb-0">Config module for <strong><?php echo $user['UsersName'] ?></strong></p>  
           <table class="table table-sm table-striped table-bordered">
               <tr class="bg-secondary text-white">

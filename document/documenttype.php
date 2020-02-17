@@ -4,7 +4,7 @@ ob_start();
 date_default_timezone_set('Asia/Ho_Chi_Minh');
 require('../config.php');
 require('../function/db_lib.php');
-require('../function/MysqliDb.php');
+require('../function/sdb.php');
 require('../function/function.php');
 $user = New Users();
 $user->set($_SESSION[_site_]['userid']);
@@ -15,6 +15,7 @@ $page_css='.vs__dropdown-toggle {border: 0px !important;margin-top: -4px;} .vs__
 require('../views/template-header.php');
 require('../function/template.php');
 $oDB = new db();
+$sDB = new sdb();
 if(isset($_SESSION[_site_]['userlang'])){
   $oDB->lang = ucfirst($_SESSION[_site_]['userlang']);
 }
@@ -36,6 +37,77 @@ if(isset($_SESSION[_site_]['userlang'])){
         <?php require('navbar.php') ?>
 
         <!-- Begin Page Content -->
+        <!-- Begin Page Content -->
+        <?php
+// echo $user->acess();
+if ($user->acess()==1||$user->acess()==2) {
+  # code...
+?>
+        <div>
+          <form action="" method="post">
+            <span>Add new document type: </span>
+            <input type="text" name='DocumentTypeName'>
+            <button type="submit">Submit</button>
+          </form>
+          <?php
+            if (isset($_POST['DocumentTypeName'])&&$_POST['DocumentTypeName']!='') {
+              $sql = "INSERT INTO DocumentType (`DocumentTypeName`,`DocumentTypeDescription`,`DocumentTypeOption`) VALUES (?,?,1)";
+              $sDB->query($sql,$_POST['DocumentTypeName'],$_POST['DocumentTypeName']);
+              header('location:documenttype.php');
+            }
+          ?>
+        </div>
+<?php } ?>
+        </br>
+
+        <div>
+        <?php
+        $sql = "SELECT * FROM DocumentType";
+        $result = $sDB->query($sql)->fetchAll();
+        // echo "<pre>";
+        // var_dump($result);
+        // echo "</pre>";
+
+        ?>
+        <table class='table table-bordered' id='dataTable' width='100%' cellspacing='0'>
+        <thead>
+            <tr>
+              <th>Id</th>
+              <th>Type Name</th>
+              <th>Document Code</th>
+              <th>Document Name Vi</th>
+              <th>Document Description</th>
+              <th>Edit</th>
+            </tr>
+        </thead>
+
+        <tbody>
+        <?php
+        foreach ($result as $key => $value) {
+          # code...
+
+        ?>
+            <tr>
+              <td><?php echo $value['DocumentTypeId'] ?></td>
+              <td><?php echo $value['DocumentTypeName'] ?></td>
+              <td><?php echo $value['DocumentTypeCode'] ?></td>
+              <td><?php echo $value['DocumentTypeNameVi'] ?></td>
+              <td><?php echo $value['DocumentTypeDescription'] ?></td>
+              <td>
+              <?php
+              if ($user->acess()==1||$user->acess()==2) {
+                echo "<a href='editdocumenttype.php?id=".$value['DocumentTypeId']."'>Edit</a>";
+              }
+              ?>
+              
+              </td>
+            </tr>
+        </tbody>
+        <?php
+                }
+        ?>
+        </table>
+        </div>
   
 
       </div>

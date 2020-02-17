@@ -4,7 +4,7 @@ ob_start();
 date_default_timezone_set('Asia/Ho_Chi_Minh');
 require('../config.php');
 require('../function/db_lib.php');
-require('../function/MysqliDb.php');
+require('../function/sdb.php');
 require('../function/function.php');
 $user = New Users();
 $user->set($_SESSION[_site_]['userid']);
@@ -15,8 +15,15 @@ $page_css='.vs__dropdown-toggle {border: 0px !important;margin-top: -4px;} .vs__
 require('../views/template-header.php');
 require('../function/template.php');
 $oDB = new db();
+$sDB = new sdb();
 if(isset($_SESSION[_site_]['userlang'])){
   $oDB->lang = ucfirst($_SESSION[_site_]['userlang']);
+}
+if (isset($_GET['id'])) {
+  # code...
+}else{
+  header('Location:index.php');
+  exit();
 }
 ?>
 
@@ -36,6 +43,56 @@ if(isset($_SESSION[_site_]['userlang'])){
         <?php require('navbar.php') ?>
 
         <!-- Begin Page Content -->
+
+        <div>
+        <?php
+        $sql = "SELECT * FROM DocumentType where DocumentTypeId=?";
+        $result = $sDB->query($sql,safe($_GET['id']))->fetchArray();
+        // echo "<pre>";
+        // var_dump($result);
+        // echo "</pre>";
+
+        ?>
+        <form action="listeneditdocumenttype.php" method="post">
+        <table class='table table-bordered' id='dataTable' width='100%' cellspacing='0'>
+        <thead>
+            <tr>
+              <th>Id</th>
+              <th>Type Name</th>
+              <th>Document Type Description</th>
+              <th>Name Vi</th>
+              <th>Document Code</th>
+              <th>Edit</th>
+            </tr>
+        </thead>
+
+        <tbody>
+        
+
+            <tr>
+              <td><?php echo $result['DocumentTypeId'] ?>
+              <input type="hidden" name="DocumentTypeId" value='<?php echo $result['DocumentTypeId'] ?>'>
+              </td>
+              <td>
+              <input type="text" class='form-control' name="DocumentTypeName" id="" value='<?php echo $result['DocumentTypeName'] ?>'>
+              </td>
+              <td>
+              <input type="text"  class='form-control' name="DocumentTypeDescription" id="" value='<?php echo $result['DocumentTypeDescription'] ?>'>
+              </td>
+              <td>
+              <input type="text"  class='form-control' name="DocumentTypeNameVi" id="" value='<?php echo $result['DocumentTypeNameVi'] ?>'>
+              </td>
+              <td>
+              <input type="text"  class='form-control' name="DocumentTypeCode" id="" value='<?php echo $result['DocumentTypeCode'] ?>'>
+              </td>
+
+              <td><button type="submit">Update</button></td>
+            </tr>
+        
+        </tbody>
+        </table>
+        </form>
+        </div>
   
 
       </div>

@@ -75,14 +75,7 @@ $tracestations = $newDB->get('tracestation');
               </div>
               <label style="font-size: 14px;" class="col-sm-2 col-form-label"><strong>Received Dept/</strong><em>Bp nhận:</em></label>
               <div class="col-sm-2">
-                <select class="form-control" required v-model="ReceiveSectionId" name="ReceiveSectionId">
-                  <option value="">select</option>
-                  <?php 
-                  foreach ($sections as $key => $value) {
-                    echo "<option value='".$value['SectionId']."'>".$value['SectionName']."</option>";
-                  }
-                  ?>            
-                </select>
+                <p style="margin-top: .5em;">Purchase</p>
               </div>
               <label style="font-size: 14px;" class="col-sm-2 col-form-label"><strong>Urgent/</strong><em>Khẩn cấp:</em></label>
               <div class="col-sm-2">
@@ -148,14 +141,14 @@ $tracestations = $newDB->get('tracestation');
                     <td>{{productSelected(item).ProductsName}}</td>
                     <td>{{productSelected(item).ProductsEngName}}</td>
                     <td><img v-if="item.ProductsId" :src="'../products/image/small/'+item.ProductsId+'.jpg'" style="max-width: 30px;"></td>
-                    <td><input type="text" style="width: 100px;" placeholder="ma nsx" v-model="item.ManufacturerCode" name="ManufacturerCode[]"></td>
+                    <td>{{productSelected(item).ProductsManufacturerCode}}</td>
                     <td>{{productSelected(item).ProductsSize}}</td>
                     <td>{{productSelected(item).ProductsColor}}</td>
                     <td>{{productSelected(item).ProductsMaterial}}</td>
-                    <td><input type="text" style="width: 100px;" placeholder="manufacturer" v-model="item.ManufacturerName" name="ManufacturerName[]"></td>
+                    <td>{{productSelected(item).ProductsManufacturerName}}</td>
                     <td><input type="number" v-model="item.PurchasesQty" style="width:60px;" name="PurchasesQty[]"></td>
                     <td>{{productSelected(item).ProductsStock}}</td>
-                    <td>{{productSelected(item).ProductsAvgUsing}}</td>
+                    <td><input type="number" v-model="item.PurchasesAverageUsing" name="PurchasesAverageUsing[]" style="width: 60px;"></td>
                     <td>{{productSelected(item).ProductsUnit}}</td>
                     <td><input type="date" v-model="item.PurchasesEta" name="PurchasesEta[]"></td>
                     <td><input type="text" v-model="item.PurchasesRemark" name="PurchasesRemark[]"></td>
@@ -249,7 +242,6 @@ $tracestations = $newDB->get('tracestation');
         data: {
           PurchasesId: null,
           RequestSectionId: '',
-          ReceiveSectionId: '',
           TraceStationId: '',
           IsUrgent: '0',
           PurchasesDate: null,
@@ -258,11 +250,10 @@ $tracestations = $newDB->get('tracestation');
           PurchasesStatus: 0,
           purchaseitems:[{
             ProductsId:'',
-            ManufacturerCode:'',
-            ManufacturerName:'',
             PurchasesQty:'',
             PurchasesEta:'',
-            PurchasesRemark:''
+            PurchasesRemark:'',
+            PurchasesAverageUsing: 0
           }],
           products_data: []
         },
@@ -276,6 +267,8 @@ $tracestations = $newDB->get('tracestation');
                 ProductsEngName: '',
                 ProductsSize: '',
                 ProductsMaterial: '',
+                ProductsManufacturerCode: '',
+                ProductsManufacturerName: '',
                 ProductsUnit: '',
                 ProductsStock: ''
               };
@@ -285,11 +278,10 @@ $tracestations = $newDB->get('tracestation');
           addNewItem(){
             this.purchaseitems.push({
               ProductsId:'',
-              Manufacturercode:'',
-              ManufacturerName:'',
               PurchasesQty:'',
               PurchasesEta:'',
-              PurchasesRemark:''
+              PurchasesRemark:'',
+              PurchasesAverageUsing: 0
             });
           },
           removeLastItem(){
@@ -324,7 +316,6 @@ $tracestations = $newDB->get('tracestation');
             this.PurchasesId = data['PurchasesId'];
             this.RequestSectionId = data['RequestSectionId'];
             this.TraceStationId = data['TraceStationId'];
-            this.ReceiveSectionId = data['ReceiveSectionId'];
             this.IsUrgent = data['IsUrgent']+'';
             this.PurchasesDate = data['PurchasesDate'];
             this.PurchasesNo = data['PurchasesNo'];

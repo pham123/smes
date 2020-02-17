@@ -31,6 +31,8 @@ if($n_submit_purchase){
     $purchaseitems = $newDB->get('purchaseitems');
     $arr['purchaseitems'] = $purchaseitems;
 }else{
+    $newDB->where('PurchasesNo', 'PR'.date('ymd').'-%', 'like');
+    $c = count($newDB->get('purchases'));
     $purchases_data = [
         'UsersId' => $_SESSION[_site_]['userid'],
         'RequestSectionId' => null,
@@ -38,7 +40,7 @@ if($n_submit_purchase){
         'TraceStationId' => null,
         'IsUrgent' => 0,
         'PurchasesDate' => null,
-        'PurchasesNo' => '',
+        'PurchasesNo' => 'PR'.date('ymd').'-'.($c+1),
         'PurchasesComment' => '',
         'PurchasesStatus' => 0
     ];

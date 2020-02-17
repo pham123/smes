@@ -12,7 +12,6 @@ $sql[] = "CREATE TABLE Purchases (
     PurchasesId INT(9) UNSIGNED AUTO_INCREMENT PRIMARY KEY,
     UsersId INT(9) NOT NULL,
     RequestSectionId INT(9),
-    ReceiveSectionId INT(9),
     TraceStationId INT(9),
     IsUrgent TINYINT(1) NOT NULL default 0,
     PurchasesDate DATE,
@@ -31,7 +30,11 @@ $sql[] = "CREATE TABLE PurchaseItems (
     PurchasesRemark VARCHAR(100)
     );";
 $sql[] = "ALTER TABLE products
+ADD COLUMN ProductsManufacturerCode VARCHAR(50),
+ADD COLUMN ProductsManufacturerName VARCHAR(255),
 ADD COLUMN ProductsColor VARCHAR(30);";
+$sql[] = "ALTER TABLE purchaseitems
+ADD COLUMN PurchasesAverageUsing float;";
 for ($i=0; $i < count($sql) ; $i++) { 
     $oDB -> query($sql[$i]);
 }

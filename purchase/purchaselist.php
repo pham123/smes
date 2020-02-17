@@ -20,11 +20,10 @@ $table_header  = 'PurchasesNo,PurchasesDate,RequestSection,ReceiveSection,Urgent
 //using new db library
 $newDB = new MysqliDb(_DB_HOST_, _DB_USER_, _DB_PASS_,_DB_name_);
 $newDB->join("Section s", "s.SectionId=p.RequestSectionId", "LEFT");
-$newDB->join("Section s2", "s2.SectionId=p.ReceiveSectionId", "LEFT");
 $newDB->where('PurchasesStatus', 1);
 $newDB->where('UsersId', $_SESSION[_site_]['userid']);
 $newDB->orderBy('p.PurchasesDate', 'DESC');
-$table_data = $newDB->get ("Purchases p", null, "p.PurchasesNo,p.PurchasesDate,s.SectionName as RequestSection, s2.SectionName as ReceiveSection, p.IsUrgent as Urgent,CONCAT('<a href=\"print-purchase.php&quest;id=',p.PurchasesId,'\" target=\"_blank\" >','<i class=\"fas fa-print\"></i>', '</a>') as Print");
+$table_data = $newDB->get ("Purchases p", null, "p.PurchasesNo,p.PurchasesDate,s.SectionName as RequestSection, CONCAT('Purchase','') as ReceiveSection, p.IsUrgent as Urgent,CONCAT('<a href=\"print-purchase.php&quest;id=',p.PurchasesId,'\" target=\"_blank\" >','<i class=\"fas fa-print\"></i>', '</a>') as Print");
 ?>
 
 <body id="page-top">

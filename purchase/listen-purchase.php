@@ -20,7 +20,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 		$purchaseData = [
             'UsersId' => $_SESSION[_site_]['userid'],
 			'RequestSectionId' => $data['RequestSectionId'],
-			'ReceiveSectionId' => $data['ReceiveSectionId'],
 			'TraceStationId' => $data['TraceStationId'],
 			'IsUrgent' => isset($data['IsUrgent'])?$data['IsUrgent']:0,
 			'PurchasesDate' => $data['PurchasesDate'],
@@ -31,7 +30,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 		$purchaseData = [
             'UsersId' => $_SESSION[_site_]['userid'],
 			'RequestSectionId' => $data['RequestSectionId'],
-			'ReceiveSectionId' => $data['ReceiveSectionId'],
 			'TraceStationId' => $data['TraceStationId'],
 			'IsUrgent' => isset($data['IsUrgent'])?$data['IsUrgent']:0,
 			'PurchasesDate' => $data['PurchasesDate'],
@@ -53,9 +51,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 			$itemData = [
 				'PurchasesId' => $purchase_id,
 				'ProductsId' => $id,
-				'ManufacturerCode' => $data['ManufacturerCode'][$index]?$data['ManufacturerCode'][$index]:'',
-				'ManufacturerName' => $data['ManufacturerName'][$index]?$data['ManufacturerName'][$index]:'',
 				'PurchasesQty' => $data['PurchasesQty'][$index]?$data['PurchasesQty'][$index]:0,
+				'PurchasesAverageUsing' => $data['PurchasesAverageUsing'][$index]?$data['PurchasesAverageUsing'][$index]:0,
 				'PurchasesEta' => $data['PurchasesEta'][$index]?$data['PurchasesEta'][$index]:null,
 				'PurchasesRemark' => $data['PurchasesRemark'][$index]?$data['PurchasesRemark'][$index]:''
 			];

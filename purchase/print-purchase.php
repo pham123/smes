@@ -71,7 +71,7 @@ $purchaseitems = $newDB->get('purchaseitems');
         </div>
         <label style="font-size: 14px;" class="col-sm-2"><strong>Received Dept/</strong><em>Bp nhận:</em></label>
         <div class="col-sm-2" style="font-size: 14px;">
-            <?php echo $newDB->where('SectionId',$purchase['ReceiveSectionId'])->getOne('section')['SectionName'] ?>
+            Purchase
         </div>
         <label style="font-size: 14px;" class="col-sm-2"><strong>Urgent/</strong><em>Khẩn cấp:</em></label>
         <div class="col-sm-2" style="font-size: 14px;">
@@ -133,14 +133,14 @@ $purchaseitems = $newDB->get('purchaseitems');
                         }
                         ?>
                         </td>
-                    <td><?php echo $item['ManufacturerCode']?></td>
+                    <td><?php echo $product['ProductsManufacturerCode']?></td>
                     <td><?php echo $product['ProductsSize']?></td>
                     <td><?php echo $product['ProductsColor']?></td>
                     <td><?php echo $product['ProductsMaterial']?></td>
-                    <td><?php echo $item['ManufacturerName']?></td>
+                    <td><?php echo $product['ProductsManufacturerName']?></td>
                     <td><?php echo $item['PurchasesQty']?></td>
                     <td><?php echo $product['ProductsStock']?></td>
-                    <td>AVERAGE USING</td>
+                    <td><?php echo $item['PurchasesAverageUsing']?></td>
                     <td><?php echo $product['ProductsUnit']?></td>
                     <td><?php echo $item['PurchasesEta']?></td>
                     <td><?php echo $item['PurchasesRemark']?></td>
@@ -162,14 +162,36 @@ $purchaseitems = $newDB->get('purchaseitems');
             </tfoot>
         </table>
         <div class="row py-5 px-3">
-            <div class="col-6">
+            <div class="col-5">
                 Comment of manager:<br>
-                <p>..........................................................................................................................................................................</p>
-                <p>..........................................................................................................................................................................</p>
-                <p>..........................................................................................................................................................................</p>
+                <p>....................................................................................................................................................</p>
+                <p>....................................................................................................................................................</p>
+                <p>....................................................................................................................................................</p>
+                
             </div>
-            <div class="col-6">
-                <img src="./purchase-sign.png" alt="" style="max-width: 100%;">
+            <div class="col-7">
+                <table class="table-sm" style="min-width: 680px;margin-left: 15px;">
+                    <thead>
+                        <tr>
+                            <th><strong>Created by</strong></th>
+                            <th><strong>Checked by</strong></th>
+                            <th><strong>Approval 1</strong></th>
+                            <th><strong>Approval 2</strong></th>
+                            <th><strong>Approval 3</strong></th>
+                            <th><strong>Received by</strong></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr style="height: 100px;">
+                            <td>&nbsp;</td>
+                            <td>&nbsp;</td>
+                            <td>&nbsp;</td>
+                            <td>&nbsp;</td>
+                            <td>&nbsp;</td>
+                            <td>&nbsp;</td>
+                        </tr>
+                    </tbody>
+                </table>
             </div>
         </div>
     </div>

@@ -97,7 +97,7 @@ if(isset($_SESSION[_site_]['userlang'])){
                         ?>
                         <div class="form-group col-md-2">
                           <label v-if="index==0" style="font-size: 14px;"><?php echo $sh['ShiftName'].'('.date('H:i',strtotime($sh['ShiftStart'])).'-'.date('H:i',strtotime($sh['ShiftEnd'])).')'?></label>
-                          <input type="number" required name="shift_<?php echo $sh['ShiftId']?>[]" class="form-control" placeholder="SL <?php echo $sh['ShiftInformation'] ?>" v-model="item.<?php echo 'shift_'.$sh['ShiftId']?>">
+                          <input type="number" :readonly="!validState" required name="shift_<?php echo $sh['ShiftId']?>[]" class="form-control" placeholder="SL <?php echo $sh['ShiftInformation'] ?>" v-model="item.<?php echo 'shift_'.$sh['ShiftId']?>">
                         </div>
                         <?php
                           }
@@ -107,9 +107,9 @@ if(isset($_SESSION[_site_]['userlang'])){
                           <a href="#" @click="removeItem(index)" class="d-block"><i style="margin-top: 5px;" class="text-danger fas fa-times"></i></a>
                         </div>
                       </div>
-                      <small class="d-block my-3"><a href="#" class="text-primary" @click="addNewItem()"><i class="fas fa-plus"></i> Add new product</a></small>
+                      <small class="d-block my-3"><a v-show="validState" href="#" class="text-primary" @click="addNewItem()"><i class="fas fa-plus"></i> Add new product</a></small>
                       <div class="">
-                        <input class="btn btn-sm btn-primary float-right" type="submit" value="Save" />
+                        <input v-show="validState" class="btn btn-sm btn-primary float-right" type="submit" value="Save" />
                       </div>
                     </form>
                   </div>
@@ -231,6 +231,19 @@ if(isset($_SESSION[_site_]['userlang'])){
           }).catch(() => {
             console.log('error');
           });
+        },
+        computed: {
+          validState: function () {
+            if(this.ProPlanDate == ''){
+              return false;
+            }
+            let todayStr = new Date().getFullYear().toString() + '-' + ((new Date().getMonth() + 1)>=10?(new Date().getMonth()+1):'0'+(new Date().getMonth()+1)).toString() + '-' + new Date().getDate().toString();
+            if(todayStr > this.ProPlanDate){
+              return false
+            }
+            return true;
+
+          }
         }
     });
     })

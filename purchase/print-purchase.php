@@ -126,7 +126,13 @@ $purchaseitems = $newDB->get('purchaseitems');
                     <td><?php echo $product['ProductsNumber'] ?></td>
                     <td><?php echo $product['ProductsName']?></td>
                     <td><?php echo $product['ProductsEngName']?></td>
-                    <td><img src="../products/image/small/<?php echo $product['ProductsId']?>.jpg" style="max-width: 30px;"></td>
+                    <td><?php if(file_exists("../products/image/small/".$product['ProductsId'].'.jpg')){
+                        ?>
+                        <img src="../products/image/small/<?php echo $product['ProductsId']?>.jpg" style="max-width: 30px;">
+                        <?php
+                        }
+                        ?>
+                        </td>
                     <td><?php echo $item['ManufacturerCode']?></td>
                     <td><?php echo $product['ProductsSize']?></td>
                     <td><?php echo $product['ProductsColor']?></td>

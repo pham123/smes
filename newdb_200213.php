@@ -30,6 +30,8 @@ $sql[] = "CREATE TABLE PurchaseItems (
     PurchasesEta DATE,
     PurchasesRemark VARCHAR(100)
     );";
+$sql[] = "ALTER TABLE products
+ADD COLUMN ProductsColor VARCHAR(30);";
 for ($i=0; $i < count($sql) ; $i++) { 
     $oDB -> query($sql[$i]);
 }

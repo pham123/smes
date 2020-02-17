@@ -23,7 +23,7 @@
 <?php
 
 $arr = array(
-  array('purchaserequest.php', 'fas fa-plus-square',$oDB->lang('AddRequest')),
+  array('purchaselist.php', 'fas fa-list',$oDB->lang('PurchasesList')),
   array('#', 'fas fa-plus-square',$oDB->lang('Quotation')),
   array('#', 'fas fa-plus-square',$oDB->lang('PurchaseOrder')),
   array('#', 'fas fa-plus-square',$oDB->lang('PoControl')),

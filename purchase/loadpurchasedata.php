@@ -14,6 +14,7 @@ $arr['products_data'] = $product_arr;
 
 //FIND NOT SUBMIT PURCHASE
 $newDB->where('PurchasesStatus', 0);
+$newDB->where('UsersId', $_SESSION[_site_]['userid']);
 $n_submit_purchase = $newDB->getOne('Purchases');
 
 if($n_submit_purchase){

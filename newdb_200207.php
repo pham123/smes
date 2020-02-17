@@ -12,7 +12,7 @@ $sql[] = "ALTER TABLE shift
 ADD COLUMN ShiftStart TIME NOT NULL,
 ADD COLUMN ShiftEnd TIME NOT NULL;";
 $sql[] = "ALTER TABLE proplan
-ADD COLUMN ShiftId int(9) NOT NULL before ProductsId;";
+ADD COLUMN ShiftId int(9) NOT NULL after ProductsId;";
 for ($i=0; $i < count($sql) ; $i++) { 
     $oDB -> query($sql[$i]);
 }

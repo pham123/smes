@@ -13,7 +13,7 @@ check($user->acess());
 $newDB = new MysqliDb(_DB_HOST_, _DB_USER_, _DB_PASS_,_DB_name_);
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $data = array_filter($_POST);
+	$data = array_filter($_POST);
 	$purchase_id = $data['PurchasesId'];
 	//CREATE NEW EXPORT HISTORY
 	if(isset($_POST["saveBtn"])) {
@@ -22,7 +22,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 			'RequestSectionId' => $data['RequestSectionId'],
 			'ReceiveSectionId' => $data['ReceiveSectionId'],
 			'TraceStationId' => $data['TraceStationId'],
-			'IsUrgent' => $data['IsUrgent'],
+			'IsUrgent' => isset($data['IsUrgent'])?$data['IsUrgent']:0,
 			'PurchasesDate' => $data['PurchasesDate'],
 			'PurchasesNo' => $data['PurchasesNo'],
 		];
@@ -33,7 +33,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 			'RequestSectionId' => $data['RequestSectionId'],
 			'ReceiveSectionId' => $data['ReceiveSectionId'],
 			'TraceStationId' => $data['TraceStationId'],
-			'IsUrgent' => $data['IsUrgent'],
+			'IsUrgent' => isset($data['IsUrgent'])?$data['IsUrgent']:0,
 			'PurchasesDate' => $data['PurchasesDate'],
             'PurchasesNo' => $data['PurchasesNo'],
             'PurchasesStatus' => 1
@@ -67,4 +67,4 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 }
 
 $newDB = Null;
-header('Location:index.php');
+header('Location:purchaselist.php');

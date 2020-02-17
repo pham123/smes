@@ -43,4 +43,4 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 }
 
 $newDB = Null;
-header('Location:index.php');
+header('Location:plan.php');

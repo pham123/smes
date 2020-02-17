@@ -86,7 +86,7 @@ $tracestations = $newDB->get('tracestation');
               </div>
               <label style="font-size: 14px;" class="col-sm-2 col-form-label"><strong>PR No/</strong><em>Số PR:</em></label>
               <div class="col-sm-2">
-                <input type="text" class="form-control" v-model="PurchasesNo" name="PurchasesNo">
+                <input type="text" readonly class="form-control" v-model="PurchasesNo" name="PurchasesNo">
               </div>
             </div>
             <div class="w-100" style="overflow: auto;">

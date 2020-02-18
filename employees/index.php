@@ -19,9 +19,9 @@ $oDB = new db();
 $table_header  = 'EmployeesName,EmployeesCode,TeamsName,SectionName,EmployeesPosition,DivisionsName,Picture';
 //using new db library
 $newDB = new MysqliDb(_DB_HOST_, _DB_USER_, _DB_PASS_,_DB_name_);
-$newDB->join("divisions d", "e.DivisionsId=d.DivisionsId", "LEFT");
-$newDB->join("teams t", "e.TeamsId=t.TeamsId", "LEFT");
 $newDB->join("section s", "e.SectionId=s.SectionId", "LEFT");
+$newDB->join("divisions d", "s.DivisionsId=d.DivisionsId", "LEFT");
+$newDB->join("teams t", "t.TeamsId=s.TeamsId", "LEFT");
 $table_data = $newDB->get ("employees e", null, "e.EmployeesId as id,e.EmployeesName,e.EmployeesCode,t.TeamsName,s.SectionName,e.EmployeesPosition,d.DivisionsName, concat('<img src=\"image/small/img_',e.EmployeesId, '.jpg\" style=\"height: 45px;\"/>') as Picture");
 $table_link = "editemployee.php?id=";
 ?>

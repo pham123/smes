@@ -79,42 +79,6 @@ $employee = $oDB->sl_one('employees', 'EmployeesId = '.$_GET['id']);
                 </div>
 
                 <div class="col-md-6">
-                  <p><?php echo $oDB->lang('Division') ?> <sup class="text-danger">*</sup></p>
-                  <select name="DivisionsId" id="" class="form-control">
-                    <?php 
-                    $divs = $oDB->sl_all('divisions',1);
-                    echo "<option value=''>select division</option>";
-                    foreach ($divs as $key => $value) {
-                      if($employee['DivisionsId'] == $value['DivisionsId']){
-                        echo "<option selected value='".$value['DivisionsId']."'>".$value['DivisionsName']."</option>";
-                      }else{
-                        echo "<option value='".$value['DivisionsId']."'>".$value['DivisionsName']."</option>";
-                      }
-                    }
-                    ?>
-                    
-                  </select>
-                </div>
-
-                <div class="col-md-6">
-                  <p><?php echo $oDB->lang('Teams') ?> <sup class="text-danger">*</sup></p>
-                  <select name="TeamsId" id="" class="form-control">
-                    <?php 
-                    $tems = $oDB->sl_all('teams',1);
-                    echo "<option value=''>select team</option>";
-                    foreach ($tems as $key => $value) {
-                      if($employee['TeamsId'] == $value['TeamsId']){
-                        echo "<option selected value='".$value['TeamsId']."'>".$value['TeamsName']."</option>";
-                      }else{
-                        echo "<option value='".$value['TeamsId']."'>".$value['TeamsName']."</option>";
-                      }
-                    }
-                    ?>
-                    
-                  </select>
-                </div>
-
-                <div class="col-md-6">
                   <p><?php echo $oDB->lang('Section') ?> <sup class="text-danger">*</sup></p>
                   <select name="SectionId" id="" class="form-control">
                     <?php 

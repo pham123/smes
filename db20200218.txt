@@ -1,0 +1,6 @@
+CREATE TABLE Document (             DocumentId INT(6) UNSIGNED AUTO_INCREMENT PRIMARY KEY,             DocumentName VARCHAR(50) NOT NULL UNIQUE,             DocumentDescription VARCHAR(100),             DocumentOption INT(2),             DocumentCreateDate TIMESTAMP DEFAULT CURRENT_TIMESTAMP ,             DocumentUpdateDate TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP);;
+ALTER TABLE Document ADD DocumentTypeId varchar(255) AFTER DocumentName;
+ALTER TABLE  Document DROP COLUMN DocumentTypeId;
+ALTER TABLE Document ADD DocumentTypeId INT(6) UNSIGNED AFTER DocumentName;
+ALTER TABLE Document ADD SectionId INT(6) UNSIGNED AFTER DocumentName;
+ALTER TABLE Document ADD UsersId INT(6) UNSIGNED AFTER SectionId;

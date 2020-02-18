@@ -37,9 +37,68 @@ if(isset($_SESSION[_site_]['userlang'])){
         <?php require('navbar.php') ?>
 
         <div class="container-fluid">
-          <?php
-            include('test.php');
-          ?>
+
+          <h1>Tạo mới tài liệu</h1>
+          <p>Tạo mới tài liệu, sau khi tạo xong tài liệu đó mới có thể bắt đầu tạo các phiên bản và tải tài liệu lên hệ thống, cũng như thêm các thông tin cần thiết khác.</p>
+          <form action="createnewdoc.php" method="post">
+          <div class="row">
+          <div class="col-md-8">
+          <div class="row">
+              <div class="col-md-12">
+                  <input type="text" name="DocumentName"  placeholder='Tên tài liệu' class='form-control' id="" required>
+              </div>
+          </div>
+          <div class="row">
+              <div class="col-md">
+                  <span>Bộ phận quản lý</span>
+                  <?php makedroplist('Section',1,$user->section); ?>
+              </div>    
+              <div class="col-md">
+                  <span>Loại tài liệu</span>
+                  <?php makedroplist('DocumentType'); ?>
+                  </div>
+              </div>
+
+              <div class="row">
+                  <div class="col-md">
+                      <span>Miêu tả tài liệu</span>
+                      <textarea name="DocumentDescription" id="" class='form-control' required></textarea>
+                  </div>
+              </div>
+
+              <div class="row">
+                  <div class="col-md">
+                      <button type="submit" class='form-control btn-info'>Create Document</button>
+                  </div>
+              </div>
+              </div>
+
+
+              <div class="col-md-4">
+              <!-- <h3>Danh mục tài liệu hiện tại của bộ phận</h3> -->
+              <table class='table table-bordered' id='datatablenotdl' width='100%' cellspacing='0'>
+                  <thead>
+                      <tr>
+                          <th>Danh mục tài liệu đã tồn tại</th>
+                      </tr>
+                  </thead>
+                  <tbody>
+                    <?php 
+                      $list = $oDB->sl_all('Document',1);
+                      foreach ($list as $key => $value) {
+                        echo "<tr>
+                            <td>".$value['DocumentName']."</td>
+                        </tr>";
+                      }
+                      ?>
+                  </tbody>
+              </table>
+              </div>
+              </div>
+              </form>
+
+
+
         </div>
 
   

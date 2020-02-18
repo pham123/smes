@@ -38,5 +38,8 @@
   tr,td{
     color:black;
   }
+  div{
+    margin:5px 0px;
+  }
   </style>
 </head>

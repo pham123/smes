@@ -93,6 +93,10 @@ class sdb {
 		return $this->query->affected_rows;
 	}
 
+	public function lastInsertID() {
+    	return $this->connection->insert_id;
+    }
+
 	private function _gettype($var) {
 	    if(is_string($var)) return 's';
 	    if(is_float($var)) return 'd';

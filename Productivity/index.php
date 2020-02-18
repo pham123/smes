@@ -39,7 +39,9 @@ if(isset($_SESSION[_site_]['userlang'])){
 
         <!-- Begin Page Content -->
         <div class="container-fluid">
-
+          <?php
+            include('test.php');
+          ?>
         </div>
         <!-- /.container-fluid -->
 

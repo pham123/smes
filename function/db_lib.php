@@ -207,16 +207,27 @@ class products extends db{
 
 class Users extends db{
 	public $id;
-	public $access;
+	// public $access;
 	public $module;
 	public $name;
 	public $lang;
+	public $ecode;
+	public $section;
 
 	public function set($id) {
 		$this->id = $id;
-		$user = $this->sl_one('Users','UsersId='.$id);
+
+		$query = "
+		SELECT Users.*, em.EmployeesCode,st.SectionId FROM Users
+		INNER JOIN Employees em ON em.EmployeesId = Users.EmployeesId
+		INNER JOIN Section st ON st.SectionId = em.SectionId
+		WHERE UsersId='".$id."'" ;
+		$rs = mysqli_query($this->dbh,$query);
+		$user = $rs->fetch_array();
 		$this->name = $user['UsersName'];
 		$this->lang= $user['UsersLang'];
+		$this->ecode= $user['EmployeesCode'];
+		$this->section= $user['SectionId'];
 		return $this;
 	}
 	public function acess() {

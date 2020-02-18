@@ -4,7 +4,7 @@ ob_start();
 date_default_timezone_set('Asia/Ho_Chi_Minh');
 require('../config.php');
 require('../function/db_lib.php');
-require('../function/MysqliDb.php');
+require('../function/sdb.php');
 require('../function/function.php');
 $user = New Users();
 $user->set($_SESSION[_site_]['userid']);
@@ -12,10 +12,10 @@ $user->module = basename(dirname(__FILE__));
 check($user->acess());
 $pagetitle = $user->module;
 $page_css='.vs__dropdown-toggle {border: 0px !important;margin-top: -4px;} .vs__selected{white-space: nowrap;max-width: 250px;overflow: hidden;font-size: 14px;}';
-// $refresh = 5;
 require('../views/template-header.php');
 require('../function/template.php');
 $oDB = new db();
+$sDB = new sdb();
 if(isset($_SESSION[_site_]['userlang'])){
   $oDB->lang = ucfirst($_SESSION[_site_]['userlang']);
 }
@@ -31,20 +31,83 @@ if(isset($_SESSION[_site_]['userlang'])){
     <div id="content-wrapper" class="d-flex flex-column">
 
       <!-- Main Content -->
-      <div id="content">
         
         <!-- Topbar -->
         <?php require('navbar.php') ?>
 
-        <div class="container-fluid">
-          <?php
-            include('test.php');
-          ?>
+        <div class="row">
+          <div class="col-md-3">
+          <table class='table table-bordered' id='datatablenotdl' width='100%' cellspacing='0'>
+            <thead>
+                <tr> 
+                  <th>#</th>
+                  <th>Bộ phận</th>
+                </tr>
+            </thead>
+
+            <tbody>
+              <tr>
+                <td>1</td>
+                <td><a href='documentlist.php'>All</a></td>
+              </tr>
+            <?php 
+                  $list = $oDB->sl_all('Section',1);
+                  foreach ($list as $key => $value) {
+                    echo "<tr>
+                        <td>".($key+2)."</td>
+                        <td><a href='documentlist.php?id=".$value['SectionId']."'>".$value['SectionName']."</a></td>
+                    </tr>";
+                  }
+                  ?>
+            </tbody>
+            
+            </table>
+          </div>
+
+          <div class="col-md-9">
+            <table class='table table-bordered' id='dataTable' width='100%' cellspacing='0'>
+            <thead>
+                <tr>
+                  <th>Tên tài liệu</th>
+                  <th>Miêu tả</th>
+                  <th>Phiên bản</th>
+                  <th>Ngày cập nhật</th>
+                  <th>Edit</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                  <?php
+
+                  $where = (isset($_GET['id'])&&is_numeric($_GET['id'])) ? 'SectionId = '.safe($_GET['id']) : 1 ;
+                  $list = $oDB->sl_all('Document',$where);
+                  foreach ($list as $key => $value) {
+                    echo "<tr>
+                        <td>".$value['DocumentName']."</td>
+                        <td style='width:50%'>".$value['DocumentDescription']."</td>
+                        <td></td>
+                        <td></td>";
+                    if ($_SESSION[_site_]['userid']==$value['UsersId']) {
+                      echo "<td><a href=''><i class='fas fa-pencil-alt'></i></a></td>";
+                    }else{
+                      echo "<td></td>";
+                    }
+                   
+                    echo "</tr>";
+                  }
+                  ?>
+
+            </tbody>
+    
+            </table>
+          </div>
+        
         </div>
+        
 
   
 
-      </div>
+
       <!-- End of Main Content -->
 
       <!-- Footer -->

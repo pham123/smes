@@ -23,9 +23,9 @@
 <?php
 
 $arr = array(
-  array('#', 'fas fa-plus-square',$oDB->lang('AddDocument')),
   array('documenttype.php', 'fas fa-plus-square',$oDB->lang('DocumentType')),
-  array('#', 'fas fa-plus-square',$oDB->lang('DocumentList'))
+  array('adddoc.php', 'fas fa-plus-square',$oDB->lang('AddDocument')),
+  array('documentlist.php', 'fas fa-plus-square',$oDB->lang('DocumentList'))
 );
 echo nav_item($oDB->lang('Purchase'),$arr);
 ?>

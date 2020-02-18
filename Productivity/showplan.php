@@ -99,9 +99,7 @@ for ($i=0; $i < $ngaycuoithang; $i++) {
           INNER JOIN TraceStation ts ON ts.TraceStationId = lh.TraceStationId AND ts.TraceStationId = ".$stationid."
           WHERE date(lh.`ProPlanDate`) BETWEEN '".date('Y-m-d',strtotime($ngayarr[0]['end']))."' AND '".date('Y-m-d',strtotime($ngayarr[$lastelement]['end']))."'
           GROUP BY prd.ProductsName, prd.ProductsNumber, ts.TraceStationName";
-
          //exit();
-
           $result = $oDB->fetchAll($sql);
         ?>
 

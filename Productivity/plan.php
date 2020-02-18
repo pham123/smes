@@ -78,6 +78,7 @@ if(isset($_SESSION[_site_]['userlang'])){
                           :reduce="product => product.ProductsId" 
                           class="form-control"
                           name="ProductsId[]"
+                          :disabled=!validState
                           required
                           v-model="item.ProductsId">
                             <template #search="{attributes, events}">
@@ -104,7 +105,7 @@ if(isset($_SESSION[_site_]['userlang'])){
                         ?>
                         <div class="form-group col-md-1">
                           <label v-if="index==0" style="font-size: 14px;">Remove</label>
-                          <a href="#" @click="removeItem(index)" class="d-block"><i style="margin-top: 5px;" class="text-danger fas fa-times"></i></a>
+                          <a href="#" @click="removeItem(index)" class="d-block"><i style="margin-top: 5px;" class="text-danger fas fa-times" v-show="validState"></i></a>
                         </div>
                       </div>
                       <small class="d-block my-3"><a v-show="validState" href="#" class="text-primary" @click="addNewItem()"><i class="fas fa-plus"></i> Add new product</a></small>

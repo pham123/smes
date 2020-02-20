@@ -1,0 +1,13 @@
+CREATE TABLE DefectType (             DefectTypeId INT(6) UNSIGNED AUTO_INCREMENT PRIMARY KEY,             DefectTypeName VARCHAR(50) NOT NULL UNIQUE,             DefectTypeDescription VARCHAR(100),             DefectTypeOption INT(2),             DefectTypeCreateDate TIMESTAMP DEFAULT CURRENT_TIMESTAMP ,             DefectTypeUpdateDate TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP);;
+CREATE TABLE IdleType (             IdleTypeId INT(6) UNSIGNED AUTO_INCREMENT PRIMARY KEY,             IdleTypeName VARCHAR(50) NOT NULL UNIQUE,             IdleTypeDescription VARCHAR(100),             IdleTypeOption INT(2),             IdleTypeCreateDate TIMESTAMP DEFAULT CURRENT_TIMESTAMP ,             IdleTypeUpdateDate TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP);
+CREATE TABLE DefectList (             DefectListId INT(6) UNSIGNED AUTO_INCREMENT PRIMARY KEY,             DefectListName VARCHAR(50) NOT NULL UNIQUE,             DefectListDescription VARCHAR(100),             DefectListOption INT(2),             DefectListCreateDate TIMESTAMP DEFAULT CURRENT_TIMESTAMP ,             DefectListUpdateDate TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP);
+ALTER TABLE DefectList ADD DefectTypeId INT(6) UNSIGNED AFTER DefectListName;
+INSERT INTO DefectType (`DefectTypeName`,`DefectTypeDescription`,`DefectTypeOption`) VALUES ('Function','Function',1);
+INSERT INTO DefectList (`DefectListName`,`DefectListDescription`,`DefectTypeId`,`DefectListOption`) VALUES ('Loi 1','Loi 1',1,1);
+INSERT INTO IdleType (`IdleTypeName`,`IdleTypeDescription`,`IdleTypeOption`) VALUES ('Control able','Control able',1);
+CREATE TABLE Period (             PeriodId INT(6) UNSIGNED AUTO_INCREMENT PRIMARY KEY,             PeriodName VARCHAR(50) NOT NULL UNIQUE,             PeriodDescription VARCHAR(100),             PeriodOption INT(2),             PeriodCreateDate TIMESTAMP DEFAULT CURRENT_TIMESTAMP ,             PeriodUpdateDate TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP);;
+ALTER TABLE Period ADD ShiftId INT(6) UNSIGNED AFTER PeriodName;
+INSERT INTO `period` (`PeriodName`, `ShiftId`, `PeriodDescription`, `PeriodOption`) VALUES ( 'period 1', '1', 'dss', '1');
+CREATE TABLE Idle (             IdleId INT(6) UNSIGNED AUTO_INCREMENT PRIMARY KEY,             IdleName VARCHAR(50) NOT NULL UNIQUE,             IdleDescription VARCHAR(100),             IdleOption INT(2),             IdleCreateDate TIMESTAMP DEFAULT CURRENT_TIMESTAMP ,             IdleUpdateDate TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP);;
+ALTER TABLE Idle ADD IdleTypeId INT(6) UNSIGNED AFTER IdleName;
+INSERT INTO Idle (`IdleName`,`IdleTypeId`,`IdleOption`) VALUES ('Loi 1',1,1);

@@ -4,16 +4,22 @@ ob_start();
 date_default_timezone_set('Asia/Ho_Chi_Minh');
 require('../config.php');
 require('../function/db_lib.php');
+require('../function/MysqliDb.php');
 require('../function/function.php');
 $user = New Users();
 $user->set($_SESSION[_site_]['userid']);
 $user->module = basename(dirname(__FILE__));
 check($user->acess());
 $pagetitle = $user->module;
+$page_css='.vs__dropdown-toggle {border: 0px !important;margin-top: -8px;} .vs__selected{white-space: nowrap;overflow: hidden;font-size: 14px;} .form-group{margin-bottom: 0px;}';
 require('../views/template-header.php');
 require('../function/template.php');
 $oDB = new db();
-
+$newDB = new MysqliDb(_DB_HOST_, _DB_USER_, _DB_PASS_, _DB_name_);
+$shifts = $newDB->get('shift');
+if(isset($_SESSION[_site_]['userlang'])){
+  $oDB->lang = ucfirst($_SESSION[_site_]['userlang']);
+}
 ?>
 
 <body id="page-top">
@@ -27,58 +33,82 @@ $oDB = new db();
 
       <!-- Main Content -->
       <div id="content">
-
+        
         <!-- Topbar -->
         <?php require('navbar.php') ?>
 
         <!-- Begin Page Content -->
         <div class="container-fluid">
-          <form action="listen-create-pattern.php" method="post">
-          <div class="row">
-                 <div class="col-md-6">
-                  <p><?php echo $oDB->lang('Station') ?></p>
-                  <select name="TraceStationId" id="" class='selectpicker show-tick' data-live-search="true" data-style="btn-info" data-width="100%">
-                    <?php 
-                    $model = $oDB->sl_all('TraceStation',1);
-                    foreach ($model as $key => $value) {
-                      echo "<option value='".$value['TraceStationId']."'>".$value['TraceStationName']."</option>";
-                    }
-                    ?>
-                  </select>
-                </Div>
-
-                <div class="col-md-6">
-                  <p><?php echo $oDB->lang('Products') ?></p>
-                  <select name="ProductsId" id="" class='selectpicker show-tick' data-live-search="true" data-style="btn-info" data-width="100%">
-                    <?php 
-                    $model = $oDB->sl_all('Products','ProductsOption = 1 OR ProductsOption = 2');
-                    foreach ($model as $key => $value) {
-                      echo "<option value='".$value['ProductsId']."'>".$value['ProductsNumber']."/".$value['ProductsName']."</option>";
-                    }
-                    ?>
-                    
-                  </select>
-                </Div>
-
-                <div class="col-md-6">
-                  <p><?php echo $oDB->lang('LabelPattern') ?></p>
-                  <input type="text" name="LabelPatternValue" id="" class='form-control' required>
+          <div style='text-align:center;'>
+            <div class="row">
+              <div class="col-12">
+                <div class="card" id="app">
+                  <h5 class="card-header">Set label pattern</h5>
+                  <div class="card-body">
+                    <form action="listen-create-pattern.php" class="" method="post">
+                      <div class="form-row">
+                    <label for="TraceStationId">Trace station:&nbsp;</label>
+                    <select name="TraceStationId" class="form-control" v-model="TraceStationId" @change="loadPattern()" required>
+                        <?php 
+                        $s = $oDB->sl_all('tracestation',1);
+                        echo "<option value=''>trace station</option>";
+                        foreach ($s as $key => $value) {
+                          echo "<option value='".$value['TraceStationId']."'>".$value['TraceStationName']."</option>";
+                        }
+                        ?>
+                      </select>
+                      </div>
+                      <div class="form-row" v-for="(item, index) in labelpatterns">
+                        <div class="form-group col-md-1">
+                          <label v-if="index==0" for="" style="font-size: 14px;font-weight: bold;">#</label>
+                          <span class="d-block">{{index+1}}</span>
+                        </div>
+                        <div class="form-group" style="flex-grow: 1; margin-top: 0px;">
+                          <label v-if="index==0" style="font-size: 14px; font-weight: bold;">Sản phẩm</label>
+                          <v-select 
+                          placeholder="chọn sản phẩm"
+                          :options="products_data" 
+                          :get-option-label="option => option.ProductsName+'/'+option.ProductsNumber"
+                          :reduce="product => product.ProductsId" 
+                          class="form-control"
+                          name="ProductsId[]"
+                          :disabled=!validState
+                          required
+                          v-model="item.ProductsId">
+                            <template #search="{attributes, events}">
+                            <input
+                              class="vs__search"
+                              :required="!item.ProductsId"
+                              v-bind="attributes"
+                              v-on="events"
+                            />
+                          </template>
+                          </v-select>
+                        </div>
+                        <input type="hidden" name="ProductsId[]" required :value="item.ProductsId">
+                        <div class="form-group col-md-3">
+                          <label v-if="index==0" style="font-size: 14px;font-weight: bold;">Label</label>
+                          <input type="text" class="form-control" v-model="item.LabelPatternValue" name="LabelPatternValue[]">
+                        </div>
+                        <div class="form-group col-md-2">
+                          <label v-if="index==0" style="font-size: 14px;font-weight: bold">Packing standard</label>
+                          <input type="text" class="form-control" v-model="item.LabelPatternPackingStandard" name="LabelPatternPackingStandard[]">
+                        </div>
+                        <div class="form-group col-md-1">
+                          <label v-if="index==0" style="font-size: 14px;font-weight: bold;">Remove</label>
+                          <a href="#" @click="removeItem(index)" class="d-block"><i style="margin-top: 5px;" class="text-danger fas fa-times" v-show="validState"></i></a>
+                        </div>
+                      </div>
+                      <small class="d-block my-3"><a v-show="validState" href="#" class="text-primary" @click="addNewItem()"><i class="fas fa-plus"></i> Add new pattern</a></small>
+                      <div class="">
+                        <input v-show="validState" class="btn btn-sm btn-primary float-right" type="submit" value="Save" />
+                      </div>
+                    </form>
+                  </div>
                 </div>
-
-                <div class="col-md-6">
-                  <p><?php echo $oDB->lang('PackingStandard') ?></p>
-                  <input type="text" name="LabelPatternPackingStandard" id="" class='form-control' required>
-                </div>
-
-
-                <div class="col-md-6">
-                  <p>&nbsp;</p>
-                  <button type="submit" class='btn-success form-control'><?php echo $oDB->lang('Submit')?></button>
-                </div>
-
+              </div>
             </div>
-          </form>
-
+          </div>
         </div>
         <!-- /.container-fluid -->
 
@@ -126,11 +156,62 @@ $oDB = new db();
   </div>
 
   <?php require('../views/template-footer.php'); ?>
+  <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+  <script src="../js/axios.min.js"></script>
+
+  <!-- use the latest vue-select release -->
+  <script src="../js/vue-select.js"></script>
+  <link rel="stylesheet" href="../css/vue-select.css">
 
   <script>
     $(function () {
-      $('selectpicker').selectpicker();
+      Vue.component('v-select', VueSelect.VueSelect);
+      new Vue({
+        el: '#app',
+        data: {
+          LabelPatternId: null,
+          TraceStationId: '',
+          labelpatterns:[],
+          products_data: []
+        },
+        methods: {
+          addNewItem(){
+            let pattern = {ProductsId: null};
+            this.labelpatterns.push(pattern);
+          },
+          removeItem(index){
+            if(this.labelpatterns.length == 0)
+            {
+              return;
+            }
+            this.labelpatterns.splice(index,1);
+          },
+          loadPattern(){
+            if(this.TraceStationId){
+              axios.get('/smes/print/loadpatternajax.php?tracestationid='+this.TraceStationId).then(({data}) => {
+                this.labelpatterns = data['patterns'];
+              }).catch(() => {
+                console.log('error');
+              });
+            }else{
+              console.log('');
+            }
+          }
+        },
+        created: function(){
+          axios.get('/smes/print/loadpatternajax.php').then(({data}) => {
+            this.products_data = data['products'];
+          }).catch(() => {
+            console.log('error');
+          });
+        },
+        computed: {
+          validState: function () {
+            return this.TraceStationId != ''
+          }
+        }
     });
+    })
   </script>
 
 </body>

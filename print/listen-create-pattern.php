@@ -4,17 +4,37 @@ ob_start();
 date_default_timezone_set('Asia/Ho_Chi_Minh');
 require('../config.php');
 require('../function/db_lib.php');
-$oDB = new db();
+require('../function/MysqliDb.php');
+require('../function/function.php');
+$user = New Users();
+$user->set($_SESSION[_site_]['userid']);
+$user->module = basename(dirname(__FILE__));
+check($user->acess());
+$newDB = new MysqliDb(_DB_HOST_, _DB_USER_, _DB_PASS_,_DB_name_);
 
-$TraceStationId = safe($_POST['TraceStationId']);
-$ProductsId = safe($_POST['ProductsId']);
-$LabelPatternValue = safe($_POST['LabelPatternValue']);
-$LabelPatternPackingStandard = safe($_POST['LabelPatternPackingStandard']);
-//LabelPatternPackingStandard
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+	$data = array_filter($_POST);
+    // echo '<pre>';
+    // print_r($data);
+    // echo '</pre>';
+    // return;
+    $newDB->where('TraceStationId', $data['TraceStationId']);
+    $newDB->delete('labelpattern');
 
-// $sql = "INSERT INTO LabelPattern (`TraceStationId`,`ProductsId`,`LabelPatternValue`) VALUE (".$TraceStationId.",".$ProductsId.",'".$LabelPatternValue."')";
+    foreach($data['ProductsId'] as $index => $pid){
 
-$field_values = "`TraceStationId`='".$TraceStationId."', `ProductsId`='".$ProductsId."', `LabelPatternPackingStandard`='".$LabelPatternPackingStandard."', `LabelPatternValue`='".$LabelPatternValue."'" ;
-$oDB->insert('LabelPattern',$field_values);
-$oDB=Null;
-header('Location:product.php');
+        $pattern = [
+            'TraceStationId' => $data['TraceStationId'],
+            'ProductsId' => $pid,
+            'LabelPatternValue' => $data['LabelPatternValue'][$index],
+            'LabelPatternPackingStandard' => $data['LabelpatternPackingStandard'][$index]
+        ];
+        $newDB->insert('labelpattern',$pattern);
+    }
+	
+}else{
+	header('Location:../404.html');
+}
+
+$newDB = Null;
+header('Location:createpattern.php');

@@ -11,7 +11,7 @@ $user->set($_SESSION[_site_]['userid']);
 $user->module = basename(dirname(__FILE__));
 check($user->acess());
 $pagetitle = $user->module;
-$page_css='.vs__dropdown-toggle {border: 0px !important;margin-top: -4px;} .vs__selected{white-space: nowrap;max-width: 250px;overflow: hidden;font-size: 14px;}';
+$page_css='.vs__dropdown-toggle {border: 0px !important;margin-top: -8px;} .vs__selected{white-space: nowrap;max-width: 250px;overflow: hidden;font-size: 14px;}.form-group{margin-bottom: 0px;}';
 require('../views/template-header.php');
 require('../function/template.php');
 $oDB = new db();
@@ -69,7 +69,7 @@ if(isset($_SESSION[_site_]['userlang'])){
                           <label v-if="index==0" for="">#</label>
                           <span class="d-block">{{index+1}}</span>
                         </div>
-                        <div class="form-group" style="flex-grow: 1;">
+                        <div class="form-group" style="flex-grow: 1;margin-top: 0px;">
                           <label v-if="index==0">Sản phẩm</label>
                           <v-select 
                           placeholder="chọn sản phẩm"

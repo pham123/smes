@@ -43,7 +43,7 @@ if(isset($_SESSION[_site_]['userlang'])){
             <div class="row">
               <div class="col-12">
                 <div class="card" id="app">
-                  <h5 class="card-header">Set label pattern</h5>
+                  <h5 class="card-header">Set label pattern &amp; machine</h5>
                   <div class="card-body">
                     <form action="listen-create-pattern.php" class="" method="post">
                       <div class="form-row">
@@ -61,7 +61,7 @@ if(isset($_SESSION[_site_]['userlang'])){
                       <div class="form-row" v-for="(item, index) in labelpatterns">
                         <input type="hidden" name="LabelPatternId[]" v-model="item.LabelPatternId" />
                         <div class="form-group col-md-1">
-                          <label v-if="index==0" for="" style="font-size: 14px;font-weight: bold;">Id</label>
+                          <label v-if="index==0" for="" style="font-size: 14px;font-weight: bold;">LabelPatternId</label>
                           <span class="d-block">{{item.LabelPatternId}}</span>
                         </div>
                         <div class="form-group" style="flex-grow: 1; margin-top: 0px;">
@@ -103,8 +103,8 @@ if(isset($_SESSION[_site_]['userlang'])){
                       <small class="d-block my-3"><a v-show="validState" href="#" class="text-primary" @click="addNewItem()"><i class="fas fa-plus"></i> Add new pattern</a></small>
                       <div class="form-row" v-for="(mc, index) in machines">
                         <input type="hidden" name="AssignMachinesId[]" v-model="mc.AssignMachinesId" />
-                        <div class="form-group col-md-1">
-                          <label v-if="index==0" for="" style="font-size: 14px;font-weight: bold;">Id</label>
+                        <div class="form-group col-md-2">
+                          <label v-if="index==0" for="" style="font-size: 14px;font-weight: bold;">AssignMachinesId</label>
                           <span class="d-block">{{mc.AssignMachinesId}}</span>
                         </div>
                         <div class="form-group" style="flex-grow: 1; margin-top: 0px;">

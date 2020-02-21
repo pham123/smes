@@ -11,3 +11,4 @@ INSERT INTO `period` (`PeriodName`, `ShiftId`, `PeriodDescription`, `PeriodOptio
 CREATE TABLE Idle (             IdleId INT(6) UNSIGNED AUTO_INCREMENT PRIMARY KEY,             IdleName VARCHAR(50) NOT NULL UNIQUE,             IdleDescription VARCHAR(100),             IdleOption INT(2),             IdleCreateDate TIMESTAMP DEFAULT CURRENT_TIMESTAMP ,             IdleUpdateDate TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP);;
 ALTER TABLE Idle ADD IdleTypeId INT(6) UNSIGNED AFTER IdleName;
 INSERT INTO Idle (`IdleName`,`IdleTypeId`,`IdleOption`) VALUES ('Loi 1',1,1);
+ALTER TABLE `labelpattern` ADD UNIQUE `unique_labelpattern`(`TraceStationId`, `ProductsId`);

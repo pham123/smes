@@ -57,7 +57,7 @@ $(document).ready(function() {
               "<'row'<'col-sm-5'i><'col-sm-7'p>>",
         buttons: [
             // 'copy', 'csv', 'excel', 'pdf', 'print'
-            // 'excel','copy'
+            'excel','copy'
         ],
         language: {
             search: "",

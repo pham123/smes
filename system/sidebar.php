@@ -51,6 +51,16 @@ $arr = array(
 echo nav_item_collapsed($oDB->lang('Products'),'fa-folder',$arr,'products');
 
 $arr = array(
+  array('index.php?tables_DefectType',$oDB->lang('DefectType')),
+  array('index.php?tables_DefectList',$oDB->lang('DefectList')),
+  array('index.php?tables_IdleType',$oDB->lang("IdleType")),
+  array('index.php?tables_Idle',$oDB->lang("Idle")),
+  array('index.php?tables_Period',$oDB->lang("Period")),
+  array('index.php?tables_Machines',$oDB->lang("Machines"))
+);
+echo nav_item_collapsed($oDB->lang('Productivity'),'fa-folder',$arr,'productivity');
+
+$arr = array(
   array('?tables_MemoReduce',$oDB->lang('MemoReduce')),
   // MemoApplicability
   array('?tables_MemoApplicability',$oDB->lang('MemoApplicability')),

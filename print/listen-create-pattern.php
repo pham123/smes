@@ -18,18 +18,67 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     // print_r($data);
     // echo '</pre>';
     // return;
+    // $newDB->where('TraceStationId', $data['TraceStationId']);
+    // $newDB->delete('labelpattern');
+
+    //pattern
     $newDB->where('TraceStationId', $data['TraceStationId']);
-    $newDB->delete('labelpattern');
+    $old_lpids = $newDB->get('labelpattern');
 
+    $new_lp_ids = array();
+    //update or insert label pattern
     foreach($data['ProductsId'] as $index => $pid){
-
-        $pattern = [
+        $lpid = $data['LabelPatternId'][$index];
+        $pattern_data = [
             'TraceStationId' => $data['TraceStationId'],
             'ProductsId' => $pid,
             'LabelPatternValue' => $data['LabelPatternValue'][$index],
-            'LabelPatternPackingStandard' => $data['LabelpatternPackingStandard'][$index]
+            'LabelPatternPackingStandard' => $data['LabelPatternPackingStandard'][$index]
         ];
-        $newDB->insert('labelpattern',$pattern);
+        if($lpid != 'new'){
+            $newDB->where('LabelPatternId', $lpid);
+            $newDB->update('labelpattern', $pattern_data);
+            $new_lp_ids[] = $lpid;
+        }else{
+            $newDB->insert('labelpattern',$pattern_data);
+        }
+    }
+    
+    //delete label pattern
+    foreach($old_lpids as $val){
+        if(!in_array($val['LabelPatternId'], $new_lp_ids)){
+            $newDB->where('LabelPatternId', $val['LabelPatternId']);
+            $newDB->delete('labelpattern');
+        }
+    }
+
+    //machines
+    $newDB->where('TraceStationId', $data['TraceStationId']);
+    $old_mc_ids = $newDB->get('assignmachines');
+    $new_mc_ids = array();
+    //update or insert label pattern
+    foreach($data['MachinesId'] as $index => $mid){
+        $amid = $data['AssignMachinesId'][$index];
+        $machine_data = [
+            'TraceStationId' => $data['TraceStationId'],
+            'MachinesId' => $mid,
+            'AssignMachinesDescription' => $data['AssignMachinesDescription'][$index]
+        ];
+        if($amid != 'new'){
+            $newDB->where('AssignMachinesId', $amid);
+            $newDB->update('assignmachines', $machine_data);
+            $new_mc_ids[] = $amid;
+        }else{
+            $newDB->insert('assignmachines',$machine_data);
+        }
+    }
+    
+    //delete label pattern
+    foreach($old_mc_ids as $val){
+        if(!in_array($val['AssignMachinesId'], $new_mc_ids)){
+            $newDB->where('AssignMachinesId', $val['AssignMachinesId']);
+            $newDB->delete('assignmachines');
+        }
     }
 	
 }else{

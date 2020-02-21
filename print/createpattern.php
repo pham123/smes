@@ -59,9 +59,10 @@ if(isset($_SESSION[_site_]['userlang'])){
                       </select>
                       </div>
                       <div class="form-row" v-for="(item, index) in labelpatterns">
+                        <input type="hidden" name="LabelPatternId[]" v-model="item.LabelPatternId" />
                         <div class="form-group col-md-1">
-                          <label v-if="index==0" for="" style="font-size: 14px;font-weight: bold;">#</label>
-                          <span class="d-block">{{index+1}}</span>
+                          <label v-if="index==0" for="" style="font-size: 14px;font-weight: bold;">Id</label>
+                          <span class="d-block">{{item.LabelPatternId}}</span>
                         </div>
                         <div class="form-group" style="flex-grow: 1; margin-top: 0px;">
                           <label v-if="index==0" style="font-size: 14px; font-weight: bold;">Sản phẩm</label>
@@ -100,6 +101,46 @@ if(isset($_SESSION[_site_]['userlang'])){
                         </div>
                       </div>
                       <small class="d-block my-3"><a v-show="validState" href="#" class="text-primary" @click="addNewItem()"><i class="fas fa-plus"></i> Add new pattern</a></small>
+                      <div class="form-row" v-for="(mc, index) in machines">
+                        <input type="hidden" name="AssignMachinesId[]" v-model="mc.AssignMachinesId" />
+                        <div class="form-group col-md-1">
+                          <label v-if="index==0" for="" style="font-size: 14px;font-weight: bold;">Id</label>
+                          <span class="d-block">{{mc.AssignMachinesId}}</span>
+                        </div>
+                        <div class="form-group" style="flex-grow: 1; margin-top: 0px;">
+                          <label v-if="index==0" style="font-size: 14px; font-weight: bold;">Machine</label>
+                          <v-select 
+                          placeholder="machine"
+                          :options="machines_data" 
+                          :get-option-label="option => option.MachinesName"
+                          :reduce="machine => machine.MachinesId" 
+                          class="form-control"
+                          name="MachinesId[]"
+                          :disabled=!validState
+                          required
+                          v-model="mc.MachinesId">
+                            <template #search="{attributes, events}">
+                            <input
+                              class="vs__search"
+                              :required="!mc.MachinesId"
+                              v-bind="attributes"
+                              v-on="events"
+                            />
+                          </template>
+                          </v-select>
+                        </div>
+                        <input type="hidden" name="MachinesId[]" required :value="mc.MachinesId">
+                        <div class="form-group col-md-4">
+                          <label v-if="index==0" style="font-size: 14px;font-weight: bold;">Description</label>
+                          <input type="text" class="form-control" v-model="mc.AssignMachinesDescription" name="AssignMachinesDescription[]">
+                        </div>
+                        <div class="form-group col-md-1">
+                          <label v-if="index==0" style="font-size: 14px;font-weight: bold;">Remove</label>
+                          <a href="#" @click="removeMachine(index)" class="d-block"><i style="margin-top: 5px;" class="text-danger fas fa-times" v-show="validState"></i></a>
+                        </div>
+
+                      </div>
+                      <small class="d-block my-3"><a v-show="validState" href="#" class="text-primary" @click="addNewMachine()"><i class="fas fa-plus"></i> Add new machine</a></small>
                       <div class="">
                         <input v-show="validState" class="btn btn-sm btn-primary float-right" type="submit" value="Save" />
                       </div>
@@ -169,15 +210,20 @@ if(isset($_SESSION[_site_]['userlang'])){
       new Vue({
         el: '#app',
         data: {
-          LabelPatternId: null,
           TraceStationId: '',
           labelpatterns:[],
-          products_data: []
+          machines: [],
+          products_data: [],
+          machines_data: []
         },
         methods: {
           addNewItem(){
-            let pattern = {ProductsId: null};
+            let pattern = {LabelPatternId: 'new',ProductsId: null,LabelPatternValue: '',LabelPatternPackingStandard:''};
             this.labelpatterns.push(pattern);
+          },
+          addNewMachine(){
+            let machine = {AssignMachinesId: 'new',MachinesId: null,AssignMachinesDescription: ''};
+            this.machines.push(machine);
           },
           removeItem(index){
             if(this.labelpatterns.length == 0)
@@ -186,10 +232,18 @@ if(isset($_SESSION[_site_]['userlang'])){
             }
             this.labelpatterns.splice(index,1);
           },
+          removeMachine(index){
+            if(this.machines.length == 0)
+            {
+              return;
+            }
+            this.machines.splice(index,1);
+          },
           loadPattern(){
             if(this.TraceStationId){
               axios.get('/smes/print/loadpatternajax.php?tracestationid='+this.TraceStationId).then(({data}) => {
                 this.labelpatterns = data['patterns'];
+                this.machines = data['assigns'];
               }).catch(() => {
                 console.log('error');
               });
@@ -201,6 +255,7 @@ if(isset($_SESSION[_site_]['userlang'])){
         created: function(){
           axios.get('/smes/print/loadpatternajax.php').then(({data}) => {
             this.products_data = data['products'];
+            this.machines_data = data['machines'];
           }).catch(() => {
             console.log('error');
           });

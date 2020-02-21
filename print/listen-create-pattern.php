@@ -33,7 +33,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             'TraceStationId' => $data['TraceStationId'],
             'ProductsId' => $pid,
             'LabelPatternValue' => $data['LabelPatternValue'][$index],
-            'LabelPatternPackingStandard' => $data['LabelPatternPackingStandard'][$index]
+            'LabelPatternPackingStandard' => $data['LabelPatternPackingStandard'][$index]?$data['LabelPatternPackingStandard'][$index]:0
         ];
         if($lpid != 'new'){
             $newDB->where('LabelPatternId', $lpid);

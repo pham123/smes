@@ -89,11 +89,11 @@ if(isset($_SESSION[_site_]['userlang'])){
                         <input type="hidden" name="ProductsId[]" required :value="item.ProductsId">
                         <div class="form-group col-md-3">
                           <label v-if="index==0" style="font-size: 14px;font-weight: bold;">Label</label>
-                          <input type="text" class="form-control" v-model="item.LabelPatternValue" name="LabelPatternValue[]">
+                          <input type="text" class="form-control" v-model="item.LabelPatternValue" name="LabelPatternValue[]" required>
                         </div>
                         <div class="form-group col-md-2">
                           <label v-if="index==0" style="font-size: 14px;font-weight: bold">Packing standard</label>
-                          <input type="text" class="form-control" v-model="item.LabelPatternPackingStandard" name="LabelPatternPackingStandard[]">
+                          <input type="number" class="form-control" v-model="item.LabelPatternPackingStandard" name="LabelPatternPackingStandard[]">
                         </div>
                         <div class="form-group col-md-1">
                           <label v-if="index==0" style="font-size: 14px;font-weight: bold;">Remove</label>
@@ -218,7 +218,7 @@ if(isset($_SESSION[_site_]['userlang'])){
         },
         methods: {
           addNewItem(){
-            let pattern = {LabelPatternId: 'new',ProductsId: null,LabelPatternValue: '',LabelPatternPackingStandard:''};
+            let pattern = {LabelPatternId: 'new',ProductsId: null,LabelPatternValue: '',LabelPatternPackingStandard:0};
             this.labelpatterns.push(pattern);
           },
           addNewMachine(){

@@ -43,7 +43,7 @@
   }
   th, td { 
     
-    background-color:#F8F9FC;
+    /* background-color:#F8F9FC; */
   }
   /* #dtfix {
     white-space: nowrap; 

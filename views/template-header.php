@@ -39,7 +39,18 @@
     color:black;
   }
   div{
-    margin:5px 0px;
+    /* margin:5px 0px; */
   }
+  th, td { 
+    
+    /* background-color:#F8F9FC; */
+  }
+  /* #dtfix {
+    white-space: nowrap; 
+  } */
+    /* div.dataTables_wrapper {
+        width: 1000px;
+        margin: 0 auto;
+    } */
   </style>
 </head>

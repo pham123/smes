@@ -85,15 +85,15 @@ for ($i=0; $i < $ngaycuoithang; $i++) {
           $result = $oDB->fetchAll($sql);
         ?>
 
-        <div class="table-responsive">
+        <div class="table">
         <?php
-        echo "<table class='table table-bordered' id='datatablenotpage' width='100%' cellspacing='0'>";
+        echo "<table class='table table-bordered stripe row-border order-column' id='dtfix' width='100%' cellspacing='0'>";
         echo "<thead>";
         echo "<tr>";
             // echo "<th>".$oDB->lang('Index')."</th>";
             // echo "<th>".$oDB->lang('Station')."</th>";
-            echo "<th rowspan='2'>".$oDB->lang('ProductName')."</th>";
-            echo "<th rowspan='2'>".$oDB->lang('ProductNumber')."</th>";
+            echo "<th rowspan='2' style='background-color:#F8F9FC;'>".$oDB->lang('ProductName')."</th>";
+            echo "<th rowspan='2' style='background-color:#F8F9FC;'>".$oDB->lang('ProductNumber')."</th>";
             echo "<th colspan='".$ngaycuoithang."'>".$oDB->lang('QuantityReport').":".date("Y-M",strtotime($ngayarr[0]['end']))."</th>";
         echo "</tr>";
         echo "<tr>";
@@ -110,7 +110,8 @@ for ($i=0; $i < $ngaycuoithang; $i++) {
             echo "<tr>";
             // echo "<td>".($key+1)."</td>";
             // echo "<td>".$value['TraceStationName']."</td>";
-            echo "<td>".trim(preg_replace('/\s+/', '_', $value['ProductsName']))."</td>";
+            // echo "<td style='background-color:#F8F9FC;'>".trim(preg_replace('/\s+/', '_', $value['ProductsName']))."</td>";
+            echo "<td style='white-space: nowrap;'>".$value['ProductsName']."</td>";
             echo "<td>".$value['ProductsNumber']."</td>";
             for ($i=1; $i < $ngaycuoithang+1; $i++) { 
               $retVal = ($value['TotalOk'.$i]==0) ? '' : $value['TotalOk'.$i] ;

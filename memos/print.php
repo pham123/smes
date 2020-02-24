@@ -51,6 +51,20 @@ $_SESSION[_site_]['enddate'] = (isset($_SESSION[_site_]['enddate'])) ? $_SESSION
         background-color: #F5F5F5 !important;
          }
 
+        th{
+          background-color:#CDCDCD !important;
+          background-image: url('../img/bg/thead-bg.png');
+        }
+        .bg-warning{
+          background-image: url('../img/bg/doing-bg.png');
+        }
+        .bg-success{
+          background-image: url('../img/bg/done-bg.png');
+        }
+        .bg-danger{
+          background-image: url('../img/bg/delay-bg.png');
+        }
+
     }
 
 </style>
@@ -172,15 +186,15 @@ $_SESSION[_site_]['enddate'] = (isset($_SESSION[_site_]['enddate'])) ? $_SESSION
           echo "<td style='min-width: 100px'>".$value['EmployeesName']." - ".$value['EmployeesCode']."</td>";
           if ($value['MemosPic']==$_SESSION[_site_]['userid']) {
             if ($value['MemosPicOption']==2) {
-              echo "<td style='background-color:red;'><a href='EditMemosPic.php?id=".$value['MemosId']."'>".$value['UsersFullName']."</a></td>";
+              echo "<td style='background-color:red;' class='bg-danger'><a href='EditMemosPic.php?id=".$value['MemosId']."'>".$value['UsersFullName']."</a></td>";
             }else{
-              echo "<td style='background-color:green;'><a href='EditMemosPic.php?id=".$value['MemosId']."'>".$value['UsersFullName']."</a></td>";
+              echo "<td style='background-color:green;' class='bg-success'><a href='EditMemosPic.php?id=".$value['MemosId']."'>".$value['UsersFullName']."</a></td>";
             }
           }else{
             if ($value['MemosPicOption']==2) {
-              echo "<td style='background-color:red;'>".$value['UsersFullName']."</td>";
+              echo "<td style='background-color:red;' class='bg-danger'>".$value['UsersFullName']."</td>";
             }else{
-              echo "<td style='background-color:green;'>".$value['UsersFullName']."</td>";
+              echo "<td style='background-color:green;' class='bg-success'>".$value['UsersFullName']."</td>";
             }
 
           }

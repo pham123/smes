@@ -41,7 +41,13 @@ $_SESSION[_site_]['enddate'] = (isset($_SESSION[_site_]['enddate'])) ? $_SESSION
         <!-- Begin Page Content -->
         <div class="container-fluid">
         <?php 
-          $table_header  = 'No.,IssueDate,Dept,Location,title,issue,Picture,PictureAfter,Efficiency,ResultOfReview,Maker,Pic,Status,Plan,Score,Edit';
+
+if ($user->acess()==1) {
+  $table_header  = 'No.,IssueDate,Dept,Location,title,issue,Picture,PictureAfter,Efficiency,ResultOfReview,Maker,Pic,Status,Plan,Score,Edit,Delete';
+}else{
+  $table_header  = 'No.,IssueDate,Dept,Location,title,issue,Picture,PictureAfter,Efficiency,ResultOfReview,Maker,Pic,Status,Plan,Score,Edit';
+}
+
           
           $PartId = (isset($_GET['part'])) ? 'AND Memos.PartsId = '.safe($_GET['part']) : '' ;
           $MemosPic = (isset($_GET['pic'])) ? 'AND Memos.MemosPic = '.safe($_GET['pic']) : '' ;
@@ -97,8 +103,8 @@ $_SESSION[_site_]['enddate'] = (isset($_SESSION[_site_]['enddate'])) ? $_SESSION
         <?php
         $tablearr = explode(',',$table_header);
         echo "<table class='table table-bordered' id='dataTable' width='100%' cellspacing='0'>";
-        echo "<thead>";
-        echo "<tr style='background-color:#CDCDCD;'>";
+        echo "<thead style='background-color:#CDCDCD;background-image: url('../img/bg/thead-bg.png');'>";
+        echo "<tr style='background-color:#CDCDCD;background-image: url('../img/bg/thead-bg.png');'>";
         foreach ($tablearr as $key => $value) {
             echo "<th style='vertical-align: middle;'>".$oDB->lang($value)."</th>";
         }
@@ -116,8 +122,8 @@ $_SESSION[_site_]['enddate'] = (isset($_SESSION[_site_]['enddate'])) ? $_SESSION
           echo "<td>".$value['MemosLocation']."</td>";
           echo "<td style='min-width: 100px'><a href='ViewMemos.php?id=".$value['MemosId']."'>".$value['MemosName']."</a></td>";
           echo "<td style='min-width:180px;'>".$value['MemosIssue']."</td>";
-          echo "<td><img src='image/small/img_".$value['MemosId'].".jpg' alt=''></td>";
-          echo "<td><img src='image/small/imgafter_".$value['MemosId'].".jpg' alt=''></td>";
+          echo "<td><a href='image/img_".$value['MemosId'].".jpg' target='_blank'><img src='image/small/img_".$value['MemosId'].".jpg' alt=''></a></td>";
+          echo "<td><a href='image/imgafter_".$value['MemosId'].".jpg' target='_blank'><img src='image/small/imgafter_".$value['MemosId'].".jpg' alt=''></a></td>";
           echo "<td style='min-width:150px;'>".$value['MemosEfficiency']."</td>";
 
           switch ($value['MemosStatus']) {
@@ -181,6 +187,10 @@ $_SESSION[_site_]['enddate'] = (isset($_SESSION[_site_]['enddate'])) ? $_SESSION
           }else{
             echo "<td><i class='fas fa-edit'></i></td>";
           }
+
+          if ($user->acess()==1) {
+            echo "<td><a href='DeleteMemos.php?id=".$value['MemosId']."'><i class='fas fa-trash-alt'></i></a></td>";
+          }
           
           echo "</tr>";
         }
@@ -188,7 +198,6 @@ $_SESSION[_site_]['enddate'] = (isset($_SESSION[_site_]['enddate'])) ? $_SESSION
         echo "</table>";
         ?>
         </div>
-        
         </div>
         <!-- /.container-fluid -->
 

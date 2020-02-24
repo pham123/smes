@@ -11,3 +11,5 @@ patrols/logs
 vendor/ckeditor
 memos/image
 memos/files
+*/image
+*/files

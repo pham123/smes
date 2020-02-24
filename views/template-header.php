@@ -28,6 +28,11 @@
   echo '<link href="../css/highchart.css" rel="stylesheet">';
 
   }
+  if(isset($has_fixedcolumn) && $has_fixedcolumn == true){
+ 
+    echo '<link href="../css/fixedcolumn.css" rel="stylesheet">';
+  
+    }
   ?>
   <style>
   <?php

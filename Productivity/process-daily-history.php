@@ -11,6 +11,7 @@ $user->set($_SESSION[_site_]['userid']);
 $user->module = basename(dirname(__FILE__));
 check($user->acess());
 $pagetitle = $user->module;
+$has_fixedcolumn = false;
 $page_css='.vs__dropdown-toggle {border: 0px !important;margin-top: -8px;} .vs__selected{white-space: nowrap;max-width: 250px;overflow: hidden;font-size: 14px;}.form-group{margin-bottom: 0px;} table th,table td{border: 1px solid #333;font-size: 14px;}';
 require('../views/template-header.php');
 require('../function/template.php');
@@ -54,7 +55,7 @@ if(isset($_SESSION[_site_]['userlang'])){
                         
                     ?>
                   </select>&nbsp;Date:&nbsp;<input type="date" v-model="ProcessDailyHistoryDate" @change="loadProcessData()"/></p>
-                  <div class="card-body pt-0 pl-0" style="overflow: auto;" v-if="this.TraceStationId && this.ProcessDailyHistoryDate && this.products_data.length > 0">
+                  <div class="card-body pt-0 pl-0 tableFixHead" style="overflow: auto;" v-if="this.TraceStationId && this.ProcessDailyHistoryDate && this.products_data.length > 0">
                     <table class="w-100">
                       <thead>
                         <tr>
@@ -90,7 +91,7 @@ if(isset($_SESSION[_site_]['userlang'])){
                               <option v-for="p in products_data" :value="p.ProductsId">{{p.ProductsName}}</option>
                             </select>
                           </td>
-                          <td>{{currentProduct?.ProductsNumber}}</td>
+                          <td>{{currentProduct?currentProduct.ProductsNumber:''}}</td>
                           <td><input type="text" style="width: 100px;" v-model="form.ProcessDailyHistoryMold"></td>
                           <td>
                             <select v-model="form.MachinesId">
@@ -111,7 +112,7 @@ if(isset($_SESSION[_site_]['userlang'])){
                           <td>{{p.ProductsName}}</td>
                           <td>{{p.ProductsNumber}}</td>
                           <td>{{p.ProcessDailyHistoryMold}}</td>
-                          <td style="border-right: 1px solid orange;">{{p.MachinesId}}</td>
+                          <td style="border-right: 1px solid orange;">{{p.MachinesName}}</td>
                           <template v-for="(per,index) in periods_data">
                             <td><input type="number" min="0" style="width: 50px;" :name="'ok_'+p.ProcessDailyHistoryId+'_'+per.PeriodId" @input="test" :value="findOkVal(p,per.PeriodId)"></td>
                             <td><input type="number" min="0" style="width: 50px;" :name="'ng_'+p.ProcessDailyHistoryId+'_'+per.PeriodId" @input="test" :value="findNgVal(p,per.PeriodId)"></td>

@@ -7,12 +7,12 @@ require('../function/MysqliDb.php');
 
 $newDB = new MysqliDb(_DB_HOST_, _DB_USER_, _DB_PASS_, _DB_name_);
 
-$code = $_GET['code'];
+$stations = $newDB->get('tracestation');
+$periods = $newDB->get('period');
 
-$newDB->where('UsersId', $_SESSION[_site_]['userid']);
-$newDB->update('users', ['UsersLang' => $code]);
+$arr['tracestations'] = $stations;
+$arr['periods'] = $periods;
 
-$_SESSION[_site_]['userlang'] = $code;
-
+echo json_encode($arr);
 return;
-
+?>

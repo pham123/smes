@@ -163,7 +163,7 @@
 				var parentBackground = parent.css("background-color");
 				parentBackground = (parentBackground == "transparent" || parentBackground == "rgba(0, 0, 0, 0)") ? null : parentBackground;
 
-				var background = parentBackground ? parentBackground : "white";
+				var background = parentBackground ? parentBackground : "black";
 				background = elementBackground ? elementBackground : background;
 
 				element.css("background-color", background);

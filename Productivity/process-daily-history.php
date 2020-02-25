@@ -85,15 +85,15 @@ if(isset($_SESSION[_site_]['userlang'])){
                             <td>{{p.ProcessDailyHistoryMold}}</td>
                             <td style="border-right: 1px solid orange;">{{p.MachinesName}}</td>
                             <template v-for="(per,index) in periods_data">
-                              <td><input type="number" min="0" style="width: 50px;" :name="'ok_'+p.ProcessDailyHistoryId+'_'+per.PeriodId" @input="test" :value="findOkVal(p,per.PeriodId)"></td>
-                              <td><input type="number" min="0" style="width: 50px;" :name="'ng_'+p.ProcessDailyHistoryId+'_'+per.PeriodId" @input="test" :value="findNgVal(p,per.PeriodId)"></td>
-                              <td style="border-right: 1px solid orange;"><input type="number" min="0" style="width: 50px;" :name="'idletime_'+p.ProcessDailyHistoryId+'_'+per.PeriodId" @input="test" :value="findIdleVal(p,per.PeriodId)"></td>
+                              <td style="border-right: none;"><input type="number" min="0" style="width: 50px;" :name="'ok_'+p.ProcessDailyHistoryId+'_'+per.PeriodId" @input="test" :value="findOkVal(p,per.PeriodId)"></td>
+                              <td style="border-right: none;border-left:none;"><input type="number" min="0" style="width: 50px;" :name="'ng_'+p.ProcessDailyHistoryId+'_'+per.PeriodId" @input="test" :value="findNgVal(p,per.PeriodId)"></td>
+                              <td style="border-left: none;border-right: 1px solid orange;"><input type="number" min="0" style="width: 50px;" :name="'idletime_'+p.ProcessDailyHistoryId+'_'+per.PeriodId" @input="test" :value="findIdleVal(p,per.PeriodId)"></td>
                             </template>
                           </tr>
                         </tbody>
                       </table>
                     </div>
-                    <table class="my-4 mx-auto d-inline-block table-borderless">
+                    <table class="my-2 mx-auto d-inline-block table-borderless">
                       <tr style="background-color: none;">
                         <form @submit.prevent="addProcess()">
                           <td style="width: 200px;">

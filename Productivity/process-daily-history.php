@@ -11,7 +11,7 @@ $user->set($_SESSION[_site_]['userid']);
 $user->module = basename(dirname(__FILE__));
 check($user->acess());
 $pagetitle = $user->module;
-$has_fixedcolumn = false;
+$has_fixedcolumn = true;
 $page_css='.vs__dropdown-toggle {border: 0px !important;margin-top: -8px;} .vs__selected{white-space: nowrap;max-width: 250px;overflow: hidden;font-size: 14px;}.form-group{margin-bottom: 0px;} table th,table td{border: 1px solid #333;font-size: 14px;}';
 require('../views/template-header.php');
 require('../function/template.php');
@@ -54,72 +54,71 @@ if(isset($_SESSION[_site_]['userlang'])){
                     }
                         
                     ?>
-                  </select>&nbsp;Date:&nbsp;<input type="date" v-model="ProcessDailyHistoryDate" @change="loadProcessData()"/></p>
-                  <div class="card-body pt-0 pl-0 tableFixHead" style="overflow: auto;" v-if="this.TraceStationId && this.ProcessDailyHistoryDate && this.products_data.length > 0">
-                    <table class="w-100">
-                      <thead>
-                        <tr>
-                          <th rowspan="2"></th>
-                          <th rowspan="2">Process</th>
-                          <th rowspan="2">Part Name</th>
-                          <th rowspan="2" style="min-width: 130px;">Part No</th>
-                          <th rowspan="2">Mold</th>
-                          <th rowspan="2">Machine</th>
-                          <th colspan="3" v-for="p in periods_data">{{p.PeriodName}}</th>
-                        </tr>
-                        <tr>
-                          <template v-for="p in periods_data">
-                            <th>OK</th>
-                            <th>NG</th>
-                            <th>Idle</th>
-                          </template>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        <tr style="background-color: gold;">
-                          <form @submit.prevent="addProcess()">
-                          <td><button @click="addProcess()" class="btn-secondary">add</button></td>
-                          <td>
-                            <select id="" v-model="form.TraceStationId" required>
+                  </select>&nbsp;Date:&nbsp;<input type="date" v-model="ProcessDailyHistoryDate" @change="loadProcessData()"/>&nbsp;<button class="btn btn-info btn-sm" v-if="!isFixed && products_data.length > 0" @click="fixColumns">Fix columns</button></p>
+                  <div v-if="this.TraceStationId && this.ProcessDailyHistoryDate && this.products_data.length > 0">
+                    <div class="card-body pt-0 pl-0" id="parent" style="overflow: auto;">
+                      <table class="w-100" id="fixTable">
+                        <thead>
+                          <tr>
+                            <th rowspan="2" style="min-width: 30px;">#</th>
+                            <th rowspan="2" style="min-width: 130px;">Process</th>
+                            <th rowspan="2" style="min-width: 150px;">Part Name</th>
+                            <th rowspan="2" style="min-width: 130px;">Part No</th>
+                            <th rowspan="2" style="min-width: 70px;">Mold</th>
+                            <th rowspan="2">Machine</th>
+                            <th colspan="3" v-for="p in periods_data">{{p.PeriodName}}</th>
+                          </tr>
+                          <tr class="notincl">
+                            <template v-for="p in periods_data">
+                              <td class="bg-success text-white">OK</td>
+                              <td class="bg-danger">NG</th>
+                              <td class="bg-warning">Idle</td>
+                            </template>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <tr v-for="(p,index) in processes_uniq_data">
+                            <td>{{index+1}}</td>
+                            <td>{{p.TraceStationName}}</td>
+                            <td>{{p.ProductsName}}</td>
+                            <td>{{p.ProductsNumber}}</td>
+                            <td>{{p.ProcessDailyHistoryMold}}</td>
+                            <td style="border-right: 1px solid orange;">{{p.MachinesName}}</td>
+                            <template v-for="(per,index) in periods_data">
+                              <td><input type="number" min="0" style="width: 50px;" :name="'ok_'+p.ProcessDailyHistoryId+'_'+per.PeriodId" @input="test" :value="findOkVal(p,per.PeriodId)"></td>
+                              <td><input type="number" min="0" style="width: 50px;" :name="'ng_'+p.ProcessDailyHistoryId+'_'+per.PeriodId" @input="test" :value="findNgVal(p,per.PeriodId)"></td>
+                              <td style="border-right: 1px solid orange;"><input type="number" min="0" style="width: 50px;" :name="'idletime_'+p.ProcessDailyHistoryId+'_'+per.PeriodId" @input="test" :value="findIdleVal(p,per.PeriodId)"></td>
+                            </template>
+                          </tr>
+                        </tbody>
+                      </table>
+                    </div>
+                    <table class="my-4 mx-auto d-inline-block table-borderless">
+                      <tr style="background-color: none;">
+                        <form @submit.prevent="addProcess()">
+                          <td style="width: 200px;">
+                            <select class="w-100" id="" v-model="form.TraceStationId" required>
                               <option value="">child process</option>
                               <option v-for="s in childStations" :value="s.TraceStationId">{{s.TraceStationName}}</option>
                             </select>
                           </td>
-                          <td>
-                            <select style="width: 150px;" v-model="form.ProductsId">
+                          <td style="width: 200px;">
+                            <select class="w-100" v-model="form.ProductsId">
                               <option value="">product</option>
                               <option v-for="p in products_data" :value="p.ProductsId">{{p.ProductsName}}</option>
                             </select>
                           </td>
-                          <td>{{currentProduct?currentProduct.ProductsNumber:''}}</td>
-                          <td><input type="text" style="width: 100px;" v-model="form.ProcessDailyHistoryMold"></td>
-                          <td>
-                            <select v-model="form.MachinesId">
+                          <td style="width: 130px;" v-if="currentProduct">{{currentProduct?currentProduct.ProductsNumber:''}}</td>
+                          <td style="width: 100px;"><input placeholder="mold" type="text" class="w-100" v-model="form.ProcessDailyHistoryMold"></td>
+                          <td style="width:200px">
+                            <select class="w-100" v-model="form.MachinesId">
                               <option value="">machine</option>
                               <option v-for="m in machines_data" :value="m.MachinesId">{{m.MachinesName}}</option>
                             </select>
                           </td>
-                          <template v-for="(p,index) in periods_data">
-                            <td><input type="number" min="0" style="width: 50px;" v-model="form.ProcessDailyHistoryOk[p.PeriodId]"></td>
-                            <td><input type="number" min="0" style="width: 50px;" v-model="form.ProcessDailyHistoryNg[p.PeriodId]"></td>
-                            <td><input type="number" min="0" style="width: 50px;" v-model="form.ProcessDailyHistoryIdletime[p.PeriodId]"></td>
-                          </template>
-                          </form>
-                        </tr>
-                        <tr v-for="(p,index) in processes_uniq_data">
-                          <td>{{index+1}}</td>
-                          <td>{{p.TraceStationName}}</td>
-                          <td>{{p.ProductsName}}</td>
-                          <td>{{p.ProductsNumber}}</td>
-                          <td>{{p.ProcessDailyHistoryMold}}</td>
-                          <td style="border-right: 1px solid orange;">{{p.MachinesName}}</td>
-                          <template v-for="(per,index) in periods_data">
-                            <td><input type="number" min="0" style="width: 50px;" :name="'ok_'+p.ProcessDailyHistoryId+'_'+per.PeriodId" @input="test" :value="findOkVal(p,per.PeriodId)"></td>
-                            <td><input type="number" min="0" style="width: 50px;" :name="'ng_'+p.ProcessDailyHistoryId+'_'+per.PeriodId" @input="test" :value="findNgVal(p,per.PeriodId)"></td>
-                            <td style="border-right: 1px solid orange;"><input type="number" min="0" style="width: 50px;" :name="'idletime_'+p.ProcessDailyHistoryId+'_'+per.PeriodId" @input="test" :value="findIdleVal(p,per.PeriodId)"></td>
-                          </template>
-                        </tr>
-                      </tbody>
+                          <td><button @click="addProcess()" class="btn-primary">add</button></td>
+                        </form>
+                      </tr>
                     </table>
                   </div>
                   <div class="text-danger" v-else-if="this.TraceStationId && this.ProcessDailyHistoryDate">
@@ -176,22 +175,25 @@ if(isset($_SESSION[_site_]['userlang'])){
   </div>
 
   <?php require('../views/template-footer.php'); ?>
-  <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
-  <script src="../js/axios.min.js"></script>
+  <script src="../js/tableHeadFixer.js"></script>
 
-  <!-- use the latest vue-select release -->
-  <script src="../js/vue-select.js"></script>
-  <link rel="stylesheet" href="../css/vue-select.css">
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+<script src="../js/axios.min.js"></script>
 
-  <script src="https://unpkg.com/vform"></script>
+<!-- use the latest vue-select release -->
+<script src="../js/vue-select.js"></script>
+<link rel="stylesheet" href="../css/vue-select.css">
 
-  <script>
-    $(function () {
+<script src="../js/vform.js"></script>
+
+<script>
+  $(function () {
       const { Form } = window.vform;
       Vue.component('v-select', VueSelect.VueSelect);
       new Vue({
         el: '#app',
         data: {
+          isFixed: false,
           form: new Form({
             ProductsId: '',
             ProcessDailyHistoryMold: '',
@@ -224,6 +226,11 @@ if(isset($_SESSION[_site_]['userlang'])){
             }).catch(()=>{
 
             });
+          },
+          fixColumns(){
+            if(!this.isFixed)
+              $('#fixTable').tableHeadFixer({"head": false, "left": 6});
+            this.isFixed=true;
           },
           findOkVal(process, period_id){
             let p = this.processes_data.filter((value,index) => {
@@ -298,18 +305,6 @@ if(isset($_SESSION[_site_]['userlang'])){
               });
             }else{
               // alert('not select station or date');
-            }
-          },
-          loadPlans(){
-            if(this.TraceStationId && this.ProPlanDate){
-              axios.get('/smes/productivity/loadplanajax.php?tracestationid='+this.TraceStationId+'&date='+this.ProPlanDate).then(({data}) => {
-                console.log(data);
-                this.plans = data['plans'];
-              }).catch(() => {
-                console.log('error');
-              });
-            }else{
-              console.log('station or date not select');
             }
           }
         },

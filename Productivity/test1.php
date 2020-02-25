@@ -22,26 +22,27 @@ $process_data = [
     'ProductsId' => $data['ProductsId'],
     'ProcessDailyHistoryMold' => $data['ProcessDailyHistoryMold'],
     'MachinesId' => $data['MachinesId'],
-    'TraceStationId' => $data['TraceStationId']
+    'TraceStationId' => $data['TraceStationId'],
+    'PeriodId' => 0
 ];
+$newDB->insert('processdailyhistory', $process_data);
 
-foreach($periods as $pid){
-    $process_data['PeriodId'] = 0;
+// foreach($periods as $pid){
+//     $process_data['PeriodId'] = 0;
 
-    if(isset($ok_arr[$pid]) && (intval($ok_arr[$pid]) > 0)){
-        $process_data['ProcessDailyHistoryOk'] = $ok_arr[$pid];
-        $process_data['PeriodId'] = $pid;
-    }
-    if(isset($ng_arr[$pid]) && (intval($ng_arr[$pid]) > 0)){
-        $process_data['ProcessDailyHistoryNg'] = $ng_arr[$pid];
-        $process_data['PeriodId'] = $pid;
-    }
-    if(isset($idle_arr[$pid]) && (intval($idle_arr[$pid]) > 0)){
-        $process_data['ProcessDailyHistoryIdletime'] = $idle_arr[$pid];
-        $process_data['PeriodId'] = $pid;
-    }
-    if($process_data['PeriodId'] != 0){
-        $newDB->insert('processdailyhistory', $process_data);
-    }
-}
+//     if(isset($ok_arr[$pid]) && (intval($ok_arr[$pid]) > 0)){
+//         $process_data['ProcessDailyHistoryOk'] = $ok_arr[$pid];
+//         $process_data['PeriodId'] = $pid;
+//     }
+//     if(isset($ng_arr[$pid]) && (intval($ng_arr[$pid]) > 0)){
+//         $process_data['ProcessDailyHistoryNg'] = $ng_arr[$pid];
+//         $process_data['PeriodId'] = $pid;
+//     }
+//     if(isset($idle_arr[$pid]) && (intval($idle_arr[$pid]) > 0)){
+//         $process_data['ProcessDailyHistoryIdletime'] = $idle_arr[$pid];
+//         $process_data['PeriodId'] = $pid;
+//     }
+//     if($process_data['PeriodId'] != 0){
+//     }
+// }
 ?>

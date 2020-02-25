@@ -29,8 +29,6 @@
 
   }
   if(isset($has_fixedcolumn) && $has_fixedcolumn == true){
- 
-    echo '<link href="../css/fixedcolumn.css" rel="stylesheet">';
   
     }
   ?>

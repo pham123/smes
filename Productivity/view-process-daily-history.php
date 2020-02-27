@@ -108,41 +108,14 @@ if(isset($_SESSION[_site_]['userlang'])){
                             <td>{{p.ProcessDailyHistoryMold}}</td>
                             <td style="border-right: 1px solid orange;">{{p.MachinesName}}</td>
                             <template v-for="(per,index) in periods_data">
-                              <td style="border-right: none;"><input type="number" min="0" style="width: 50px;" :name="'ok_'+p.ProcessDailyHistoryId+'_'+per.PeriodId" @input="test" :value="findOkVal(p,per.PeriodId)"></td>
-                              <td style="border-right: none;border-left:none;"><input type="number" min="0" style="width: 50px;" :name="'ng_'+p.ProcessDailyHistoryId+'_'+per.PeriodId" @input="test" :value="findNgVal(p,per.PeriodId)"></td>
-                              <td style="border-left: none;border-right: 1px solid orange;"><input type="number" min="0" style="width: 50px;" :name="'idletime_'+p.ProcessDailyHistoryId+'_'+per.PeriodId" @input="test" :value="findIdleVal(p,per.PeriodId)"></td>
+                              <td style="border-right: 1px solid #ddd;">{{findOkVal(p,per.PeriodId)}}</td>
+                              <td style="border-right: 1px solid #ddd;"><a style="color: red" :href="'ng-detail.php?id='+findProcessId(p,per.PeriodId)" target="_blank">{{findNgVal(p,per.PeriodId)}}</a></td>
+                              <td style="border-left: none;border-right: 1px solid orange;"><a style="color: chocolate;" :href="'idle-detail.php?id='+findProcessId(p,per.PeriodId)" target="_blank">{{findIdleVal(p,per.PeriodId)}}</a></td>
                             </template>
                           </tr>
                         </tbody>
                       </table>
                     </div>
-                    <table class="my-2 mx-auto d-inline-block table-borderless">
-                      <tr style="background-color: none;">
-                        <form @submit.prevent="addProcess()">
-                          <td style="width: 200px;">
-                            <select class="w-100" id="" v-model="form.TraceStationId" required>
-                              <option value="">child process</option>
-                              <option v-for="s in childStations" :value="s.TraceStationId">{{s.TraceStationName}}</option>
-                            </select>
-                          </td>
-                          <td style="width: 200px;">
-                            <select class="w-100" v-model="form.ProductsId">
-                              <option value="">product</option>
-                              <option v-for="p in products_data" :value="p.ProductsId">{{p.ProductsName}}</option>
-                            </select>
-                          </td>
-                          <td style="width: 130px;" v-if="currentProduct">{{currentProduct?currentProduct.ProductsNumber:''}}</td>
-                          <td style="width: 100px;"><input placeholder="mold" type="text" class="w-100" v-model="form.ProcessDailyHistoryMold"></td>
-                          <td style="width:200px">
-                            <select class="w-100" v-model="form.MachinesId">
-                              <option value="">machine</option>
-                              <option v-for="m in machines_data" :value="m.MachinesId">{{m.MachinesName}}</option>
-                            </select>
-                          </td>
-                          <td><button @click="addProcess()" class="btn-primary">add</button></td>
-                        </form>
-                      </tr>
-                    </table>
                   </div>
                   <div class="text-danger" v-else-if="this.TraceStationId && this.ProcessDailyHistoryDate">
                     Not have any plan
@@ -220,19 +193,8 @@ if(isset($_SESSION[_site_]['userlang'])){
           TraceStationFilter: '',
           ProductFilter: '',
           MachineFilter: '',
-          form: new Form({
-            ProductsId: '',
-            ProcessDailyHistoryMold: '',
-            TraceStationId: '',
-            MachinesId: '',
-            ProcessDailyHistoryOk: [],
-            ProcessDailyHistoryNg: [],
-            ProcessDailyHistoryIdletime: []
-
-          }),
           ProcessDailyHistoryDate:'',
           TraceStationId: '',
-          items: [],
           stations_data: [],
           periods_data: [],
           machines_data: [],
@@ -241,22 +203,19 @@ if(isset($_SESSION[_site_]['userlang'])){
           processes_uniq_data: []
         },
         methods: {
-          test(event){
-            let name = event.target.name;
-            let value = event.target.value;
-            axios.post('updateprocessdata.php',{
-              name: name,
-              value: value
-            }).then((data) => {
-
-            }).catch(()=>{
-
-            });
-          },
           fixColumns(){
             if(!this.isFixed)
               $('#fixTable').tableHeadFixer({"head": false, "left": 6});
             this.isFixed=true;
+          },
+          findProcessId(process,period_id){
+            let p = this.processes_data.filter((value,index) => {
+              return value['TraceStationId'] == process['TraceStationId'] && value['MachinesId'] == process['MachinesId'] && value['ProductsId'] == process['ProductsId'] && value['PeriodId'] == period_id;
+            });
+            if(p.length > 0){
+              return p[0]['ProcessDailyHistoryId'];
+            }
+            return 0;
           },
           findOkVal(process, period_id){
             let p = this.processes_data.filter((value,index) => {
@@ -281,43 +240,6 @@ if(isset($_SESSION[_site_]['userlang'])){
             if(p.length > 0){
               return p[0]['ProcessDailyHistoryIdletime'];
             }
-          },
-          addProcess(){
-            if(!this.form.ProductsId || !this.form.TraceStationId || !this.form.MachinesId || !this.form){
-              alert('please select process, product, machine');
-              return;
-            }
-            this.form.post('test1.php?date='+this.ProcessDailyHistoryDate)
-            .then(({ data }) => {
-              this.loadProcessData();
-              this.form.reset();
-            });
-          },
-          addNewItem(){
-            if(this.TraceStationId=='' || this.ProPlanDate==''){
-              alert('Please select station and date');
-              return;
-            }
-            let plan = {ProductsId: null};
-            this.shifts_data.forEach((value,key) => {
-              let plan_shift_key = 'shift_'+value['ShiftId'];
-              plan[plan_shift_key] = 0;
-            })
-            this.plans.push(plan);
-          },
-          removeLastItem(){
-            if(this.plans.length == 0)
-            {
-              return;
-            }
-            this.plans.splice(-1,1);
-          },
-          removeItem(index){
-            if(this.plans.length == 0)
-            {
-              return;
-            }
-            this.plans.splice(index,1);
           },
           loadProcessData(){
             if(this.TraceStationId && this.ProcessDailyHistoryDate){
@@ -352,11 +274,6 @@ if(isset($_SESSION[_site_]['userlang'])){
             return this.stations_data.filter((value,index) => {
               return value.TraceStationParentId == this.TraceStationId;
             });
-          },
-          currentProduct: function(){
-            return this.products_data.filter((value,index) => {
-              return value['ProductsId'] == this.form.ProductsId
-            })[0];
           },
           filteredProcesses: function(){
             let result = this.processes_uniq_data;

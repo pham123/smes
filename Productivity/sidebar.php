@@ -27,7 +27,8 @@ $arr = array(
   array('showplan.php', 'fas fa-plus-square',$oDB->lang('ViewPlan')),
   array('fi.php', 'fas fa-plus-square',$oDB->lang('FiReport')),
   array('daily.php', 'fas fa-plus-square',$oDB->lang('FiDailyReport')),
-  array('process-daily-history.php', 'fas fa-history',$oDB->lang('ProcessDailyReport'))
+  array('process-daily-history.php', 'fas fa-history',$oDB->lang('ProcessDailyReport')),
+  array('view-process-daily-history.php', 'fas fa-eye',$oDB->lang('ViewProcessHistory')),
 
 );
 echo nav_item($oDB->lang('Plan'),$arr);

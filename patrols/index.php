@@ -18,6 +18,10 @@ $newDb = new MysqliDb(_DB_HOST_, _DB_USER_, _DB_PASS_, _DB_name_);
 if(isset($_SESSION[_site_]['userlang'])){
   $oDB->lang = ucfirst($_SESSION[_site_]['userlang']);
 }
+if (!is_dir(__DIR__."\logs")) {
+  mkdir(__DIR__."\logs", 0700);
+}
+w_logs(__DIR__."\logs\\login\\", $_SESSION[_site_]['userid'].'_'.$_SESSION[_site_]['username'].' access');
 ?>
 <body>
 

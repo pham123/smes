@@ -15,6 +15,7 @@ $page_css = 'table th,table td{font-size: 15px;}';
 require('../views/template-header.php');
 require('../function/template.php');
 $oDB = new db();
+w_logs(__DIR__."\logs\\login\\", $_SESSION[_site_]['userid'].'_'.$_SESSION[_site_]['username'].' access');
 ?>
 
 <body id="page-top">

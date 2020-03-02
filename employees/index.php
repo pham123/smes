@@ -24,6 +24,10 @@ $newDB->join("divisions d", "s.DivisionsId=d.DivisionsId", "LEFT");
 $newDB->join("teams t", "t.TeamsId=s.TeamsId", "LEFT");
 $table_data = $newDB->get ("employees e", null, "e.EmployeesId as id,e.EmployeesName,e.EmployeesCode,t.TeamsName,s.SectionName,e.EmployeesPosition,d.DivisionsName, concat('<img src=\"image/small/img_',e.EmployeesId, '.jpg\" style=\"height: 45px;\"/>') as Picture");
 $table_link = "editemployee.php?id=";
+if (!is_dir(__DIR__."\logs")) {
+  mkdir(__DIR__."\logs", 0700);
+}
+w_logs(__DIR__."\logs\\login\\", $_SESSION[_site_]['userid'].'_'.$_SESSION[_site_]['username'].' access');
 ?>
 
 <body id="page-top">

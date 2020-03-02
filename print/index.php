@@ -28,6 +28,10 @@ $oDB = new db();
 // }else {
 //   $sql = "Select * from ".$target;
 // }
+if (!is_dir(__DIR__."\logs")) {
+  mkdir(__DIR__."\logs", 0700);
+}
+w_logs(__DIR__."\logs\\login\\", $_SESSION[_site_]['userid'].'_'.$_SESSION[_site_]['username'].' access');
 
 ?>
 

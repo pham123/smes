@@ -45,6 +45,9 @@ function color($key){
 function w_logs($dir,$content){
 	$name = date("Y-m-d");
 	$foldername = date("Ym");
+	if (!is_dir($dir)) {
+		mkdir($dir, 0700);
+	}
 	if (!is_dir($dir.$foldername)) {
 		mkdir($dir.$foldername, 0700);
 	}

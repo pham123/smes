@@ -29,7 +29,7 @@ if($process){
         $newDB->where('TraceStationId', $process['TraceStationId']);
         $newDB->where('ProcessDailyHistoryDate', $process['ProcessDailyHistoryDate']);
         $newDB->where('PeriodId', $arr[2]);
-        $newDB->update('processdailyhistory', ['ProcessDailyHistory'.ucfirst($arr[0]) => $value,'LastUpdateUser' => $_SESSION[_site_]['userfullname']]);
+        $newDB->update('processdailyhistory', ['ProcessDailyHistory'.ucfirst($arr[0]) => $value,'LastUpdateUser' => $_SESSION[_site_]['userid']]);
     }else{
         $newDB->insert('processdailyhistory', [
             'ProcessDailyHistoryDate' => $process['ProcessDailyHistoryDate'],
@@ -39,7 +39,7 @@ if($process){
             'TraceStationId' => $process['TraceStationId'],
             'PeriodId' => $arr[2],
             'ProcessDailyHistory'.ucfirst($arr[0]) => $value,
-            'LastUpdateUser' => $_SESSION[_site_]['userfullname']
+            'LastUpdateUser' => $_SESSION[_site_]['userid']
             ]);
     }
 }

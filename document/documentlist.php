@@ -88,7 +88,7 @@ if(isset($_SESSION[_site_]['userlang'])){
                         <td></td>
                         <td></td>";
                     if ($_SESSION[_site_]['userid']==$value['UsersId']) {
-                      echo "<td><a href=''><i class='fas fa-pencil-alt'></i></a></td>";
+                      echo "<td><a href='editdoc.php?id=".$value['DocumentId']."'><i class='fas fa-pencil-alt'></i></a></td>";
                     }else{
                       echo "<td></td>";
                     }
@@ -103,11 +103,6 @@ if(isset($_SESSION[_site_]['userlang'])){
           </div>
         
         </div>
-        
-
-  
-
-
       <!-- End of Main Content -->
 
       <!-- Footer -->

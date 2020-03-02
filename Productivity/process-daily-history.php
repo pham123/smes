@@ -350,7 +350,7 @@ if(isset($_SESSION[_site_]['userlang'])){
           },
           childStations: function(){
             return this.stations_data.filter((value,index) => {
-              return value.TraceStationParentId == this.TraceStationId;
+              return value.TraceStationParentId == this.TraceStationId || value.TraceStationId == this.TraceStationId;
             });
           },
           currentProduct: function(){

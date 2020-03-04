@@ -37,8 +37,22 @@ w_logs(__DIR__."\logs\\login\\", $_SESSION[_site_]['userid'].'_'.$_SESSION[_site
         <!-- Begin Page Content -->
         <div class="container-fluid">
         <?php 
-          $table_header  = 'ProductsName,ProductsNumber,ProductsSize,ProductsDescription';
-          $table_data = $oDB->sl_col_all($table_header,'Products','ProductsOption=1');
+          $table_header  = 'ProductsNumber,ProductsName,ModelsName,ProductsDescription';
+          // $table_data = $oDB->sl_col_all($table_header,'Products','ProductsOption=1');
+
+          $sql = "SELECT
+          Products.ProductsId as id,
+          Products.ProductsName,
+          Products.ProductsNumber,
+          Products.ProductsDescription,
+          Models.ModelsName
+          FROM `products`
+          INNER JOIN Models on Models.ModelsId = Products.ModelsId
+          WHERE Products.ProductsOption = 1";
+
+          $table_data = $oDB->fetchAll($sql);
+
+          //var_dump ($table_data);
           $table_link = "editmaterial.php?id=";
           $product_picture = "Product Picture";
         ?>

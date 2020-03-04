@@ -67,7 +67,16 @@ for ($i=0; $i < $ngaycuoithang; $i++) {
             <span>Select station: </span>
             <select name="id" id="">
               <option value="">Select station</option>
-              <option value="5">Fi</option>
+              <?php
+
+              $sql = "SELECT * FROM TraceStation";
+              $TraceStation = $oDB->fetchAll($sql);
+              foreach ($TraceStation as $key => $value) {
+                echo "<option value='".$value['TraceStationId']."'>".$value['TraceStationName']."</option>";
+              }
+
+              ?>
+              
             </select>
 
             <button type="submit">Submit</button>

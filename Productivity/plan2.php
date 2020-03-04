@@ -21,6 +21,11 @@ $shifts = $newDB->get('shift');
 if(isset($_SESSION[_site_]['userlang'])){
   $oDB->lang = ucfirst($_SESSION[_site_]['userlang']);
 }
+
+for($i = 1; $i <=  date('t'); $i++)
+{
+   $dates[] = str_pad($i, 2, '0', STR_PAD_LEFT);
+}
 ?>
 
 <body id="page-top">
@@ -44,10 +49,10 @@ if(isset($_SESSION[_site_]['userlang'])){
             <div class="row">
               <div class="col-12">
                 <div class="card" id="app">
-                  <h5 class="card-header">Process daily history</h5>
+                  <h5 class="card-header">Add &amp; view plan</h5>
                   <p class="my-1">Station:&nbsp;<select v-model="TraceStationId" @change="loadProcessData()">
                     <?php
-                    $tracestations = $oDB->sl_all('tracestation'," TraceStationParentId is null");
+                    $tracestations = $oDB->sl_all('tracestation',"1");
                     echo "<option value=''>select station</option>";
                     foreach ($tracestations as $key => $value) {
                         echo "<option value='".$value['TraceStationId']."'>".$value['TraceStationName']."</option>";
@@ -60,22 +65,10 @@ if(isset($_SESSION[_site_]['userlang'])){
                       <table class="my-1 mx-auto d-inline-block table-borderless">
                         <tr style="background-color: none;">
                           <td><strong>Filter:</strong></td>
-                          <td style="width: 150px;">
-                            <select class="w-100" id="" v-model="TraceStationFilter">
-                              <option value="">child process</option>
-                              <option v-for="s in childStations" :value="s.TraceStationId">{{s.TraceStationName}}</option>
-                            </select>
-                          </td>
                           <td style="width: 280px;">
                             <select class="w-100" v-model="ProductFilter">
                               <option value="">product</option>
                               <option v-for="p in products_data" :value="p.ProductsId">{{p.ProductsName}}</option>
-                            </select>
-                          </td>
-                          <td style="width:120px">
-                            <select class="w-100" v-model="MachineFilter">
-                              <option value="">machine</option>
-                              <option v-for="m in machines_data" :value="m.MachinesId">{{m.MachinesName}}</option>
                             </select>
                           </td>
                         </tr>
@@ -84,11 +77,8 @@ if(isset($_SESSION[_site_]['userlang'])){
                         <thead>
                           <tr>
                             <th rowspan="2" style="min-width: 30px;">#</th>
-                            <th rowspan="2" style="min-width: 130px;">Process</th>
                             <th rowspan="2" style="min-width: 150px;">Part Name</th>
                             <th rowspan="2" style="min-width: 130px;">Part No</th>
-                            <th rowspan="2" style="min-width: 70px;">Mold</th>
-                            <th rowspan="2">Machine</th>
                             <th colspan="3" v-for="p in periods_data">{{p.PeriodName}}</th>
                           </tr>
                           <tr class="notincl">
@@ -102,11 +92,8 @@ if(isset($_SESSION[_site_]['userlang'])){
                         <tbody>
                           <tr v-for="(p,index) in filteredProcesses">
                             <td>{{index+1}}</td>
-                            <td>{{p.TraceStationName}}</td>
                             <td>{{p.ProductsName}}</td>
                             <td>{{p.ProductsNumber}}</td>
-                            <td>{{p.ProcessDailyHistoryMold}}</td>
-                            <td style="border-right: 1px solid orange;">{{p.MachinesName}}</td>
                             <template v-for="(per,index) in periods_data">
                               <td style="border-right: none;"><input type="number" min="0" style="width: 50px;" :name="'ok_'+p.ProcessDailyHistoryId+'_'+per.PeriodId" @input="test" :value="findOkVal(p,per.PeriodId)"></td>
                               <td style="border-right: none;border-left:none;"><input type="number" min="0" style="width: 50px;" :name="'ng_'+p.ProcessDailyHistoryId+'_'+per.PeriodId" @input="test" :value="findNgVal(p,per.PeriodId)"></td>
@@ -120,25 +107,12 @@ if(isset($_SESSION[_site_]['userlang'])){
                       <tr style="background-color: none;">
                         <form @submit.prevent="addProcess()">
                           <td style="width: 200px;">
-                            <select class="w-100" id="" v-model="form.TraceStationId" required @change="loadMachines">
-                              <option value="">child process</option>
-                              <option v-for="s in childStations" :value="s.TraceStationId">{{s.TraceStationName}}</option>
-                            </select>
-                          </td>
-                          <td style="width: 200px;">
                             <select class="w-100" v-model="form.ProductsId">
                               <option value="">product</option>
                               <option v-for="p in products_data" :value="p.ProductsId">{{p.ProductsName}}</option>
                             </select>
                           </td>
                           <td style="width: 130px;" v-if="currentProduct">{{currentProduct?currentProduct.ProductsNumber:''}}</td>
-                          <td style="width: 100px;"><input placeholder="mold" type="text" class="w-100" v-model="form.ProcessDailyHistoryMold"></td>
-                          <td style="width:200px">
-                            <select class="w-100" v-model="form.MachinesId">
-                              <option value="">machine</option>
-                              <option v-for="m in machines_data" :value="m.MachinesId">{{m.MachinesName}}</option>
-                            </select>
-                          </td>
                           <td><button @click="addProcess()" class="btn-primary">add</button></td>
                         </form>
                       </tr>
@@ -217,25 +191,22 @@ if(isset($_SESSION[_site_]['userlang'])){
         el: '#app',
         data: {
           isFixed: false,
-          TraceStationFilter: '',
           ProductFilter: '',
-          MachineFilter: '',
           form: new Form({
             ProductsId: '',
-            ProcessDailyHistoryMold: '',
             TraceStationId: '',
-            MachinesId: '',
             ProcessDailyHistoryOk: [],
             ProcessDailyHistoryNg: [],
             ProcessDailyHistoryIdletime: []
 
           }),
           ProcessDailyHistoryDate:'',
+          monthYear: '<?php echo "".date("Y")."-".date("m"); ?>',
+          dateInMonths: <?php echo json_encode($dates) ?>,
           TraceStationId: '',
           items: [],
           stations_data: [],
-          periods_data: [],
-          machines_data: [],
+          shifts_data: [],
           products_data: [],
           processes_data: [],
           processes_uniq_data: []
@@ -255,7 +226,7 @@ if(isset($_SESSION[_site_]['userlang'])){
           },
           fixColumns(){
             if(!this.isFixed)
-              $('#fixTable').tableHeadFixer({"head": false, "left": 6});
+              $('#fixTable').tableHeadFixer({"head": false, "left": 3});
             this.isFixed=true;
           },
           findOkVal(process, period_id){
@@ -319,21 +290,10 @@ if(isset($_SESSION[_site_]['userlang'])){
             }
             this.plans.splice(index,1);
           },
-          loadMachines(){
-            if(this.form.TraceStationId){
-              axios.get('/smes/productivity/loadmachinesdata.php?tracestationid='+this.form.TraceStationId+'&date='+this.ProcessDailyHistoryDate).then(({data}) => {
-                this.machines_data = data['machines'];
-              }).catch(() => {
-                console.log('error');
-              });
-            }else{
-              // alert('not select station or date');
-            }
-          },
           loadProcessData(){
             if(this.TraceStationId && this.ProcessDailyHistoryDate){
               axios.get('/smes/productivity/loadprocessdata.php?tracestationid='+this.TraceStationId+'&date='+this.ProcessDailyHistoryDate).then(({data}) => {
-                // this.machines_data = data['machines'];
+                this.machines_data = data['machines'];
                 this.products_data = data['products'];
                 this.processes_data = data['processes'];
                 this.processes_uniq_data = data['processes_uniq'];
@@ -347,9 +307,9 @@ if(isset($_SESSION[_site_]['userlang'])){
           }
         },
         created: function(){
-          axios.get('/smes/productivity/loadprocessdailyhistorydata.php').then(({data}) => {
+          axios.get('/smes/productivity/loadplandata2.php').then(({data}) => {
             this.stations_data = data['tracestations'];
-            this.periods_data = data['periods'];
+            this.shifts_data = data['shifts'];
           }).catch(() => {
             console.log('error');
           });
@@ -359,11 +319,6 @@ if(isset($_SESSION[_site_]['userlang'])){
             return true;
 
           },
-          childStations: function(){
-            return this.stations_data.filter((value,index) => {
-              return value.TraceStationParentId == this.TraceStationId || value.TraceStationId == this.TraceStationId;
-            });
-          },
           currentProduct: function(){
             return this.products_data.filter((value,index) => {
               return value['ProductsId'] == this.form.ProductsId
@@ -371,19 +326,9 @@ if(isset($_SESSION[_site_]['userlang'])){
           },
           filteredProcesses: function(){
             let result = this.processes_uniq_data;
-            if(this.TraceStationFilter != ''){
-              result = result.filter((value,index) => {
-                return value['TraceStationId'] == this.TraceStationFilter;
-              });
-            }
             if(this.ProductFilter != ''){
               result = result.filter((value,index) => {
                 return value['ProductsId'] == this.ProductFilter;
-              });
-            }
-            if(this.MachineFilter != ''){
-              result = result.filter((value,index) => {
-                return value['MachinesId'] == this.MachineFilter;
               });
             }
             return result;

@@ -82,7 +82,7 @@ $employees = $newDB->get('employees');
         <form action="manage_user_module.php?uid=<?php echo $uid ?>" method="Post">
           <div class="form-group row">
             Employee:&nbsp;
-            <select required class="form-control" name="EmployeesId">
+            <select required class="form-control selectpicker" data-style="btn-secondary" data-live-search='true' name="EmployeesId">
             <?php
             echo "<option value=''>select employee</option>";
             foreach ($employees as $key => $value) {

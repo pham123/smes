@@ -24,6 +24,7 @@
 
 $arr = array(
   array('plan.php', 'fas fa-plus-square',$oDB->lang('AddPlan')),
+  array('plan2.php', 'fas fa-plus-square',$oDB->lang('Add &ViewPlan')),
   array('showplan.php', 'fas fa-plus-square',$oDB->lang('ViewPlan')),
   array('fi.php', 'fas fa-plus-square',$oDB->lang('FiReport')),
   array('daily.php', 'fas fa-plus-square',$oDB->lang('FiDailyReport')),

@@ -88,14 +88,14 @@ if(isset($_SESSION[_site_]['userlang'])){
                             <th rowspan="2" style="min-width: 150px;">Part Name</th>
                             <th rowspan="2" style="min-width: 130px;">Part No</th>
                             <th rowspan="2" style="min-width: 70px;">Mold</th>
-                            <th rowspan="2">Machine</th>
-                            <th colspan="3" v-for="p in periods_data">{{p.PeriodName}}</th>
+                            <th rowspan="2" style="border-right: 2px solid gold;">Machine</th>
+                            <th colspan="3" v-for="p in periods_data" style="border-right: 2px solid gold;">{{p.PeriodName}}</th>
                           </tr>
                           <tr class="notincl">
                             <template v-for="p in periods_data">
                               <td class="bg-success text-white">OK</td>
                               <td class="bg-danger">NG</th>
-                              <td class="bg-warning">Idle</td>
+                              <td class="bg-warning" style="border-right: 2px solid gold;">Idle</td>
                             </template>
                           </tr>
                         </thead>
@@ -106,11 +106,11 @@ if(isset($_SESSION[_site_]['userlang'])){
                             <td>{{p.ProductsName}}</td>
                             <td>{{p.ProductsNumber}}</td>
                             <td>{{p.ProcessDailyHistoryMold}}</td>
-                            <td style="border-right: 1px solid orange;">{{p.MachinesName}}</td>
+                            <td style="border-right: 2px solid gold;">{{p.MachinesName}}</td>
                             <template v-for="(per,index) in periods_data">
                               <td style="border-right: none;"><input type="number" min="0" style="width: 50px;" :name="'ok_'+p.ProcessDailyHistoryId+'_'+per.PeriodId" @input="test" :value="findOkVal(p,per.PeriodId)"></td>
                               <td style="border-right: none;border-left:none;"><input type="number" min="0" style="width: 50px;" :name="'ng_'+p.ProcessDailyHistoryId+'_'+per.PeriodId" @input="test" :value="findNgVal(p,per.PeriodId)"></td>
-                              <td style="border-left: none;border-right: 1px solid orange;"><input type="number" min="0" style="width: 50px;" :name="'idletime_'+p.ProcessDailyHistoryId+'_'+per.PeriodId" @input="test" :value="findIdleVal(p,per.PeriodId)"></td>
+                              <td style="border-left: none;border-right: 2px solid gold;"><input type="number" min="0" style="width: 50px;" :name="'idletime_'+p.ProcessDailyHistoryId+'_'+per.PeriodId" @input="test" :value="findIdleVal(p,per.PeriodId)"></td>
                             </template>
                           </tr>
                         </tbody>

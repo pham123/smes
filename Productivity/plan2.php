@@ -49,8 +49,8 @@ for($i = 1; $i <=  date('t'); $i++)
             <div class="row">
               <div class="col-12">
                 <div class="card" id="app">
-                  <h5 class="card-header">Add &amp; view plan</h5>
-                  <p class="my-1">Station:&nbsp;<select v-model="TraceStationId" @change="loadProcessData()">
+                  <h5 class="card-header">Plans in <?php echo date('Y-m');?></h5>
+                  <p class="my-1">Station:&nbsp;<select v-model="TraceStationId" @change="loadPlanData()">
                     <?php
                     $tracestations = $oDB->sl_all('tracestation',"1");
                     echo "<option value=''>select station</option>";
@@ -59,9 +59,9 @@ for($i = 1; $i <=  date('t'); $i++)
                     }
                         
                     ?>
-                  </select>&nbsp;Date:&nbsp;<input type="date" v-model="ProcessDailyHistoryDate" @change="loadProcessData()"/>&nbsp;<button class="btn btn-info btn-sm" v-if="!isFixed && products_data.length > 0" @click="fixColumns">Fix columns</button></p>
-                  <div v-if="this.TraceStationId && this.ProcessDailyHistoryDate && this.products_data.length > 0">
-                    <div class="card-body pt-0 pl-0" id="parent" style="overflow: auto;">
+                  </select>&nbsp;<button class="btn btn-info btn-sm" v-if="!isFixed && plans_data.length > 0" @click="fixColumns">Fix columns</button></p>
+                  <div v-if="this.TraceStationId">
+                    <div class="card-body pt-0 pl-0" id="parent" style="overflow: auto;" v-if="this.plans_uniq_data.length>0">
                       <table class="my-1 mx-auto d-inline-block table-borderless">
                         <tr style="background-color: none;">
                           <td><strong>Filter:</strong></td>
@@ -78,34 +78,43 @@ for($i = 1; $i <=  date('t'); $i++)
                           <tr>
                             <th rowspan="2" style="min-width: 30px;">#</th>
                             <th rowspan="2" style="min-width: 150px;">Part Name</th>
-                            <th rowspan="2" style="min-width: 130px;">Part No</th>
-                            <th colspan="3" v-for="p in periods_data">{{p.PeriodName}}</th>
+                            <th rowspan="2" style="min-width: 130px; border-right: 2px solid gold;">Part No</th>
+                            <th :colspan="shifts_data.length" v-for="d in daysInMonth" style="border-right: 2px solid gold;">{{d}}</th>
                           </tr>
                           <tr class="notincl">
-                            <template v-for="p in periods_data">
-                              <td class="bg-success text-white">OK</td>
-                              <td class="bg-danger">NG</th>
-                              <td class="bg-warning">Idle</td>
+                            <template v-for="d in daysInMonth">
+                              <td v-for="(sh,j) in shifts_data" :style="(j == (shifts_data.length-1))?'border-right: 2px solid gold;':'border-right:none;'">
+                                {{sh.ShiftName}}
+                              </td>
                             </template>
                           </tr>
                         </thead>
                         <tbody>
-                          <tr v-for="(p,index) in filteredProcesses">
+                          <tr v-for="(p,index) in filteredPlans">
                             <td>{{index+1}}</td>
                             <td>{{p.ProductsName}}</td>
-                            <td>{{p.ProductsNumber}}</td>
-                            <template v-for="(per,index) in periods_data">
-                              <td style="border-right: none;"><input type="number" min="0" style="width: 50px;" :name="'ok_'+p.ProcessDailyHistoryId+'_'+per.PeriodId" @input="test" :value="findOkVal(p,per.PeriodId)"></td>
-                              <td style="border-right: none;border-left:none;"><input type="number" min="0" style="width: 50px;" :name="'ng_'+p.ProcessDailyHistoryId+'_'+per.PeriodId" @input="test" :value="findNgVal(p,per.PeriodId)"></td>
-                              <td style="border-left: none;border-right: 1px solid orange;"><input type="number" min="0" style="width: 50px;" :name="'idletime_'+p.ProcessDailyHistoryId+'_'+per.PeriodId" @input="test" :value="findIdleVal(p,per.PeriodId)"></td>
+                            <td style="border-right: 2px solid gold;;">{{p.ProductsNumber}}</td>
+                            <template v-for="(d,i) in daysInMonth">
+                              <td v-for="(sh,j) in shifts_data" :style="(j == (shifts_data.length-1))?'border-right: 2px solid gold;':'border-right:none;'">
+                                <span v-if="checkValidState(d)">
+                                  <input type="number" min="0" style="width: 60px;" :name="'date_'+monthYear+'-'+d+'_'+p.ProPlanId+'_'+sh.ShiftId" @input="test" :value="findQty(p,d,sh.ShiftId)">
+                                </span>
+                                <span v-else style="width: 60px;display:inline-block;">
+                                  {{findQty(p,d,sh.ShiftId)}}
+                                </span>
+                              </td>
+
                             </template>
                           </tr>
                         </tbody>
                       </table>
                     </div>
+                    <div class="text-danger text-center" v-else>
+                      Not have any data
+                    </div>
                     <table class="my-2 mx-auto d-inline-block table-borderless">
                       <tr style="background-color: none;">
-                        <form @submit.prevent="addProcess()">
+                        <form @submit.prevent="addPlan()">
                           <td style="width: 200px;">
                             <select class="w-100" v-model="form.ProductsId">
                               <option value="">product</option>
@@ -113,13 +122,10 @@ for($i = 1; $i <=  date('t'); $i++)
                             </select>
                           </td>
                           <td style="width: 130px;" v-if="currentProduct">{{currentProduct?currentProduct.ProductsNumber:''}}</td>
-                          <td><button @click="addProcess()" class="btn-primary">add</button></td>
+                          <td><button @click="addPlan()" class="btn-primary">add</button></td>
                         </form>
                       </tr>
                     </table>
-                  </div>
-                  <div class="text-danger" v-else-if="this.TraceStationId && this.ProcessDailyHistoryDate">
-                    Not have any plan
                   </div>
                 </div>
               </div>
@@ -184,6 +190,11 @@ for($i = 1; $i <=  date('t'); $i++)
 <script src="../js/vform.js"></script>
 
 <script>
+  Number.prototype.pad = function(size) {
+    var s = String(this);
+    while (s.length < (size || 2)) {s = "0" + s;}
+    return s;
+  }
   $(function () {
       const { Form } = window.vform;
       Vue.component('v-select', VueSelect.VueSelect);
@@ -193,29 +204,23 @@ for($i = 1; $i <=  date('t'); $i++)
           isFixed: false,
           ProductFilter: '',
           form: new Form({
-            ProductsId: '',
-            TraceStationId: '',
-            ProcessDailyHistoryOk: [],
-            ProcessDailyHistoryNg: [],
-            ProcessDailyHistoryIdletime: []
-
+            ProductsId: ''
           }),
-          ProcessDailyHistoryDate:'',
           monthYear: '<?php echo "".date("Y")."-".date("m"); ?>',
-          dateInMonths: <?php echo json_encode($dates) ?>,
+          daysInMonth: <?php echo json_encode($dates) ?>,
           TraceStationId: '',
           items: [],
           stations_data: [],
           shifts_data: [],
           products_data: [],
-          processes_data: [],
-          processes_uniq_data: []
+          plans_data: [],
+          plans_uniq_data: []
         },
         methods: {
           test(event){
             let name = event.target.name;
             let value = event.target.value;
-            axios.post('updateprocessdata.php',{
+            axios.post('updateplandata.php',{
               name: name,
               value: value
             }).then((data) => {
@@ -224,43 +229,47 @@ for($i = 1; $i <=  date('t'); $i++)
 
             });
           },
+          checkValidState(day){
+            let date = this.monthYear+'-'+day;
+            let now = new Date();
+            let todayStr = now.getFullYear().toString() + '-' + ((now.getMonth() + 1)>=10?(now.getMonth()+1) : '0'+(now.getMonth()+1)).toString() + '-' + (now.getDate() >=10 ? now.getDate().toString() : '0'+ (now.getDate().toString())).toString();
+            let hm = (now.getHours()).pad()+':'+(now.getMinutes()).pad();
+            if(hm > '16:00'){
+              if(todayStr >= date){
+                return false
+              }else{
+                return true;
+              }
+            }else{
+              if(todayStr > date){
+                return false
+              }else{
+                return true;
+              }
+            }
+          },
           fixColumns(){
             if(!this.isFixed)
               $('#fixTable').tableHeadFixer({"head": false, "left": 3});
             this.isFixed=true;
           },
-          findOkVal(process, period_id){
-            let p = this.processes_data.filter((value,index) => {
-              return value['TraceStationId'] == process['TraceStationId'] && value['MachinesId'] == process['MachinesId'] && value['ProductsId'] == process['ProductsId'] && value['PeriodId'] == period_id;
+          findQty(plan, day, shiftId){
+            let date = this.monthYear+'-'+day;
+            let p = this.plans_data.filter((value,index) => {
+              return value['TraceStationId'] == plan['TraceStationId'] && value['ProductsId'] == plan['ProductsId'] && value['ProPlanDate'] == date && value['ShiftId'] == shiftId;
             });
             if(p.length > 0){
-              return p[0]['ProcessDailyHistoryOk'];
+              return p[0]['ProPlanQuantity'];
             }
           },
-          findNgVal(process, period_id){
-            let p = this.processes_data.filter((value,index) => {
-              return value['TraceStationId'] == process['TraceStationId'] && value['MachinesId'] == process['MachinesId'] && value['ProductsId'] == process['ProductsId'] && value['PeriodId'] == period_id;
-            });
-            if(p.length > 0){
-              return p[0]['ProcessDailyHistoryNg'];
-            }
-          },
-          findIdleVal(process, period_id){
-            let p = this.processes_data.filter((value,index) => {
-              return value['TraceStationId'] == process['TraceStationId'] && value['MachinesId'] == process['MachinesId'] && value['ProductsId'] == process['ProductsId'] && value['PeriodId'] == period_id;
-            });
-            if(p.length > 0){
-              return p[0]['ProcessDailyHistoryIdletime'];
-            }
-          },
-          addProcess(){
-            if(!this.form.ProductsId || !this.form.TraceStationId || !this.form.MachinesId || !this.form){
+          addPlan(){
+            if(!this.form.ProductsId || !this.TraceStationId){
               alert('please select process, product, machine');
               return;
             }
-            this.form.post('test1.php?date='+this.ProcessDailyHistoryDate)
+            this.form.post('addplanajax2.php?date='+this.monthYear+'&station='+this.TraceStationId)
             .then(({ data }) => {
-              this.loadProcessData();
+              this.loadPlanData();
               this.form.reset();
             });
           },
@@ -290,13 +299,11 @@ for($i = 1; $i <=  date('t'); $i++)
             }
             this.plans.splice(index,1);
           },
-          loadProcessData(){
-            if(this.TraceStationId && this.ProcessDailyHistoryDate){
-              axios.get('/smes/productivity/loadprocessdata.php?tracestationid='+this.TraceStationId+'&date='+this.ProcessDailyHistoryDate).then(({data}) => {
-                this.machines_data = data['machines'];
-                this.products_data = data['products'];
-                this.processes_data = data['processes'];
-                this.processes_uniq_data = data['processes_uniq'];
+          loadPlanData(){
+            if(this.TraceStationId){
+              axios.get('/smes/productivity/load_plans_when_station_change_2.php?tracestationid='+this.TraceStationId).then(({data}) => {
+                this.plans_data = data['plans'];
+                this.plans_uniq_data = data['plans_uniq'];
                 this.isFixed = false;
               }).catch(() => {
                 console.log('error');
@@ -310,6 +317,7 @@ for($i = 1; $i <=  date('t'); $i++)
           axios.get('/smes/productivity/loadplandata2.php').then(({data}) => {
             this.stations_data = data['tracestations'];
             this.shifts_data = data['shifts'];
+            this.products_data = data['products'];
           }).catch(() => {
             console.log('error');
           });
@@ -324,8 +332,8 @@ for($i = 1; $i <=  date('t'); $i++)
               return value['ProductsId'] == this.form.ProductsId
             })[0];
           },
-          filteredProcesses: function(){
-            let result = this.processes_uniq_data;
+          filteredPlans: function(){
+            let result = this.plans_uniq_data;
             if(this.ProductFilter != ''){
               result = result.filter((value,index) => {
                 return value['ProductsId'] == this.ProductFilter;

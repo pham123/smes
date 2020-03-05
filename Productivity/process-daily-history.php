@@ -61,7 +61,7 @@ if(isset($_SESSION[_site_]['userlang'])){
                         <tr style="background-color: none;">
                           <td><strong>Filter:</strong></td>
                           <td style="width: 150px;">
-                            <select class="w-100" id="" v-model="TraceStationFilter">
+                            <select class="w-100" id="" v-model="TraceStationFilter" @change="loadMachinesFilter">
                               <option value="">child process</option>
                               <option v-for="s in childStations" :value="s.TraceStationId">{{s.TraceStationName}}</option>
                             </select>
@@ -321,7 +321,18 @@ if(isset($_SESSION[_site_]['userlang'])){
           },
           loadMachines(){
             if(this.form.TraceStationId){
-              axios.get('/smes/productivity/loadmachinesdata.php?tracestationid='+this.form.TraceStationId+'&date='+this.ProcessDailyHistoryDate).then(({data}) => {
+              axios.get('/smes/productivity/loadmachinesdata.php?tracestationid='+this.TraceStationFilter).then(({data}) => {
+                this.machines_data = data['machines'];
+              }).catch(() => {
+                console.log('error');
+              });
+            }else{
+              // alert('not select station or date');
+            }
+          },
+          loadMachinesFilter(){
+            if(this.form.TraceStationId){
+              axios.get('/smes/productivity/loadmachinesdata.php?tracestationid='+this.form.TraceStationId).then(({data}) => {
                 this.machines_data = data['machines'];
               }).catch(() => {
                 console.log('error');

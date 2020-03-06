@@ -12,8 +12,8 @@ check($user->acess());
 $pagetitle = $user->module;
 require('../views/template-header.php');
 require('../function/template.php');
-$stationid = 5;
-$stationid = (isset($_GET['id'])) ? safe($_GET['id']) : 5 ;
+// $stationid = 5;
+$stationid = (isset($_GET['TraceStationId'])) ? safe($_GET['TraceStationId']) : 3 ;
 $oDB = new db();
 $nam = date("Y");
 $thang = date("m");
@@ -65,19 +65,9 @@ for ($i=0; $i < $ngaycuoithang; $i++) {
         <div>
           <form action="" method="get">
             <span>Select station: </span>
-            <select name="id" id="">
-              <option value="">Select station</option>
-              <?php
-
-              $sql = "SELECT * FROM TraceStation";
-              $TraceStation = $oDB->fetchAll($sql);
-              foreach ($TraceStation as $key => $value) {
-                echo "<option value='".$value['TraceStationId']."'>".$value['TraceStationName']."</option>";
-              }
-
-              ?>
-              
-            </select>
+            <?php
+            makedroplist('TraceStation',$where=1,$stationid,'')
+            ?>
 
             <button type="submit">Submit</button>
           

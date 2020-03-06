@@ -61,7 +61,7 @@ $oDB = new db();
           inner join TraceStation ts on ts.TraceStationId = lh.TraceStationId
           inner join LabelList lbl on lbl.LabelListValue = lh.LabelHistoryLabelValue
           inner join Products prd on prd.ProductsId = lbl.ProductsId AND prd.ProductsOption <> 4
-          Where lh.ProductsId is Null
+          -- Where lh.ProductsId is Null
           ORDER BY lh.LabelHistoryId DESC LIMIT 5000";
 
           $result = $oDB->fetchAll($sql);

@@ -252,9 +252,9 @@ class ResizeImage
 	}
 }
 
-function makedroplist($table,$where=1,$selected=null){
+function makedroplist($table,$where=1,$selected=null,$width='100%'){
 	global $oDB;
-	$text = "<select name='".$table."Id' id='' class='selectpicker show-tick' data-live-search='true' data-style='btn-info' data-width='100%'>";
+	$text = "<select name='".$table."Id' id='' class='selectpicker show-tick' data-live-search='true' data-style='btn-info' data-width='".$width."'>";
 	$model = $oDB->sl_all($table,$where);
 	foreach ($model as $key => $value) {
 		$select = ($selected==$value[$table.'Id']) ? 'selected' : '' ;

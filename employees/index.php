@@ -20,8 +20,8 @@ $table_header  = 'EmployeesName,EmployeesCode,TeamsName,SectionName,EmployeesPos
 //using new db library
 $newDB = new MysqliDb(_DB_HOST_, _DB_USER_, _DB_PASS_,_DB_name_);
 $newDB->join("section s", "e.SectionId=s.SectionId", "LEFT");
-$newDB->join("divisions d", "s.DivisionsId=d.DivisionsId", "LEFT");
-$newDB->join("teams t", "t.TeamsId=s.TeamsId", "LEFT");
+$newDB->join("divisions d", "e.DivisionsId=d.DivisionsId", "LEFT");
+$newDB->join("teams t", "t.TeamsId=e.TeamsId", "LEFT");
 $table_data = $newDB->get ("employees e", null, "e.EmployeesId as id,e.EmployeesName,e.EmployeesCode,t.TeamsName,s.SectionName,e.EmployeesPosition,d.DivisionsName, concat('<img src=\"image/small/img_',e.EmployeesId, '.jpg\" style=\"height: 45px;\"/>') as Picture");
 $table_link = "editemployee.php?id=";
 if (!is_dir(__DIR__."\logs")) {

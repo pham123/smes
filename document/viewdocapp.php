@@ -18,14 +18,17 @@ $oDB = new db();
 if(isset($_SESSION[_site_]['userlang'])){
   $oDB->lang = ucfirst($_SESSION[_site_]['userlang']);
 }
+$newDB = new MysqliDb(_DB_HOST_, _DB_USER_, _DB_PASS_, _DB_name_);
 if (isset($_GET['id'])&&is_numeric($_GET['id'])) {
   $id = safe($_GET['id']);
-  $thisdoc = $oDB->sl_one('Document','DocumentId='.$id);
+  $newDB->where('d.DocumentId', $id);
+  $newDB->join('section s', 's.SectionId=d.SectionId', 'left');
+  $newDB->join('documenttype dt', 'dt.DocumentTypeId=d.DocumentTypeId');
+  $thisdoc = $newDB->getOne('document d');
 }else{
   header('Location:index.php');
   exit();
 }
-$newDB = new MysqliDb(_DB_HOST_, _DB_USER_, _DB_PASS_, _DB_name_);
 $newDB->where('DocumentId', $_GET['id']);
 $lines = $newDB->get('documentlineapproval');
 
@@ -48,48 +51,22 @@ $lines = $newDB->get('documentlineapproval');
 
         <div class="container-fluid">
 
-          <h3>Cài đặt thông số cho tài liệu</h3>
-          <form action="listen-edit-doc.php?id=<?php echo $_GET['id']?>" method="post">
+          <h3 class="font-weight-bold"><?php echo $thisdoc['DocumentName']?></h3>
           <div class="row">
           <div class="col-md-8">
           <div class="row">
-              <div class="col-md-12">
-                  <input :readonly="DocumentSubmit==1" type="text" name="DocumentName"  placeholder='Tên tài liệu' class='form-control' id="" value='<?php echo $thisdoc['DocumentName'] ?>'>
-              </div>
-          </div>
-          <div class="row">
               <div class="col-md">
-                  <span>Bộ phận quản lý</span>
-                  <select :readonly="DocumentSubmit==1" class="form-control" name="SectionId" v-model="SectionId">
-                    <?php
-                    $sections = $oDB->sl_all('section',"1");
-                    echo "<option value=''>select section</option>";
-                    foreach ($sections as $key => $value) {
-                        echo "<option value=".$value['SectionId'].">".$value['SectionName']."</option>";
-                    }
-                        
-                    ?>
-                  </select>
+                  <span>Bộ phận quản lý: <strong><?php echo $thisdoc['SectionName']?></strong></span>
               </div>    
               <div class="col-md">
-                  <span>Loại tài liệu</span>
-                  <select :readonly="DocumentSubmit==1" class="form-control" name="DocumentTypeId" v-model="DocumentTypeId">
-                    <?php
-                    $documenttypes = $oDB->sl_all('documenttype',"1");
-                    echo "<option value=''>select document type</option>";
-                    foreach ($documenttypes as $key => $dctyp) {
-                        echo "<option value=".$dctyp['DocumentTypeId'].">".$dctyp['DocumentTypeName']."</option>";
-                    }
-                        
-                    ?>
-                  </select>
+                  <span>Loại tài liệu: <strong><?php echo $thisdoc['DocumentTypeName']?></strong></span>
               </div>
           </div>
 
               <div class="row">
                   <div class="col-md">
                       <span>Miêu tả tài liệu</span>
-                      <textarea :readonly="DocumentSubmit==1" name="DocumentDescription" id="" class='form-control' required rows="3"><?php echo $thisdoc['DocumentName'] ?></textarea>
+                      <p class="text-body"><?php echo $thisdoc['DocumentDescription']?></p>
                   </div>
               </div>
 
@@ -122,27 +99,9 @@ $lines = $newDB->get('documentlineapproval');
               </div>
               <div class="col-md-12 mt-3">
                 <h5>Email list</h5>
-                <v-select 
-                  multiple
-                  taggable
-                  placeholder="choose emails"
-                  :options="users_data" 
-                  :get-option-label="option => (option.UsersFullName+'-'+option.SectionName+' '+option.PositionsName)"
-                  :reduce="user => user.UsersEmail" 
-                  class="bg-white mb-2"
-                  :disabled="DocumentSubmit==1"
-                  
-                  v-model="EmailList">
-
-                  </v-select>
-                  <input type="hidden" name="DocumentEmailList[]" :value="this.EmailList">
-                  <div v-show="!DocumentSubmit==1"><input type="submit" name="saveBtn" value="save" class="btn btn-primary" />&nbsp;
-                  <input type="submit" name="submitBtn" value="submit" class="btn btn-success" /></div>
+                <p><?php echo $thisdoc['DocumentEmailList']?></p>
               </div>
               </div>
-              </form>
-
-
 
         </div>
 

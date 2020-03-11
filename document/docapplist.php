@@ -21,6 +21,7 @@ if(isset($_SESSION[_site_]['userlang'])){
   $oDB->lang = ucfirst($_SESSION[_site_]['userlang']);
 }
 $newDB = new MysqliDb(_DB_HOST_, _DB_USER_, _DB_PASS_,_DB_name_);
+
 ?>
 
 <body id="page-top">
@@ -28,6 +29,71 @@ $newDB = new MysqliDb(_DB_HOST_, _DB_USER_, _DB_PASS_,_DB_name_);
   <div id="wrapper">
 
   <?php require('sidebar.php') ?>
+  <?php
+    switch ($_GET['type']) {
+      case 1:
+        $data = totalReceived();
+        $title = 'Received docs';
+        break;
+      case 2:
+        $title = 'Waiting your approval';
+        $data = waitingYourApproval();
+        break;
+      case 3:
+        $title = 'Waiting final approval';
+        $data = waitingFinalApproval();
+        break;
+      case 4:
+        $title = 'Your rejected list';
+        $data = yourRejectedList();
+        break;
+      case 5:
+        $title = 'Your created docs';
+        $data = yourCreatedDoc();
+        break;
+      default:
+        header("Location:index.php");
+    }
+
+    function generateDocStatus($id){
+      global $newDB;
+      $status = '';
+      $step=0;
+
+      $newDB->where('DocumentId', $id);
+      $dlas = $newDB->get('documentlineapproval');
+      $numOfLines = count($dlas);
+
+      foreach($dlas as $dla){
+        switch ($dla['DocumentLineApprovalStatus']) {
+          case 1:
+            $step++;
+            $status='warning';
+            break;
+          case 2:
+            $step++;
+            $status='success';
+            break;
+          case 3:
+            $step++;
+            $status='danger';
+            break;
+          default:
+            break;
+        }
+        if($status=='danger') break;
+      }
+      if($status == 'danger' || $status== 'success'){
+        $className = '';
+      }else{
+        $className = 'text-secondary';
+      }
+
+      echo "<div class='progress'>
+      <div class='progress-bar progress-bar-striped progress-bar-animated bg-".$status."' role='progressbar' style='width: ".($step*100/$numOfLines)."%'><span class='".$className."'>".$step."/".$numOfLines."</span></div>
+    </div>";
+    }
+  ?>
 
     <!-- Content Wrapper -->
     <div id="content-wrapper" class="d-flex flex-column">
@@ -38,71 +104,33 @@ $newDB = new MysqliDb(_DB_HOST_, _DB_USER_, _DB_PASS_,_DB_name_);
         <?php require('navbar.php') ?>
 
         <div class="row">
-          <div class="col-md-3">
-          <table class='table table-bordered' id='datatablenotdl' width='100%' cellspacing='0'>
-            <thead>
-                <tr> 
-                  <th>#</th>
-                  <th>Bộ phận</th>
-                </tr>
-            </thead>
-
-            <tbody>
-              <tr>
-                <td>1</td>
-                <td><a href='documentlist.php'>All</a></td>
-              </tr>
-            <?php 
-                  $list = $oDB->sl_all('Section',1);
-                  foreach ($list as $key => $value) {
-                    echo "<tr>
-                        <td>".($key+2)."</td>
-                        <td><a href='documentlist.php?id=".$value['SectionId']."'>".$value['SectionName']."</a></td>
-                    </tr>";
-                  }
-                  ?>
-            </tbody>
-            
-            </table>
-          </div>
-
-          <div class="col-md-9">
-            <table class='table table-bordered' id='dataTable' width='100%' cellspacing='0'>
+          <h5 class="px-3"><?php echo $title ?></h5>
+          <div class="col-12 px-3">
+            <table class='table table-bordered table-sm' id='dataTable' width='100%' cellspacing='0'>
             <thead>
                 <tr>
+                  <th>Bộ phận</th>
                   <th>Tên tài liệu</th>
+                  <th>Kiểu tài liệu</th>
                   <th>Miêu tả</th>
-                  <th>Phiên bản</th>
-                  <th>Ngày cập nhật</th>
-                  <th>Edit</th>
+                  <th>Status</th>
                 </tr>
             </thead>
 
             <tbody>
-                  <?php
-
-                  $where = (isset($_GET['id'])&&is_numeric($_GET['id'])) ? 'SectionId = '.safe($_GET['id']) : 1 ;
-                  $list = $oDB->sl_all('Document',$where);
-                  foreach ($list as $key => $value) {
-                    echo "<tr>
-                        <td>".$value['DocumentName']."</td>
-                        <td style='width:50%'>".$value['DocumentDescription']."</td>
-                        <td></td>
-                        <td></td>";
-                    if ($_SESSION[_site_]['userid']==$value['UsersId']) {
-                      if($value['DocumentSubmit'] == 1){
-                        echo "<td><a href='editdoc.php?id=".$value['DocumentId']."'><i class='fas fa-eye'></i></a></td>";
-                      }else{
-                        echo "<td><a href='editdoc.php?id=".$value['DocumentId']."'><i class='fas fa-pencil-alt'></i></a></td>";
-                      }
-                    }else{
-                      echo "<td></td>";
-                    }
-                   
-                    echo "</tr>";
-                  }
-                  ?>
-
+              <?php
+                foreach($data as $d){
+              ?>
+                <tr>
+                  <td><?php echo $d['SectionName']?></td>
+                  <td><a href="viewdocapp.php?id=<?php echo $d['DocumentId']?>"><?php echo $d['DocumentName']?></a></td>
+                  <td><?php echo $d['DocumentTypeName']?></td>
+                  <td><?php echo $d['DocumentDescription']?></td>
+                  <td><?php generateDocStatus($d['DocumentId'])?></td>
+                </tr>
+              <?php
+                }
+              ?>
             </tbody>
     
             </table>

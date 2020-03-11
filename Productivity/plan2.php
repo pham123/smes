@@ -12,7 +12,7 @@ $user->module = basename(dirname(__FILE__));
 check($user->acess());
 $pagetitle = $user->module;
 $has_fixedcolumn = true;
-$page_css='.vs__dropdown-toggle {border: 0px !important;margin-top: -8px;} .vs__selected{white-space: nowrap;max-width: 250px;overflow: hidden;font-size: 14px;}.form-group{margin-bottom: 0px;} table th,table td{border: 1px solid #333;font-size: 14px;}';
+$page_css='.vs__dropdown-toggle {border: 0px !important;margin-top: -4px;} .vs__selected{white-space: nowrap;max-width: 500px;overflow: hidden;font-size: 12px;}.form-group{margin-bottom: 0px;} table th,table td{border: 1px solid #333;font-size: 14px;}';
 require('../views/template-header.php');
 require('../function/template.php');
 $oDB = new db();
@@ -66,10 +66,24 @@ for($i = 1; $i <=  date('t'); $i++)
                         <tr style="background-color: none;">
                           <td><strong>Filter:</strong></td>
                           <td style="width: 280px;">
-                            <select class="w-100" v-model="ProductFilter">
-                              <option value="">product</option>
-                              <option v-for="p in products_data" :value="p.ProductsId">{{p.ProductsName}}</option>
-                            </select>
+                            <v-select 
+                            placeholder="chọn sản phẩm"
+                            :options="products_data" 
+                            :get-option-label="option => option.ProductsNumber+'-'+option.ProductsName"
+                            :reduce="product => product.ProductsId" 
+                            class="form-control"
+                            :disabled=!validState
+                            required
+                            v-model="ProductFilter">
+                              <template #search="{attributes, events}">
+                              <input
+                                class="vs__search"
+                                :required="!ProductFilter"
+                                v-bind="attributes"
+                                v-on="events"
+                              />
+                            </template>
+                            </v-select>
                           </td>
                         </tr>
                       </table>
@@ -112,20 +126,6 @@ for($i = 1; $i <=  date('t'); $i++)
                     <div class="text-danger text-center" v-else>
                       Not have any data
                     </div>
-                    <table class="my-2 mx-auto d-inline-block table-borderless">
-                      <tr style="background-color: none;">
-                        <form @submit.prevent="addPlan()">
-                          <td style="width: 200px;">
-                            <select class="w-100" v-model="form.ProductsId">
-                              <option value="">product</option>
-                              <option v-for="p in products_data" :value="p.ProductsId">{{p.ProductsName}}</option>
-                            </select>
-                          </td>
-                          <td style="width: 130px;" v-if="currentProduct">{{currentProduct?currentProduct.ProductsNumber:''}}</td>
-                          <td><button @click="addPlan()" class="btn-primary">add</button></td>
-                        </form>
-                      </tr>
-                    </table>
                   </div>
                 </div>
               </div>
@@ -262,17 +262,6 @@ for($i = 1; $i <=  date('t'); $i++)
               return p[0]['ProPlanQuantity'];
             }
           },
-          addPlan(){
-            if(!this.form.ProductsId || !this.TraceStationId){
-              alert('please select process, product, machine');
-              return;
-            }
-            this.form.post('addplanajax2.php?date='+this.monthYear+'&station='+this.TraceStationId)
-            .then(({ data }) => {
-              this.loadPlanData();
-              this.form.reset();
-            });
-          },
           addNewItem(){
             if(this.TraceStationId=='' || this.ProPlanDate==''){
               alert('Please select station and date');
@@ -326,11 +315,6 @@ for($i = 1; $i <=  date('t'); $i++)
           validState: function () {
             return true;
 
-          },
-          currentProduct: function(){
-            return this.products_data.filter((value,index) => {
-              return value['ProductsId'] == this.form.ProductsId
-            })[0];
           },
           filteredPlans: function(){
             let result = this.plans_uniq_data;

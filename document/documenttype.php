@@ -4,6 +4,7 @@ ob_start();
 date_default_timezone_set('Asia/Ho_Chi_Minh');
 require('../config.php');
 require('../function/db_lib.php');
+require('../function/MysqliDb.php');
 require('../function/sdb.php');
 require('../function/function.php');
 $user = New Users();
@@ -19,6 +20,7 @@ $sDB = new sdb();
 if(isset($_SESSION[_site_]['userlang'])){
   $oDB->lang = ucfirst($_SESSION[_site_]['userlang']);
 }
+$newDB = new MysqliDb(_DB_HOST_, _DB_USER_, _DB_PASS_,_DB_name_);
 ?>
 
 <body id="page-top">

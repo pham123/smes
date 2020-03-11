@@ -381,7 +381,7 @@ if(isset($_SESSION[_site_]['userlang'])){
             });
           },
           currentProduct: function(){
-            return this.products_data.filter((value,index) => {
+            return this.products_data_form.filter((value,index) => {
               return value['ProductsId'] == this.form.ProductsId
             })[0];
           },

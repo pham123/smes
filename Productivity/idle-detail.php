@@ -61,7 +61,7 @@ if(isset($_SESSION[_site_]['userlang'])){
                       <div class="form-row" v-for="(item,index) in items">
                         <div class="form-group col-md-1"><label v-if="index ==0">#</label><p>{{item.ProcessIdleDetailId}}</p></div>
                         <input type="hidden" name="ProcessIdleDetailId[]" v-model="item.ProcessIdleDetailId">
-                        <div class="form-group col-md-6">
+                        <div class="form-group col-md-4">
                           <label v-if="index == 0">Idle Name</label>
                           <select name="IdleId[]" v-model='item.IdleId' class="form-control" required>
                             <?php 
@@ -73,9 +73,13 @@ if(isset($_SESSION[_site_]['userlang'])){
                             ?>
                           </select>
                         </div>
-                        <div class="form-group col-md-4">
+                        <div class="form-group col-md-2">
                           <label v-if="index == 0">Duration</label>
                           <input type="number" class="form-control" required name="ProcessIdleDetailAmount[]" v-model="item.ProcessIdleDetailAmount">
+                        </div>
+                        <div class="form-group col-md-4">
+                          <label v-if="index == 0">Comment</label>
+                          <input type="text" class="form-control" required name="ProcessIdleDetailExplain[]" v-model="item.ProcessIdleDetailExplain">
                         </div>
                         <div class="form-group col-md-1">
                           <label v-if="index==0" style="font-size: 14px;">Remove</label>
@@ -159,7 +163,7 @@ if(isset($_SESSION[_site_]['userlang'])){
         },
         methods: {
           addNewItem(){
-            this.items.push({ProcessIdleDetailId: 'new',IdleId: '', ProcessIdleDetailAmount: '0'})
+            this.items.push({ProcessIdleDetailId: 'new',IdleId: '', ProcessIdleDetailAmount: '0', ProcessIdleDetailExplain: ''})
           },
           removeLastItem(){
             if(this.items.length == 0)

@@ -16,6 +16,7 @@ $sql[] = "CREATE TABLE DocumentLineApproval (
     );";
 $sql[] = "ALTER table document ADD DocumentEmailList TEXT;";
 $sql[] = "ALTER table document ADD DocumentSubmit tinyint;";
+$sql[] = "ALTER table processidledetail ADD ProcessIdleDetailExplain varchar(255);";
 
 for ($i=0; $i < count($sql) ; $i++) { 
     $oDB -> query($sql[$i]);

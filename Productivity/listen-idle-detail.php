@@ -24,13 +24,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $newDB->where('ProcessIdleDetailId', $ngid);
             $newDB->update('processidledetail', [
                 'IdleId' => $data['IdleId'][$index],
-                'ProcessIdleDetailAmount' => $data['ProcessIdleDetailAmount'][$index]
+                'ProcessIdleDetailAmount' => $data['ProcessIdleDetailAmount'][$index],
+                'ProcessIdleDetailExplain' => $data['ProcessIdleDetailExplain'][$index]
             ]);
         }else{
             $newDB->insert('processidledetail', [
                 'ProcessDailyHistoryId' => $process_id,
                 'IdleId' => $data['IdleId'][$index],
-                'ProcessIdleDetailAmount' => $data['ProcessIdleDetailAmount'][$index]
+                'ProcessIdleDetailAmount' => $data['ProcessIdleDetailAmount'][$index],
+                'ProcessIdleDetailExplain' => $data['ProcessIdleDetailExplain'][$index]
             ]);
         }
     }

@@ -64,18 +64,22 @@ $oDB = new db();
           
         }
         //Lấy về danh sách DC
+        $sql = "SELECT date(LabelListCreateDate) as Datelb, ProductsId FROM  LabelList WHERE  `LabelListValue` = '".$code."'";
 
+        $dclabel = $oDB->fetchOne($sql);
+
+        // var_dump($dclabel);
         $sql = "SELECT lbl.`LabelListId` 
         FROM `labellist` lbl
         inner JOIN `labelhistory` lh on lh.`LabelHistoryLabelValue` = lbl.`LabelListValue`
-        WHERE date(`LabelListCreateDate`) = (SELECT date(`LabelListCreateDate`) FROM `labellist` WHERE `LabelListValue` = '".$code."') 
+        WHERE date(`LabelListCreateDate`) = '".$dclabel['Datelb']."' 
         AND lh.`TraceStationId` = 1
-        AND lbl.`ProductsId` = (SELECT date(`ProductsId`) FROM `labellist` WHERE `LabelListValue` = '".$code."')
+        AND lbl.`ProductsId` = ".$dclabel['ProductsId']."
         ";
 
         $dcarr = $oDB -> fetchAll($sql);
         $list = array();
-        var_dump($dcarr);
+        // var_dump($dcarr);
         foreach ($dcarr as $key => $value) {
           $list[]=$value['LabelListId'];
         }

@@ -85,6 +85,7 @@ $oDB = new db();
         $textarr = array();
         $newarr = array();
         $newarr[0] = $list;
+        $j=0;
         for ($i=0; $i < 2 ; $i++) { 
           $j = $i+1;
           $text_pre = implode(',',$newarr[$i]);

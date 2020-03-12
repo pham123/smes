@@ -75,7 +75,7 @@ $oDB = new db();
 
         $dcarr = $oDB -> fetchAll($sql);
         $list = array();
-        // var_dump($dcarr);
+        var_dump($dcarr);
         foreach ($dcarr as $key => $value) {
           $list[]=$value['LabelListId'];
         }

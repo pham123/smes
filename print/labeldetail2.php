@@ -61,138 +61,61 @@ $oDB = new db();
           $code = safe($_GET['code']);
         }else{
           exit();
+          
         }
-        $precode = $oDB->sl_one('LabelList',"LabelListValue ='".$code."'");
+        //Lấy về danh sách DC
 
+        $sql = "SELECT lbl.`LabelListId` 
+        FROM `labellist` lbl
+        inner JOIN `labelhistory` lh on lh.`LabelHistoryLabelValue` = lbl.`LabelListValue`
+        WHERE date(`LabelListCreateDate`) = (SELECT date(`LabelListCreateDate`) FROM `labellist` WHERE `LabelListValue` = '".$code."') 
+        AND lh.`TraceStationId` = 1
+        AND lbl.`ProductsId` = (SELECT date(`ProductsId`) FROM `labellist` WHERE `LabelListValue` = '".$code."')
+        ";
+
+        $dcarr = $oDB -> fetchAll($sql);
         $list = array();
-        $check = $precode['LabelListId'];
-        $list[] =  $precode['LabelListId'];
-        // echo "<br>";
-        for ($i=0; $i < 10; $i++) { 
-          $precode2 = $oDB->sl_one('LabelList',"LabelListId ='".$check."'");
-          if (!isset($precode2['LabelListMotherId'])) {
-          break;
-          }
-          $check = $precode2['LabelListMotherId'];
-          $list[] = $check;
-          // echo "<br>";
-        }
-        //var_dump($list);
-        $text = implode(',',$list);
-        //echo $text;
-
-        $sql = "select lh.*,prd.ProductsName,prd.ProductsNumber,ts.TraceStationName,lbl.LabelListId as DcLabelId from LabelHistory lh
-        inner join LabelList lbl on lbl.LabelListValue = lh.LabelHistoryLabelValue
-        inner join TraceStation ts on ts.TraceStationId = lh.TraceStationId
-        inner join Products prd on prd.ProductsId = lbl.ProductsId
-        WHERE lbl.LabelListId in (".$text.")
-        ORDER BY lh.LabelHistoryCreateDate DESC";
-
-        $result = $oDB->fetchAll($sql);
-        $lastarr = end($result);
-        //var_dump(end($result));
-        $dclabel = $lastarr['DcLabelId'];
-        $keyarr[]=$dclabel;
-
-        $sql = "SELECT `LabelListId` FROM `labellist` WHERE `LabelListMotherId` =".$dclabel;
-
-        $list1 = $oDB->fetchAll($sql);
-        foreach ($list1 as $key => $value) {
-          $keyarr[] = $value['LabelListId'];  
+        // var_dump($dcarr);
+        foreach ($dcarr as $key => $value) {
+          $list[]=$value['LabelListId'];
         }
 
-        $sql = "SELECT `LabelListId` FROM `labellist` 
-                WHERE `LabelListMotherId` 
-                in (SELECT `LabelListId` FROM `labellist` WHERE `LabelListMotherId` = ".$dclabel.")";
-
-        $list2 = $oDB->fetchAll($sql);
-
-        foreach ($list2 as $key => $value) {
-          $keyarr[] = $value['LabelListId'];  
-        }
-        $text =  implode(', ',$keyarr);
-        // var_dump($keyarr);
-
-        $sql = "select lh.*,prd.ProductsName,prd.ProductsNumber,ts.TraceStationName,lbl.LabelListId as DcLabelId from LabelHistory lh
-        inner join LabelList lbl on lbl.LabelListValue = lh.LabelHistoryLabelValue
-        inner join TraceStation ts on ts.TraceStationId = lh.TraceStationId
-        inner join Products prd on prd.ProductsId = lbl.ProductsId
-        WHERE lbl.LabelListId in (".$text.")
-        ORDER BY lh.LabelHistoryCreateDate DESC";
-
-        $result = $oDB->fetchAll($sql);
-
-        $sql = "select 
-        lh.TraceStationId,
-        sum(lh.LabelHistoryQuantityOk) as qtyOk,
-        sum(lh.LabelHistoryQuantityNG) as qtyNg,
-        prd.ProductsName,prd.ProductsNumber,
-        ts.TraceStationName,
-        ts.TraceStationPosition 
-        from LabelHistory lh 
-        inner join LabelList lbl on lbl.LabelListValue = lh.LabelHistoryLabelValue 
-        inner join TraceStation ts on ts.TraceStationId = lh.TraceStationId 
-        inner join Products prd on prd.ProductsId = lbl.ProductsId 
-        WHERE lbl.LabelListId in (".$text.") 
-        Group by lh.TraceStationId,prd.ProductsName,prd.ProductsNumber,ts.TraceStationName,ts.TraceStationPosition
-        Order By ts.TraceStationPosition";
-        $total = $oDB->fetchAll($sql);
-        ?>
-
-        <div class="table-responsive">
-
-        <?php
-        echo "<table class='table table-bordered' id='' width='100%' cellspacing='0'>";
-        echo "<thead>";
-        echo "<tr style='text-align:center;background-color:#DDDEE0'>";
-            echo "<th rowspan='2' style='vertical-align:middle;'>".$oDB->lang('Index')."</th>";
-            echo "<th rowspan='2' style='vertical-align:middle;'>".$oDB->lang('Station')."</th>";
-            echo "<th rowspan='2' style='vertical-align:middle;'>".$oDB->lang('ProductName')."</th>";
-            echo "<th rowspan='2' style='vertical-align:middle;'>".$oDB->lang('ProductNumber')."</th>";
-            echo "<th colspan='3' style='vertical-align:middle;'>".$oDB->lang('Quantity')."</th>";
-
-        echo "</tr>";
+        $dctext = implode(',',$list);
         
-
-        echo "<tr style='text-align:center;background-color:#DDDEE0'>";
-        echo "<th style='vertical-align:middle;'>".$oDB->lang('Ok')."</th>";
-        echo "<th style='vertical-align:middle;'>".$oDB->lang('Ng')."</th>";
-        echo "<th style='vertical-align:middle;'>".$oDB->lang('Wip')."</th>";
-    echo "</tr>";
-    echo "</thead>";
-
-
-        echo "<tbody>";
-        $wip = 0;
-        $lastqty = 0;
-        foreach ($total as $key => $value) {
-            echo "<tr style='text-align:center;'>";
-            echo "<td>".($key+1)."</td>";
-            echo "<td>".$value['TraceStationName']."</td>";
-            echo "<td>".$value['ProductsName']."</td>";
-            echo "<td>".$value['ProductsNumber']."</td>";
-            echo "<td style='background-color:green;'>".$value['qtyOk']."</td>";
-            echo "<td style='background-color:Red;'>".$value['qtyNg']."</td>";
-            if ($lastqty==0) {
-              $wip = 0;
-            }else{
-              $wip = $lastqty - $value['qtyOk'] - $value['qtyNg'];
+        $textarr = array();
+        $newarr = array();
+        $newarr[0] = $list;
+        for ($i=0; $i < 2 ; $i++) { 
+          $j = $i+1;
+          $text_pre = implode(',',$newarr[$i]);
+          $sql2 = "SELECT lbl.`LabelListId` 
+                      FROM `labellist` lbl
+                      WHERE lbl.`LabelListMotherId` in (".$text_pre.")";
+          $arr= $oDB -> fetchAll($sql2);
+          
+          // var_dump($arr);
+          if (isset($arr[0]['LabelListId'])&&$arr[0]['LabelListId']!="") {
+            foreach ($arr as $key => $value) {
+              $newarr[$j][] = $value['LabelListId'];
+              $list[] = $value['LabelListId'];
             }
-            
-            echo "<td style='background-color:yellow;'>".$wip."</td>";
-            echo "</tr>";
-            
-            $lastqty =  $value['qtyOk'];
+          }else{
+            break;
+          }
         }
-
-        echo "</tbody>";
-
-        echo "</table>";
-
-          ?>
-
-        </div>
-
+        array_unique($list);
+        $text = implode(',',$list);
+        $sql = "select lh.*,prd.ProductsName,prd.ProductsNumber,ts.TraceStationName,lbl.LabelListId as DcLabelId from LabelHistory lh
+        inner join LabelList lbl on lbl.LabelListValue = lh.LabelHistoryLabelValue
+        inner join TraceStation ts on ts.TraceStationId = lh.TraceStationId
+        inner join Products prd on prd.ProductsId = lbl.ProductsId
+        WHERE lbl.LabelListId in (".$text.")
+        ORDER BY lh.LabelHistoryCreateDate DESC";
+        
+        $result = $oDB->fetchAll($sql);
+        // var_dump($result);
+        // exit();
+        ?>
         <div class="table-responsive">
         <?php
         echo "<table class='table table-bordered' id='dataTable' width='100%' cellspacing='0'>";
@@ -208,19 +131,11 @@ $oDB = new db();
             echo "<th>".$oDB->lang('IssueDate')."</th>";
         echo "</tr>";
         echo "</thead>";
-
-
         echo "<tbody>";
-
         foreach ($result as $key => $value) {
             echo "<tr>";
             echo "<td>".($key+1)."</td>";
-            if ($value['TraceStationId']==1) {
-              echo "<td><a href='labeldetail2.php?code=".$value['LabelHistoryLabelValue']."'>".$value['TraceStationName']."</a></td>";
-            }else{
-              echo "<td>".$value['TraceStationName']."</td>";
-            }
-            
+            echo "<td>".$value['TraceStationName']."</td>";
             echo "<td>".$value['ProductsName']."</td>";
             echo "<td>".$value['ProductsNumber']."</td>";
             echo "<td style='background-color:#73E700;'>".$value['LabelHistoryQuantityOk']."</td>";
@@ -229,14 +144,10 @@ $oDB = new db();
             echo "<td>".$value['LabelHistoryCreateDate']."</td>";
             echo "</tr>";
         }
-
         echo "</tbody>";
-
         echo "</table>";
-
           ?>
         </div>
-        
         </div>
         <!-- /.container-fluid -->
 

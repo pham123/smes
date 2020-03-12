@@ -127,16 +127,20 @@ $prestation = 3;
                     exit();
                 }
                 #lấy về tổng số lượng của các label con
-                $sql = "SELECT SUM(lh.LabelHistoryQuantityOk)+SUM(lh.LabelHistoryQuantityNg) as total FROM LabelHistory lh
+                $sql = "SELECT (SUM(lh.LabelHistoryQuantityOk)+SUM(lh.LabelHistoryQuantityNg)) as total FROM LabelHistory lh
                 inner join LabelList lbl on lbl.LabelListValue = lh.LabelHistoryLabelValue
                 Where lbl.LabelListMotherId = ?";
+
+                $mothercodeinfo['LabelListId'];
                 $total = $oDB->query($sql, $mothercodeinfo['LabelListId'])->fetchArray();
+                // var_dump($total);
                 if (isset($total['total'])&&$total['total']>=$motherquantity) {
                     # code...
                     $_SESSION['message'] = "<h1 style='background-color:red;'>Không thành công, bạn đã nhập ".$total['total']."/".$motherquantity." </h1>";
                     header('Location:?');
                     exit();
                 }
+                // exit();
                 # code...
                 $mothercodeinfo['LabelListValue'].' hợp lệ';
                 # Chèn thông tin tem vào list và history

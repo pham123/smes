@@ -123,7 +123,20 @@ $newDB = new MysqliDb(_DB_HOST_, _DB_USER_, _DB_PASS_,_DB_name_);
               ?>
                 <tr>
                   <td><?php echo $d['SectionName']?></td>
-                  <td><a href="viewdocapp.php?id=<?php echo $d['DocumentId']?>"><?php echo $d['DocumentName']?></a></td>
+                  <td>
+                    <?php
+                      if($_GET['type'] ==2){
+                    ?>
+                      <a href="approveorrejectdoc.php?id=<?php echo $d['DocumentId']?>"><?php echo $d['DocumentName']?></a>
+                    <?php
+                      } else {
+                    ?>
+                    <a href="viewdocapp.php?id=<?php echo $d['DocumentId']?>"><?php echo $d['DocumentName']?></a>
+                    <?php
+                      }
+                    ?>
+                    
+                  </td>
                   <td><?php echo $d['DocumentTypeName']?></td>
                   <td><?php echo $d['DocumentDescription']?></td>
                   <td><?php generateDocStatus($d['DocumentId'])?></td>

@@ -19,12 +19,47 @@ if(isset($_SESSION[_site_]['userlang'])){
   $oDB->lang = ucfirst($_SESSION[_site_]['userlang']);
 }
 $newDB = new MysqliDb(_DB_HOST_, _DB_USER_, _DB_PASS_, _DB_name_);
-if (isset($_GET['id'])&&is_numeric($_GET['id'])) {
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+  $data = $_POST;
+  if(isset($_POST['approveBtn'])){
+    $status = 2;
+  }
+  if(isset($_POST['rejectBtn'])){
+    $status = 3;
+  }
+  $newDB->where('DocumentId', $data['id']);
+  $newDB->where('UsersId', $_SESSION[_site_]['userid']);
+  $newDB->update('documentlineapproval', [
+    'DocumentLineApprovalStatus' => $status,
+    'DocumentLineApprovalComment' => $data['comment']
+  ]);
+  if($status == 2){
+    //find next line make it in process
+    $newDB->where('DocumentId', $data['id']);
+    $newDB->where('DocumentLineApprovalStatus', null, 'is');
+    $newDB->orderBy('DocumentLineApprovalId', 'asc');
+    $newDB->update('documentlineapproval', [
+      'DocumentLineApprovalStatus' => 1
+    ], 1);
+  }
+  header('Location:viewdocapp.php?id='.$data['id']);
+  return;
+}
+if (isset($_GET['id']) && is_numeric($_GET['id'])) {
   $id = safe($_GET['id']);
   $newDB->where('d.DocumentId', $id);
   $newDB->join('section s', 's.SectionId=d.SectionId', 'left');
   $newDB->join('documenttype dt', 'dt.DocumentTypeId=d.DocumentTypeId');
   $thisdoc = $newDB->getOne('document d');
+
+  $newDB->where('DocumentId', $id);
+  $newDB->where('UsersId', $_SESSION[_site_]['userid']);
+  $newDB->where('DocumentLineApprovalStatus', 1);
+  $currentLine = $newDB->getOne('documentlineapproval');
+  if(!$thisdoc || !$currentLine){
+    header('Location:../404.html');
+    exit();
+  }
 }else{
   header('Location:index.php');
   exit();
@@ -74,8 +109,15 @@ $lines = $newDB->get('documentlineapproval');
 
 
               <div class="col-md-6">
-                <h5>Line approval</h5>
-                
+                <h5>Line comment</h5>
+                <form method="post" action="">
+                  <input type="hidden" name="id" value="<?php echo $id?>">
+                <textarea name="comment" id="" class="form-control mb-1" rows="3"><?php echo $currentLine['DocumentLineApprovalComment'] ?></textarea>
+                <div class="d-flex justify-content-around">
+                  <input type="submit" class="btn btn-success btn-sm w-25" name="approveBtn" value="Approve">
+                  <input type="submit" class="btn btn-danger btn-sm w-25" name="rejectBtn" value="Reject">
+                </div>
+                </form>
                 <template v-if="form.lines.length > 0">
                   <table>
 
@@ -110,11 +152,7 @@ $lines = $newDB->get('documentlineapproval');
                       <td>{{findUser(line.UsersId)?.SectionName}} {{findUser(line.UsersId)?.PositionsName}}</td>
                       <td :class='getStatus(line.DocumentLineApprovalStatus)["class"]'>{{getStatus(line.DocumentLineApprovalStatus)["text"]}}</td>
                       <td>{{line.DocumentLineApprovalDate}}</td>
-                      <td v-if="line.UsersId == UsersId">
-                        <textarea v-model="line.DocumentLineApprovalComment" rows="2">{{line.DocumentLineApprovalComment}}</textarea>
-                        <button class="btn btn-sm btn-primary float-right" @click="updateComment(line)">Update</button>
-                      </td>
-                      <td v-else>
+                      <td>
                         {{line.DocumentLineApprovalComment}}
                       </td>
                     </tr>

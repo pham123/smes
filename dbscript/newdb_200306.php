@@ -17,6 +17,8 @@ $sql[] = "CREATE TABLE DocumentLineApproval (
 $sql[] = "ALTER table document ADD DocumentEmailList TEXT;";
 $sql[] = "ALTER table document ADD DocumentSubmit tinyint;";
 $sql[] = "ALTER table processidledetail ADD ProcessIdleDetailExplain varchar(255);";
+$sql[] = "ALTER table documentlineapproval ADD DocumentLineApprovalComment varchar(255);";
+$sql[] = "ALTER table documentlineapproval ADD DocumentLineApprovalDate timestamp;";
 
 for ($i=0; $i < count($sql) ; $i++) { 
     $oDB -> query($sql[$i]);

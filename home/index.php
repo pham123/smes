@@ -132,6 +132,7 @@ $linkar =  array(
   array('../quality/',$oDB->lang('Qbank',"Q-Bank"),$oDB->lang('QualityIssueControl'),'fa-bullhorn'),
   // array('#',$oDB->lang('QulityList'),'Push QA issues alert','fa-list-ol'),
   array('../Purchase',$oDB->lang('Purchase'),$oDB->lang('Purchase'),'fa-cart-plus'),
+  array('../Warehouse',$oDB->lang('Warehouse'),$oDB->lang('Warehouse'),'fa-warehouse'),
   array('../spare-part',$oDB->lang('SparePart'),$oDB->lang('ControlSparePart'),'fa-boxes'),
   array('../document/',$oDB->lang('Document',"Document"),$oDB->lang('DocumentEx'),'fa-folder-open'),
   array('../memos/',$oDB->lang('MemoSuggestion'),$oDB->lang('MemoSuggestion'),'fa-lightbulb'),

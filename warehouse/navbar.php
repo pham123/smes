@@ -23,7 +23,7 @@
           </form> -->
 
           <!-- Topbar Navbar -->
-          <div class="sidebar-brand-text mx-3" Style='Color:#22356f;font-size: 3em'><?php echo $oDB->lang('DocumentControl')?></div>
+          <div class="sidebar-brand-text mx-3" Style='Color:#22356f;font-size: 3em'><?php echo $oDB->lang('StockOutputControl')?></div>
 
           <ul class="navbar-nav ml-auto">
 

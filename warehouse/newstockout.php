@@ -62,7 +62,7 @@ $tracestations = $newDB->get('tracestation');
               <div class="col-sm-3">
                 <select class="form-control" name="StockOutputsType" v-model="StockOutputsType">
                     <option value="">select</option>
-                    <option value="KHO THÀNH PHẨM">WIP</option>
+                    <option value="WIP">WIP</option>
                     <option value="Finish Good">Finish Good</option>
                 </select>
               </div>

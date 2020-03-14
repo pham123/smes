@@ -11,15 +11,21 @@ $user->set($_SESSION[_site_]['userid']);
 $user->module = basename(dirname(__FILE__));
 check($user->acess());
 $pagetitle = $user->module;
-$page_css='.vs__dropdown-toggle {border: 0px !important;margin-top: -4px;} .vs__selected{white-space: nowrap;max-width: 250px;overflow: hidden;font-size: 14px;}';
-// $refresh = 5;
+$page_heading = 'Import history';
 require('../views/template-header.php');
 require('../function/template.php');
 $oDB = new db();
-if(isset($_SESSION[_site_]['userlang'])){
-  $oDB->lang = ucfirst($_SESSION[_site_]['userlang']);
-}
+
+$table_header  = 'Từ,Đến,No,Ngày,Kho,Model,Biển,Print';
+//using new db library
 $newDB = new MysqliDb(_DB_HOST_, _DB_USER_, _DB_PASS_,_DB_name_);
+$newDB->join("SupplyChainObject sco1", "sco1.SupplyChainObjectId=s.FromId", "LEFT");
+$newDB->join("SupplyChainObject sco2", "sco2.SupplyChainObjectId=s.ToId", "LEFT");
+$newDB->join("Models m", "m.ModelsId=s.ModelsId", "LEFT");
+$newDB->where('StockOutputsStatus', 1);
+$newDB->where('UsersId', $_SESSION[_site_]['userid']);
+$newDB->orderBy('s.StockOutputsDate', 'DESC');
+$table_data = $newDB->get ("stockoutputs s", null, "sco1.SupplyChainObjectName Từ,sco2.SupplyChainObjectName Đến,s.StockOutputsNo No,s.StockOutputsDate Ngày,s.StockOutputsType Kho,m.ModelsName Model,s.StockOutputsBks Biển,CONCAT('<a href=\"print-stockout.php&quest;id=',s.StockOutputsId,'\" target=\"_blank\" >','<i class=\"fas fa-print\"></i>', '</a>') as Print");
 ?>
 
 <body id="page-top">
@@ -33,14 +39,19 @@ $newDB = new MysqliDb(_DB_HOST_, _DB_USER_, _DB_PASS_,_DB_name_);
 
       <!-- Main Content -->
       <div id="content">
-        
-        <!-- Topbar -->
-        <?php require('navbar.php') ?>
-
-        <div class="container-fluid">
+          
+          <!-- Topbar -->
+          <?php require('navbar.php') ?>
+          
+          <!-- Begin Page Content -->
+          <div class="container-fluid">
+              
+            <div class="table-responsive">
+                <a href="newstockout.php" class="text-primary">New stock out</a>
+                <?php include('../views/template_table.php') ?>
+            </div> 
         </div>
-
-  
+        <!-- /.container-fluid -->
 
       </div>
       <!-- End of Main Content -->
@@ -85,7 +96,29 @@ $newDB = new MysqliDb(_DB_HOST_, _DB_USER_, _DB_PASS_,_DB_name_);
     </div>
   </div>
 
-  <?php require('../views/template-footer.php'); ?>
+  <?php require('../views/template-footer-order.php'); ?>
+
+  <script>
+    $(function () {
+      $('selectpicker').selectpicker();
+      $('#dataTable').DataTable( {
+          dom: "<'row'<'col-md-10 pull-left'f><'col-md-2 pull-right'B>>" +
+                "<'row'<'col-sm-12'tr>>" +
+                "<'row'<'col-sm-5'i><'col-sm-7'p>>",
+          buttons: [
+              // 'copy', 'csv', 'excel', 'pdf', 'print'
+              'excel','copy'
+          ],
+          language: {
+              search: "",
+              searchPlaceholder: "Search..."
+          },
+          order: [[0, "desc"]]
+          //"paging": false
+      } );
+    });
+  </script>
+
 </body>
 
 </html>

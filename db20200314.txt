@@ -1,0 +1,3 @@
+ALTER TABLE SupplyChainObject ADD SupplyChainObjectShortName varchar(10) AFTER SupplyChainObjectName;
+ALTER TABLE `products` CHANGE `ProductsName` `ProductsName` VARCHAR(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL;
+ALTER TABLE `products` CHANGE `ProductsEngName` `ProductsEngName` VARCHAR(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL;

@@ -121,10 +121,10 @@ $report = $oDB->fetchAll($sql);
             <div class="row">
 
               <div class="col-md-2">
-                <input type="date" name="startdate" class='form-control' id="" value='<?php echo date("Y-m-01") ?>'>
+                <input type="date" name="startdate" class='form-control' id="" value='<?php echo $startdate ?>'>
               </div>
               <div class="col-md-2">
-                <input type="date" name="enddate" class='form-control' id="" value='<?php echo date("Y-m-t") ?>'>
+                <input type="date" name="enddate" class='form-control' id="" value='<?php echo $enddate ?>'>
               </div>
               <div class="col-md-2">
               <select name="top" id="" class='selectpicker show-tick form-control' data-live-search="true" data-style="btn-info" data-width="100%">

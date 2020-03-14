@@ -137,7 +137,8 @@ $linkar =  array(
   array('../document/',$oDB->lang('Document',"Document"),$oDB->lang('DocumentEx'),'fa-folder-open'),
   array('../memos/',$oDB->lang('MemoSuggestion'),$oDB->lang('MemoSuggestion'),'fa-lightbulb'),
   array('../employees/',$oDB->lang('Employees'),$oDB->lang('EmployeesInformation'),'fa-calendar'),
-  array('../news/',$oDB->lang('News'),$oDB->lang('News'),'fa-newspaper')
+  array('../news/',$oDB->lang('News'),$oDB->lang('News'),'fa-newspaper'),
+  array('../security/',$oDB->lang('Security'),$oDB->lang('Security'),'fa-shield-alt')
   // 
 
 );

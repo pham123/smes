@@ -31,6 +31,7 @@ $sql[] = "CREATE TABLE StockOutputItems (
     StockOutputItemsQty INT(6) DEFAULT 0,
     StockOutputItemsRemark VARCHAR(100)
     );";
+$sql[]="ALTER TABLE stockoutputs ADD StockOutputsTime VARCHAR(100);";
 for ($i=0; $i < count($sql) ; $i++) { 
     $oDB -> query($sql[$i]);
 }

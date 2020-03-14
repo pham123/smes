@@ -14,6 +14,10 @@ $pagetitle = $user->module;
 require('../function/template.php');
 $oDB = new db();
 $newDB = new MysqliDb(_DB_HOST_, _DB_USER_, _DB_PASS_, _DB_name_);
+if(!isset($_GET['id'])){
+    echo 'KHÔNG HỢP LỆ';
+    return;
+}
 $id = $_GET['id'];
 $newDB->where('StockOutputsId', $id);
 $stockoutput = $newDB->getOne('stockoutputs');
@@ -52,7 +56,7 @@ $stockoutputitems = $newDB->get('stockoutputitems');
     </style>
     <title>Print stockoutput</title>
   </head>
-  <body onload="window.print()">
+  <body>
     <div class="ml-2 mt-2">
         <p>
         <img src="../img/hallalogo.png" alt="" style="width:100px">
@@ -70,7 +74,7 @@ $stockoutputitems = $newDB->get('stockoutputitems');
                 <th><strong>KHO:</strong></th>
                 <td><?php echo $stockoutput['StockOutputsType'] ?></td>
                 <th><strong>BKS:</strong></th>
-                <td><?php echo $stockoutput['StockOutputsBks']?></td>
+                <td><input style="height: 30px; font-size: 16px;" name="Bks" type="text" value="<?php echo $stockoutput['StockOutputsBks']?>"></td>
             </tr>
             <tr>
                 <th><strong>TO(ĐẾN):</strong></th>
@@ -78,7 +82,7 @@ $stockoutputitems = $newDB->get('stockoutputitems');
                 <th><strong>NO:</strong></th>
                 <td><?php echo $stockoutput['StockOutputsNo'] ?></td>
                 <th><strong>THỜI GIAN:</strong></th>
-                <td></td>
+                <td><input style="height: 30px;font-size:16px;" name="Time" type="text" value="<?php echo $stockoutput['StockOutputsTime']?>"></td>
             </tr>
             <tr>
                 <th><strong>DELIVERY DATE(NGÀY GIAO HÀNG):</strong></th>
@@ -182,6 +186,17 @@ $stockoutputitems = $newDB->get('stockoutputitems');
                 </table>
             </div>
         </div>
+        <script src="../vendor/jquery/jquery.min.js"></script>
+        <script>
+            $(function(){
+                $('input[type="text"]').on('input',function(e){
+                   $.ajax({
+                       'url': 'updatestockoutputdata.php?id='+<?php echo $id?>+'&name='+e.target.name+'&value='+e.target.value,
+                       'method': 'get'
+                   })
+                })
+            })
+        </script>
 
   </body>
 </html>

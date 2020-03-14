@@ -16,7 +16,7 @@ require('../views/template-header.php');
 require('../function/template.php');
 $oDB = new db();
 
-$table_header  = 'id,Từ,Đến,No,Ngày,Kho,Model,Biển,Time,Status,Print';
+$table_header  = 'Từ,Đến,No,Ngày,Kho,Model,Biển,Thời gian,Sửa';
 //using new db library
 $newDB = new MysqliDb(_DB_HOST_, _DB_USER_, _DB_PASS_,_DB_name_);
 $newDB->join("SupplyChainObject sco1", "sco1.SupplyChainObjectId=s.FromId", "LEFT");
@@ -25,8 +25,7 @@ $newDB->join("Models m", "m.ModelsId=s.ModelsId", "LEFT");
 $newDB->where('StockOutputsStatus', 0, '!=');
 $newDB->where('UsersId', $_SESSION[_site_]['userid']);
 $newDB->orderBy('s.StockOutputsDate', 'DESC');
-$table_data = $newDB->get ("stockoutputs s", null, "s.StockOutputsId as id,sco1.SupplyChainObjectName Từ,sco2.SupplyChainObjectName Đến,s.StockOutputsNo No,s.StockOutputsDate Ngày,s.StockOutputsType Kho,m.ModelsName Model,s.StockOutputsBks Biển,s.StockOutputsTime as Time, if(s.StockOutputsStatus=2,'checked','') as Status,CONCAT('<a href=\"print-stockout.php&quest;id=',s.StockOutputsId,'\" target=\"_blank\" >','<i class=\"fas fa-print\"></i>', '</a>') as Print");
-$table_link = "updatestockoutput.php?id=";
+$table_data = $newDB->get ("stockoutputs s", null, "sco1.SupplyChainObjectName Từ,sco2.SupplyChainObjectName Đến,s.StockOutputsNo No,s.StockOutputsDate Ngày,s.StockOutputsType Kho,m.ModelsName Model,s.StockOutputsBks Biển,s.StockOutputsTime as `Thời gian`,CONCAT('<a href=\"update-stockout.php&quest;id=',s.StockOutputsId,'\" target=\"_self\" >','<i class=\"fas fa-pen\"></i>', '</a>') as Sửa");
 ?>
 
 <body id="page-top">
@@ -48,15 +47,14 @@ $table_link = "updatestockoutput.php?id=";
           <div class="container-fluid">
               
             <div class="table-responsive">
-                <a href="newstockout.php" class="text-primary">New stock out</a>
-                <table border="0" cellspacing="5" cellpadding="5" class="display nowrap">
-                  <tbody>
-                    <tr>
-                      <td>Ngày:</td>
-                      <td><input type="date" id="date_filter"></td>
-                    </tr>
-                  </tbody>
-                </table>
+            <table border="0" cellspacing="5" cellpadding="5" class="display nowrap">
+              <tbody>
+                <tr>
+                  <td>Ngày:</td>
+                  <td><input type="date" id="date_filter"></td>
+                </tr>
+              </tbody>
+            </table>
                 <?php include('../views/template_table.php') ?>
             </div> 
         </div>
@@ -111,7 +109,7 @@ $table_link = "updatestockoutput.php?id=";
     $.fn.dataTable.ext.search.push(
       function( settings, data, dataIndex ) {
           let date_filter = $('#date_filter').val();
-          let date_value = data[4];
+          let date_value = data[3];
           if(date_filter){
             if ( date_filter == date_value )
             {
@@ -125,7 +123,7 @@ $table_link = "updatestockoutput.php?id=";
     );
     $(function () {
       $('selectpicker').selectpicker();
-      var data_table = $('#dataTable').DataTable( {
+      var data_table = $('#dataTable').DataTable({
           dom: "<'row'<'col-md-10 pull-left'f><'col-md-2 pull-right'B>>" +
                 "<'row'<'col-sm-12'tr>>" +
                 "<'row'<'col-sm-5'i><'col-sm-7'p>>",
@@ -139,7 +137,7 @@ $table_link = "updatestockoutput.php?id=";
           },
           order: [[0, "desc"]]
           //"paging": false
-      } );
+      });
       $('#date_filter').change(function(){
         data_table.draw();
       });

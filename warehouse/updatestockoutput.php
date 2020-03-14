@@ -14,9 +14,18 @@ $pagetitle = $user->module;
 require('../function/template.php');
 $oDB = new db();
 $newDB = new MysqliDb(_DB_HOST_, _DB_USER_, _DB_PASS_, _DB_name_);
+if(!isset($_GET['id'])){
+    echo 'KHÔNG HỢP LỆ';
+    return;
+}
 $id = $_GET['id'];
 $newDB->where('StockOutputsId', $id);
 $stockoutput = $newDB->getOne('stockoutputs');
+
+if($stockoutput['StockOutputsStatus'] == 2){
+    echo 'BẢO VỆ ĐÃ XÁC NHẬN KHÔNG THỂ SỬA!';
+    return;
+}
 
 $newDB->where('StockOutputsId', $id);
 $stockoutputitems = $newDB->get('stockoutputitems');
@@ -52,7 +61,7 @@ $stockoutputitems = $newDB->get('stockoutputitems');
     </style>
     <title>Print stockoutput</title>
   </head>
-  <body onload="window.print()">
+  <body>
     <div class="ml-2 mt-2">
         <p>
         <img src="../img/hallalogo.png" alt="" style="width:100px">
@@ -78,7 +87,7 @@ $stockoutputitems = $newDB->get('stockoutputitems');
                 <th><strong>NO:</strong></th>
                 <td><?php echo $stockoutput['StockOutputsNo'] ?></td>
                 <th><strong>THỜI GIAN:</strong></th>
-                <td></td>
+                <td><?php echo $stockoutput['StockOutputsTime']?></td>
             </tr>
             <tr>
                 <th><strong>DELIVERY DATE(NGÀY GIAO HÀNG):</strong></th>
@@ -120,10 +129,10 @@ $stockoutputitems = $newDB->get('stockoutputitems');
                     <td><?php echo $product['ProductsName'] ?></td>
                     <td><?php echo $product['ProductsNumber']?></td>
                     <td><?php echo $item['StockOutputItemsWo']?></td>
-                    <td><?php echo $item['StockOutputItemsCartQty']?></td>
+                    <td><input style="height: 30px;font-size:16px;width:60px;" name="CartQty_<?php echo $item['StockOutputItemsId']?>" type="number" value="<?php echo $item['StockOutputItemsCartQty']?>"></td>
                     <td><?php echo $product['ProductsUnit']?></td>
-                    <td><?php echo $item['StockOutputItemsQty']?></td>
-                    <td><?php echo $item['StockOutputItemsRemark']?></td>
+                    <td><input style="height: 30px;font-size:16px;width:60px;" name="Qty_<?php echo $item['StockOutputItemsId']?>" type="number" value="<?php echo $item['StockOutputItemsQty']?>"></td>
+                    <td><input style="height: 30px;font-size:16px;" name="Remark_<?php echo $item['StockOutputItemsId']?>" type="text" value="<?php echo $item['StockOutputItemsRemark']?>"></td>
                 </tr>
                 <?php
                 }
@@ -182,6 +191,17 @@ $stockoutputitems = $newDB->get('stockoutputitems');
                 </table>
             </div>
         </div>
+        <script src="../vendor/jquery/jquery.min.js"></script>
+        <script>
+            $(function(){
+                $('input').on('input',function(e){
+                   $.ajax({
+                       'url': 'updatestockoutputdata.php?name='+e.target.name+'&value='+e.target.value,
+                       'method': 'get'
+                   })
+                })
+            })
+        </script>
 
   </body>
 </html>

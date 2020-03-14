@@ -49,14 +49,25 @@ $tracestations = $newDB->get('tracestation');
             <div class="form-group row">
               <label style="font-size: 14px;" class="col-sm-1 col-form-label"><strong>FROM(TỪ):</strong></label>
               <div class="col-sm-3">
-                <select class="form-control" required v-model="FromId" name="FromId">
-                  <option value="">select</option>
-                  <?php 
-                  foreach ($scobjs as $key => $value) {
-                    echo "<option value='".$value['SupplyChainObjectId']."'>".$value['SupplyChainObjectName']."</option>";
-                  }
-                  ?>            
-                </select>
+                <v-select 
+                  placeholder="select"
+                  :options="suppliers_data" 
+                  :get-option-label="option => option.SupplyChainObjectName"
+                  :reduce="spl => spl.SupplyChainObjectId" 
+                  class="form-control"
+                  v-model="FromId"
+                  required>
+                    <template #search="{attributes, events}">
+                      <input
+                        class="vs__search"
+                        :required="!FromId"
+                        v-bind="attributes"
+                        v-on="events"
+                      />
+                    </template>
+                </v-select>
+                <input type="hidden" name="FromId" required :value="FromId">
+                
               </div>
               <label style="font-size: 14px;" class="col-sm-1 col-form-label"><strong>KHO:</strong></label>
               <div class="col-sm-3">
@@ -68,18 +79,27 @@ $tracestations = $newDB->get('tracestation');
               </div>
               <label style="font-size: 14px;" class="col-sm-1 col-form-label"><strong>BKS:</strong></label>
               <div class="col-sm-3">
-                <input type="text" class="form-control" v-model="StockOutputsBks" name="StockOutputsBks">
               </div>
               <label style="font-size: 14px;" class="col-sm-1 col-form-label"><strong>TO(ĐẾN):</strong></label>
               <div class="col-sm-3">
-                <select class="form-control" required v-model="ToId" name="ToId">
-                  <option value="">select</option>
-                  <?php 
-                  foreach ($scobjs as $key => $value) {
-                    echo "<option value='".$value['SupplyChainObjectId']."'>".$value['SupplyChainObjectName']."</option>";
-                  }
-                  ?>            
-                </select>
+                <v-select 
+                  placeholder="select"
+                  :options="suppliers_data" 
+                  :get-option-label="option => option.SupplyChainObjectName"
+                  :reduce="spl => spl.SupplyChainObjectId" 
+                  class="form-control"
+                  v-model="ToId"
+                  required>
+                    <template #search="{attributes, events}">
+                      <input
+                        class="vs__search"
+                        :required="!ToId"
+                        v-bind="attributes"
+                        v-on="events"
+                      />
+                    </template>
+                </v-select>
+                <input type="hidden" name="ToId" required :value="ToId">
               </div>
               <label style="font-size: 14px;" class="col-sm-1 col-form-label"><strong>NO:</strong></label>
               <div class="col-sm-3">
@@ -94,14 +114,24 @@ $tracestations = $newDB->get('tracestation');
               </div>
               <label style="font-size: 14px;" class="col-sm-1 col-form-label"><strong>MODEL:</strong></label>
               <div class="col-sm-3">
-                <select class="form-control" required v-model="ModelsId" name="ModelsId">
-                  <option value="">select</option>
-                  <?php 
-                  foreach ($models as $key => $value) {
-                    echo "<option value='".$value['ModelsId']."'>".$value['ModelsName']."</option>";
-                  }
-                  ?>            
-                </select>
+                <v-select 
+                  placeholder="select"
+                  :options="models_data" 
+                  :get-option-label="option => option.ModelsName"
+                  :reduce="m => m.ModelsId" 
+                  class="form-control"
+                  v-model="ModelsId"
+                  required>
+                    <template #search="{attributes, events}">
+                      <input
+                        class="vs__search"
+                        :required="!ModelsId"
+                        v-bind="attributes"
+                        v-on="events"
+                      />
+                    </template>
+                </v-select>
+                <input type="hidden" name="ModelsId" required :value="ModelsId">
               </div>
               
             
@@ -127,7 +157,7 @@ $tracestations = $newDB->get('tracestation');
                       <v-select 
                         placeholder="chọn sản phẩm"
                         :options="products_data" 
-                        :get-option-label="option => option.ProductsName"
+                        :get-option-label="option => option.ProductsNumber + '-' +option.ProductsName"
                         :reduce="product => product.ProductsId" 
                         class="form-control"
                         @input="productSelected(item)"
@@ -145,11 +175,11 @@ $tracestations = $newDB->get('tracestation');
                       <input type="hidden" name="ProductsId[]" required :value="item.ProductsId">
                     </td>
                     <td>{{productSelected(item).ProductsNumber}}</td>
-                    <td><input type="text" v-model="item.StockOutputItemsWo" name="StockOutputItemsWo[]"></td>
-                    <td><input type="number" v-model="item.StockOutputItemsCartQty" style="width:60px;" name="StockOutputItemsCartQty[]"></td>
+                    <td><input style="height: 33px; font-size: 16px;" type="text" v-model="item.StockOutputItemsWo" name="StockOutputItemsWo[]"></td>
+                    <td><input style="height: 33px; font-size: 16px; width: 60px" type="number" v-model="item.StockOutputItemsCartQty" name="StockOutputItemsCartQty[]"></td>
                     <td>{{productSelected(item).ProductsUnit}}</td>
-                    <td><input type="number" v-model="item.StockOutputItemsQty" style="width:60px;" name="StockOutputItemsQty[]"></td>
-                    <td><input type="text" v-model="item.StockOutputItemsRemark" name="StockOutputItemsRemark[]"></td>
+                    <td><input style="height: 33px; font-size: 16px;width: 60px;" type="number" v-model="item.StockOutputItemsQty" name="StockOutputItemsQty[]"></td>
+                    <td><input style="height:33px; font-size: 16px;" type="text" v-model="item.StockOutputItemsRemark" name="StockOutputItemsRemark[]"></td>
                   </tr>
                 </tbody>
                 <tfoot>
@@ -230,6 +260,7 @@ $tracestations = $newDB->get('tracestation');
 
   <script>
     $(function () {
+      $('.selectpicker').selectpicker();
       Vue.component('v-select', VueSelect.VueSelect);
       new Vue({
         el: '#content',
@@ -242,7 +273,6 @@ $tracestations = $newDB->get('tracestation');
           StockOutputsDate: null,
           StockOutputsNo: '',
           StockOutputsType: '',
-          StockOutputsBks: '',
           StockOutputsStatus: 0,
           stockoutputitems:[{
             ProductsId:'',
@@ -251,7 +281,9 @@ $tracestations = $newDB->get('tracestation');
             StockOutputItemsQty:'',
             StockOutputItemsRemark:'',
           }],
-          products_data: []
+          products_data: [],
+          suppliers_data: <?php echo json_encode($scobjs);?>,
+          models_data: <?php echo json_encode($models); ?>,
         },
         methods: {
           productSelected(item){
@@ -309,7 +341,6 @@ $tracestations = $newDB->get('tracestation');
             this.StockOutputsType = data['StockOutputsType']+'';
             this.StockOutputsDate = data['StockOutputsDate'];
             this.StockOutputsNo = data['StockOutputsNo'];
-            this.StockOutputsBks = data['StockOutputsBks'];
             this.stockoutputitems = data['stockoutputitems'];
           }).catch(() => {
             console.log('error');

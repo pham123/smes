@@ -60,7 +60,7 @@ $Products->get($id);
         ?>
 
         <div class="table-responsive">
-            <form action="print.php" method="post">
+            <form action="print2.php" method="post">
                 <input type="hidden" name="id" value="<?php echo $id ?>">
                
                 <div class="row">

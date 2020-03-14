@@ -116,7 +116,7 @@
                 $oDB->query("INSERT INTO LabelHistory (`TraceStationId`,`ProductsId`,`LabelHistoryQuantityOk`,`LabelHistoryLabelValue`) VALUES (?,?,1,?)",$stationid,$product['ProductsId'],$code);
 
 
-                $_SESSION['message'] = "<h1 style='background-color:blue;'>Thêm thành công ".$code."</h1>";
+                $_SESSION['message'] = "<h1 style='background-color:green;'>Thêm thành công ".$code."</h1>";
                 $_SESSION['station']['lasttime'] = date('Y-m-d h:i:s');
                 $_SESSION['station']['lastcode'] = $code;
                 header('Location: ?');

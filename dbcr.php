@@ -45,7 +45,7 @@ $rs = $crdb->query($sql)->fetchAll();
 // var_dump($rs);
 $arr = array();
 foreach ($rs as $key => $value) {
-    $arr[]=$value['table_name'];
+    $arr[]=$value['TABLE_NAME'];
 }
 
 echo implode(', ',$arr);

@@ -26,8 +26,15 @@ if (isset($_SESSION['station']['id'])) {
         $rs = $oDB->query('SELECT * FROM LabelPattern Where ProductsId=? AND TraceStationId =?',$_SESSION['station']['id'],$stationid)->fetchArray();
         // var_dump($rs);
         // $setunique = $rs['LabelPatternUnique'];
-        $setunique = ($rs['LabelPatternUnique']==Null) ? 1 : $rs['LabelPatternUnique'] ;
-        $pattern = $rs['LabelPatternValue'];
+        if (isset($rs['LabelPatternUnique'])) {
+            $setunique = ($rs['LabelPatternUnique']==Null) ? 1 : $rs['LabelPatternUnique'] ;
+            $pattern = $rs['LabelPatternValue'];
+        }else{
+            unset($_SESSION['station']);
+            $_SESSION['message']="<h1 style='background-color:red;'>Mã sản phẩm ".$_POST['prdnumber']." chưa được thiết lập mẫu tem trên hệ thống</h1>";
+            
+        }
+        
     }else{
         //Về trang lựa chọn sản phẩm
         
@@ -56,7 +63,7 @@ if (isset($setunique)&&is_numeric($setunique)) {
             include('temp/unique-not.php');
             break;
         default:
-            # code...
+            
             break;
     }
 }
@@ -76,3 +83,6 @@ if (isset($setunique)&&is_numeric($setunique)) {
     </form>
 </body>
 </html>
+<?php
+echo $_SESSION['message'];
+?>

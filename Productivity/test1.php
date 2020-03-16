@@ -25,7 +25,16 @@ $process_data = [
     'TraceStationId' => $data['TraceStationId'],
     'PeriodId' => 0
 ];
-$newDB->insert('processdailyhistory', $process_data);
+$newDB->where('ProcessDailyHistoryDate', $date);
+$newDB->where('ProductsId', $data['ProductsId']);
+$newDB->where('ProcessDailyHistoryMold', $data['ProcessDailyHistoryMold']);
+$newDB->where('MachinesId', $data['MachinesId']);
+$newDB->where('TraceStationId', $data['TraceStationId']);
+$temp = $newDB->getOne('processdailyhistory');
+
+if(!$temp){
+    $newDB->insert('processdailyhistory', $process_data);
+}
 
 // foreach($periods as $pid){
 //     $process_data['PeriodId'] = 0;

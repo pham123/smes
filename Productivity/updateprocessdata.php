@@ -21,6 +21,7 @@ if($process){
     $newDB->where('MachinesId', $process['MachinesId']);
     $newDB->where('TraceStationId', $process['TraceStationId']);
     $newDB->where('ProcessDailyHistoryDate', $process['ProcessDailyHistoryDate']);
+    $newDB->where('ProcessDailyHistoryMold', $process['ProcessDailyHistoryMold']);
     $newDB->where('PeriodId', $arr[2]);
     $temp = $newDB->getOne('processdailyhistory');
     if($temp){
@@ -28,6 +29,7 @@ if($process){
         $newDB->where('MachinesId', $process['MachinesId']);
         $newDB->where('TraceStationId', $process['TraceStationId']);
         $newDB->where('ProcessDailyHistoryDate', $process['ProcessDailyHistoryDate']);
+        $newDB->where('ProcessDailyHistoryMold', $process['ProcessDailyHistoryMold']);
         $newDB->where('PeriodId', $arr[2]);
         $newDB->update('processdailyhistory', ['ProcessDailyHistory'.ucfirst($arr[0]) => $value,'LastUpdateUser' => $_SESSION[_site_]['userid']]);
     }else{

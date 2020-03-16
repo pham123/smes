@@ -38,7 +38,7 @@ $newDB->where('proc.TraceStationId', $station_ids, "IN");
 $newDB->join('products p', 'p.ProductsId = proc.ProductsId', 'LEFT');
 $newDB->join('machines m', 'proc.MachinesId = m.MachinesId', 'LEFT');
 $newDB->join('tracestation t', 'proc.TraceStationId = t.TraceStationId', 'LEFT');
-$newDB->groupBy('proc.TraceStationId,ProcessDailyHistoryDate,proc.MachinesId,proc.ProductsId');
+$newDB->groupBy('proc.TraceStationId,ProcessDailyHistoryDate,proc.MachinesId,proc.ProductsId,proc.ProcessDailyHistoryMold');
 $arr['processes_uniq'] = $newDB->get('processdailyhistory proc');
 
 

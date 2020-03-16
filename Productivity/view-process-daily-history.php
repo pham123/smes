@@ -89,13 +89,15 @@ if(isset($_SESSION[_site_]['userlang'])){
                             <th rowspan="2" style="min-width: 130px;">Part No</th>
                             <th rowspan="2" style="min-width: 70px;">Mold</th>
                             <th rowspan="2" style="border-right: 2px solid gold;">Machine</th>
-                            <th colspan="3" v-for="p in periods_data" style="border-right: 2px solid gold;">{{p.PeriodName}}</th>
+                            <th colspan="5" v-for="p in periods_data" style="border-right: 2px solid gold;">{{p.PeriodName}}</th>
                           </tr>
                           <tr class="notincl">
                             <template v-for="p in periods_data">
                               <td class="bg-success text-white">OK</td>
                               <td class="bg-danger">NG</th>
-                              <td class="bg-warning" style="border-right: 2px solid gold;">Idle</td>
+                              <td class="bg-warning">Idle</td>
+                              <td class="bg-secondary">Manpow</td>
+                              <td class="bg-white" style="border-right: 2px solid gold;">Code</td>
                             </template>
                           </tr>
                         </thead>
@@ -110,7 +112,9 @@ if(isset($_SESSION[_site_]['userlang'])){
                             <template v-for="(per,index) in periods_data">
                               <td style="border-right: 1px solid #ddd;">{{findOkVal(p,per.PeriodId)}}</td>
                               <td style="border-right: 1px solid #ddd;"><a style="color: red" :href="'ng-detail.php?id='+findProcessId(p,per.PeriodId)" target="_blank">{{findNgVal(p,per.PeriodId)}}</a></td>
-                              <td style="border-left: none;border-right: 2px solid gold;"><a style="color: blue;" :href="'idle-detail.php?id='+findProcessId(p,per.PeriodId)" target="_blank">{{findIdleVal(p,per.PeriodId)}}</a></td>
+                              <td style="border-left: none;border-right: 1px solid #ddd;"><a style="color: blue;" :href="'idle-detail.php?id='+findProcessId(p,per.PeriodId)" target="_blank">{{findIdleVal(p,per.PeriodId)}}</a></td>
+                              <td style="border-left: none;border-right: 1px solid #ddd;">{{findManpowVal(p,per.PeriodId)}}</td>
+                              <td style="border-left: none;border-right: 2px solid gold;">{{findUcodeVal(p,per.PeriodId)}}</td>
                             </template>
                           </tr>
                         </tbody>
@@ -219,7 +223,7 @@ if(isset($_SESSION[_site_]['userlang'])){
           },
           findOkVal(process, period_id){
             let p = this.processes_data.filter((value,index) => {
-              return value['TraceStationId'] == process['TraceStationId'] && value['MachinesId'] == process['MachinesId'] && value['ProductsId'] == process['ProductsId'] && value['PeriodId'] == period_id;
+              return value['TraceStationId'] == process['TraceStationId'] && value['MachinesId'] == process['MachinesId'] && value['ProcessDailyHistoryMold'] == process['ProcessDailyHistoryMold'] && value['ProductsId'] == process['ProductsId'] && value['PeriodId'] == period_id;
             });
             if(p.length > 0){
               return p[0]['ProcessDailyHistoryOk'];
@@ -227,7 +231,7 @@ if(isset($_SESSION[_site_]['userlang'])){
           },
           findNgVal(process, period_id){
             let p = this.processes_data.filter((value,index) => {
-              return value['TraceStationId'] == process['TraceStationId'] && value['MachinesId'] == process['MachinesId'] && value['ProductsId'] == process['ProductsId'] && value['PeriodId'] == period_id;
+              return value['TraceStationId'] == process['TraceStationId'] && value['MachinesId'] == process['MachinesId'] && value['ProcessDailyHistoryMold'] == process['ProcessDailyHistoryMold'] && value['ProductsId'] == process['ProductsId'] && value['PeriodId'] == period_id;
             });
             if(p.length > 0){
               return p[0]['ProcessDailyHistoryNg'];
@@ -235,10 +239,26 @@ if(isset($_SESSION[_site_]['userlang'])){
           },
           findIdleVal(process, period_id){
             let p = this.processes_data.filter((value,index) => {
-              return value['TraceStationId'] == process['TraceStationId'] && value['MachinesId'] == process['MachinesId'] && value['ProductsId'] == process['ProductsId'] && value['PeriodId'] == period_id;
+              return value['TraceStationId'] == process['TraceStationId'] && value['MachinesId'] == process['MachinesId'] && value['ProcessDailyHistoryMold'] == process['ProcessDailyHistoryMold'] && value['ProductsId'] == process['ProductsId'] && value['PeriodId'] == period_id;
             });
             if(p.length > 0){
               return p[0]['ProcessDailyHistoryIdletime'];
+            }
+          },
+          findManpowVal(process, period_id){
+            let p = this.processes_data.filter((value,index) => {
+              return value['TraceStationId'] == process['TraceStationId'] && value['MachinesId'] == process['MachinesId'] && value['ProcessDailyHistoryMold'] == process['ProcessDailyHistoryMold'] && value['ProductsId'] == process['ProductsId'] && value['PeriodId'] == period_id;
+            });
+            if(p.length > 0){
+              return p[0]['ProcessDailyHistoryManpow'];
+            }
+          },
+          findUcodeVal(process, period_id){
+            let p = this.processes_data.filter((value,index) => {
+              return value['TraceStationId'] == process['TraceStationId'] && value['MachinesId'] == process['MachinesId'] && value['ProcessDailyHistoryMold'] == process['ProcessDailyHistoryMold'] && value['ProductsId'] == process['ProductsId'] && value['PeriodId'] == period_id;
+            });
+            if(p.length > 0){
+              return p[0]['ProcessDailyHistoryUcode'];
             }
           },
           loadProcessData(){

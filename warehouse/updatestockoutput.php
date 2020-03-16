@@ -114,6 +114,7 @@ $stockoutputitems = $newDB->get('stockoutputitems');
                 </tr>
             </thead>
             <tbody>
+                <form method="post" action="listen-update-stock-output.php">
                 <?php
                 $totalQty = 0;
                 $totalCartQty = 0;
@@ -125,34 +126,27 @@ $stockoutputitems = $newDB->get('stockoutputitems');
                     $product = $newDB->getOne('products');
                 ?>
                 <tr>
-                    <td><?php echo $k+1 ?></td>
+                    <td><?php echo $k+1 ?><input type="hidden" name="StockOutputItemsId[]" value="<?php echo $item['StockOutputItemsId'] ?>"</td>
                     <td><?php echo $product['ProductsName'] ?></td>
                     <td><?php echo $product['ProductsNumber']?></td>
                     <td><?php echo $item['StockOutputItemsWo']?></td>
-                    <td><input style="height: 30px;font-size:16px;width:60px;" name="CartQty_<?php echo $item['StockOutputItemsId']?>" type="number" value="<?php echo $item['StockOutputItemsCartQty']?>"></td>
+                    <td><input style="height: 30px;font-size:16px;width:60px;" name="StockOutputItemsCartQty[]" type="number" value="<?php echo $item['StockOutputItemsCartQty']?>"></td>
                     <td><?php echo $product['ProductsUnit']?></td>
-                    <td><input style="height: 30px;font-size:16px;width:60px;" name="Qty_<?php echo $item['StockOutputItemsId']?>" type="number" value="<?php echo $item['StockOutputItemsQty']?>"></td>
-                    <td><input style="height: 30px;font-size:16px;" name="Remark_<?php echo $item['StockOutputItemsId']?>" type="text" value="<?php echo $item['StockOutputItemsRemark']?>"></td>
+                    <td><input style="height: 30px;font-size:16px;width:60px;" name="StockOutputItemsQty[]" type="number" value="<?php echo $item['StockOutputItemsQty']?>"></td>
+                    <td><input style="height: 30px;font-size:16px;" name="StockOutputItemsRemark[]" type="text" value="<?php echo $item['StockOutputItemsRemark']?>"></td>
                 </tr>
                 <?php
                 }
                     $numOfItems = count($stockoutputitems);
-                    for($i = $numOfItems; $i< 12; $i++)
-                    {
                 ?>
                 <tr>
-                    <td><?php echo $i+1?></td>
+                    <td><?php echo $numOfItems+1?></td>
                     <td>&nbsp;</td>
                     <td>&nbsp;</td>
                     <td>&nbsp;</td>
-                    <td>&nbsp;</td>
-                    <td>&nbsp;</td>
-                    <td>&nbsp;</td>
-                    <td>&nbsp;</td>
+                    <td colspan="4"><input class="btn btn-primary btn-sm btn-block" type="submit" value="save"></td>
                 </tr>
-                <?php
-                    }
-                ?>
+                </form>
             </tbody>
             <tfoot>
                 <tr>
@@ -193,14 +187,14 @@ $stockoutputitems = $newDB->get('stockoutputitems');
         </div>
         <script src="../vendor/jquery/jquery.min.js"></script>
         <script>
-            $(function(){
-                $('input').on('input',function(e){
-                   $.ajax({
-                       'url': 'updatestockoutputdata.php?name='+e.target.name+'&value='+e.target.value,
-                       'method': 'get'
-                   })
-                })
-            })
+            // $(function(){
+            //     $('input').on('input',function(e){
+            //        $.ajax({
+            //            'url': 'updatestockoutputdata.php?name='+e.target.name+'&value='+e.target.value,
+            //            'method': 'get'
+            //        })
+            //     })
+            // })
         </script>
 
   </body>

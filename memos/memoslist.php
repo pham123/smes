@@ -43,9 +43,9 @@ $_SESSION[_site_]['enddate'] = (isset($_SESSION[_site_]['enddate'])) ? $_SESSION
         <?php 
 
 if ($user->acess()==1) {
-  $table_header  = 'No.,IssueDate,Dept,Location,title,issue,Picture,PictureAfter,Efficiency,ResultOfReview,Maker,Pic,Status,Plan,Score,Edit,Delete';
+  $table_header  = 'No.,IssueDate,Dept,Location,title,issue,Picture,PictureAfter,Efficiency,Maker,Pic,Status,ResultOfReview,Plan,Score,Edit,Delete';
 }else{
-  $table_header  = 'No.,IssueDate,Dept,Location,title,issue,Picture,PictureAfter,Efficiency,ResultOfReview,Maker,Pic,Status,Plan,Score,Edit';
+  $table_header  = 'No.,IssueDate,Dept,Location,title,issue,Picture,PictureAfter,Efficiency,Maker,Pic,Status,ResultOfReview,Plan,Score,Edit';
 }
 
           
@@ -126,23 +126,7 @@ if ($user->acess()==1) {
           echo "<td><a href='image/imgafter_".$value['MemosId'].".jpg' target='_blank'><img src='image/small/imgafter_".$value['MemosId'].".jpg' alt=''></a></td>";
           echo "<td style='min-width:150px;'>".$value['MemosEfficiency']."</td>";
 
-          switch ($value['MemosStatus']) {
-            case '':
-              echo "<td class=''>NA</td>";
-              break;
-            case '1':
-              echo "<td class='bg-warning'>Xem xet</td>";
-              break;
-            case '2':
-              echo "<td class='bg-success'>Duyệt</td>";
-              break;           
-            case '3':
-              echo "<td class='bg-danger'>Hủy</td>";
-              break;          
-            default:
-              echo "<td class='warning'>NA</td>";
-              break;
-          }
+          
           echo "<td style='min-width: 100px'>".$value['EmployeesName']." - ".$value['EmployeesCode']."</td>";
           if ($value['MemosPic']==$_SESSION[_site_]['userid']) {
             if ($value['MemosPicOption']==2) {
@@ -173,6 +157,23 @@ if ($user->acess()==1) {
               break;           
             case '3':
               echo "<td class='bg-danger'>Delay</td>";
+              break;          
+            default:
+              echo "<td class='warning'>NA</td>";
+              break;
+          }
+          switch ($value['MemosStatus']) {
+            case '':
+              echo "<td class=''>NA</td>";
+              break;
+            case '1':
+              echo "<td class='bg-warning'>Xem xet</td>";
+              break;
+            case '2':
+              echo "<td class='bg-success'>Duyệt</td>";
+              break;           
+            case '3':
+              echo "<td class='bg-danger'>Hủy</td>";
               break;          
             default:
               echo "<td class='warning'>NA</td>";

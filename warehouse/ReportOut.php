@@ -41,12 +41,13 @@ $newDB = new MysqliDb(_DB_HOST_, _DB_USER_, _DB_PASS_,_DB_name_);
         <h1>REPORT HERE</h1>
 
         <?php
-        $sql = "SELECT prd.ProductsName,prd.ProductsNumber,prd.ProductsUnit, scm.SupplyChainObjectShortName as FromName, scm2.SupplyChainObjectShortName as ToName,sto.*,stoi.*
+        $sql = "SELECT Users.UsersFullName,prd.ProductsName,prd.ProductsNumber,prd.ProductsUnit, scm.SupplyChainObjectShortName as FromName, scm2.SupplyChainObjectShortName as ToName,sto.*,stoi.*
         FROM `stockoutputitems` stoi 
         INNER JOIN stockoutputs sto on sto.StockOutputsId = stoi.StockOutputsId
         INNER JOIN supplychainobject scm on sto.FromId = scm.SupplyChainObjectId
         INNER JOIN supplychainobject scm2 on sto.ToId = scm2.SupplyChainObjectId
         INNER JOIN products prd on prd.ProductsId = stoi.ProductsId
+        INNER JOIN Users on Users.UsersId = sto.UsersId
         ORDER BY StockOutPutsDate DESC;
         ";
         $result = $oDB->fetchAll($sql);
@@ -58,8 +59,8 @@ $newDB = new MysqliDb(_DB_HOST_, _DB_USER_, _DB_PASS_,_DB_name_);
         echo "<thead>";
         echo "<tr>";
             echo "<th>".$oDB->lang('Index')."</th>";
-            echo "<th>".$oDB->lang('Date')."</th>";
             echo "<th>".$oDB->lang('No')."</th>";
+            echo "<th>".$oDB->lang('Date')."</th>";
             echo "<th>".$oDB->lang('ProductName')."</th>";
             echo "<th>".$oDB->lang('ProductNumber')."</th>";
             echo "<th>".$oDB->lang('Quantity')."</th>";
@@ -68,6 +69,7 @@ $newDB = new MysqliDb(_DB_HOST_, _DB_USER_, _DB_PASS_,_DB_name_);
             echo "<th>".$oDB->lang('To')."</th>";
             echo "<th>".$oDB->lang('Type')."</th>";
             echo "<th>".$oDB->lang('Remark')."</th>";
+            echo "<th>".$oDB->lang('Pic')."</th>";
         echo "</tr>";
         echo "</thead>";
 
@@ -77,8 +79,8 @@ $newDB = new MysqliDb(_DB_HOST_, _DB_USER_, _DB_PASS_,_DB_name_);
         foreach ($result as $key => $value) {
             echo "<tr>";
             echo "<td>".($key+1)."</td>";
-            echo "<td>".$value['StockOutputsDate']."</td>";
             echo "<td>".$value['StockOutputsNo']."</td>";
+            echo "<td>".$value['StockOutputsDate']."</td>";
             echo "<td>".$value['ProductsName']."</td>";
             echo "<td>".$value['ProductsNumber']."</td>";
             echo "<td>".$value['StockOutputItemsQty']."</td>";
@@ -87,6 +89,7 @@ $newDB = new MysqliDb(_DB_HOST_, _DB_USER_, _DB_PASS_,_DB_name_);
             echo "<td>".$value['ToName']."</td>";
             echo "<td>".$value['StockOutputsType']."</td>";
             echo "<td>".$value['StockOutputItemsRemark']."</td>";
+            echo "<td>".$value['UsersFullName']."</td>";
             echo "</tr>";
         }
 

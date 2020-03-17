@@ -11,8 +11,9 @@ $data = json_decode(file_get_contents('php://input'), true);
 
 $arr = explode('_',$data['name']);
 $value = $data['value'];
-if($value <= 0)
-return;
+if($value=='' || $value < 0){
+    $value = 0;
+}
 
 $newDB->where('ProcessDailyHistoryId', $arr[1]);
 $process = $newDB->getOne('processdailyhistory');

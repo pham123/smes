@@ -42,6 +42,15 @@ $sql[] = "CREATE TABLE StockInputItemLogs (
     CreateDate TIMESTAMP DEFAULT CURRENT_TIMESTAMP ,
     UpdateDate TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
     );";
+$sql[] = "CREATE TABLE DocumentDetailLineApproval (
+    DocumentDetailLineApprovalId INT(9) UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+    DocumentDetailId int(9) NOT NULL,
+    UsersId int(9) NOT NULL,
+    DocumentDetailLineApprovalStatus tinyint,
+    DocumentDetailLineApprovalComment varchar(255),
+    DocumentDetailLineApprovalDate timestamp
+    );";
+$sql[]="ALTER TABLE documentdetail ADD UsersId int(9);";
 for ($i=0; $i < count($sql) ; $i++) { 
     $oDB -> query($sql[$i]);
 }

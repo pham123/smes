@@ -60,12 +60,12 @@ $newDB = new MysqliDb(_DB_HOST_, _DB_USER_, _DB_PASS_,_DB_name_);
       $status = '';
       $step=0;
 
-      $newDB->where('DocumentId', $id);
-      $dlas = $newDB->get('documentlineapproval');
+      $newDB->where('DocumentDetailId', $id);
+      $dlas = $newDB->get('documentdetaillineapproval');
       $numOfLines = count($dlas);
 
       foreach($dlas as $dla){
-        switch ($dla['DocumentLineApprovalStatus']) {
+        switch ($dla['DocumentDetailLineApprovalStatus']) {
           case 1:
             $step++;
             $status='warning';
@@ -113,6 +113,9 @@ $newDB = new MysqliDb(_DB_HOST_, _DB_USER_, _DB_PASS_,_DB_name_);
                   <th>Tên tài liệu</th>
                   <th>Kiểu tài liệu</th>
                   <th>Miêu tả</th>
+                  <th>Version</th>
+                  <th>Ngày tạo</th>
+                  <th>File</th>
                   <th>Status</th>
                 </tr>
             </thead>
@@ -120,6 +123,9 @@ $newDB = new MysqliDb(_DB_HOST_, _DB_USER_, _DB_PASS_,_DB_name_);
             <tbody>
               <?php
                 foreach($data as $d){
+                  $filename = $d['DocumentDetailFileName'];
+                    $tmp = explode(".", $filename);
+                    $ext = end($tmp);
               ?>
                 <tr>
                   <td><?php echo $d['SectionName']?></td>
@@ -127,11 +133,11 @@ $newDB = new MysqliDb(_DB_HOST_, _DB_USER_, _DB_PASS_,_DB_name_);
                     <?php
                       if($_GET['type'] ==2){
                     ?>
-                      <a href="approveorrejectdoc.php?id=<?php echo $d['DocumentId']?>"><?php echo $d['DocumentName']?></a>
+                      <a href="approveorrejectdoc.php?id=<?php echo $d['DocumentDetailId']?>"><?php echo $d['DocumentName']?></a>
                     <?php
                       } else {
                     ?>
-                    <a href="viewdocapp.php?id=<?php echo $d['DocumentId']?>"><?php echo $d['DocumentName']?></a>
+                    <a href="viewdocapp.php?id=<?php echo $d['DocumentDetailId']?>"><?php echo $d['DocumentName']?></a>
                     <?php
                       }
                     ?>
@@ -139,7 +145,10 @@ $newDB = new MysqliDb(_DB_HOST_, _DB_USER_, _DB_PASS_,_DB_name_);
                   </td>
                   <td><?php echo $d['DocumentTypeName']?></td>
                   <td><?php echo $d['DocumentDescription']?></td>
-                  <td><?php generateDocStatus($d['DocumentId'])?></td>
+                  <td><?php echo $d['DocumentDetailVersion']?></td>
+                  <td><?php echo $d['DocumentDetailCreateDate']?></td>
+                  <th><a href="files/<?php echo $d['DocumentDetailId']?>.<?php echo $ext?>"><?php echo $d['DocumentDetailFileName']?></a></th>
+                  <td><?php generateDocStatus($d['DocumentDetailId'])?></td>
                 </tr>
               <?php
                 }

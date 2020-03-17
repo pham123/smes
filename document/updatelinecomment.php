@@ -13,7 +13,7 @@ $id = $_GET['id'];
 
 $data = json_decode(file_get_contents('php://input'), true);
 
-$newDB->where('DocumentLineApprovalId', $id);
-$newDB->update('documentlineapproval', ['DocumentLineApprovalComment' => $data['comment']]);
+$newDB->where('DocumentDetailLineApprovalId', $id);
+$newDB->update('documentdetaillineapproval', ['DocumentDetailLineApprovalComment' => $data['comment']]);
 
 ?>

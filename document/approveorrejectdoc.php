@@ -27,19 +27,19 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
   if(isset($_POST['rejectBtn'])){
     $status = 3;
   }
-  $newDB->where('DocumentId', $data['id']);
+  $newDB->where('DocumentDetailId', $data['id']);
   $newDB->where('UsersId', $_SESSION[_site_]['userid']);
-  $newDB->update('documentlineapproval', [
-    'DocumentLineApprovalStatus' => $status,
-    'DocumentLineApprovalComment' => $data['comment']
+  $newDB->update('DocumentDetailLineApproval', [
+    'DocumentDetailLineApprovalStatus' => $status,
+    'DocumentDetailLineApprovalComment' => $data['comment']
   ]);
   if($status == 2){
     //find next line make it in process
-    $newDB->where('DocumentId', $data['id']);
-    $newDB->where('DocumentLineApprovalStatus', null, 'is');
-    $newDB->orderBy('DocumentLineApprovalId', 'asc');
-    $newDB->update('documentlineapproval', [
-      'DocumentLineApprovalStatus' => 1
+    $newDB->where('DocumentDetailId', $data['id']);
+    $newDB->where('DocumentDetailLineApprovalStatus', null, 'is');
+    $newDB->orderBy('DocumentDetailLineApprovalId', 'asc');
+    $newDB->update('DocumentDetailLineApproval', [
+      'DocumentDetailLineApprovalStatus' => 1
     ], 1);
   }
   header('Location:viewdocapp.php?id='.$data['id']);
@@ -47,15 +47,20 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 }
 if (isset($_GET['id']) && is_numeric($_GET['id'])) {
   $id = safe($_GET['id']);
-  $newDB->where('d.DocumentId', $id);
+  $newDB->where('dd.DocumentDetailId', $id);
+  $newDB->join('document d', 'd.DocumentId=dd.DocumentId', 'left');
   $newDB->join('section s', 's.SectionId=d.SectionId', 'left');
   $newDB->join('documenttype dt', 'dt.DocumentTypeId=d.DocumentTypeId');
-  $thisdoc = $newDB->getOne('document d');
+  $thisdoc = $newDB->getOne('documentdetail dd');
 
-  $newDB->where('DocumentId', $id);
+  $filename = $thisdoc['DocumentDetailFileName'];
+  $tmp = explode(".", $filename);
+  $ext = end($tmp);
+
+  $newDB->where('DocumentDetailId', $id);
   $newDB->where('UsersId', $_SESSION[_site_]['userid']);
-  $newDB->where('DocumentLineApprovalStatus', 1);
-  $currentLine = $newDB->getOne('documentlineapproval');
+  $newDB->where('DocumentDetailLineApprovalStatus', 1);
+  $currentLine = $newDB->getOne('documentdetaillineapproval');
   if(!$thisdoc || !$currentLine){
     header('Location:../404.html');
     exit();
@@ -64,8 +69,8 @@ if (isset($_GET['id']) && is_numeric($_GET['id'])) {
   header('Location:index.php');
   exit();
 }
-$newDB->where('DocumentId', $_GET['id']);
-$lines = $newDB->get('documentlineapproval');
+$newDB->where('DocumentDetailId', $_GET['id']);
+$lines = $newDB->get('documentdetaillineapproval');
 
 ?>
 
@@ -104,6 +109,24 @@ $lines = $newDB->get('documentlineapproval');
                       <p class="text-body"><strong><?php echo $thisdoc['DocumentDescription']?></strong></p>
                   </div>
               </div>
+              <div class="row">
+                <div class="col-md">
+                  <span>Version:</span>
+                  <?php echo $thisdoc['DocumentDetailVersion']?>
+                </div>
+                <div class="col-md">
+                  <span>Link:</span>
+                  <a href="files/<?php echo $thisdoc['DocumentDetailId']?>.<?php echo $ext?>"><?php echo $thisdoc['DocumentDetailFileName']?></a>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-md-12">
+                  <span>Version description:</span>
+                  <p>
+                    <?php echo $thisdoc['DocumentDetailDesc'] ?>
+                  </p>
+                </div>  
+              </div>
 
               </div>
 
@@ -112,7 +135,7 @@ $lines = $newDB->get('documentlineapproval');
                 <h5>Line comment</h5>
                 <form method="post" action="">
                   <input type="hidden" name="id" value="<?php echo $id?>">
-                <textarea name="comment" id="" class="form-control mb-1" rows="3"><?php echo $currentLine['DocumentLineApprovalComment'] ?></textarea>
+                <textarea name="comment" id="" class="form-control mb-1" rows="3"><?php echo $currentLine['DocumentDetailLineApprovalComment'] ?></textarea>
                 <div class="d-flex justify-content-around">
                   <input type="submit" class="btn btn-success btn-sm w-25" name="approveBtn" value="Approve">
                   <input type="submit" class="btn btn-danger btn-sm w-25" name="rejectBtn" value="Reject">
@@ -150,10 +173,10 @@ $lines = $newDB->get('documentlineapproval');
                       <td class='text-center'>{{index+1}}</td>
                       <td>{{findUser(line.UsersId)?.UsersFullName}}</td>
                       <td>{{findUser(line.UsersId)?.SectionName}} {{findUser(line.UsersId)?.PositionsName}}</td>
-                      <td :class='getStatus(line.DocumentLineApprovalStatus)["class"]'>{{getStatus(line.DocumentLineApprovalStatus)["text"]}}</td>
-                      <td>{{line.DocumentLineApprovalDate}}</td>
+                      <td :class='getStatus(line.DocumentDetailLineApprovalStatus)["class"]'>{{getStatus(line.DocumentDetailLineApprovalStatus)["text"]}}</td>
+                      <td>{{line.DocumentDetailLineApprovalDate}}</td>
                       <td>
-                        {{line.DocumentLineApprovalComment}}
+                        {{line.DocumentDetailLineApprovalComment}}
                       </td>
                     </tr>
                   </tbody>
@@ -229,15 +252,12 @@ $lines = $newDB->get('documentlineapproval');
       new Vue({
         el: '#content',
         data: {
-          DocumentId: <?php echo $_GET['id'];?>,
+          DocumentDetailId: <?php echo $_GET['id'];?>,
           SectionId: <?php echo $thisdoc['SectionId'].'';?>,
           UsersId: <?php echo $thisdoc['UsersId']?>,
           DocumentTypeId: <?php echo $thisdoc['DocumentTypeId']?>,
           DocumentSubmit: <?php echo $thisdoc['DocumentSubmit']?$thisdoc['DocumentSubmit']:0 ?>,
           EmailList: <?php echo json_encode($thisdoc['DocumentEmailList']?explode(",", $thisdoc['DocumentEmailList']):[]);?>,
-          ProPlanId: '',
-          TraceStationId: '',
-          ProPlanDate:'',
           form: new Form({
             lines: <?php echo json_encode($lines)?>
           }),
@@ -268,7 +288,7 @@ $lines = $newDB->get('documentlineapproval');
             return $result
           },
           updateComment(line){
-            axios.post('updatelinecomment.php?id='+line.DocumentLineApprovalId, {comment: line.DocumentLineApprovalComment})
+            axios.post('updatelinecomment.php?id='+line.DocumentDetailLineApprovalId, {comment: line.DocumentDetailLineApprovalComment})
                   .then(({data}) => {
                     alert('comment updated!')
                   })

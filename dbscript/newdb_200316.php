@@ -19,6 +19,14 @@ $sql[] = "CREATE TABLE StockOutputItemLogs (
     );";
 $sql[]="ALTER TABLE processdailyhistory ADD ProcessDailyHistoryManpow float;";
 $sql[]="ALTER TABLE processdailyhistory ADD ProcessDailyHistoryUcode VARCHAR(20);";
+$sql[]="CREATE TABLE DocumentDetail (
+    DocumentDetailId INT(9) UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+    DocumentId INT(9),
+    DocumentDetailVersion VARCHAR(30),
+    DocumentDetailFileName VARCHAR(50),
+    DocumentDetailDesc VARCHAR(255),
+    DocumentDetailCreateDate TIMESTAMP DEFAULT CURRENT_TIMESTAMP ,
+    DocumentDetailUpdateDate TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP);";
 for ($i=0; $i < count($sql) ; $i++) { 
     $oDB -> query($sql[$i]);
 }

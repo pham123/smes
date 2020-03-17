@@ -91,9 +91,10 @@ function yourCreatedDoc(){
 $arr = array(
   array('documenttype.php', 'fas fa-plus-square',$oDB->lang('DocumentType')),
   array('adddoc.php', 'fas fa-plus-square',$oDB->lang('AddDocument')),
-  array('documentlist.php', 'fas fa-plus-square',$oDB->lang('DocumentList'))
+  array('documentlist.php', 'fas fa-plus-square',$oDB->lang('DocumentList')),
+  array('documentlistdetail.php', 'fas fa-plus-square',$oDB->lang('DocumentListDetail')),
 );
-echo nav_item($oDB->lang('Purchase'),$arr);
+echo nav_item($oDB->lang('Document'),$arr);
 ?>
       <li class="nav-item">
         <a class="nav-link" href="#" data-toggle="collapse" data-target="#collapsePages" aria-expanded="false" aria-controls="collapsePages">

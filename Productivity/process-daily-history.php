@@ -113,7 +113,7 @@ if(isset($_SESSION[_site_]['userlang'])){
                               <td style="border-right: none;"><input type="number" min="0" style="width: 50px;" :name="'ok_'+p.ProcessDailyHistoryId+'_'+per.PeriodId" @input="test" :value="findOkVal(p,per.PeriodId)"></td>
                               <td style="border-right: none;border-left:none;"><input type="number" min="0" style="width: 50px;" :name="'ng_'+p.ProcessDailyHistoryId+'_'+per.PeriodId" @input="test" :value="findNgVal(p,per.PeriodId)"></td>
                               <td style="border-left: none;border-right: none;"><input type="number" min="0" style="width: 50px;" :name="'idletime_'+p.ProcessDailyHistoryId+'_'+per.PeriodId" @input="test" :value="findManpowVal(p,per.PeriodId)"></td>
-                              <td style="border-left: none;border-right: none;"><input type="number" min="0" style="width: 50px;" :name="'manpow_'+p.ProcessDailyHistoryId+'_'+per.PeriodId" @input="test" :value="findIdleVal(p,per.PeriodId)"></td>
+                              <td style="border-left: none;border-right: none;"><input type="number" min="0" style="width: 50px;" :name="'manpow_'+p.ProcessDailyHistoryId+'_'+per.PeriodId" @input="test" :value="findManpowVal(p,per.PeriodId)"></td>
                               <td style="border-left: none;border-right: 2px solid gold;"><input type="number" min="0" style="width: 50px;" :name="'ucode_'+p.ProcessDailyHistoryId+'_'+per.PeriodId" @input="test" :value="findUcodeVal(p,per.PeriodId)"></td>
                             </template>
                           </tr>

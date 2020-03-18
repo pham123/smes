@@ -31,6 +31,7 @@ echo nav_item($oDB->lang('Stock'),$arr);
 
 $arr = array(
   array('ReportOut.php', 'fas fa-plus-square',$oDB->lang('ReportOut')),
+  array('ReportIn.php', 'fas fa-plus-square',$oDB->lang('ReportIn')),
 );
 echo nav_item($oDB->lang('Report'),$arr);
 ?>

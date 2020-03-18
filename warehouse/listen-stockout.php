@@ -56,6 +56,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 				'StockOutputItemsCartQty' => $data['StockOutputItemsCartQty'][$index]?$data['StockOutputItemsCartQty'][$index]:0,
 				'StockOutputItemsQty' => $data['StockOutputItemsQty'][$index]?$data['StockOutputItemsQty'][$index]:0,
 				'StockOutputItemsProcess' => $data['StockOutputItemsProcess'][$index]?$data['StockOutputItemsProcess'][$index]:'',
+				'StockOutputItemsMold' => $data['StockOutputItemsMold'][$index]?$data['StockOutputItemsMold'][$index]:'',
 				'StockOutputItemsWo' => $data['StockOutputItemsWo'][$index]?$data['StockOutputItemsWo'][$index]:'',
 				'StockOutputItemsRemark' => $data['StockOutputItemsRemark'][$index]?$data['StockOutputItemsRemark'][$index]:''
 			];

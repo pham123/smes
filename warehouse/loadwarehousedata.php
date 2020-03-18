@@ -40,7 +40,7 @@ if($n_submit_stockoutput){
         'ModelsId' => "0",
         'StockOutputsDate' => date('Y-m-d'),
         'StockOutputsType' => '',
-        'StockOutputsNo' => date('ymd').'-'.($c+1),
+        'StockOutputsNo' => 'X'+date('ymd').'-'.($c+1),
         'StockOutputsStatus' => 0,
         'StockOutputsBks' => ''
         

@@ -150,7 +150,7 @@ p{margin:5px;}
                 </tr>
 
                 <tr>
-                  <td><?php echo $oDB->lang('UpdatePicture') ?></td><td><input type="file" id='ingredient_file' name='MemosPictureAfter' class="form-control" ></td>
+                  <td><?php echo $oDB->lang('PictureAfter') ?></td><td><input type="file" id='ingredient_file' name='MemosPictureAfter' class="form-control" ></td>
                   <td><?php echo $oDB->lang('UpdateFile') ?></td><td><input type="file" id='ingredient_file' name='MemosReport' class="form-control" ></td>
                 </tr>
 

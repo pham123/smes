@@ -80,7 +80,7 @@ $newDB = new MysqliDb(_DB_HOST_, _DB_USER_, _DB_PASS_,_DB_name_);
             echo "<tr>";
             echo "<td>".($key+1)."</td>";
             echo "<td>".$value['StockOutputsNo']."</td>";
-            echo "<td>".date("d-M-Y",strtotime($value['StockOutputsDate']))."</td>";
+            echo "<td>".date("d-m-Y",strtotime($value['StockOutputsDate']))."</td>";
             echo "<td>".$value['ProductsName']."</td>";
             echo "<td>".$value['ProductsNumber']."</td>";
             echo "<td>".$value['StockOutputItemsQty']."</td>";

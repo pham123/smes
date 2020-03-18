@@ -7,25 +7,26 @@ null - not yet on the line
 */
 function totalReceived(){
   global $newDB;
-  $newDB->where('dla.UsersId', $_SESSION[_site_]['userid'])
-        ->where('d.DocumentSubmit', 1);
-  $newDB->join('document d', 'dla.DocumentId=d.DocumentId', 'LEFT');
+  //find all document have current user in line
+  $newDB->where('ddla.UsersId', $_SESSION[_site_]['userid']);
+  $newDB->join('documentdetail dd', 'ddla.DocumentDetailId=dd.DocumentDetailId', 'LEFT');
+  $newDB->join('document d', 'd.DocumentId=dd.DocumentId','left');
   $newDB->join('section s', 's.SectionId=d.SectionId', 'left');
   $newDB->join('documenttype dt', 'dt.DocumentTypeId=d.DocumentTypeId', 'left');
-  $newDB->groupBy('d.DocumentId,dla.UsersId');
-  return $newDB->get('documentlineapproval dla');
+  $newDB->groupBy('dd.DocumentDetailId,ddla.UsersId');
+  return $newDB->get('documentdetaillineapproval ddla');
 }
 
 function waitingYourApproval(){
   global $newDB;
-  $newDB->where('dla.UsersId', $_SESSION[_site_]['userid'])
-        ->where('dla.DocumentLineApprovalStatus', 1)
-        ->where('d.DocumentSubmit', 1);
-  $newDB->join('document d', 'dla.DocumentId=d.DocumentId', 'LEFT');
+  $newDB->where('ddla.UsersId', $_SESSION[_site_]['userid'])
+        ->where('ddla.DocumentDetailLineApprovalStatus', 1);
+  $newDB->join('documentdetail dd', 'ddla.DocumentDetailId=dd.DocumentDetailId', 'LEFT');
+  $newDB->join('document d', 'dd.DocumentId=d.DocumentId', 'LEFT');
   $newDB->join('section s', 's.SectionId=d.SectionId', 'left');
   $newDB->join('documenttype dt', 'dt.DocumentTypeId=d.DocumentTypeId', 'left');
-  $newDB->groupBy('d.DocumentId,dla.UsersId');
-  return $newDB->get('documentlineapproval dla');
+  $newDB->groupBy('dd.DocumentDetailId,ddla.UsersId');
+  return $newDB->get('documentdetaillineapproval ddla');
 }
 
 function waitingFinalApproval(){
@@ -33,10 +34,10 @@ function waitingFinalApproval(){
   $result = array();
   $receivedDocs = totalReceived();
   foreach($receivedDocs as $doc){
-    $newDB->where('DocumentId', $doc['DocumentId']);
-    $newDB->orderBy('DocumentLineApprovalId', 'DESC');
-    $dla = $newDB->getOne('documentlineapproval');
-    if($dla['DocumentLineApprovalStatus'] == 1){
+    $newDB->where('DocumentDetailId', $doc['DocumentDetailId']);
+    $newDB->orderBy('DocumentDetailLineApprovalId', 'DESC');
+    $dla = $newDB->getOne('documentdetaillineapproval');
+    if($dla['DocumentDetailLineApprovalStatus'] == 1){
       array_push($result,$doc);
     }
   }
@@ -45,23 +46,23 @@ function waitingFinalApproval(){
 
 function yourRejectedList(){
   global $newDB;
-  $newDB->where('dla.UsersId', $_SESSION[_site_]['userid'])
-        ->where('dla.DocumentLineApprovalStatus', 3)
-        ->where('d.DocumentSubmit', 1);
-  $newDB->join('document d', 'dla.DocumentId=d.DocumentId', 'LEFT');
+  $newDB->where('ddla.UsersId', $_SESSION[_site_]['userid'])
+        ->where('ddla.DocumentDetailLineApprovalStatus', 3);
+  $newDB->join('documentdetail dd', 'ddla.DocumentDetailId=dd.DocumentDetailId', 'LEFT');
+  $newDB->join('document d', 'dd.DocumentId=d.DocumentId', 'LEFT');
   $newDB->join('section s', 's.SectionId=d.SectionId', 'left');
   $newDB->join('documenttype dt', 'dt.DocumentTypeId=d.DocumentTypeId', 'left');
-  $newDB->groupBy('d.DocumentId,dla.UsersId');
-  return $newDB->get('documentlineapproval dla');
+  $newDB->groupBy('dd.DocumentDetailId,ddla.UsersId');
+  return $newDB->get('documentdetaillineapproval ddla');
 }
 
 function yourCreatedDoc(){
   global $newDB;
-  $newDB->where('d.UsersId', $_SESSION[_site_]['userid'])
-        ->where('d.DocumentSubmit', 1);
+  $newDB->where('dd.UsersId', $_SESSION[_site_]['userid']);
+  $newDB->join('document d', 'dd.DocumentId=d.DocumentId', 'left');
   $newDB->join('section s', 's.SectionId=d.SectionId', 'left');
   $newDB->join('documenttype dt', 'dt.DocumentTypeId=d.DocumentTypeId', 'left');
-  return $newDB->get('document d');
+  return $newDB->get('documentdetail dd');
 }
 ?>    
     <!-- Sidebar -->
@@ -92,7 +93,7 @@ $arr = array(
   array('documenttype.php', 'fas fa-plus-square',$oDB->lang('DocumentType')),
   array('adddoc.php', 'fas fa-plus-square',$oDB->lang('AddDocument')),
   array('documentlist.php', 'fas fa-plus-square',$oDB->lang('DocumentList')),
-  array('documentlistdetail.php', 'fas fa-plus-square',$oDB->lang('DocumentListDetail')),
+  array('documentlistdetail.php', 'fas fa-plus-square',$oDB->lang('DocumentDetail')),
 );
 echo nav_item($oDB->lang('Document'),$arr);
 ?>

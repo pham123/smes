@@ -21,16 +21,21 @@ if(isset($_SESSION[_site_]['userlang'])){
 $newDB = new MysqliDb(_DB_HOST_, _DB_USER_, _DB_PASS_, _DB_name_);
 if (isset($_GET['id'])&&is_numeric($_GET['id'])) {
   $id = safe($_GET['id']);
-  $newDB->where('d.DocumentId', $id);
+  $newDB->where('dd.DocumentDetailId', $id);
+  $newDB->join('document d', 'd.DocumentId=dd.DocumentId', 'left');
   $newDB->join('section s', 's.SectionId=d.SectionId', 'left');
   $newDB->join('documenttype dt', 'dt.DocumentTypeId=d.DocumentTypeId');
-  $thisdoc = $newDB->getOne('document d');
+  $thisdoc = $newDB->getOne('documentdetail dd');
+
+  $filename = $thisdoc['DocumentDetailFileName'];
+  $tmp = explode(".", $filename);
+  $ext = end($tmp);
 }else{
   header('Location:index.php');
   exit();
 }
-$newDB->where('DocumentId', $_GET['id']);
-$lines = $newDB->get('documentlineapproval');
+$newDB->where('DocumentDetailId', $_GET['id']);
+$lines = $newDB->get('documentdetaillineapproval');
 
 ?>
 
@@ -68,6 +73,24 @@ $lines = $newDB->get('documentlineapproval');
                       <span>Miêu tả tài liệu</span>
                       <p class="text-body"><strong><?php echo $thisdoc['DocumentDescription']?></strong></p>
                   </div>
+              </div>
+              <div class="row">
+                <div class="col-md">
+                  <span>Version:</span>
+                  <?php echo $thisdoc['DocumentDetailVersion']?>
+                </div>
+                <div class="col-md">
+                  <span>Link:</span>
+                  <a href="files/<?php echo $thisdoc['DocumentDetailId']?>.<?php echo $ext?>"><?php echo $thisdoc['DocumentDetailFileName']?></a>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-md-12">
+                  <span>Version description:</span>
+                  <p>
+                    <?php echo $thisdoc['DocumentDetailDesc'] ?>
+                  </p>
+                </div>  
               </div>
 
               </div>
@@ -108,14 +131,14 @@ $lines = $newDB->get('documentlineapproval');
                       <td class='text-center'>{{index+1}}</td>
                       <td>{{findUser(line.UsersId)?.UsersFullName}}</td>
                       <td>{{findUser(line.UsersId)?.SectionName}} {{findUser(line.UsersId)?.PositionsName}}</td>
-                      <td :class='getStatus(line.DocumentLineApprovalStatus)["class"]'>{{getStatus(line.DocumentLineApprovalStatus)["text"]}}</td>
-                      <td>{{line.DocumentLineApprovalDate}}</td>
+                      <td :class='getStatus(line.DocumentDetailLineApprovalStatus)["class"]'>{{getStatus(line.DocumentDetailLineApprovalStatus)["text"]}}</td>
+                      <td>{{line.DocumentDetailLineApprovalDate}}</td>
                       <td v-if="line.UsersId == UsersId">
-                        <textarea v-model="line.DocumentLineApprovalComment" rows="2">{{line.DocumentLineApprovalComment}}</textarea>
+                        <textarea v-model="line.DocumentDetailLineApprovalComment" rows="2">{{line.DocumentDetailLineApprovalComment}}</textarea>
                         <button class="btn btn-sm btn-primary float-right" @click="updateComment(line)">Update</button>
                       </td>
                       <td v-else>
-                        {{line.DocumentLineApprovalComment}}
+                        {{line.DocumentDetailLineApprovalComment}}
                       </td>
                     </tr>
                   </tbody>
@@ -191,15 +214,12 @@ $lines = $newDB->get('documentlineapproval');
       new Vue({
         el: '#content',
         data: {
-          DocumentId: <?php echo $_GET['id'];?>,
+          DocumentDetailId: <?php echo $_GET['id'];?>,
           SectionId: <?php echo $thisdoc['SectionId'].'';?>,
           UsersId: <?php echo $thisdoc['UsersId']?>,
           DocumentTypeId: <?php echo $thisdoc['DocumentTypeId']?>,
           DocumentSubmit: <?php echo $thisdoc['DocumentSubmit']?$thisdoc['DocumentSubmit']:0 ?>,
           EmailList: <?php echo json_encode($thisdoc['DocumentEmailList']?explode(",", $thisdoc['DocumentEmailList']):[]);?>,
-          ProPlanId: '',
-          TraceStationId: '',
-          ProPlanDate:'',
           form: new Form({
             lines: <?php echo json_encode($lines)?>
           }),
@@ -230,7 +250,7 @@ $lines = $newDB->get('documentlineapproval');
             return $result
           },
           updateComment(line){
-            axios.post('updatelinecomment.php?id='+line.DocumentLineApprovalId, {comment: line.DocumentLineApprovalComment})
+            axios.post('updatelinecomment.php?id='+line.DocumentDetailLineApprovalId, {comment: line.DocumentDetailLineApprovalComment})
                   .then(({data}) => {
                     alert('comment updated!')
                   })

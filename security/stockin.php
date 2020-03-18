@@ -22,10 +22,10 @@ $newDB = new MysqliDb(_DB_HOST_, _DB_USER_, _DB_PASS_,_DB_name_);
 $newDB->join("SupplyChainObject sco1", "sco1.SupplyChainObjectId=s.FromId", "LEFT");
 $newDB->join("SupplyChainObject sco2", "sco2.SupplyChainObjectId=s.ToId", "LEFT");
 $newDB->join("Models m", "m.ModelsId=s.ModelsId", "LEFT");
-$newDB->where('StockOutputsStatus', 0, '!=');
+$newDB->where('StockInputsStatus', 0, '!=');
 $newDB->where('UsersId', $_SESSION[_site_]['userid']);
-$newDB->orderBy('s.StockOutputsDate', 'DESC');
-$table_data = $newDB->get ("stockoutputs s", null, "sco1.SupplyChainObjectName Từ,sco2.SupplyChainObjectName Đến,s.StockOutputsNo No,s.StockOutputsDate Ngày,s.StockOutputsType Kho,m.ModelsName Model,s.StockOutputsBks Biển,s.StockOutputsTime as `Thời gian`,CONCAT('<a href=\"update-stockout.php&quest;id=',s.StockOutputsId,'\" target=\"_self\" >','<i class=\"fas fa-pen\"></i>', '</a>') as Sửa");
+$newDB->orderBy('s.StockInputsDate', 'DESC');
+$table_data = $newDB->get ("StockInputs s", null, "sco1.SupplyChainObjectName Từ,sco2.SupplyChainObjectName Đến,s.StockInputsNo No,s.StockInputsDate Ngày,s.StockInputsType Kho,m.ModelsName Model,s.StockInputsBks Biển,s.StockInputsTime as `Thời gian`,CONCAT('<a href=\"update-stockin.php&quest;id=',s.StockInputsId,'\" target=\"_self\" >','<i class=\"fas fa-pen\"></i>', '</a>') as Sửa");
 ?>
 
 <body id="page-top">
@@ -45,8 +45,7 @@ $table_data = $newDB->get ("stockoutputs s", null, "sco1.SupplyChainObjectName T
           
           <!-- Begin Page Content -->
           <div class="container-fluid">
-            <h4 class="text-center my-1 py-1">STOCK OUT CONTROL</h4>
-              
+          <h4 class="text-center my-1 py-1">STOCK IN CONTROL</h4>
             <div class="table-responsive">
             <table border="0" cellspacing="5" cellpadding="5" class="display nowrap">
               <tbody>

@@ -33,8 +33,22 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 			'DocumentId' => $id,
 			'DocumentDetailVersion' => $_POST['DocumentDetailVersion'],
 			'DocumentDetailDesc' => $_POST['DocumentDetailDesc'],
-			'DocumentDetailFileName' => $filename
+			'DocumentDetailFileName' => $filename,
+			'UsersId' => $_SESSION[_site_]['userid']
 		]);
+		//insert to document detail line approval
+		$newDB->where('DocumentId', $id);
+		$lines = $newDB->get('documentlineapproval');
+		foreach($lines as $index => $line){
+			$tmp1 = [
+				'DocumentDetailId' => $insert_id,
+				'UsersId' => $line['UsersId']];
+			if($index == 0){
+				$tmp1['DocumentDetailLineApprovalStatus'] = 1;
+			}
+			$newDB->insert('documentdetaillineapproval', $tmp1);
+		}
+		//upload file
 		$target_dir = "files/";
 		$target_file = $target_dir . $insert_id.'.'.$ext;
 

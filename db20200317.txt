@@ -1,1 +1,2 @@
-ALTER TABLE `stockoutputitems` ADD `StockOutputsProcess` VARCHAR(20) NOT NULL AFTER `StockOutputItemsWo`;
+ALTER TABLE `stockoutputitems` ADD `StockOutputItemsProcess` VARCHAR(20) NOT NULL AFTER `StockOutputItemsWo`;
+ALTER TABLE `stockinputitems` ADD `StockInputItemsProcess` VARCHAR(20) NOT NULL AFTER `StockInputItemsWo`;

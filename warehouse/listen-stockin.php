@@ -57,6 +57,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 				'ProductsId' => $id,
 				'StockInputItemsCartQty' => $data['StockInputItemsCartQty'][$index]?$data['StockInputItemsCartQty'][$index]:0,
 				'StockInputItemsQty' => $data['StockInputItemsQty'][$index]?$data['StockInputItemsQty'][$index]:0,
+				'StockInputItemsProcess' => $data['StockInputItemsProcess'][$index]?$data['StockInputItemsProcess'][$index]:'',
 				'StockInputItemsWo' => $data['StockInputItemsWo'][$index]?$data['StockInputItemsWo'][$index]:'',
 				'StockInputItemsRemark' => $data['StockInputItemsRemark'][$index]?$data['StockInputItemsRemark'][$index]:''
 			];
@@ -68,4 +69,4 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 }
 
 $newDB = Null;
-header('Location:stockout.php');
+header('Location:stockin.php');

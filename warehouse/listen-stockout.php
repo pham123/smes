@@ -22,7 +22,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 			'FromId' => $data['FromId'],
 			'ToId' => $data['ToId'],
 			'ModelsId' => $data['ModelsId'],
-			'StockOutputsBks' => $data['StockOutputsBks'],
 			'StockOutputsType' => $data['StockOutputsType'],
 			'StockOutputsDate' => $data['StockOutputsDate'],
 			'StockOutputsNo' => $data['StockOutputsNo'],
@@ -34,7 +33,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 			'FromId' => $data['FromId'],
 			'ToId' => $data['ToId'],
 			'ModelsId' => $data['ModelsId'],
-			'StockOutputsBks' => $data['StockOutputsBks'],
 			'StockOutputsType' => $data['StockOutputsType'],
 			'StockOutputsDate' => $data['StockOutputsDate'],
             'StockOutputsNo' => $data['StockOutputsNo'],
@@ -57,6 +55,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 				'ProductsId' => $id,
 				'StockOutputItemsCartQty' => $data['StockOutputItemsCartQty'][$index]?$data['StockOutputItemsCartQty'][$index]:0,
 				'StockOutputItemsQty' => $data['StockOutputItemsQty'][$index]?$data['StockOutputItemsQty'][$index]:0,
+				'StockOutputItemsProcess' => $data['StockOutputItemsProcess'][$index]?$data['StockOutputItemsProcess'][$index]:'',
 				'StockOutputItemsWo' => $data['StockOutputItemsWo'][$index]?$data['StockOutputItemsWo'][$index]:'',
 				'StockOutputItemsRemark' => $data['StockOutputItemsRemark'][$index]?$data['StockOutputItemsRemark'][$index]:''
 			];

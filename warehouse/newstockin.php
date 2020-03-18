@@ -143,6 +143,7 @@ $tracestations = $newDB->get('tracestation');
                     <th><strong>NO</strong><br><em>STT</em></th>
                     <th style="min-width: 350px;"><strong>Part name</strong></th>
                     <th style="min-width: 150px;"><strong>Part No</strong></th>
+                    <th><strong>Process</strong></th>
                     <th><strong>W/o</strong></th>
                     <th><strong>Cart Q'ty</strong></th>
                     <th><strong>Unit</strong></th>
@@ -175,7 +176,8 @@ $tracestations = $newDB->get('tracestation');
                       <input type="hidden" name="ProductsId[]" required :value="item.ProductsId">
                     </td>
                     <td>{{productSelected(item).ProductsNumber}}</td>
-                    <td><input style="height: 33px; font-size: 16px;" type="text" v-model="item.StockInputItemsWo" name="StockInputItemsWo[]"></td>
+                    <td><input style="height: 33px; width: 100px; font-size: 16px;" type="text" v-model="item.StockInputItemsProcess" name="StockInputItemsProcess[]"></td>
+                    <td><input style="height: 33px; width: 130px; font-size: 16px;" type="text" v-model="item.StockInputItemsWo" name="StockInputItemsWo[]"></td>
                     <td><input style="height: 33px; font-size: 16px; width: 60px" type="number" v-model="item.StockInputItemsCartQty" name="StockInputItemsCartQty[]"></td>
                     <td>{{productSelected(item).ProductsUnit}}</td>
                     <td><input style="height: 33px; font-size: 16px;width: 60px;" type="number" v-model="item.StockInputItemsQty" name="StockInputItemsQty[]"></td>
@@ -186,6 +188,7 @@ $tracestations = $newDB->get('tracestation');
                   <tr>
                     <th></th>
                     <th colspan="2"><strong>SUM</strong></th>
+                    <th></th>
                     <th></th>
                     <th></th>
                     <th></th>
@@ -276,6 +279,7 @@ $tracestations = $newDB->get('tracestation');
           StockInputsStatus: 0,
           stockinputitems:[{
             ProductsId:'',
+            StockInputItemsProcess: '',
             StockInputItemsWo: '',
             StockInputItemsCartQty:'',
             StockInputItemsQty:'',
@@ -299,7 +303,8 @@ $tracestations = $newDB->get('tracestation');
           addNewItem(){
             this.stockinputitems.push({
               ProductsId:'',
-              StockInputItemsWo: '',
+              StockInputItemsProcess: '',
+              StockInputItemsWo: 'WIP'+ new Date().getFullYear().toString() + '' + ((new Date().getMonth() + 1)>=10?(new Date().getMonth()+1) : '0'+(new Date().getMonth()+1)).toString() + '' + (new Date().getDate() >=10 ? new Date().getDate().toString() : '0'+ (new Date().getDate().toString())).toString(),
               StockInputItemsCartQty: '',
               StockInputItemsQty:'',
               StockInputItemsRemark:'',

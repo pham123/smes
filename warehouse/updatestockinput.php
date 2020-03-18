@@ -106,6 +106,7 @@ $StockInputitems = $newDB->get('StockInputitems');
                     <th><strong>NO</strong></th>
                     <th style="min-width: 120px;"><strong>Part Name</strong></th>
                     <th style="min-width: 150px;"><strong>Part No</strong></th>
+                    <th><strong>Process</strong></th>
                     <th><strong>W/o</strong></th>
                     <th><strong>Cart'Qty</strong></th>
                     <th><strong>Unit</strong></th>
@@ -129,6 +130,7 @@ $StockInputitems = $newDB->get('StockInputitems');
                     <td><?php echo $k+1 ?><input type="hidden" name="StockInputItemsId[]" value="<?php echo $item['StockInputItemsId'] ?>"</td>
                     <td><?php echo $product['ProductsName'] ?></td>
                     <td><?php echo $product['ProductsNumber']?></td>
+                    <td><?php echo $item['StockInputItemsProcess']?></td>
                     <td><?php echo $item['StockInputItemsWo']?></td>
                     <td><input style="height: 30px;font-size:16px;width:60px;" name="StockInputItemsCartQty[]" type="number" value="<?php echo $item['StockInputItemsCartQty']?>"></td>
                     <td><?php echo $product['ProductsUnit']?></td>
@@ -144,6 +146,7 @@ $StockInputitems = $newDB->get('StockInputitems');
                     <td>&nbsp;</td>
                     <td>&nbsp;</td>
                     <td>&nbsp;</td>
+                    <td>&nbsp;</td>
                     <td colspan="4"><input class="btn btn-primary btn-sm btn-block" type="submit" value="save"></td>
                 </tr>
                 </form>
@@ -152,6 +155,7 @@ $StockInputitems = $newDB->get('StockInputitems');
                 <tr>
                     <th></th>
                     <th colspan="2"><strong>SUM</strong></th>
+                    <th></th>
                     <th></th>
                     <th><?php echo $totalCartQty ?></th>
                     <th></th>

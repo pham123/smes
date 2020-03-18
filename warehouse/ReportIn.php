@@ -55,7 +55,7 @@ $newDB = new MysqliDb(_DB_HOST_, _DB_USER_, _DB_PASS_,_DB_name_);
         INNER JOIN supplychainobject scm on sto.FromId = scm.SupplyChainObjectId
         INNER JOIN supplychainobject scm2 on sto.ToId = scm2.SupplyChainObjectId
         INNER JOIN products prd on prd.ProductsId = stoi.ProductsId
-        INNER JOIN Users on Users.UsersId = sto.UsersId
+        INNER JOIN Users on Users.UsersId = sto.UsersId AND Users.UsersId = ".$_SESSION[_site_]['userid']."
         INNER JOIN Models on Models.ModelsId = sto.ModelsId
         ORDER BY StockInputsDate DESC;
         ";

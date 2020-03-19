@@ -134,13 +134,18 @@ $linkar =  array(
   array('../Purchase',$oDB->lang('Purchase'),$oDB->lang('Purchase'),'fa-cart-plus'),
   array('../Warehouse',$oDB->lang('Warehouse'),$oDB->lang('Warehouse'),'fa-warehouse'),
   // fa-expand-arrows-alt
-  array('../inout',$oDB->lang('inout'),$oDB->lang('inout'),'fa-expand-arrows-alt'),
+  array('../inout/',$oDB->lang('InOut'),$oDB->lang('InOut'),'fa-exchange-alt'),
   array('../spare-part',$oDB->lang('SparePart'),$oDB->lang('ControlSparePart'),'fa-boxes'),
   array('../document/',$oDB->lang('Document',"Document"),$oDB->lang('DocumentEx'),'fa-folder-open'),
   array('../memos/',$oDB->lang('MemoSuggestion'),$oDB->lang('MemoSuggestion'),'fa-lightbulb'),
   array('../employees/',$oDB->lang('Employees'),$oDB->lang('EmployeesInformation'),'fa-calendar'),
   array('../news/',$oDB->lang('News'),$oDB->lang('News'),'fa-newspaper'),
   array('../security/',$oDB->lang('Security'),$oDB->lang('Security'),'fa-shield-alt'),
+<<<<<<< HEAD
+  //
+=======
+  
+>>>>>>> d83638b85e094fa4aa8654204e9d8d76f625940a
   // 
 
 );

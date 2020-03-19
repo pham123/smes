@@ -17,21 +17,20 @@
       <li class="nav-item active">
         <a class="nav-link" href="index.php">
           <i class="fas fa-fw fa-home"></i>
-          <span><?php echo $oDB->lang('Home')?></span></a>
+          <span><?php echo $oDB->lang('NewIn-Out')?></span></a>
       </li>
 
       <!-- Divider -->
 <?php
 
 $arr = array(
-  array('StockOut.php', 'fas fa-plus-square',$oDB->lang('StockOut')),
-  array('StockIn.php', 'fas fa-plus-square',$oDB->lang('StockIn')),
+  array('GoodsIn.php', 'fas fa-plus-square',$oDB->lang('GoodsIn')),
+  array('GoodsOut.php', 'fas fa-plus-square',$oDB->lang('GoodsOut')),
 );
-echo nav_item($oDB->lang('Stock'),$arr);
+echo nav_item($oDB->lang('Goods'),$arr);
 
 $arr = array(
   array('ReportOut.php', 'fas fa-plus-square',$oDB->lang('ReportOut')),
-  array('ReportIn.php', 'fas fa-plus-square',$oDB->lang('ReportIn')),
 );
 echo nav_item($oDB->lang('Report'),$arr);
 ?>

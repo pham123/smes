@@ -38,6 +38,33 @@ $newDB = new MysqliDb(_DB_HOST_, _DB_USER_, _DB_PASS_,_DB_name_);
         <?php require('navbar.php') ?>
 
         <div class="container-fluid">
+          <form action="listen-index.php" method="post">
+          <div class="row w-50 mx-auto">
+              <div class="col-md">
+                <label>In or Out</label>
+                <select name="StockType" class="form-control" required>
+                  <option value="1">Nhập hàng</option>
+                  <option value="2">Xuất hàng</option>
+                </select>
+              </div>
+              <div class="col-md">
+                <label>Material</label>
+                <select name="MaterialTypesId" id="" class='selectpicker show-tick' data-live-search="true" data-style="btn-info" data-width="100%" required>
+                    <option value="">select</option>
+                    <?php 
+                    $model = $newDB->get('materialtypes');
+                    foreach ($model as $key => $value) {
+                      echo "<option value='".$value['MaterialTypesId']."'>".$value['MaterialTypesName']."</option>";
+                    }
+                    ?>
+                    
+                  </select>
+              </div>
+              <div class="col-md-12 mt-3">
+                <input type="submit" class="btn btn-primary w-50 mx-auto btn-block" value="submit">
+              </div>
+            </div>
+          </form>
         </div>
 
   

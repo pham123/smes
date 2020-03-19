@@ -81,4 +81,4 @@ w_logs(__DIR__."\logs\\", $logs_content);
         
         $oDB = Null;
         $products = Null;
-header('Location:material.php');
+header('Location:material2.php');

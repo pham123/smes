@@ -17,8 +17,8 @@ class crdb extends db{
         $table = ucfirst($this->table);
         $sql="CREATE TABLE ".$table." (
             ".$table."Id INT(6) UNSIGNED AUTO_INCREMENT PRIMARY KEY,
-            ".$table."Name VARCHAR(50) NOT NULL UNIQUE,
-            ".$table."Description VARCHAR(100),
+            ".$table."Name VARCHAR(255) NOT NULL UNIQUE,
+            ".$table."Description VARCHAR(255),
             ".$table."Option INT(2),
             ".$table."CreateDate TIMESTAMP DEFAULT CURRENT_TIMESTAMP ,
             ".$table."UpdateDate TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP);";

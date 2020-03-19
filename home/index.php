@@ -140,7 +140,8 @@ $linkar =  array(
   array('../memos/',$oDB->lang('MemoSuggestion'),$oDB->lang('MemoSuggestion'),'fa-lightbulb'),
   array('../employees/',$oDB->lang('Employees'),$oDB->lang('EmployeesInformation'),'fa-calendar'),
   array('../news/',$oDB->lang('News'),$oDB->lang('News'),'fa-newspaper'),
-  array('../security/',$oDB->lang('Security'),$oDB->lang('Security'),'fa-shield-alt')
+  array('../security/',$oDB->lang('Security'),$oDB->lang('Security'),'fa-shield-alt'),
+  array('../inout/',$oDB->lang('InOut'),$oDB->lang('InOut'),'fa-exchange-alt'),
   // 
 
 );

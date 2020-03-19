@@ -11,7 +11,7 @@ $user->set($_SESSION[_site_]['userid']);
 $user->module = basename(dirname(__FILE__));
 check($user->acess());
 $pagetitle = $user->module;
-$page_css='th,td{font-weight: normal;font-size: 13px;text-align: center;vertical-align: middle !important;}.vs__dropdown-toggle {border: 0px !important;margin-top: -4px;} .vs__selected{white-space: nowrap;max-width: 200px;overflow: hidden;font-size: 13px;}';
+$page_css='th,td{font-weight: normal;font-size: 13px;text-align: center;vertical-align: middle !important;}.vs__dropdown-toggle {border: 0px !important;margin-top: -4px;} .vs__selected{white-space: nowrap;max-width: 200px;overflow: hidden;font-size: 13px;} .vs__dropdown-menu{font-size: 14px;}';
 require('../views/template-header.php');
 require('../function/template.php');
 $oDB = new db();
@@ -71,13 +71,17 @@ $tracestations = $newDB->get('tracestation');
               </div>
               <label style="font-size: 14px;" class="col-sm-1 col-form-label"><strong>KHO:</strong></label>
               <div class="col-sm-3">
-                <select class="form-control" name="StockOutputsType" v-model="StockOutputsType">
+                <select name="StockOutputsType" v-model="StockOutputsType" class="form-control">
                     <option value="">select</option>
-                    <option value="WIP">WIP</option>
-                    <option value="Finish Good">Finish Good</option>
-                    <option value="Child Part">Child Part</option>
-                    <option value="Raw Material">Raw Material</option>
-                </select>
+                    <?php 
+                    $model = $oDB->sl_all('warehouse',1);
+                    foreach ($model as $key => $value) {
+                      echo "<option value='".$value['WarehouseName']."'>".$value['WarehouseName']."</option>";
+                    }
+                    ?>
+                    
+                  </select>
+
               </div>
               <label style="font-size: 14px;" class="col-sm-1 col-form-label"><strong>BKS:</strong></label>
               <div class="col-sm-3">
@@ -139,7 +143,7 @@ $tracestations = $newDB->get('tracestation');
             
             </div>
             <div class="w-100" style="overflow: auto;">
-              <table class="table table-bordered">
+              <table class="table table-bordered" style="margin-bottom: 70px;">
                 <thead>
                   <tr>
                     <th><strong>NO</strong><br><em>STT</em></th>

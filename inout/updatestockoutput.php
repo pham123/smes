@@ -20,15 +20,11 @@ if(!isset($_GET['id'])){
 }
 $id = $_GET['id'];
 $newDB->where('StockOutputsId', $id);
-$stockoutput = $newDB->getOne('stockoutputs');
+$StockOutput = $newDB->getOne('StockOutputs');
 
-if($stockoutput['StockOutputsStatus'] == 2){
-    echo 'BẢO VỆ ĐÃ XÁC NHẬN KHÔNG THỂ SỬA!';
-    return;
-}
 
 $newDB->where('StockOutputsId', $id);
-$stockoutputitems = $newDB->get('stockoutputitems');
+$StockOutputitems = $newDB->get('StockOutputitems');
 ?>
 <!doctype html>
 <html lang="en">
@@ -59,7 +55,7 @@ $stockoutputitems = $newDB->get('stockoutputitems');
             font-size:16px;
         }
     </style>
-    <title>Print stockoutput</title>
+    <title>Print StockOutput</title>
   </head>
   <body>
     <div class="ml-2 mt-2">
@@ -75,27 +71,27 @@ $stockoutputitems = $newDB->get('stockoutputitems');
         <table class="w-100 noborder">
             <tr>
                 <th><strong>FROM(TỪ):</strong></th>
-                <td><?php echo $newDB->where('SupplyChainObjectId',$stockoutput['FromId'])->getOne('supplychainobject')['SupplyChainObjectName'] ?></td>
+                <td><?php echo $newDB->where('SupplyChainObjectId',$StockOutput['FromId'])->getOne('supplychainobject')['SupplyChainObjectName'] ?></td>
                 <th><strong>KHO:</strong></th>
-                <td><?php echo $stockoutput['StockOutputsType'] ?></td>
+                <td><?php echo $StockOutput['StockOutputsType'] ?></td>
                 <th><strong>BKS:</strong></th>
-                <td><?php echo $stockoutput['StockOutputsBks']?></td>
+                <td><?php echo $StockOutput['StockOutputsBks']?></td>
             </tr>
             <tr>
                 <th><strong>TO(ĐẾN):</strong></th>
-                <td><?php echo $newDB->where('SupplyChainObjectId',$stockoutput['ToId'])->getOne('supplychainobject')['SupplyChainObjectName'] ?></td>
+                <td><?php echo $newDB->where('SupplyChainObjectId',$StockOutput['ToId'])->getOne('supplychainobject')['SupplyChainObjectName'] ?></td>
                 <th><strong>NO:</strong></th>
-                <td><?php echo $stockoutput['StockOutputsNo'] ?></td>
+                <td><?php echo $StockOutput['StockOutputsNo'] ?></td>
                 <th><strong>THỜI GIAN:</strong></th>
-                <td><?php echo $stockoutput['StockOutputsTime']?></td>
+                <td><?php echo $StockOutput['StockOutputsTime']?></td>
             </tr>
             <tr>
                 <th><strong>DELIVERY DATE(NGÀY GIAO HÀNG):</strong></th>
-                <td><?php echo $stockoutput['StockOutputsDate'] ?></td>
-                <th><strong>MODEL:</strong></th>
-                <td><?php echo $newDB->where('ModelsId',$stockoutput['ModelsId'])->getOne('models')['ModelsName'] ?></td>
+                <td><?php echo $StockOutput['StockOutputsDate'] ?></td>
+                <th><strong></strong></th>
+                <td></td>
                 <th><strong>NGƯỜI LẬP:</strong></th>
-                <td><?php echo $newDB->where('UsersId', $stockoutput['UsersId'])->getOne('users')['UsersFullName']?></td>
+                <td><?php echo $newDB->where('UsersId', $StockOutput['UsersId'])->getOne('users')['UsersFullName']?></td>
             </tr>
         </table>
         </div>
@@ -106,23 +102,20 @@ $stockoutputitems = $newDB->get('stockoutputitems');
                     <th><strong>NO</strong></th>
                     <th style="min-width: 120px;"><strong>Part Name</strong></th>
                     <th style="min-width: 150px;"><strong>Part No</strong></th>
-                    <th><strong>Process</strong></th>
                     <th><strong>W/o</strong></th>
-                    <th><strong>Cart'Qty</strong></th>
+                    <th><strong>Unit price</strong></th>
                     <th><strong>Unit</strong></th>
                     <th><strong>Qty</strong></th>
                     <th><strong>Remark</strong></th>
                 </tr>
             </thead>
             <tbody>
-                <form method="post" action="listen-update-stock-output.php">
+                <form method="post" action="listen-update-Stock-output.php">
                 <?php
                 $totalQty = 0;
-                $totalCartQty = 0;
-                foreach($stockoutputitems as $k=>$item)
+                foreach($StockOutputitems as $k=>$item)
                 {
                     $totalQty += $item['StockOutputItemsQty'];
-                    $totalCartQty += $item['StockOutputItemsCartQty'];
                     $newDB->where('ProductsId', $item['ProductsId']);
                     $product = $newDB->getOne('products');
                 ?>
@@ -130,20 +123,18 @@ $stockoutputitems = $newDB->get('stockoutputitems');
                     <td><?php echo $k+1 ?><input type="hidden" name="StockOutputItemsId[]" value="<?php echo $item['StockOutputItemsId'] ?>"</td>
                     <td><?php echo $product['ProductsName'] ?></td>
                     <td><?php echo $product['ProductsNumber']?></td>
-                    <td><?php echo $item['StockOutputItemsProcess']?></td>
                     <td><?php echo $item['StockOutputItemsWo']?></td>
-                    <td><input style="height: 30px;font-size:16px;width:60px;" name="StockOutputItemsCartQty[]" type="number" value="<?php echo $item['StockOutputItemsCartQty']?>"></td>
+                    <td><input style="height: 30px;font-size:16px;width:110px;" name="StockOutputItemsUnitPrice[]" type="number" value="<?php echo $item['StockOutputItemsUnitPrice']?>"></td>
                     <td><?php echo $product['ProductsUnit']?></td>
                     <td><input style="height: 30px;font-size:16px;width:60px;" name="StockOutputItemsQty[]" type="number" value="<?php echo $item['StockOutputItemsQty']?>"></td>
                     <td><input style="height: 30px;font-size:16px;" name="StockOutputItemsRemark[]" type="text" value="<?php echo $item['StockOutputItemsRemark']?>"></td>
                 </tr>
                 <?php
                 }
-                    $numOfItems = count($stockoutputitems);
+                    $numOfItems = count($StockOutputitems);
                 ?>
                 <tr>
                     <td><?php echo $numOfItems+1?></td>
-                    <td>&nbsp;</td>
                     <td>&nbsp;</td>
                     <td>&nbsp;</td>
                     <td>&nbsp;</td>
@@ -157,7 +148,6 @@ $stockoutputitems = $newDB->get('stockoutputitems');
                     <th colspan="2"><strong>SUM</strong></th>
                     <th></th>
                     <th></th>
-                    <th><?php echo $totalCartQty ?></th>
                     <th></th>
                     <th><?php echo $totalQty?></th>
                     <th></th>
@@ -194,7 +184,7 @@ $stockoutputitems = $newDB->get('stockoutputitems');
             // $(function(){
             //     $('input').on('input',function(e){
             //        $.ajax({
-            //            'url': 'updatestockoutputdata.php?name='+e.target.name+'&value='+e.target.value,
+            //            'url': 'updateStockOutputdata.php?name='+e.target.name+'&value='+e.target.value,
             //            'method': 'get'
             //        })
             //     })

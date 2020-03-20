@@ -14,25 +14,23 @@ $newDB = new MysqliDb(_DB_HOST_, _DB_USER_, _DB_PASS_,_DB_name_);
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 	$data = array_filter($_POST);
-	$stockoutput_id = $data['StockOutputsId'];
+	$StockOutput_id = $data['StockOutputsId'];
 	//CREATE NEW EXPORT HISTORY
 	if(isset($_POST["saveBtn"])) {
-		$stockoutputData = [
+		$StockOutputData = [
             'UsersId' => $_SESSION[_site_]['userid'],
 			'FromId' => $data['FromId'],
 			'ToId' => $data['ToId'],
-			'ModelsId' => $data['ModelsId'],
 			'StockOutputsType' => $data['StockOutputsType'],
 			'StockOutputsDate' => $data['StockOutputsDate'],
 			'StockOutputsNo' => $data['StockOutputsNo'],
 		];
 	}
 	if(isset($_POST["submitBtn"])) {
-		$stockoutputData = [
+		$StockOutputData = [
             'UsersId' => $_SESSION[_site_]['userid'],
 			'FromId' => $data['FromId'],
 			'ToId' => $data['ToId'],
-			'ModelsId' => $data['ModelsId'],
 			'StockOutputsType' => $data['StockOutputsType'],
 			'StockOutputsDate' => $data['StockOutputsDate'],
             'StockOutputsNo' => $data['StockOutputsNo'],
@@ -40,27 +38,25 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 		];
 	}
 	if(array_key_exists('PurchasesComment', $data)){
-		$stockoutputData['PurchasesComment'] = $data['PurchasesComment'];
+		$StockOutputData['PurchasesComment'] = $data['PurchasesComment'];
 	}
-	$newDB->where('StockOutputsId', $stockoutput_id);
-    $newDB->update('stockoutputs', $stockoutputData);
+	$newDB->where('StockOutputsId', $StockOutput_id);
+    $newDB->update('StockOutputs', $StockOutputData);
 
 
-	$newDB->where('StockOutputsId', $stockoutput_id);
-	$newDB->delete('stockoutputitems');
+	$newDB->where('StockOutputsId', $StockOutput_id);
+	$newDB->delete('StockOutputitems');
 	foreach($data['ProductsId'] as $index => $id){
 		if($id){
 			$itemData = [
-				'StockOutputsId' => $stockoutput_id,
+				'StockOutputsId' => $StockOutput_id,
 				'ProductsId' => $id,
-				'StockOutputItemsCartQty' => $data['StockOutputItemsCartQty'][$index]?$data['StockOutputItemsCartQty'][$index]:0,
+				'StockOutputItemsUnitPrice' => $data['StockOutputItemsUnitPrice'][$index]?$data['StockOutputItemsUnitPrice'][$index]:0,
 				'StockOutputItemsQty' => $data['StockOutputItemsQty'][$index]?$data['StockOutputItemsQty'][$index]:0,
-				'StockOutputItemsProcess' => $data['StockOutputItemsProcess'][$index]?$data['StockOutputItemsProcess'][$index]:'',
-				'StockOutputItemsMold' => $data['StockOutputItemsMold'][$index]?$data['StockOutputItemsMold'][$index]:'',
 				'StockOutputItemsWo' => $data['StockOutputItemsWo'][$index]?$data['StockOutputItemsWo'][$index]:'',
 				'StockOutputItemsRemark' => $data['StockOutputItemsRemark'][$index]?$data['StockOutputItemsRemark'][$index]:''
 			];
-            $newDB->insert('stockoutputitems', $itemData);
+            $newDB->insert('StockOutputitems', $itemData);
 		}
 	}
 }else{
@@ -68,4 +64,4 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 }
 
 $newDB = Null;
-header('Location:stockout.php');
+header('Location:Stockout.php');

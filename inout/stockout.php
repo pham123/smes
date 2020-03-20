@@ -16,17 +16,16 @@ require('../views/template-header.php');
 require('../function/template.php');
 $oDB = new db();
 
-$table_header  = 'id,Từ,Đến,No,Ngày,Kho,Model,Biển,Time,Status,Print';
+$table_header  = 'id,Từ,Đến,No,Ngày,Kho,Time,Print';
 //using new db library
 $newDB = new MysqliDb(_DB_HOST_, _DB_USER_, _DB_PASS_,_DB_name_);
 $newDB->join("SupplyChainObject sco1", "sco1.SupplyChainObjectId=s.FromId", "LEFT");
 $newDB->join("SupplyChainObject sco2", "sco2.SupplyChainObjectId=s.ToId", "LEFT");
-$newDB->join("Models m", "m.ModelsId=s.ModelsId", "LEFT");
 $newDB->where('StockOutputsStatus', 0, '!=');
 $newDB->where('UsersId', $_SESSION[_site_]['userid']);
 $newDB->orderBy('s.StockOutputsDate', 'DESC');
-$table_data = $newDB->get ("stockoutputs s", null, "s.StockOutputsId as id,sco1.SupplyChainObjectName Từ,sco2.SupplyChainObjectName Đến,s.StockOutputsNo No,s.StockOutputsDate Ngày,s.StockOutputsType Kho,m.ModelsName Model,s.StockOutputsBks Biển,s.StockOutputsTime as Time, if(s.StockOutputsStatus=2,'checked','') as Status,CONCAT('<a href=\"print-stockout.php&quest;id=',s.StockOutputsId,'\" target=\"_blank\" >','<i class=\"fas fa-print\"></i>', '</a>') as Print");
-$table_link = "updatestockoutput.php?id=";
+$table_data = $newDB->get ("StockOutputs s", null, "s.StockOutputsId as id,sco1.SupplyChainObjectName Từ,sco2.SupplyChainObjectName Đến,s.StockOutputsNo No,s.StockOutputsDate Ngày,s.StockOutputsType Kho,s.StockOutputsTime as Time,CONCAT('<a href=\"print-Stockout.php&quest;id=',s.StockOutputsId,'\" target=\"_blank\" >','<i class=\"fas fa-print\"></i>', '</a>') as Print");
+$table_link = "updateStockOutput.php?id=";
 ?>
 
 <body id="page-top">
@@ -48,7 +47,7 @@ $table_link = "updatestockoutput.php?id=";
           <div class="container-fluid">
               
             <div class="table-responsive">
-                <a href="newstockout.php" class="text-primary">New stock out</a>
+            <h5 class="text-primary">DANH SÁCH HÀNG XUẤT</h5>
                 <table border="0" cellspacing="5" cellpadding="5" class="display nowrap">
                   <tbody>
                     <tr>

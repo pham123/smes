@@ -83,8 +83,8 @@ $StockInputitems = $newDB->get('StockInputitems');
             <tr>
                 <th><strong>DELIVERY DATE(NGÀY GIAO HÀNG):</strong></th>
                 <td><?php echo $StockInput['StockInputsDate'] ?></td>
-                <th><strong>MODEL:</strong></th>
-                <td><?php echo $newDB->where('ModelsId',$StockInput['ModelsId'])->getOne('models')['ModelsName'] ?></td>
+                <th><strong></strong></th>
+                <td>&nbsp;</td>
                 <th><strong>NGƯỜI LẬP:</strong></th>
                 <td><?php echo $newDB->where('UsersId', $StockInput['UsersId'])->getOne('users')['UsersFullName']?></td>
             </tr>
@@ -97,10 +97,7 @@ $StockInputitems = $newDB->get('StockInputitems');
                     <th><strong>NO</strong></th>
                     <th style="min-width: 120px;"><strong>Part Name</strong></th>
                     <th style="min-width: 150px;"><strong>Part No</strong></th>
-                    <th><strong>Process</strong></th>
-                    <th><strong>Mold</strong></th>
                     <th><strong>W/o</strong></th>
-                    <th><strong>Cart'Qty</strong></th>
                     <th><strong>Unit</strong></th>
                     <th><strong>Qty</strong></th>
                     <th><strong>Remark</strong></th>
@@ -109,11 +106,9 @@ $StockInputitems = $newDB->get('StockInputitems');
             <tbody>
                 <?php
                 $totalQty = 0;
-                $totalCartQty = 0;
                 foreach($StockInputitems as $k=>$item)
                 {
                     $totalQty += $item['StockInputItemsQty'];
-                    $totalCartQty += $item['StockInputItemsCartQty'];
                     $newDB->where('ProductsId', $item['ProductsId']);
                     $product = $newDB->getOne('products');
                 ?>
@@ -121,10 +116,7 @@ $StockInputitems = $newDB->get('StockInputitems');
                     <td><?php echo $k+1 ?></td>
                     <td><?php echo $product['ProductsName'] ?></td>
                     <td><?php echo $product['ProductsNumber']?></td>
-                    <td><?php echo $item['StockInputItemsProcess']?></td>
-                    <td><?php echo $item['StockInputItemsMold']?></td>
                     <td><?php echo $item['StockInputItemsWo']?></td>
-                    <td><?php echo $item['StockInputItemsCartQty']?></td>
                     <td><?php echo $product['ProductsUnit']?></td>
                     <td><?php echo $item['StockInputItemsQty']?></td>
                     <td><?php echo $item['StockInputItemsRemark']?></td>
@@ -143,9 +135,6 @@ $StockInputitems = $newDB->get('StockInputitems');
                     <td>&nbsp;</td>
                     <td>&nbsp;</td>
                     <td>&nbsp;</td>
-                    <td>&nbsp;</td>
-                    <td>&nbsp;</td>
-                    <td>&nbsp;</td>
                 </tr>
                 <?php
                     }
@@ -156,9 +145,6 @@ $StockInputitems = $newDB->get('StockInputitems');
                     <th></th>
                     <th colspan="2"><strong>SUM</strong></th>
                     <th></th>
-                    <th></th>
-                    <th></th>
-                    <th><?php echo $totalCartQty ?></th>
                     <th></th>
                     <th><?php echo $totalQty?></th>
                     <th></th>

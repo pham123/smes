@@ -67,8 +67,8 @@ $StockInputitems = $newDB->get('StockInputitems');
         <img src="../img/hallalogo.png" alt="" style="width:100px">
     </div>
     <h3 class="text-center mb-4">
-        STOCK OUTPUT SHEET<br>
-        <em style="font-weight: normal;">Phiếu xuất kho</em>
+        STOCK INPUT SHEET<br>
+        <em style="font-weight: normal;">Phiếu nhập kho</em>
     </h3>
     <div class="row p-2 mx-auto mb-5" style="width: 1000px;">
 
@@ -92,8 +92,8 @@ $StockInputitems = $newDB->get('StockInputitems');
             <tr>
                 <th><strong>DELIVERY DATE(NGÀY GIAO HÀNG):</strong></th>
                 <td><?php echo $StockInput['StockInputsDate'] ?></td>
-                <th><strong>MODEL:</strong></th>
-                <td><?php echo $newDB->where('ModelsId',$StockInput['ModelsId'])->getOne('models')['ModelsName'] ?></td>
+                <th><strong></strong></th>
+                <td></td>
                 <th><strong>NGƯỜI LẬP:</strong></th>
                 <td><?php echo $newDB->where('UsersId', $StockInput['UsersId'])->getOne('users')['UsersFullName']?></td>
             </tr>
@@ -106,23 +106,20 @@ $StockInputitems = $newDB->get('StockInputitems');
                     <th><strong>NO</strong></th>
                     <th style="min-width: 120px;"><strong>Part Name</strong></th>
                     <th style="min-width: 150px;"><strong>Part No</strong></th>
-                    <th><strong>Process</strong></th>
                     <th><strong>W/o</strong></th>
-                    <th><strong>Cart'Qty</strong></th>
+                    <th><strong>Unit price</strong></th>
                     <th><strong>Unit</strong></th>
                     <th><strong>Qty</strong></th>
                     <th><strong>Remark</strong></th>
                 </tr>
             </thead>
             <tbody>
-                <form method="post" action="listen-update-stock-input.php">
+                <form method="post" action="listen-update-Stock-input.php">
                 <?php
                 $totalQty = 0;
-                $totalCartQty = 0;
                 foreach($StockInputitems as $k=>$item)
                 {
                     $totalQty += $item['StockInputItemsQty'];
-                    $totalCartQty += $item['StockInputItemsCartQty'];
                     $newDB->where('ProductsId', $item['ProductsId']);
                     $product = $newDB->getOne('products');
                 ?>
@@ -130,9 +127,8 @@ $StockInputitems = $newDB->get('StockInputitems');
                     <td><?php echo $k+1 ?><input type="hidden" name="StockInputItemsId[]" value="<?php echo $item['StockInputItemsId'] ?>"</td>
                     <td><?php echo $product['ProductsName'] ?></td>
                     <td><?php echo $product['ProductsNumber']?></td>
-                    <td><?php echo $item['StockInputItemsProcess']?></td>
                     <td><?php echo $item['StockInputItemsWo']?></td>
-                    <td><input style="height: 30px;font-size:16px;width:60px;" name="StockInputItemsCartQty[]" type="number" value="<?php echo $item['StockInputItemsCartQty']?>"></td>
+                    <td><input style="height: 30px;font-size:16px;width:100px;" name="StockInputItemsUnitPrice[]" type="number" value="<?php echo $item['StockInputItemsUnitPrice']?>"></td>
                     <td><?php echo $product['ProductsUnit']?></td>
                     <td><input style="height: 30px;font-size:16px;width:60px;" name="StockInputItemsQty[]" type="number" value="<?php echo $item['StockInputItemsQty']?>"></td>
                     <td><input style="height: 30px;font-size:16px;" name="StockInputItemsRemark[]" type="text" value="<?php echo $item['StockInputItemsRemark']?>"></td>
@@ -146,7 +142,6 @@ $StockInputitems = $newDB->get('StockInputitems');
                     <td>&nbsp;</td>
                     <td>&nbsp;</td>
                     <td>&nbsp;</td>
-                    <td>&nbsp;</td>
                     <td colspan="4"><input class="btn btn-primary btn-sm btn-block" type="submit" value="save"></td>
                 </tr>
                 </form>
@@ -157,7 +152,6 @@ $StockInputitems = $newDB->get('StockInputitems');
                     <th colspan="2"><strong>SUM</strong></th>
                     <th></th>
                     <th></th>
-                    <th><?php echo $totalCartQty ?></th>
                     <th></th>
                     <th><?php echo $totalQty?></th>
                     <th></th>

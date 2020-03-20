@@ -24,10 +24,10 @@
 <?php
 
 $arr = array(
-  array('GoodsIn.php', 'fas fa-plus-square',$oDB->lang('GoodsIn')),
-  array('GoodsOut.php', 'fas fa-plus-square',$oDB->lang('GoodsOut')),
+  array('StockIn.php', 'fas fa-plus-square',$oDB->lang('StockIn')),
+  array('StockOut.php', 'fas fa-plus-square',$oDB->lang('StockOut')),
 );
-echo nav_item($oDB->lang('Goods'),$arr);
+echo nav_item($oDB->lang('Stock'),$arr);
 
 $arr = array(
   array('ReportOut.php', 'fas fa-plus-square',$oDB->lang('ReportOut')),

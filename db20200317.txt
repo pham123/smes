@@ -1,4 +1,4 @@
-ALTER TABLE `stockoutputitems` ADD `StockOutputItemsProcess` VARCHAR(20) NOT NULL AFTER `StockOutputItemsWo`;
-ALTER TABLE `stockinputitems` ADD `StockInputItemsProcess` VARCHAR(20) NOT NULL AFTER `StockInputItemsWo`;
-ALTER TABLE `stockoutputitems` ADD `StockOutputItemsMold` VARCHAR(20) NOT NULL AFTER `StockOutputItemsProcess`;
-ALTER TABLE `stockinputitems` ADD `StockInputItemsMold` VARCHAR(20) NOT NULL AFTER `StockInputItemsProcess`;
+ALTER TABLE `stockoutputitems` ADD `StockOutputItemsProcess` VARCHAR(20) AFTER `StockOutputItemsWo`;
+ALTER TABLE `stockinputitems` ADD `StockInputItemsProcess` VARCHAR(20) AFTER `StockInputItemsWo`;
+ALTER TABLE `stockoutputitems` ADD `StockOutputItemsMold` VARCHAR(20) AFTER `StockOutputItemsProcess`;
+ALTER TABLE `stockinputitems` ADD `StockInputItemsMold` VARCHAR(20)  AFTER `StockInputItemsProcess`;

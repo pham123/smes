@@ -21,8 +21,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             'UsersId' => $_SESSION[_site_]['userid'],
 			'FromId' => $data['FromId'],
 			'ToId' => $data['ToId'],
-			'ModelsId' => $data['ModelsId'],
-			'StockInputsBks' => $data['StockInputsBks'],
 			'StockInputsType' => $data['StockInputsType'],
 			'StockInputsDate' => $data['StockInputsDate'],
 			'StockInputsNo' => $data['StockInputsNo'],
@@ -33,16 +31,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             'UsersId' => $_SESSION[_site_]['userid'],
 			'FromId' => $data['FromId'],
 			'ToId' => $data['ToId'],
-			'ModelsId' => $data['ModelsId'],
-			'StockInputsBks' => $data['StockInputsBks'],
 			'StockInputsType' => $data['StockInputsType'],
 			'StockInputsDate' => $data['StockInputsDate'],
             'StockInputsNo' => $data['StockInputsNo'],
             'StockInputsStatus' => 1
 		];
-	}
-	if(array_key_exists('PurchasesComment', $data)){
-		$StockInputData['PurchasesComment'] = $data['PurchasesComment'];
 	}
 	$newDB->where('StockInputsId', $StockInput_id);
     $newDB->update('StockInputs', $StockInputData);
@@ -55,10 +48,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 			$itemData = [
 				'StockInputsId' => $StockInput_id,
 				'ProductsId' => $id,
-				'StockInputItemsCartQty' => $data['StockInputItemsCartQty'][$index]?$data['StockInputItemsCartQty'][$index]:0,
+				'StockInputItemsUnitPrice' => $data['StockInputItemsUnitPrice'][$index]?$data['StockInputItemsUnitPrice'][$index]:0,
 				'StockInputItemsQty' => $data['StockInputItemsQty'][$index]?$data['StockInputItemsQty'][$index]:0,
-				'StockInputItemsProcess' => $data['StockInputItemsProcess'][$index]?$data['StockInputItemsProcess'][$index]:'',
-				'StockInputItemsMold' => $data['StockInputItemsMold'][$index]?$data['StockInputItemsMold'][$index]:'',
 				'StockInputItemsWo' => $data['StockInputItemsWo'][$index]?$data['StockInputItemsWo'][$index]:'',
 				'StockInputItemsRemark' => $data['StockInputItemsRemark'][$index]?$data['StockInputItemsRemark'][$index]:''
 			];
@@ -70,4 +61,4 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 }
 
 $newDB = Null;
-header('Location:stockin.php');
+header('Location:Stockin.php');

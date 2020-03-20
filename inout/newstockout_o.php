@@ -11,7 +11,7 @@ $user->set($_SESSION[_site_]['userid']);
 $user->module = basename(dirname(__FILE__));
 check($user->acess());
 $pagetitle = $user->module;
-$page_css='th,td{font-weight: normal;font-size: 13px;text-align: center;vertical-align: middle !important;}.vs__dropdown-toggle {border: 0px !important;margin-top: -4px;} .vs__selected{white-space: nowrap;max-width: 200px;overflow: hidden;font-size: 13px;}.vs__dropdown-menu li{font-size: 14px;}input::placeholder{font-size: 14px;} .vmoney{width: 100px; font-size: 16px;}';
+$page_css='th,td{font-weight: normal;font-size: 13px;text-align: center;vertical-align: middle !important;}.vs__dropdown-toggle {border: 0px !important;margin-top: -4px;} .vs__selected{white-space: nowrap;max-width: 200px;overflow: hidden;font-size: 13px;}';
 require('../views/template-header.php');
 require('../function/template.php');
 $oDB = new db();
@@ -21,6 +21,7 @@ if(isset($_SESSION[_site_]['userlang'])){
   $oDB->lang = ucfirst($_SESSION[_site_]['userlang']);
 }
 $scobjs = $newDB->get('supplychainobject');
+$models = $newDB->get('models');
 $tracestations = $newDB->get('tracestation');
 
 ?>
@@ -42,9 +43,9 @@ $tracestations = $newDB->get('tracestation');
 
         <!-- Begin Page Content -->
         <div class="mx-1">
-          <h4 class="text-center"><strong>NHẬP HÀNG</strong></h4>
-          <form action="listen-goodsin.php" method="post">
-            <input type="hidden" v-model="GoodsInputsId" name="GoodsInputsId">
+          <h4 class="text-center"><strong>XUẤT HÀNG</strong></h4>
+          <form action="listen-stockout.php" method="post">
+            <input type="hidden" v-model="StockOutputsId" name="StockOutputsId">
             <div class="form-group row">
               <label style="font-size: 14px;" class="col-sm-1 col-form-label"><strong>FROM(TỪ):</strong></label>
               <div class="col-sm-3">
@@ -70,10 +71,12 @@ $tracestations = $newDB->get('tracestation');
               </div>
               <label style="font-size: 14px;" class="col-sm-1 col-form-label"><strong>KHO:</strong></label>
               <div class="col-sm-3">
-                <select class="form-control" name="GoodsInputsType" v-model="GoodsInputsType">
+                <select class="form-control" name="StockOutputsType" v-model="StockOutputsType">
                     <option value="">select</option>
                     <option value="WIP">WIP</option>
                     <option value="Finish Good">Finish Good</option>
+                    <option value="Child Part">Child Part</option>
+                    <option value="Raw Material">Raw Material</option>
                 </select>
               </div>
               <label style="font-size: 14px;" class="col-sm-1 col-form-label"><strong>BKS:</strong></label>
@@ -102,39 +105,57 @@ $tracestations = $newDB->get('tracestation');
               </div>
               <label style="font-size: 14px;" class="col-sm-1 col-form-label"><strong>NO:</strong></label>
               <div class="col-sm-3">
-                <input readonly type="text" class="form-control" v-model="GoodsInputsNo" name="GoodsInputsNo">
+                <input readonly type="text" class="form-control" v-model="StockOutputsNo" name="StockOutputsNo">
               </div>
               <label style="font-size: 14px;" class="col-sm-2 col-form-label"><strong>THỜI GIAN(TIME):</strong></label>
               <div class="col-sm-1">
               </div>
               <label style="font-size: 14px;" class="col-sm-2 col-form-label"><strong>DELIVERY DATE<br>(NGÀY GIAO HÀNG)</strong></label>
               <div class="col-sm-2">
-                <input type="date" class="form-control" v-model="GoodsInputsDate" name="GoodsInputsDate" required>
+                <input type="date" class="form-control" v-model="StockOutputsDate" name="StockOutputsDate" required>
               </div>
-              <label style="font-size: 14px;" class="col-sm-1 col-form-label"><strong>MATERIAL TYPE:</strong></label>
+              <label style="font-size: 14px;" class="col-sm-1 col-form-label"><strong>MODEL:</strong></label>
               <div class="col-sm-3">
-                <p class="mt-1"><?php echo $newDB->where('MaterialTypesId', $_GET['materialtypeid'])->getOne('materialtypes')['MaterialTypesName']?></p>
+                <v-select 
+                  placeholder="select"
+                  :options="models_data" 
+                  :get-option-label="option => option.ModelsName"
+                  :reduce="m => m.ModelsId" 
+                  class="form-control"
+                  v-model="ModelsId"
+                  required>
+                    <template #search="{attributes, events}">
+                      <input
+                        class="vs__search"
+                        :required="!ModelsId"
+                        v-bind="attributes"
+                        v-on="events"
+                      />
+                    </template>
+                </v-select>
+                <input type="hidden" name="ModelsId" required :value="ModelsId">
               </div>
               
             
             </div>
             <div class="w-100" style="overflow: auto;">
-              <table style="margin-bottom: 70px;" class="table table-bordered">
+              <table class="table table-bordered">
                 <thead>
                   <tr>
                     <th><strong>NO</strong><br><em>STT</em></th>
                     <th style="min-width: 350px;"><strong>Part name</strong></th>
                     <th style="min-width: 150px;"><strong>Part No</strong></th>
+                    <th><strong>Process</strong></th>
+                    <th><strong>Mold</strong></th>
                     <th><strong>W/o</strong></th>
-                    <th><strong>Unit price</strong></th>
+                    <th><strong>Cart Q'ty</strong></th>
                     <th><strong>Unit</strong></th>
                     <th><strong>Q'ty</strong></th>
-                    <th><strong>Amount</strong></th>
                     <th><strong>Remark</strong></th>
                   </tr>
                 </thead>
                 <tbody>
-                  <tr v-for="(item,index) in GoodsInputitems">
+                  <tr v-for="(item,index) in stockoutputitems">
                     <td>{{index+1}}</td>
                     <td>
                       <v-select 
@@ -158,21 +179,20 @@ $tracestations = $newDB->get('tracestation');
                       <input type="hidden" name="ProductsId[]" required :value="item.ProductsId">
                     </td>
                     <td>{{productSelected(item).ProductsNumber}}</td>
-                    <td><input style="height: 33px; width: 130px; font-size: 16px;" type="text" v-model="item.GoodsInputItemsWo" name="GoodsInputItemsWo[]"></td>
-                    <td>
-                    <money v-model="item.GoodsInputItemsUnitPrice" v-bind="money" class="vmoney" required></money>
-                    <input type="hidden" name="GoodsInputItemsUnitPrice[]" :value="item.GoodsInputItemsUnitPrice">
-                  </td>
+                    <td><input style="height: 33px; width: 100px; font-size: 16px;" type="text" v-model="item.StockOutputItemsProcess" name="StockOutputItemsProcess[]"></td>
+                    <td><input style="height: 33px; width: 100px; font-size: 16px;" type="text" v-model="item.StockOutputItemsMold" name="StockOutputItemsMold[]"></td>
+                    <td><input style="height: 33px; font-size: 16px; width: 130px;" type="text" v-model="item.StockOutputItemsWo" name="StockOutputItemsWo[]"></td>
+                    <td><input style="height: 33px; font-size: 16px; width: 60px" type="number" v-model="item.StockOutputItemsCartQty" name="StockOutputItemsCartQty[]"></td>
                     <td>{{productSelected(item).ProductsUnit}}</td>
-                    <td><input style="height: 33px; font-size: 16px;width: 60px;" type="number" v-model="item.GoodsInputItemsQty" name="GoodsInputItemsQty[]"></td>
-                    <td>{{(item.GoodsInputItemsQty*item.GoodsInputItemsUnitPrice).format()}}</td>
-                    <td><input style="height:33px; font-size: 16px;" type="text" v-model="item.GoodsInputItemsRemark" name="GoodsInputItemsRemark[]"></td>
+                    <td><input style="height: 33px; font-size: 16px;width: 60px;" type="number" v-model="item.StockOutputItemsQty" name="StockOutputItemsQty[]"></td>
+                    <td><input style="height:33px; font-size: 16px;" type="text" v-model="item.StockOutputItemsRemark" name="StockOutputItemsRemark[]"></td>
                   </tr>
                 </tbody>
                 <tfoot>
                   <tr>
                     <th></th>
                     <th colspan="2"><strong>SUM</strong></th>
+                    <th></th>
                     <th></th>
                     <th></th>
                     <th></th>
@@ -188,7 +208,7 @@ $tracestations = $newDB->get('tracestation');
               <div class="col-md-6 d-flex">
                 <button name="saveBtn" class="btn btn-primary mr-1 mt-auto">Save</button>
                 <button name="submitBtn" class="btn btn-success mr-1 mt-auto">Submit</button>
-                <a :href="'print-stockin.php?id='+GoodsInputsId" target="_blank" class="btn btn-secondary mt-auto"><i class="fas fa-print"></i></a>
+                <a :href="'print-stockout.php?id='+StockOutputsId" target="_blank" class="btn btn-secondary mt-auto"><i class="fas fa-print"></i></a>
               </div>
             </form>
           </div>
@@ -245,50 +265,35 @@ $tracestations = $newDB->get('tracestation');
   <!-- use the latest vue-select release -->
   <script src="../js/vue-select.js"></script>
   <link rel="stylesheet" href="../css/vue-select.css">
-  <script type="module" src="../js/v-money.js">
-    import money from '../js/v-money.js';
-    Vue.use(money, {precision: 4});
-  </script>
 
   <script>
-    Number.prototype.format = function(n, x) {
-      var re = '\\d(?=(\\d{' + (x || 3) + '})+' + (n > 0 ? '\\.' : '$') + ')';
-      return this.toFixed(Math.max(0, ~~n)).replace(new RegExp(re, 'g'), '$&.');
-    };
     $(function () {
       $('.selectpicker').selectpicker();
       Vue.component('v-select', VueSelect.VueSelect);
       new Vue({
         el: '#content',
         data: {
-          GoodsInputsId: null,
-          MaterialTypesId: <?php echo $_GET['materialtypeid']?>,
+          StockOutputsId: null,
           UsersId: '',
           FromId: '',
           ToId: '',
-          GoodsInputsDate: null,
-          GoodsInputsNo: '',
-          GoodsInputsType: '',
-          GoodsInputsStatus: 0,
-          GoodsInputitems:[{
+          ModelsId: '',
+          StockOutputsDate: null,
+          StockOutputsNo: '',
+          StockOutputsType: '',
+          StockOutputsStatus: 0,
+          stockoutputitems:[{
             ProductsId:'',
-            GoodsInputItemsProcess: '',
-            GoodsInputItemsMold: '',
-            GoodsInputItemsWo: '',
-            GoodsInputItemsUnitPrice:'',
-            GoodsInputItemsQty:'',
-            GoodsInputItemsRemark:'',
+            StockOutputItemsProcess: '',
+            StockOutputItemsMold: '',
+            StockOutputItemsWo: '',
+            StockOutputItemsCartQty:'',
+            StockOutputItemsQty:'',
+            StockOutputItemsRemark:'',
           }],
           products_data: [],
           suppliers_data: <?php echo json_encode($scobjs);?>,
-          money: {
-            decimal: ',',
-            thousands: '.',
-            prefix: '',
-            suffix: '',
-            precision: 0,
-            masked: false /* doesn't work with directive */
-          }
+          models_data: <?php echo json_encode($models); ?>,
         },
         methods: {
           productSelected(item){
@@ -302,41 +307,53 @@ $tracestations = $newDB->get('tracestation');
             return product[0];
           },
           addNewItem(){
-            this.GoodsInputitems.push({
+            this.stockoutputitems.push({
               ProductsId:'',
-              GoodsInputItemsProcess: '',
-              GoodsInputItemsMold: '',
-              GoodsInputItemsWo: '',
-              GoodsInputItemsUnitPrice: '',
-              GoodsInputItemsQty:'',
-              GoodsInputItemsRemark:'',
+              StockOutputItemsProcess: '',
+              StockOutputItemsMold: '',
+              StockOutputItemsWo: 'WIP'+ new Date().getFullYear().toString() + '' + ((new Date().getMonth() + 1)>=10?(new Date().getMonth()+1) : '0'+(new Date().getMonth()+1)).toString() + '' + (new Date().getDate() >=10 ? new Date().getDate().toString() : '0'+ (new Date().getDate().toString())).toString(),
+              StockOutputItemsCartQty: '',
+              StockOutputItemsQty:'',
+              StockOutputItemsRemark:'',
             });
           },
           removeLastItem(){
-            if(this.GoodsInputitems.length == 0)
+            if(this.stockoutputitems.length == 0)
             {
               return;
             }
-            this.GoodsInputitems.splice(-1,1);
+            this.stockoutputitems.splice(-1,1);
           },
           removeItem(index){
-            if(this.GoodsInputitems.length == 0)
+            if(this.stockoutputitems.length == 0)
             {
               return;
             }
-            this.GoodsInputitems.splice(index,1);
+            this.stockoutputitems.splice(index,1);
+          },
+          loadPlans(){
+            if(this.TraceStationId && this.ProPlanDate){
+              axios.get('/smes/purchase/loadpurchasedata.php').then(({data}) => {
+                this.products = data['products'];
+              }).catch(() => {
+                console.log('error');
+              });
+            }else{
+              console.log('station or date not select');
+            }
           }
         },
         created: function(){
-          axios.get('/smes/inout/loadGoodsInputdata.php?mtpid='+this.MaterialTypesId).then(({data}) => {
+          axios.get('/smes/warehouse/loadwarehousedata.php').then(({data}) => {
             this.products_data = data['products_data'];
-            this.GoodsInputsId = data['GoodsInputsId'];
+            this.StockOutputsId = data['StockOutputsId'];
             this.FromId = data['FromId']==0?'':data['FromId'];
             this.ToId = data['ToId']==0?'':data['ToId'];
-            this.GoodsInputsType = data['GoodsInputsType']+'';
-            this.GoodsInputsDate = data['GoodsInputsDate'];
-            this.GoodsInputsNo = data['GoodsInputsNo'];
-            this.GoodsInputitems = data['GoodsInputitems'];
+            this.ModelsId = data['ModelsId']==0?'':data['ModelsId'];
+            this.StockOutputsType = data['StockOutputsType']+'';
+            this.StockOutputsDate = data['StockOutputsDate'];
+            this.StockOutputsNo = data['StockOutputsNo'];
+            this.stockoutputitems = data['stockoutputitems'];
           }).catch(() => {
             console.log('error');
           });

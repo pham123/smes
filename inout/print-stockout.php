@@ -16,10 +16,10 @@ $oDB = new db();
 $newDB = new MysqliDb(_DB_HOST_, _DB_USER_, _DB_PASS_, _DB_name_);
 $id = $_GET['id'];
 $newDB->where('StockOutputsId', $id);
-$stockoutput = $newDB->getOne('stockoutputs');
+$StockOutput = $newDB->getOne('StockOutputs');
 
 $newDB->where('StockOutputsId', $id);
-$stockoutputitems = $newDB->get('stockoutputitems');
+$StockOutputitems = $newDB->get('StockOutputitems');
 ?>
 <!doctype html>
 <html lang="en">
@@ -50,7 +50,7 @@ $stockoutputitems = $newDB->get('stockoutputitems');
             font-size:16px;
         }
     </style>
-    <title>Print stockoutput</title>
+    <title>Print StockOutput</title>
   </head>
   <body onload="window.print()">
     <div class="ml-2 mt-2">
@@ -66,27 +66,27 @@ $stockoutputitems = $newDB->get('stockoutputitems');
         <table class="w-100 noborder">
             <tr>
                 <th><strong>FROM(TỪ):</strong></th>
-                <td><?php echo $newDB->where('SupplyChainObjectId',$stockoutput['FromId'])->getOne('supplychainobject')['SupplyChainObjectName'] ?></td>
+                <td><?php echo $newDB->where('SupplyChainObjectId',$StockOutput['FromId'])->getOne('supplychainobject')['SupplyChainObjectName'] ?></td>
                 <th><strong>KHO:</strong></th>
-                <td><?php echo $stockoutput['StockOutputsType'] ?></td>
+                <td><?php echo $StockOutput['StockOutputsType'] ?></td>
                 <th><strong>BKS:</strong></th>
-                <td><?php echo $stockoutput['StockOutputsBks']?></td>
+                <td><?php echo $StockOutput['StockOutputsBks']?></td>
             </tr>
             <tr>
                 <th><strong>TO(ĐẾN):</strong></th>
-                <td><?php echo $newDB->where('SupplyChainObjectId',$stockoutput['ToId'])->getOne('supplychainobject')['SupplyChainObjectName'] ?></td>
+                <td><?php echo $newDB->where('SupplyChainObjectId',$StockOutput['ToId'])->getOne('supplychainobject')['SupplyChainObjectName'] ?></td>
                 <th><strong>NO:</strong></th>
-                <td><?php echo $stockoutput['StockOutputsNo'] ?></td>
+                <td><?php echo $StockOutput['StockOutputsNo'] ?></td>
                 <th><strong>THỜI GIAN:</strong></th>
                 <td></td>
             </tr>
             <tr>
                 <th><strong>DELIVERY DATE(NGÀY GIAO HÀNG):</strong></th>
-                <td><?php echo $stockoutput['StockOutputsDate'] ?></td>
-                <th><strong>MODEL:</strong></th>
-                <td><?php echo $newDB->where('ModelsId',$stockoutput['ModelsId'])->getOne('models')['ModelsName'] ?></td>
+                <td><?php echo $StockOutput['StockOutputsDate'] ?></td>
+                <th><strong></strong></th>
+                <td></td>
                 <th><strong>NGƯỜI LẬP:</strong></th>
-                <td><?php echo $newDB->where('UsersId', $stockoutput['UsersId'])->getOne('users')['UsersFullName']?></td>
+                <td><?php echo $newDB->where('UsersId', $StockOutput['UsersId'])->getOne('users')['UsersFullName']?></td>
             </tr>
         </table>
         </div>
@@ -97,10 +97,7 @@ $stockoutputitems = $newDB->get('stockoutputitems');
                     <th><strong>NO</strong></th>
                     <th style="min-width: 120px;"><strong>Part Name</strong></th>
                     <th style="min-width: 150px;"><strong>Part No</strong></th>
-                    <th><strong>Process</strong></th>
-                    <th><strong>Mold</strong></th>
                     <th><strong>W/o</strong></th>
-                    <th><strong>Cart'Qty</strong></th>
                     <th><strong>Unit</strong></th>
                     <th><strong>Qty</strong></th>
                     <th><strong>Remark</strong></th>
@@ -109,11 +106,9 @@ $stockoutputitems = $newDB->get('stockoutputitems');
             <tbody>
                 <?php
                 $totalQty = 0;
-                $totalCartQty = 0;
-                foreach($stockoutputitems as $k=>$item)
+                foreach($StockOutputitems as $k=>$item)
                 {
                     $totalQty += $item['StockOutputItemsQty'];
-                    $totalCartQty += $item['StockOutputItemsCartQty'];
                     $newDB->where('ProductsId', $item['ProductsId']);
                     $product = $newDB->getOne('products');
                 ?>
@@ -121,25 +116,19 @@ $stockoutputitems = $newDB->get('stockoutputitems');
                     <td><?php echo $k+1 ?></td>
                     <td><?php echo $product['ProductsName'] ?></td>
                     <td><?php echo $product['ProductsNumber']?></td>
-                    <td><?php echo $item['StockOutputItemsProcess']?></td>
-                    <td><?php echo $item['StockOutputItemsMold']?></td>
                     <td><?php echo $item['StockOutputItemsWo']?></td>
-                    <td><?php echo $item['StockOutputItemsCartQty']?></td>
                     <td><?php echo $product['ProductsUnit']?></td>
                     <td><?php echo $item['StockOutputItemsQty']?></td>
                     <td><?php echo $item['StockOutputItemsRemark']?></td>
                 </tr>
                 <?php
                 }
-                    $numOfItems = count($stockoutputitems);
+                    $numOfItems = count($StockOutputitems);
                     for($i = $numOfItems; $i< 12; $i++)
                     {
                 ?>
                 <tr>
                     <td><?php echo $i+1?></td>
-                    <td>&nbsp;</td>
-                    <td>&nbsp;</td>
-                    <td>&nbsp;</td>
                     <td>&nbsp;</td>
                     <td>&nbsp;</td>
                     <td>&nbsp;</td>
@@ -156,9 +145,6 @@ $stockoutputitems = $newDB->get('stockoutputitems');
                     <th></th>
                     <th colspan="2"><strong>SUM</strong></th>
                     <th></th>
-                    <th></th>
-                    <th></th>
-                    <th><?php echo $totalCartQty ?></th>
                     <th></th>
                     <th><?php echo $totalQty?></th>
                     <th></th>

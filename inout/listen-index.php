@@ -16,9 +16,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 	$data = array_filter($_POST);
 	print_r($data);
 	if($data['StockType'] == '1'){
-		header('Location: newgoodsin.php?materialtypeid='.$data['MaterialTypesId']);
+		header('Location: newstockin.php?materialtypeid='.$data['MaterialTypesId']);
 	}else if($data['StockType'] == '2'){
-		header('Location: newgoodsout.php?materialtypeid='.$data['MaterialTypesId']);
+		header('Location: newstockout.php?materialtypeid='.$data['MaterialTypesId']);
 	}
 }else{
 	header('Location:../404.html');

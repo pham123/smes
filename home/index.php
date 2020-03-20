@@ -141,11 +141,7 @@ $linkar =  array(
   array('../employees/',$oDB->lang('Employees'),$oDB->lang('EmployeesInformation'),'fa-calendar'),
   array('../news/',$oDB->lang('News'),$oDB->lang('News'),'fa-newspaper'),
   array('../security/',$oDB->lang('Security'),$oDB->lang('Security'),'fa-shield-alt'),
-<<<<<<< HEAD
   //
-=======
-  
->>>>>>> d83638b85e094fa4aa8654204e9d8d76f625940a
   // 
 
 );

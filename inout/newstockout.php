@@ -23,6 +23,55 @@ if(isset($_SESSION[_site_]['userlang'])){
 $scobjs = $newDB->get('supplychainobject');
 $tracestations = $newDB->get('tracestation');
 
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+	$data = array_filter($_POST);
+	$StockOutput_id = $data['StockOutputsId'];
+	//CREATE NEW EXPORT HISTORY
+	if(isset($_POST["saveBtn"])) {
+		$StockOutputData = [
+            'UsersId' => $_SESSION[_site_]['userid'],
+			'FromId' => $data['FromId'],
+			'ToId' => $data['ToId'],
+			'StockOutputsType' => $data['StockOutputsType'],
+			'StockOutputsDate' => $data['StockOutputsDate'],
+			'StockOutputsNo' => $data['StockOutputsNo'],
+		];
+	}
+	if(isset($_POST["submitBtn"])) {
+		$StockOutputData = [
+            'UsersId' => $_SESSION[_site_]['userid'],
+			'FromId' => $data['FromId'],
+			'ToId' => $data['ToId'],
+			'StockOutputsType' => $data['StockOutputsType'],
+			'StockOutputsDate' => $data['StockOutputsDate'],
+            'StockOutputsNo' => $data['StockOutputsNo'],
+            'StockOutputsStatus' => 1
+		];
+	}
+	if(array_key_exists('PurchasesComment', $data)){
+		$StockOutputData['PurchasesComment'] = $data['PurchasesComment'];
+	}
+	$newDB->where('StockOutputsId', $StockOutput_id);
+    $newDB->update('StockOutputs', $StockOutputData);
+
+
+	$newDB->where('StockOutputsId', $StockOutput_id);
+	$newDB->delete('StockOutputitems');
+	foreach($data['ProductsId'] as $index => $id){
+		if($id){
+			$itemData = [
+				'StockOutputsId' => $StockOutput_id,
+				'ProductsId' => $id,
+				'StockOutputItemsUnitPrice' => $data['StockOutputItemsUnitPrice'][$index]?$data['StockOutputItemsUnitPrice'][$index]:0,
+				'StockOutputItemsQty' => $data['StockOutputItemsQty'][$index]?$data['StockOutputItemsQty'][$index]:0,
+				'StockOutputItemsWo' => $data['StockOutputItemsWo'][$index]?$data['StockOutputItemsWo'][$index]:'',
+				'StockOutputItemsRemark' => $data['StockOutputItemsRemark'][$index]?$data['StockOutputItemsRemark'][$index]:''
+			];
+            $newDB->insert('StockOutputitems', $itemData);
+		}
+	}
+}
+
 ?>
 
 <body id="page-top">
@@ -43,7 +92,7 @@ $tracestations = $newDB->get('tracestation');
         <!-- Begin Page Content -->
         <div class="mx-1">
           <h4 class="text-center"><strong>XUẤT HÀNG</strong></h4>
-          <form action="listen-Stockout.php" method="post">
+          <form action="" method="post">
             <input type="hidden" v-model="StockOutputsId" name="StockOutputsId">
             <div class="form-group row">
               <label style="font-size: 14px;" class="col-sm-1 col-form-label"><strong>FROM(TỪ):</strong></label>

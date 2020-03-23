@@ -23,6 +23,52 @@ if(isset($_SESSION[_site_]['userlang'])){
 $scobjs = $newDB->get('supplychainobject');
 $tracestations = $newDB->get('tracestation');
 
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+	$data = array_filter($_POST);
+	$StockInput_id = $data['StockInputsId'];
+	//CREATE NEW EXPORT HISTORY
+	if(isset($_POST["saveBtn"])) {
+		$StockInputData = [
+            'UsersId' => $_SESSION[_site_]['userid'],
+			'FromId' => $data['FromId'],
+			'ToId' => $data['ToId'],
+			'StockInputsType' => $data['StockInputsType'],
+			'StockInputsDate' => $data['StockInputsDate'],
+			'StockInputsNo' => $data['StockInputsNo'],
+		];
+	}
+	if(isset($_POST["submitBtn"])) {
+		$StockInputData = [
+            'UsersId' => $_SESSION[_site_]['userid'],
+			'FromId' => $data['FromId'],
+			'ToId' => $data['ToId'],
+			'StockInputsType' => $data['StockInputsType'],
+			'StockInputsDate' => $data['StockInputsDate'],
+            'StockInputsNo' => $data['StockInputsNo'],
+            'StockInputsStatus' => 1
+		];
+	}
+	$newDB->where('StockInputsId', $StockInput_id);
+    $newDB->update('StockInputs', $StockInputData);
+
+
+	$newDB->where('StockInputsId', $StockInput_id);
+	$newDB->delete('StockInputitems');
+	foreach($data['ProductsId'] as $index => $id){
+		if($id){
+			$itemData = [
+				'StockInputsId' => $StockInput_id,
+				'ProductsId' => $id,
+				'StockInputItemsUnitPrice' => $data['StockInputItemsUnitPrice'][$index]?$data['StockInputItemsUnitPrice'][$index]:0,
+				'StockInputItemsQty' => $data['StockInputItemsQty'][$index]?$data['StockInputItemsQty'][$index]:0,
+				'StockInputItemsWo' => $data['StockInputItemsWo'][$index]?$data['StockInputItemsWo'][$index]:'',
+				'StockInputItemsRemark' => $data['StockInputItemsRemark'][$index]?$data['StockInputItemsRemark'][$index]:''
+			];
+            $newDB->insert('StockInputitems', $itemData);
+		}
+	}
+}
+
 ?>
 
 <body id="page-top">
@@ -43,7 +89,7 @@ $tracestations = $newDB->get('tracestation');
         <!-- Begin Page Content -->
         <div class="mx-1">
           <h4 class="text-center"><strong>NHẬP HÀNG</strong></h4>
-          <form action="listen-Stockin.php" method="post">
+          <form action="" method="post">
             <input type="hidden" v-model="StockInputsId" name="StockInputsId">
             <div class="form-group row">
               <label style="font-size: 14px;" class="col-sm-1 col-form-label"><strong>FROM(TỪ):</strong></label>

@@ -41,14 +41,21 @@ $newDB = new MysqliDb(_DB_HOST_, _DB_USER_, _DB_PASS_,_DB_name_);
         <h1>REPORT HERE</h1>
 
         <?php
-        $sql = "SELECT Users.UsersFullName,prd.ProductsName,prd.ProductsNumber,prd.ProductsUnit, scm.SupplyChainObjectShortName as FromName, scm2.SupplyChainObjectShortName as ToName,sto.*,stoi.*
-        FROM `stockoutputitems` stoi 
-        INNER JOIN stockoutputs sto on sto.StockOutputsId = stoi.StockOutputsId
+        $sql = "SELECT 
+        Users.UsersFullName,
+        prd.ProductsName,
+        prd.ProductsNumber,
+        prd.ProductsUnit, 
+        scm.SupplyChainObjectShortName as FromName, 
+        scm2.SupplyChainObjectShortName as ToName,
+        sto.*,stoi.*
+        FROM `stockOutputitems` stoi 
+        INNER JOIN stockOutputs sto on sto.StockOutputsId = stoi.StockOutputsId
         INNER JOIN supplychainobject scm on sto.FromId = scm.SupplyChainObjectId
         INNER JOIN supplychainobject scm2 on sto.ToId = scm2.SupplyChainObjectId
         INNER JOIN products prd on prd.ProductsId = stoi.ProductsId
-        INNER JOIN Users on Users.UsersId = sto.UsersId
-        ORDER BY StockOutPutsDate DESC;
+        INNER JOIN Users on Users.UsersId = sto.UsersId AND Users.UsersId = ".$_SESSION[_site_]['userid']."
+        ORDER BY StockOutputsDate DESC;
         ";
         $result = $oDB->fetchAll($sql);
         ?>
@@ -60,14 +67,18 @@ $newDB = new MysqliDb(_DB_HOST_, _DB_USER_, _DB_PASS_,_DB_name_);
         echo "<tr>";
             echo "<th>".$oDB->lang('Index')."</th>";
             echo "<th>".$oDB->lang('No')."</th>";
-            echo "<th>".$oDB->lang('Date')."</th>";
-            echo "<th>".$oDB->lang('ProductName')."</th>";
             echo "<th>".$oDB->lang('ProductNumber')."</th>";
-            echo "<th>".$oDB->lang('Quantity')."</th>";
-            echo "<th>".$oDB->lang('Unit')."</th>";
+            echo "<th>".$oDB->lang('ProductName')."</th>";
+            echo "<th>".$oDB->lang('Type')."</th>";
+            echo "<th>".$oDB->lang('WO')."</th>";
             echo "<th>".$oDB->lang('From')."</th>";
             echo "<th>".$oDB->lang('To')."</th>";
-            echo "<th>".$oDB->lang('Type')."</th>";
+            echo "<th>".$oDB->lang('Date')."</th>";
+            echo "<th>".$oDB->lang('total')."</th>";
+            echo "<th>".$oDB->lang('In')."</th>";
+            echo "<th>".$oDB->lang('Out')."</th>";
+            echo "<th>".$oDB->lang('Unit')."</th>";
+            echo "<th>".$oDB->lang('CartQty')."</th>";
             echo "<th>".$oDB->lang('Remark')."</th>";
             echo "<th>".$oDB->lang('Pic')."</th>";
         echo "</tr>";
@@ -80,14 +91,18 @@ $newDB = new MysqliDb(_DB_HOST_, _DB_USER_, _DB_PASS_,_DB_name_);
             echo "<tr>";
             echo "<td>".($key+1)."</td>";
             echo "<td>".$value['StockOutputsNo']."</td>";
-            echo "<td>".date("d-m-Y",strtotime($value['StockOutputsDate']))."</td>";
-            echo "<td>".$value['ProductsName']."</td>";
             echo "<td>".$value['ProductsNumber']."</td>";
-            echo "<td>".$value['StockOutputItemsQty']."</td>";
-            echo "<td>".$value['ProductsUnit']."</td>";
+            echo "<td>".$value['ProductsName']."</td>";
+            echo "<td>".$value['StockOutputsType']."</td>";
+            echo "<td>".$value['StockOutputItemsWo']."</td>";
             echo "<td>".$value['FromName']."</td>";
             echo "<td>".$value['ToName']."</td>";
-            echo "<td>".$value['StockOutputsType']."</td>";
+            echo "<td>".date("d-M-Y",strtotime($value['StockOutputsDate']))."</td>";
+            echo "<td>".$value['StockOutputItemsQty']."</td>";
+            echo "<td></td>";
+            echo "<td>".$value['StockOutputItemsQty']."</td>";
+            echo "<td>".$value['ProductsUnit']."</td>";
+            echo "<td>".$value['StockOutputItemsCartQty']."</td>";
             echo "<td>".$value['StockOutputItemsRemark']."</td>";
             echo "<td>".$value['UsersFullName']."</td>";
             echo "</tr>";

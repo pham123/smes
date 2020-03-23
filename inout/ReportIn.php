@@ -46,7 +46,6 @@ $newDB = new MysqliDb(_DB_HOST_, _DB_USER_, _DB_PASS_,_DB_name_);
         prd.ProductsName,
         prd.ProductsNumber,
         prd.ProductsUnit, 
-        Models.ModelsName,
         scm.SupplyChainObjectShortName as FromName, 
         scm2.SupplyChainObjectShortName as ToName,
         sto.*,stoi.*
@@ -56,7 +55,6 @@ $newDB = new MysqliDb(_DB_HOST_, _DB_USER_, _DB_PASS_,_DB_name_);
         INNER JOIN supplychainobject scm2 on sto.ToId = scm2.SupplyChainObjectId
         INNER JOIN products prd on prd.ProductsId = stoi.ProductsId
         INNER JOIN Users on Users.UsersId = sto.UsersId AND Users.UsersId = ".$_SESSION[_site_]['userid']."
-        INNER JOIN Models on Models.ModelsId = sto.ModelsId
         ORDER BY StockInputsDate DESC;
         ";
         $result = $oDB->fetchAll($sql);
@@ -71,15 +69,12 @@ $newDB = new MysqliDb(_DB_HOST_, _DB_USER_, _DB_PASS_,_DB_name_);
             echo "<th>".$oDB->lang('No')."</th>";
             echo "<th>".$oDB->lang('ProductNumber')."</th>";
             echo "<th>".$oDB->lang('ProductName')."</th>";
-
-            echo "<th>".$oDB->lang('Process')."</th>";
-            echo "<th>".$oDB->lang('Mold')."</th>";
             echo "<th>".$oDB->lang('Type')."</th>";
             echo "<th>".$oDB->lang('WO')."</th>";
             echo "<th>".$oDB->lang('From')."</th>";
             echo "<th>".$oDB->lang('To')."</th>";
-            echo "<th>".$oDB->lang('Division')."</th>";
             echo "<th>".$oDB->lang('Date')."</th>";
+            echo "<th>".$oDB->lang('total')."</th>";
             echo "<th>".$oDB->lang('In')."</th>";
             echo "<th>".$oDB->lang('Out')."</th>";
             echo "<th>".$oDB->lang('Unit')."</th>";
@@ -98,16 +93,12 @@ $newDB = new MysqliDb(_DB_HOST_, _DB_USER_, _DB_PASS_,_DB_name_);
             echo "<td>".$value['StockInputsNo']."</td>";
             echo "<td>".$value['ProductsNumber']."</td>";
             echo "<td>".$value['ProductsName']."</td>";
-
-            echo "<td>".$value['StockInputItemsProcess']."</td>";
-            echo "<td>".$value['StockInputItemsMold']."</td>";
             echo "<td>".$value['StockInputsType']."</td>";
             echo "<td>".$value['StockInputItemsWo']."</td>";
             echo "<td>".$value['FromName']."</td>";
             echo "<td>".$value['ToName']."</td>";
-            echo "<td>".$value['ModelsName']."</td>";
-            echo "<td>".date("d-m-Y",strtotime($value['StockInputsDate']))."</td>";
-
+            echo "<td>".date("d-M-Y",strtotime($value['StockInputsDate']))."</td>";
+            echo "<td>".$value['StockInputItemsQty']."</td>";
             echo "<td>".$value['StockInputItemsQty']."</td>";
             echo "<td></td>";
             echo "<td>".$value['ProductsUnit']."</td>";

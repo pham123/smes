@@ -15,6 +15,7 @@ $arr['products_data'] = $product_arr;
 //FIND NOT SUBMIT PURCHASE
 $newDB->where('StockOutputsStatus', 0);
 $newDB->where('UsersId', $_SESSION[_site_]['userid']);
+$newDB->where('StockOutputsModule', 'inout');
 $n_submit_StockOutput = $newDB->getOne('StockOutputs');
 
 if($n_submit_StockOutput){
@@ -40,7 +41,8 @@ if($n_submit_StockOutput){
         'StockOutputsType' => '',
         'StockOutputsNo' => 'X'.date('ymd').'-'.($c+1),
         'StockOutputsStatus' => 0,
-        'StockOutputsBks' => ''
+        'StockOutputsBks' => '',
+        'StockOutputsModule' => 'inout'
         
     ];
     $StockOutput_id = $newDB->insert('StockOutputs',$StockOutput_data);

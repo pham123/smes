@@ -22,6 +22,7 @@ $newDB = new MysqliDb(_DB_HOST_, _DB_USER_, _DB_PASS_,_DB_name_);
 $newDB->join("SupplyChainObject sco1", "sco1.SupplyChainObjectId=s.FromId", "LEFT");
 $newDB->join("SupplyChainObject sco2", "sco2.SupplyChainObjectId=s.ToId", "LEFT");
 $newDB->where('StockOutputsStatus', 0, '!=');
+$newDB->where('StockOutputsModule', 'inout');
 $newDB->where('UsersId', $_SESSION[_site_]['userid']);
 $newDB->orderBy('s.StockOutputsDate', 'DESC');
 $table_data = $newDB->get ("StockOutputs s", null, "s.StockOutputsId as id,sco1.SupplyChainObjectName Từ,sco2.SupplyChainObjectName Đến,s.StockOutputsNo No,s.StockOutputsDate Ngày,s.StockOutputsType Kho,s.StockOutputsTime as Time,CONCAT('<a href=\"print-Stockout.php&quest;id=',s.StockOutputsId,'\" target=\"_blank\" >','<i class=\"fas fa-print\"></i>', '</a>') as Print");

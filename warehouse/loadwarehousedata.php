@@ -6,7 +6,11 @@ require('../config.php');
 require('../function/MysqliDb.php');
 
 $newDB = new MysqliDb(_DB_HOST_, _DB_USER_, _DB_PASS_, _DB_name_);
-$newDB->where('ProductsOption', 4, '!=');
+//find material type id assign with warehouse
+$newDB->where('ModulesName', 'warehouse');
+$mtpids = explode(',',$newDB->getOne('modules')['ModulesAssignMaterial']);
+
+$newDB->where('MaterialTypesId', $mtpids, 'IN');
 $product_arr = $newDB->get('products');
 
 $arr = [];
@@ -15,6 +19,7 @@ $arr['products_data'] = $product_arr;
 //FIND NOT SUBMIT PURCHASE
 $newDB->where('StockOutputsStatus', 0);
 $newDB->where('UsersId', $_SESSION[_site_]['userid']);
+$newDB->where('StockOutputsModule', 'warehouse');
 $n_submit_stockoutput = $newDB->getOne('StockOutputs');
 
 if($n_submit_stockoutput){
@@ -42,7 +47,8 @@ if($n_submit_stockoutput){
         'StockOutputsType' => '',
         'StockOutputsNo' => 'X'+date('ymd').'-'.($c+1),
         'StockOutputsStatus' => 0,
-        'StockOutputsBks' => ''
+        'StockOutputsBks' => '',
+        'StockOutputsModule' => 'warehouse'
         
     ];
     $stockoutput_id = $newDB->insert('stockoutputs',$stockoutput_data);

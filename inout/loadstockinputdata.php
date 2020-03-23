@@ -15,6 +15,7 @@ $arr['products_data'] = $product_arr;
 //FIND NOT SUBMIT INPUT
 $newDB->where('StockInputsStatus', 0);
 $newDB->where('UsersId', $_SESSION[_site_]['userid']);
+$newDB->where('StockInputsModule', 'inout');
 $n_submit_StockInput = $newDB->getOne('StockInputs');
 
 if($n_submit_StockInput){
@@ -40,7 +41,8 @@ if($n_submit_StockInput){
         'StockInputsType' => '',
         'StockInputsNo' => 'N'.date('ymd').'-'.($c+1),
         'StockInputsStatus' => 0,
-        'StockInputsBks' => ''
+        'StockInputsBks' => '',
+        'StockInputsModule' => 'inout'
         
     ];
     $StockInput_id = $newDB->insert('StockInputs',$StockInput_data);

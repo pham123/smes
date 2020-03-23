@@ -23,6 +23,7 @@ $newDB->join("SupplyChainObject sco1", "sco1.SupplyChainObjectId=s.FromId", "LEF
 $newDB->join("SupplyChainObject sco2", "sco2.SupplyChainObjectId=s.ToId", "LEFT");
 $newDB->join("Models m", "m.ModelsId=s.ModelsId", "LEFT");
 $newDB->where('StockInputsStatus', 0, '!=');
+$newDB->where('StockInputsModule', 'warehouse');
 $newDB->where('UsersId', $_SESSION[_site_]['userid']);
 $newDB->orderBy('s.StockInputsDate', 'DESC');
 $table_data = $newDB->get ("StockInputs s", null, "sco1.SupplyChainObjectName Từ,sco2.SupplyChainObjectName Đến,s.StockInputsNo No,s.StockInputsDate Ngày,s.StockInputsType Kho,m.ModelsName Model,s.StockInputsBks Biển,s.StockInputsTime as `Thời gian`,CONCAT('<a href=\"update-stockin.php&quest;id=',s.StockInputsId,'\" target=\"_self\" >','<i class=\"fas fa-pen\"></i>', '</a>') as Sửa");

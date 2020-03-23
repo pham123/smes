@@ -23,6 +23,7 @@ $newDB->join("SupplyChainObject sco1", "sco1.SupplyChainObjectId=s.FromId", "LEF
 $newDB->join("SupplyChainObject sco2", "sco2.SupplyChainObjectId=s.ToId", "LEFT");
 $newDB->join("Models m", "m.ModelsId=s.ModelsId", "LEFT");
 $newDB->where('StockOutputsStatus', 0, '!=');
+$newDB->where('StockOutputsModule', 'warehouse');
 $newDB->where('UsersId', $_SESSION[_site_]['userid']);
 $newDB->orderBy('s.StockOutputsDate', 'DESC');
 $table_data = $newDB->get ("stockoutputs s", null, "sco1.SupplyChainObjectName Từ,sco2.SupplyChainObjectName Đến,s.StockOutputsNo No,s.StockOutputsDate Ngày,s.StockOutputsType Kho,m.ModelsName Model,s.StockOutputsBks Biển,s.StockOutputsTime as `Thời gian`,CONCAT('<a href=\"update-stockout.php&quest;id=',s.StockOutputsId,'\" target=\"_self\" >','<i class=\"fas fa-pen\"></i>', '</a>') as Sửa");

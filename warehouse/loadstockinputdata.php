@@ -4,9 +4,13 @@ ob_start();
 date_default_timezone_set('Asia/Ho_Chi_Minh');
 require('../config.php');
 require('../function/MysqliDb.php');
-
 $newDB = new MysqliDb(_DB_HOST_, _DB_USER_, _DB_PASS_, _DB_name_);
-$newDB->where('ProductsOption', 4, '!=');
+
+//find material type id assign with warehouse
+$newDB->where('ModulesName', 'warehouse');
+$mtpids = explode(',',$newDB->getOne('modules')['ModulesAssignMaterial']);
+
+$newDB->where('MaterialTypesId', $mtpids, 'IN');
 $product_arr = $newDB->get('products');
 
 $arr = [];
@@ -15,6 +19,7 @@ $arr['products_data'] = $product_arr;
 //FIND NOT SUBMIT PURCHASE
 $newDB->where('StockInputsStatus', 0);
 $newDB->where('UsersId', $_SESSION[_site_]['userid']);
+$newDB->where('StockInputsModule', 'warehouse');
 $n_submit_StockInput = $newDB->getOne('StockInputs');
 
 if($n_submit_StockInput){
@@ -40,9 +45,10 @@ if($n_submit_StockInput){
         'ModelsId' => "0",
         'StockInputsDate' => date('Y-m-d'),
         'StockInputsType' => '',
-        'StockInputsNo' => 'N'+date('ymd').'-'.($c+1),
+        'StockInputsNo' => 'N'.date('ymd').'-'.($c+1),
         'StockInputsStatus' => 0,
-        'StockInputsBks' => ''
+        'StockInputsBks' => '',
+        'StockInputsModule' => 'warehouse'
         
     ];
     $StockInput_id = $newDB->insert('StockInputs',$StockInput_data);

@@ -26,8 +26,10 @@ $arr = array(
   array('plan.php', 'fas fa-plus-square',$oDB->lang('AddPlan')),
   array('plan2.php', 'fas fa-plus-square',$oDB->lang('PlansInMonth')),
   array('showplan.php', 'fas fa-plus-square',$oDB->lang('ViewPlan')),
-  array('fi.php', 'fas fa-plus-square',$oDB->lang('FiReport')),
+  array('fi.php?id=5', 'fas fa-plus-square',$oDB->lang('FiReport')),
+  array('fi.php?id=6', 'fas fa-plus-square',$oDB->lang('OqcReport')),
   array('daily.php', 'fas fa-plus-square',$oDB->lang('FiDailyReport')),
+  array('daily.php?id=6', 'fas fa-plus-square',$oDB->lang('OqcDailyReport')),
   array('process-daily-history.php', 'fas fa-history',$oDB->lang('ProcessDailyReport')),
   array('view-process-daily-history.php', 'fas fa-eye',$oDB->lang('ViewProcessHistory')),
 

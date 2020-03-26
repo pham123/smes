@@ -13,6 +13,7 @@ $pagetitle = $user->module;
 require('../views/template-header.php');
 require('../function/template.php');
 $stationid = 5;
+$stationid = (isset($_GET['id'])) ? safe($_GET['id']) : 5 ;
 $oDB = new db();
 $nam = date("Y");
 $thang = date("m");

@@ -5,6 +5,7 @@ date_default_timezone_set('Asia/Ho_Chi_Minh');
 require('../config.php');
 require('../function/db_lib.php');
 require('../function/MysqliDb.php');
+require('../function/sdb.php');
 require('../function/function.php');
 $user = New Users();
 $user->set($_SESSION[_site_]['userid']);
@@ -12,14 +13,27 @@ $user->module = basename(dirname(__FILE__));
 check($user->acess());
 $pagetitle = $user->module;
 $page_css='.vs__dropdown-toggle {border: 0px !important;margin-top: -4px;} .vs__selected{white-space: nowrap;max-width: 250px;overflow: hidden;font-size: 14px;}';
-// $refresh = 5;
 require('../views/template-header.php');
 require('../function/template.php');
 $oDB = new db();
+$sDB = new sdb();
 if(isset($_SESSION[_site_]['userlang'])){
   $oDB->lang = ucfirst($_SESSION[_site_]['userlang']);
 }
 $newDB = new MysqliDb(_DB_HOST_, _DB_USER_, _DB_PASS_,_DB_name_);
+
+function findLastApprovalDocumentDetail($documentid){
+  global $newDB;
+  $newDB->where('DocumentId', $documentid);
+  $documentdetails = $newDB->orderBy('DocumentDetailId', 'desc')->get('documentdetail');
+  foreach($documentdetails as $key => $detail){
+    $lastline = $newDB->where('DocumentDetailId', $detail['DocumentDetailId'])->orderBy('DocumentDetailLineApprovalId', 'desc')->getOne('documentdetaillineapproval');
+    if($lastline['DocumentDetailLineApprovalStatus'] == 2){
+      return $detail;
+    }
+  }
+  return null;
+}
 ?>
 
 <body id="page-top">
@@ -32,20 +46,55 @@ $newDB = new MysqliDb(_DB_HOST_, _DB_USER_, _DB_PASS_,_DB_name_);
     <div id="content-wrapper" class="d-flex flex-column">
 
       <!-- Main Content -->
-      <div id="content">
         
         <!-- Topbar -->
         <?php require('navbar.php') ?>
 
-        <div class="container-fluid">
-          <?php
-            include('test.php');
-          ?>
+        <div class="row">
+          <div class="col-md-12">
+            <table class='table table-bordered' id='dataTable' width='100%' cellspacing='0'>
+            <thead>
+                <tr>
+                  <th>Tên tài liệu</th>
+                  <th>Bộ phận</th>
+                  <th style="max-width: 300px;">Miêu tả</th>
+                  <th>Phiên bản</th>
+                  <th>Ngày cập nhật</th>
+                  <th>Download</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                  <?php
+                  $newDB->join('section s', 's.SectionId=d.SectionId', 'left');
+                  $list = $newDB->get('document d');
+                  foreach ($list as $key => $value) {
+                    $last_approval_document = findLastApprovalDocumentDetail($value['DocumentId']);
+                    if(!$last_approval_document)
+                    continue;
+                    
+
+                    $filename = $last_approval_document['DocumentDetailFileName'];
+                    $tmp = explode(".", $filename);
+                    $ext = end($tmp);
+                    echo "<tr>
+                        <td>".$value['DocumentName']."</td>
+                        <td>".$value['SectionName']."</td>
+                        <td style='width:30%'>".$value['DocumentDescription']."</td>
+                        <td>".$last_approval_document['DocumentDetailVersion']."</td>
+                        <td>".$last_approval_document['DocumentDetailUpdateDate']."</td>
+                        <td style='width: 20%'><a target='_blank' href='files/".$last_approval_document['DocumentDetailId'].'.'.$ext."'>".$last_approval_document['DocumentDetailFileName']."</a></td";
+                   
+                    echo "</tr>";
+                  }
+                  ?>
+
+            </tbody>
+    
+            </table>
+          </div>
+        
         </div>
-
-  
-
-      </div>
       <!-- End of Main Content -->
 
       <!-- Footer -->

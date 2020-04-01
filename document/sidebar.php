@@ -89,19 +89,16 @@ function yourCreatedDoc(){
       <!-- Divider -->
 <?php
 
-$arr = array(
-  array('documenttype.php', 'fas fa-plus-square',$oDB->lang('DocumentType')),
-  array('adddoc.php', 'fas fa-plus-square',$oDB->lang('AddDocument')),
-  array('documentlist.php', 'fas fa-plus-square',$oDB->lang('DocumentList')),
-  array('documentlistdetail.php', 'fas fa-plus-square',$oDB->lang('DocumentDetail')),
-);
+$arr = array();
+if($user->acess() == 1){
+  array_push($arr, array('documenttype.php', 'fas fa-plus-square',$oDB->lang('DocumentType')));
+  array_push($arr, array('adddoc.php', 'fas fa-plus-square',$oDB->lang('AddDocument')));
+  array_push($arr, array('documentlist.php', 'fas fa-plus-square',$oDB->lang('DocumentList')));
+  array_push($arr, array('documentlistdetail.php', 'fas fa-plus-square',$oDB->lang('DocumentDetail')));
+}
 echo nav_item($oDB->lang('Document'),$arr);
 ?>
-      <li class="nav-item">
-        <a class="nav-link" href="#" data-toggle="collapse" data-target="#collapsePages" aria-expanded="false" aria-controls="collapsePages">
-          <i class="fas fa-fw fa-folder"></i>
-          <span>Document approval</span>
-        </a>
+      <li class="nav-item mt-2">
         <div id="collapsePages" class="collapse show" aria-labelledby="headingPages" data-parent="#accordionSidebar" style="">
           <div class="bg-white py-2 collapse-inner rounded">
             <ul style="list-style: none; padding-left: 10px;">

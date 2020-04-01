@@ -2,6 +2,11 @@
 session_start();
 ob_start();
 date_default_timezone_set('Asia/Ho_Chi_Minh');
+
+use PHPMailer\PHPMailer\PHPMailer;
+use PHPMailer\PHPMailer\SMTP;
+
+require '../vendor/autoload.php';
 require('../config.php');
 require('../function/db_lib.php');
 require('../function/MysqliDb.php');
@@ -46,7 +51,50 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 			if($index == 0){
 				$tmp1['DocumentDetailLineApprovalStatus'] = 1;
 			}
-			$newDB->insert('documentdetaillineapproval', $tmp1);
+			$ddlaid = $newDB->insert('documentdetaillineapproval', $tmp1);
+
+			//send mail to the first line
+			if($index == 0){
+				$newDB->where('DocumentDetailLineApprovalId', $ddlaid);
+				$firstLineApp = $newDB->getOne('documentdetaillineapproval');
+
+				$newDB->where('UsersId', $firstLineApp['UsersId']);
+				$lineUser = $newDB->getOne('users');
+				//Create a new PHPMailer instance
+				$mail = new PHPMailer;
+				//Tell PHPMailer to use SMTP
+				$mail->isSMTP();
+				//Enable SMTP debugging
+				// SMTP::DEBUG_OFF = off (for production use)
+				// SMTP::DEBUG_CLIENT = client messages
+				// SMTP::DEBUG_SERVER = client and server messages
+				$mail->SMTPDebug = SMTP::DEBUG_SERVER;
+				configurePHPMailer($mail, 'Document Approval');
+				//Set who the message is to be sent to
+				$mail->addAddress($lineUser['UsersEmail'], $lineUser['UsersFullName']);
+				//Set the subject line
+				$mail->Subject = 'Document Approval';
+				//Read an HTML message body from an external file, convert referenced images to embedded,
+				$mail->Body = "
+				<p>Dear </p>
+				<p>New Document waiting your approval</p>
+				<p><a href='localhost/smes/document/approveorrejectdoc.php?id=".$insert_id."'>Please follow this link and approval this request</a></p>
+				";
+				//convert HTML into a basic plain-text alternative body
+				// $mail->msgHTML(file_get_contents('email_template.html'), __DIR__);
+				//Replace the plain text body with one created manually
+				$mail->IsHTML(true);
+				$mail->AltBody = '';
+				//Attach an image file
+				$mail->addAttachment('');
+
+				//send the message, check for errors
+				if (!$mail->send()) {
+					echo 'Mailer Error: ' . $mail->ErrorInfo;
+				} else {
+					echo 'Message sent!';
+				}
+			}
 		}
 		//upload file
 		$target_dir = "files/";

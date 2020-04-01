@@ -2,6 +2,10 @@
 session_start();
 ob_start();
 date_default_timezone_set('Asia/Ho_Chi_Minh');
+use PHPMailer\PHPMailer\PHPMailer;
+use PHPMailer\PHPMailer\SMTP;
+
+require '../vendor/autoload.php';
 require('../config.php');
 require('../function/db_lib.php');
 require('../function/MysqliDb.php');
@@ -40,10 +44,101 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $newDB->orderBy('DocumentDetailLineApprovalId', 'asc');
     $newDB->update('DocumentDetailLineApproval', [
       'DocumentDetailLineApprovalStatus' => 1
-    ], 1);
+    ],1);
+    //send mail to next line
+    $newDB->where('DocumentDetailLineApprovalStatus', 1);
+    $nextLineApp = $newDB->getOne('documentdetaillineapproval');
+
+    if($nextLineApp){
+      $newDB->where('UsersId', $nextLineApp['UsersId']);
+      $lineUser = $newDB->getOne('users');
+      //Create a new PHPMailer instance
+      $mail = new PHPMailer;
+      //Tell PHPMailer to use SMTP
+      $mail->isSMTP();
+      //Enable SMTP debugging
+      // SMTP::DEBUG_OFF = off (for production use)
+      // SMTP::DEBUG_CLIENT = client messages
+      // SMTP::DEBUG_SERVER = client and server messages
+      $mail->SMTPDebug = SMTP::DEBUG_SERVER;
+      configurePHPMailer($mail, 'Document Approval');
+      //Set who the message is to be sent to
+      $mail->addAddress($lineUser['UsersEmail'], $lineUser['UsersFullName']);
+      //Set the subject line
+      $mail->Subject = 'Document Approval';
+      //Read an HTML message body from an external file, convert referenced images to embedded,
+      $mail->Body = "
+      <p>Dear </p>
+      <p>New Document waiting your approval</p>
+      <p><a href='localhost/smes/document/approveorrejectdoc.php?id=".$insert_id."'>Please follow this link and approval this request</a></p>
+      ";
+      //convert HTML into a basic plain-text alternative body
+      // $mail->msgHTML(file_get_contents('email_template.html'), __DIR__);
+      //Replace the plain text body with one created manually
+      $mail->IsHTML(true);
+      $mail->AltBody = '';
+      //Attach an image file
+      $mail->addAttachment('');
+  
+      //send the message, check for errors
+      if (!$mail->send()) {
+        echo 'Mailer Error: ' . $mail->ErrorInfo;
+      } else {
+        echo 'Message sent!';
+      }
+      header('Location:viewdocapp.php?id='.$data['id']);
+      return;
+    }else{
+      //send email to emailist
+      $document_detail = $newDB->where('DocumentDetailId', $data['id'])->getOne('documentdetail');
+      $newDB->where('DocumentId', $document_detail['DocumentId']);
+      $document = $newDB->getOne('document');
+      $email_list = $document['DocumentEmailList'];
+      if(strpos($email_list,',') !== false){
+        $email_arr = explode($email_list, ',');
+      }else{
+        $email_arr = [$email_list];
+      }
+
+      $mail = new PHPMailer;
+      //Tell PHPMailer to use SMTP
+      $mail->isSMTP();
+      //Enable SMTP debugging
+      // SMTP::DEBUG_OFF = off (for production use)
+      // SMTP::DEBUG_CLIENT = client messages
+      // SMTP::DEBUG_SERVER = client and server messages
+      $mail->SMTPDebug = SMTP::DEBUG_SERVER;
+      configurePHPMailer($mail, 'Link '.$document['DocumentName']);
+      //Set who the message is to be sent to
+      foreach($email_arr as $email){
+        $mail->addAddress($email, "");
+      }
+      //Set the subject line
+      $mail->Subject = 'Link '.$document['DocumentName'];
+      //Read an HTML message body from an external file, convert referenced images to embedded,
+      $mail->Body = "
+      <p><strong>".$document['DocumentName']."</strong></p>
+      <p><a href='#'>Click this link to download the document</a></p>
+      ";
+      //convert HTML into a basic plain-text alternative body
+      // $mail->msgHTML(file_get_contents('email_template.html'), __DIR__);
+      //Replace the plain text body with one created manually
+      $mail->IsHTML(true);
+      $mail->AltBody = '';
+      //Attach an image file
+      $mail->addAttachment('');
+  
+      //send the message, check for errors
+      if (!$mail->send()) {
+        echo 'Mailer Error: ' . $mail->ErrorInfo;
+      } else {
+        echo 'Message sent!';
+      }
+      header('Location:viewdocapp.php?id='.$data['id']);
+      return;
+    }
+
   }
-  header('Location:viewdocapp.php?id='.$data['id']);
-  return;
 }
 if (isset($_GET['id']) && is_numeric($_GET['id'])) {
   $id = safe($_GET['id']);

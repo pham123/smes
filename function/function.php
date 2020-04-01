@@ -63,6 +63,24 @@ function w_logs($dir,$content){
 	}
 }
 
+function configurePHPMailer($mail, $from){
+	//Set the hostname of the mail server
+	$mail->Host = 'mail.hallavina.vn';
+	//Set the SMTP port number - likely to be 25, 465 or 587
+	$mail->Port = 587;
+	//Whether to use SMTP authentication
+	$mail->SMTPAuth = true;
+	//Username to use for SMTP authentication
+	$mail->Username = 'hallasystem@hallavina.vn';
+	//Password to use for SMTP authentication
+	$mail->Password = 'Halla123@';
+	//Set who the message is to be sent from
+	$mail->setFrom('hallasystem@hallavina.vn', $from);
+	//Set an alternative reply-to address
+	$mail->addReplyTo('noreply@hallavina.vn', 'No reply');
+	return $mail;
+}
+
 
 class ResizeImage
 {

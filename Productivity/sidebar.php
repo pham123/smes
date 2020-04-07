@@ -32,7 +32,6 @@ $arr = array(
   array('daily.php?id=6', 'fas fa-plus-square',$oDB->lang('OqcDailyReport')),
   array('process-daily-history.php', 'fas fa-history',$oDB->lang('ProcessDailyReport')),
   array('view-process-daily-history.php', 'fas fa-eye',$oDB->lang('ViewProcessHistory')),
-
 );
 echo nav_item($oDB->lang('Plan'),$arr);
 ?>

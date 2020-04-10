@@ -122,8 +122,8 @@ if ($user->acess()==1) {
           echo "<td>".$value['MemosLocation']."</td>";
           echo "<td style='min-width: 100px'><a href='ViewMemos.php?id=".$value['MemosId']."'>".$value['MemosName']."</a></td>";
           echo "<td style='min-width:180px;'>".$value['MemosIssue']."</td>";
-          echo "<td><a href='image/img_".$value['MemosId'].".jpg' target='_blank'><img src='image/small/img_".$value['MemosId'].".jpg' alt=''></a></td>";
-          echo "<td><a href='image/imgafter_".$value['MemosId'].".jpg' target='_blank'><img src='image/small/imgafter_".$value['MemosId'].".jpg' alt=''></a></td>";
+          echo "<td><a href='image/img_".$value['MemosId'].".jpg' target='_blank'><img src='image/small/img_".$value['MemosId'].".jpg?".filemtime("image/small/img_".$value['MemosId'].".jpg")."' alt=''></a></td>";
+          echo "<td><a href='image/imgafter_".$value['MemosId'].".jpg' target='_blank'><img src='image/small/imgafter_".$value['MemosId'].".jpg?".filemtime("image/small/imgafter_".$value['MemosId'].".jpg")."' alt=''></a></td>";
           echo "<td style='min-width:150px;'>".$value['MemosEfficiency']."</td>";
 
           
@@ -183,10 +183,10 @@ if ($user->acess()==1) {
           echo "<td>".$value['MemosScore']."</td>";
           // $status = color($value['QualityIssuelistStatus']);
           // echo "<td style='background-color:".$status[0]."'>".$oDB->lang($status[1])."</td>";
-          if ($user->acess()==1||$user->acess()==2||$_SESSION[_site_]['userid']==$value['UsersId']) {
+          if ($user->acess()==1||$_SESSION[_site_]['userid']==$value['UsersId']) {
             echo "<td><a href='EditMemos.php?id=".$value['MemosId']."'><i class='fas fa-edit'></i></a></td>";
           }else{
-            echo "<td><i class='fas fa-edit'></i></td>";
+            echo "<td></td>";
           }
 
           if ($user->acess()==1) {

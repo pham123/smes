@@ -139,7 +139,10 @@ p{margin:5px;}
                 <tr><td><?php echo $oDB->lang('MemosApplyDate') ?></td><td colspan=''><input type="date" name='MemosApplyDate' class='form-control' value='<?php echo $issue['MemosApplyDate'] ?>'></td>
                 <td><?php echo $oDB->lang('ResultOfReview') ?></td>
                 <td>
-                  <select name="MemosStatus" id="" class='selectpicker show-tick' data-live-search="true" data-style="btn-info" data-width="100%">
+                <?php
+                $readonly = ($access==1) ? '' : 'disabled' ;
+                ?>
+                  <select name="MemosStatus" id="" class='selectpicker show-tick' data-live-search="true" data-style="btn-info" data-width="100%" <?php echo $readonly ?>>
                       <option value="1" <?php echo $retVal = ($issue['MemosStatus']==1) ? 'Selected' : '' ; ?>>Xem xét</option>
                       <option value="2" <?php echo $retVal = ($issue['MemosStatus']==2) ? 'Selected' : '' ; ?>>Duyệt</option>
                       <option value="3" <?php echo $retVal = ($issue['MemosStatus']==3) ? 'Selected' : '' ; ?>>Hủy</option>
@@ -152,7 +155,7 @@ p{margin:5px;}
                 <td><?php echo $oDB->lang('ApplyStatus') ?></td>
                 <td>
                 <?php
-                $readonly = ($access==1||$access==2) ? '' : 'disabled' ;
+                $readonly = ($access==1||$_SESSION[_site_]['userid']==$issue['UsersId']) ? '' : 'disabled' ;
                 ?>
                   <select name="MemosOption" id="" class='selectpicker show-tick' data-live-search="true" data-style="btn-info" data-width="100%" <?php echo $readonly ?>>
                       <option value="1" <?php echo $retVal = ($issue['MemosOption']==1) ? 'Selected' : '' ; ?>>Doing</option>

@@ -20,7 +20,6 @@ $n_submit_purchase = $newDB->getOne('Purchases');
 if($n_submit_purchase){
     $arr['PurchasesId'] = $n_submit_purchase['PurchasesId'];
     $arr['RequestSectionId'] = $n_submit_purchase['RequestSectionId'];
-    $arr['ReceiveSectionId'] = $n_submit_purchase['ReceiveSectionId'];
     $arr['TraceStationId'] = $n_submit_purchase['TraceStationId'];
     $arr['IsUrgent'] = $n_submit_purchase['IsUrgent'];
     $arr['PurchasesDate'] = $n_submit_purchase['PurchasesDate'];
@@ -36,7 +35,6 @@ if($n_submit_purchase){
     $purchases_data = [
         'UsersId' => $_SESSION[_site_]['userid'],
         'RequestSectionId' => null,
-        'ReceiveSectionId' => null,
         'TraceStationId' => null,
         'IsUrgent' => 0,
         'PurchasesDate' => null,
@@ -48,10 +46,8 @@ if($n_submit_purchase){
 
     $newDB->where('PurchasesId', $purchase_id);
     $last_purchase = $newDB->getOne('Purchases');
-
     $arr['PurchasesId'] = $last_purchase['PurchasesId'];
     $arr['RequestSectionId'] = $last_purchase['RequestSectionId'];
-    $arr['ReceiveSectionId'] = $last_purchase['ReceiveSectionId'];
     $arr['TraceStationId'] = $last_purchase['TraceStationId'];
     $arr['IsUrgent'] = $last_purchase['IsUrgent'];
     $arr['PurchasesDate'] = $last_purchase['PurchasesDate'];

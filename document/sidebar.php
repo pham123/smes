@@ -93,11 +93,12 @@ $arr = array();
 if($user->acess() == 1){
   array_push($arr, array('documenttype.php', 'fas fa-plus-square',$oDB->lang('DocumentType')));
   array_push($arr, array('adddoc.php', 'fas fa-plus-square',$oDB->lang('AddDocument')));
-  array_push($arr, array('documentlist.php', 'fas fa-plus-square',$oDB->lang('DocumentList')));
-  array_push($arr, array('documentlistdetail.php', 'fas fa-plus-square',$oDB->lang('DocumentDetail')));
+  array_push($arr, array('documentlist.php', 'fas fa-list-ol',$oDB->lang('DocumentList')));
+  array_push($arr, array('documentlistdetail.php', 'fas fa-code-branch',$oDB->lang('DocumentVersion')));
 }
 echo nav_item($oDB->lang('Document'),$arr);
 ?>
+<hr class="sidebar-divider d-none d-md-block">
       <li class="nav-item mt-2">
         <div id="collapsePages" class="collapse show" aria-labelledby="headingPages" data-parent="#accordionSidebar" style="">
           <div class="bg-white py-2 collapse-inner rounded">

@@ -11,7 +11,7 @@ $user->set($_SESSION[_site_]['userid']);
 $user->module = basename(dirname(__FILE__));
 check($user->acess());
 $pagetitle = $user->module;
-$page_css='th,td{font-weight: normal;font-size: 13px;text-align: center;vertical-align: middle !important;}.vs__dropdown-toggle {border: 0px !important;margin-top: -4px;} .vs__selected{white-space: nowrap;max-width: 200px;overflow: hidden;font-size: 13px;}';
+$page_css='th,td{font-weight: normal;font-size: 13px;text-align: center;vertical-align: middle !important;}.vs__dropdown-toggle {border: 0px !important;margin-top: -4px;} .vs__selected{white-space: nowrap;max-width: 200px;overflow: hidden;font-size: 13px;}.vs__dropdown-menu li{font-size: 14px;}input::placeholder{font-size: 14px;}';
 require('../views/template-header.php');
 require('../function/template.php');
 $oDB = new db();
@@ -90,11 +90,11 @@ $tracestations = $newDB->get('tracestation');
               </div>
             </div>
             <div class="w-100" style="overflow: auto;">
-              <table class="table table-bordered">
+              <table class="table table-bordered" style="margin-bottom: 70px;">
                 <thead>
                   <tr>
                     <th rowspan="2"><strong>NO</strong><br><em>STT</em></th>
-                    <th rowspan="2" style="min-width: 220px;"><strong>HALLA'S CODE</strong><br>Mã hàng</th>
+                    <th rowspan="2" style="min-width: 320px;"><strong>HALLA'S CODE</strong><br>Mã hàng</th>
                     <th rowspan="2" style="min-width: 150px;"><strong>VIETNAMESE NAME</strong><br><em>Tên tiếng Việt</em></th>
                     <th rowspan="2" style="min-width: 150px;"><strong>ENGLISH NAME</strong><br><em>Tên tiếng Anh</em></th>
                     <th rowspan="2"><strong>PICTURE</strong><br><em>Hình ảnh</em></th>
@@ -121,7 +121,7 @@ $tracestations = $newDB->get('tracestation');
                       <v-select 
                         placeholder="chọn sản phẩm"
                         :options="products_data" 
-                        :get-option-label="option => option.ProductsNumber"
+                        :get-option-label="option => option.ProductsNumber+'-'+option.ProductsName"
                         :reduce="product => product.ProductsId" 
                         class="form-control"
                         @input="productSelected(item)"

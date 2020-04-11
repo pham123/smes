@@ -39,15 +39,14 @@ $newDB = new MysqliDb(_DB_HOST_, _DB_USER_, _DB_PASS_,_DB_name_);
 
         <div class="container-fluid">
           <?php 
-          $sql = "SELECT prd.ProductsId, prd.ProductsName, prd.ProductsNumber, si.ToId, si.StockInputsDate, 
-          ssi.StockInputItemsWo, scm.SupplyChainObjectName FROM `stockinputitems` ssi
-          INNER JOIN StockInputs si on si.StockInputsId = ssi.`StockInputsId`
-          INNER JOIN Products prd on prd.ProductsId = ssi.ProductsId
-          INNER JOIN SupplyChainObject scm on scm.SupplyChainObjectId = si.ToId
-          WHERE `StockInputItemsId` in (SELECT MAX(`StockInputItemsId`) As lastId 
-          FROM `StockInputItems` sii 
-          inner join Products prd on prd.ProductsId = sii.ProductsId AND prd.MaterialTypesId = 6 
-          group by sii.`ProductsId`)";
+          $idl = (isset($_GET['id'])) ? $_GET['id'] : '1826' ;
+          $sql = "SELECT prd.ProductsId, prd.ProductsName, prd.ProductsNumber, si.ToId, si.StockInputsDate, ssi.StockInputItemsWo, scm.SupplyChainObjectName as ToName, scm2.SupplyChainObjectName as FrName 
+          FROM `stockinputitems` ssi 
+          INNER JOIN StockInputs si on si.StockInputsId = ssi.`StockInputsId` 
+          INNER JOIN Products prd on prd.ProductsId = ssi.ProductsId 
+          INNER JOIN SupplyChainObject scm on scm.SupplyChainObjectId = si.ToId 
+          INNER JOIN SupplyChainObject scm2 on scm2.SupplyChainObjectId = si.FromId 
+          WHERE prd.`ProductsId` = ".$idl.")";
           $result = $oDB->fetchAll($sql);
           // echo "<pre>";
           // var_dump($result);
@@ -59,19 +58,20 @@ $newDB = new MysqliDb(_DB_HOST_, _DB_USER_, _DB_PASS_,_DB_name_);
             <tr>
               <th>Mã thiết bị</th>
               <th>Tên thiết bị</th>
-              <th>Vị trí hiện tại</th>
+              <th>Moving From</th>
+              <th>Moving To</th>
               <th>Ngày thay đổi</th>
               <th>Lịch kiểm định</th>
             </tr>
           </thead>
           <tbody>
-          
             <?php
               foreach ($result as $key => $value) {
                 echo "<tr>";
                 echo  "<td>".$value['ProductsNumber']."</td>";
-                echo  "<td><a href='movinghistory.php?id=".$value['ProductsId']."'>".$value['ProductsName']."</a></td>";
-                echo  "<td>".$value['SupplyChainObjectName']."</td>";
+                echo  "<td>".$value['ProductsName']."</td>";
+                echo  "<td>".$value['FrName']."</td>";
+                echo  "<td>".$value['ToName']."</td>";
                 $date_ = date("d-M-Y",strtotime($value['StockInputsDate']));
                 echo  "<td>".$date_."</td>";
                 if ($value['StockInputItemsWo']=="") {

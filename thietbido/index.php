@@ -40,7 +40,7 @@ $newDB = new MysqliDb(_DB_HOST_, _DB_USER_, _DB_PASS_,_DB_name_);
         <div class="container-fluid">
           <?php 
           $sql = "SELECT scm.SupplyChainObjectName, 
-          count(*) as Total
+          count(*) as Total,
           SUM(case when MEInforStatus = 1 then 1 else 0 end) as TotalOk,
           SUM(case when MEInforStatus = 2 then 1 else 0 end) as TotalSpare,
           SUM(case when MEInforStatus = 3 then 1 else 0 end) as TotalBroken,

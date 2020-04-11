@@ -43,9 +43,9 @@ $_SESSION[_site_]['enddate'] = (isset($_SESSION[_site_]['enddate'])) ? $_SESSION
         <?php 
 
 if ($user->acess()==1) {
-  $table_header  = 'No.,IssueDate,Dept,Location,title,issue,Picture,PictureAfter,Efficiency,Maker,Pic,Status,ResultOfReview,Plan,Score,Edit,Delete';
+  $table_header  = 'No.,IssueDate,Dept,Location,title,issue,Picture,PictureAfter,Efficiency,Maker,Pic,Remark,Status,ResultOfReview,Plan,Score,Edit,Delete';
 }else{
-  $table_header  = 'No.,IssueDate,Dept,Location,title,issue,Picture,PictureAfter,Efficiency,Maker,Pic,Status,ResultOfReview,Plan,Score,Edit';
+  $table_header  = 'No.,IssueDate,Dept,Location,title,issue,Picture,PictureAfter,Efficiency,Maker,Pic,Remark,Status,ResultOfReview,Plan,Score,Edit';
 }
 
           
@@ -151,8 +151,10 @@ if ($user->acess()==1) {
             }
 
           }
+
+          // MemosPicExplain
           
-          
+          echo "<td style='background-color:green;'>".$value['MemosPicExplain']."</td>";
           // echo "<td>".$value['MemosOption']."</td>";
           switch ($value['MemosOption']) {
             case '':

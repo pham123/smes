@@ -141,7 +141,7 @@ $linkar =  array(
   array('../employees/',$oDB->lang('Employees'),$oDB->lang('EmployeesInformation'),'fa-calendar'),
   array('../news/',$oDB->lang('News'),$oDB->lang('News'),'fa-newspaper'),
   array('../security/',$oDB->lang('Security'),$oDB->lang('Security'),'fa-shield-alt'),
-  array('../thietbido/',$oDB->lang('ME',"Q-Bank"),$oDB->lang('Measure Equipment'),'fa-microscope'),
+  array('../thietbido/',$oDB->lang('ME'),$oDB->lang('Measure Equipment'),'fa-microscope'),
   //
   //
   // 

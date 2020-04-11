@@ -61,7 +61,6 @@ $newDB = new MysqliDb(_DB_HOST_, _DB_USER_, _DB_PASS_,_DB_name_);
               <th>Tên thiết bị</th>
               <th>Vị trí hiện tại</th>
               <th>Ngày thay đổi</th>
-              <th>Ngày kiểm định gần nhất</th>
               <th>Lịch kiểm định</th>
             </tr>
           </thead>
@@ -74,7 +73,6 @@ $newDB = new MysqliDb(_DB_HOST_, _DB_USER_, _DB_PASS_,_DB_name_);
                 echo  "<td>".$value['SupplyChainObjectName']."</td>";
                 echo  "<td>".$value['StockInputsDate']."</td>";
                 echo  "<td>".$value['StockInputItemsWo']."</td>";
-                echo  "<td></td>";
                 echo "</tr>";
               }
             

@@ -40,13 +40,14 @@ $newDB = new MysqliDb(_DB_HOST_, _DB_USER_, _DB_PASS_,_DB_name_);
         <div class="container-fluid">
           <?php 
           $idl = (isset($_GET['id'])) ? $_GET['id'] : '1826' ;
-          echo $sql = "SELECT prd.ProductsId, prd.ProductsName, prd.ProductsNumber, si.ToId, si.StockInputsDate, ssi.StockInputItemsWo, scm.SupplyChainObjectName as ToName, scm2.SupplyChainObjectName as FrName 
+          $sql = "SELECT prd.ProductsId, prd.ProductsName, prd.ProductsNumber, si.ToId, si.StockInputsDate, ssi.StockInputItemsWo, scm.SupplyChainObjectName as ToName, scm2.SupplyChainObjectName as FrName 
           FROM `stockinputitems` ssi 
           INNER JOIN StockInputs si on si.StockInputsId = ssi.`StockInputsId` 
           INNER JOIN Products prd on prd.ProductsId = ssi.ProductsId 
           INNER JOIN SupplyChainObject scm on scm.SupplyChainObjectId = si.ToId 
           INNER JOIN SupplyChainObject scm2 on scm2.SupplyChainObjectId = si.FromId 
           WHERE prd.`ProductsId` = ".$idl.")";
+
           $result = $oDB->fetchAll($sql);
           // echo "<pre>";
           // var_dump($result);

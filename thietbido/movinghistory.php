@@ -16,6 +16,7 @@ $page_css='.vs__dropdown-toggle {border: 0px !important;margin-top: -4px;} .vs__
 require('../views/template-header.php');
 require('../function/template.php');
 $oDB = new db();
+$sDB = new sdb();
 if(isset($_SESSION[_site_]['userlang'])){
   $oDB->lang = ucfirst($_SESSION[_site_]['userlang']);
 }
@@ -48,7 +49,7 @@ $newDB = new MysqliDb(_DB_HOST_, _DB_USER_, _DB_PASS_,_DB_name_);
           INNER JOIN SupplyChainObject scm2 on scm2.SupplyChainObjectId = si.FromId 
           WHERE prd.`ProductsId` = ".$idl.")";
 
-          $result = $oDB->fetchAll($sql);
+          $result = $sDB->query($sql)->fetchAll();
           // echo "<pre>";
           // var_dump($result);
           // echo "</pre>";

@@ -39,7 +39,14 @@ $newDB = new MysqliDb(_DB_HOST_, _DB_USER_, _DB_PASS_,_DB_name_);
 
         <div class="container-fluid">
           <?php 
-          $sql = "Select * from Products where MaterialTypesId = 6";
+          $sql = "SELECT prd.ProductsId, prd.ProductsName, prd.ProductsNumber, si.ToId, si.StockInputsDate, scm.SupplyChainObjectName FROM `stockinputitems` ssi
+          INNER JOIN StockInputs si on si.StockInputsId = ssi.`StockInputsId`
+          INNER JOIN Products prd on prd.ProductsId = ssi.ProductsId
+          INNER JOIN SupplyChainObject scm on scm.SupplyChainObjectId = si.ToId
+          WHERE `StockInputItemsId` in (SELECT MAX(`StockInputItemsId`) As lastId 
+          FROM `StockInputItems` sii 
+          inner join Products prd on prd.ProductsId = sii.ProductsId AND prd.MaterialTypesId = 6 
+          group by sii.`ProductsId`)";
           $result = $oDB->fetchAll($sql);
           // echo "<pre>";
           // var_dump($result);
@@ -52,6 +59,7 @@ $newDB = new MysqliDb(_DB_HOST_, _DB_USER_, _DB_PASS_,_DB_name_);
               <th>Mã thiết bị</th>
               <th>Tên thiết bị</th>
               <th>Vị trí hiện tại</th>
+              <th>Ngày thay đổi</th>
               <th>Ngày kiểm định gần nhất</th>
               <th>Lịch kiểm định</th>
             </tr>
@@ -62,7 +70,8 @@ $newDB = new MysqliDb(_DB_HOST_, _DB_USER_, _DB_PASS_,_DB_name_);
                 echo "<tr>";
                 echo  "<td>".$value['ProductsNumber']."</td>";
                 echo  "<td>".$value['ProductsName']."</td>";
-                echo  "<td></td>";
+                echo  "<td>".$value['SupplyChainObjectName']."</td>";
+                echo  "<td>".$value['StockInputsDate']."</td>";
                 echo  "<td></td>";
                 echo  "<td></td>";
                 echo "</tr>";

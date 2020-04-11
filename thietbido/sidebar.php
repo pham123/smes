@@ -41,7 +41,7 @@ $arr = array(
 echo nav_item($oDB->lang('Report'),$arr);
 
 $arr = array(
-  array('Material2.php', 'fas fa-plus-square',$oDB->lang('AddNew')),
+  array('Material2.php', 'fas fa-plus-square',$oDB->lang('themthietbi',"Thêm thiết bị")),
 );
 echo nav_item($oDB->lang('Add'),$arr);
 ?>

@@ -39,7 +39,8 @@ $newDB = new MysqliDb(_DB_HOST_, _DB_USER_, _DB_PASS_,_DB_name_);
 
         <div class="container-fluid">
           <?php 
-          $sql = "SELECT prd.ProductsId, prd.ProductsName, prd.ProductsNumber, si.ToId, si.StockInputsDate, scm.SupplyChainObjectName FROM `stockinputitems` ssi
+          $sql = "SELECT prd.ProductsId, prd.ProductsName, prd.ProductsNumber, si.ToId, si.StockInputsDate, 
+          sii.StockInputItemsWo, scm.SupplyChainObjectName FROM `stockinputitems` ssi
           INNER JOIN StockInputs si on si.StockInputsId = ssi.`StockInputsId`
           INNER JOIN Products prd on prd.ProductsId = ssi.ProductsId
           INNER JOIN SupplyChainObject scm on scm.SupplyChainObjectId = si.ToId
@@ -72,7 +73,7 @@ $newDB = new MysqliDb(_DB_HOST_, _DB_USER_, _DB_PASS_,_DB_name_);
                 echo  "<td>".$value['ProductsName']."</td>";
                 echo  "<td>".$value['SupplyChainObjectName']."</td>";
                 echo  "<td>".$value['StockInputsDate']."</td>";
-                echo  "<td></td>";
+                echo  "<td>".$value['StockInputItemsWo']."</td>";
                 echo  "<td></td>";
                 echo "</tr>";
               }

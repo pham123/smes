@@ -40,7 +40,7 @@ $newDB = new MysqliDb(_DB_HOST_, _DB_USER_, _DB_PASS_,_DB_name_);
         <div class="container-fluid">
           <?php 
           $idl = (isset($_GET['id'])) ? $_GET['id'] : '1826' ;
-          $sql = "SELECT prd.ProductsId, prd.ProductsName, prd.ProductsNumber, si.ToId, si.StockInputsDate, ssi.StockInputItemsWo, scm.SupplyChainObjectName as ToName, scm2.SupplyChainObjectName as FrName 
+          echo $sql = "SELECT prd.ProductsId, prd.ProductsName, prd.ProductsNumber, si.ToId, si.StockInputsDate, ssi.StockInputItemsWo, scm.SupplyChainObjectName as ToName, scm2.SupplyChainObjectName as FrName 
           FROM `stockinputitems` ssi 
           INNER JOIN StockInputs si on si.StockInputsId = ssi.`StockInputsId` 
           INNER JOIN Products prd on prd.ProductsId = ssi.ProductsId 

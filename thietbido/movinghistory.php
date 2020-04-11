@@ -4,6 +4,7 @@ ob_start();
 date_default_timezone_set('Asia/Ho_Chi_Minh');
 require('../config.php');
 require('../function/db_lib.php');
+require('../function/sdb.php');
 require('../function/MysqliDb.php');
 require('../function/function.php');
 $user = New Users();

@@ -22,6 +22,11 @@
 
       <!-- Divider -->
 <?php
+$arr = array(
+  array('NewStockIn.php', 'fas fa-plus-square',$oDB->lang('Input')),
+  array('NewStockOut.php', 'fas fa-plus-square',$oDB->lang('Output')),
+);
+echo nav_item($oDB->lang('InOut'),$arr);
 
 $arr = array(
   array('StockIn.php', 'fas fa-plus-square',$oDB->lang('StockIn')),

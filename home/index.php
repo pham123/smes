@@ -142,9 +142,6 @@ $linkar =  array(
   array('../news/',$oDB->lang('News'),$oDB->lang('News'),'fa-newspaper'),
   array('../security/',$oDB->lang('Security'),$oDB->lang('Security'),'fa-shield-alt'),
   array('../thietbido/',$oDB->lang('ME'),$oDB->lang('Measure Equipment'),'fa-microscope'),
-  //
-  //
-  // 
 
 );
 

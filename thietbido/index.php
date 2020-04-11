@@ -39,7 +39,13 @@ $newDB = new MysqliDb(_DB_HOST_, _DB_USER_, _DB_PASS_,_DB_name_);
 
         <div class="container-fluid">
           <?php 
-          $sql = "SELECT scm.SupplyChainObjectName, count(*) as Total
+          $sql = "SELECT scm.SupplyChainObjectName, 
+          count(*) as Total
+          SUM(case when MEInforStatus = 1 then 1 else 0 end) as TotalOk,
+          SUM(case when MEInforStatus = 2 then 1 else 0 end) as TotalSpare,
+          SUM(case when MEInforStatus = 3 then 1 else 0 end) as TotalBroken,
+          SUM(case when MEInforStatus = 4 then 1 else 0 end) as TotalLost,
+          SUM(case when MEInforStatus = 5 then 1 else 0 end) as TotalCal
           FROM `MEInfor`
           INNER JOIN Products prd ON prd.ProductsId = MEInfor.ProductsId
           INNER JOIN Users ON Users.UsersId = MEInfor.UsersId AND MEInfor.UsersId = ".$_SESSION[_site_]['userid']."
@@ -47,35 +53,23 @@ $newDB = new MysqliDb(_DB_HOST_, _DB_USER_, _DB_PASS_,_DB_name_);
           WHERE MEInforId in (SELECT MAX(`MEInforId`) as id FROM `MEInfor` GROUP BY ProductsId )
           GROUP BY scm.SupplyChainObjectName";
           $result = $oDB->fetchAll($sql);
-          echo "<pre>";
-          var_dump($result);
-          echo "</pre>";
+          // echo "<pre>";
+          // var_dump($result);
+          // echo "</pre>";
 
-          exit();
+          // exit();
           ?>
 
         <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
           <thead>
             <tr>
-            <th>Equipment No.</th>
-            <th>Equipment name</th>
-            <!-- <th>Latest Calibration No.</th> -->
-            <th>Serial No.</th>
-            <th>Model</th>
-            <th>Minimum indication</th>
-            <th>Specification</th>
-            <th>Maker</th>
-            <!-- <th>Buy by VN/Korea</th> -->
-            <!-- <th>Received date</th> -->
             <th>TIC</th>
-            <th>Location</th>
-            <!-- <th>PIC</th> -->
-            <!-- <th>Day (start using)</th> -->
-            <!-- <th>Latest Calibration date</th> -->
-            <th>Next calibration schedule</th>
-            <!-- <th>Calibration Place</th> -->
-            <th>Status</th>
-            <th>Remark</th>
+            <th>Total</th>
+            <th>Using</th>
+            <th>Spare</th>
+            <th>Broken</th>
+            <th>Lost</th>
+            <th>Cal</th>
             </tr>
           </thead>
           <tbody>
@@ -83,33 +77,13 @@ $newDB = new MysqliDb(_DB_HOST_, _DB_USER_, _DB_PASS_,_DB_name_);
             <?php
               foreach ($result as $key => $value) {
                 echo "<tr>";
-
-                echo  "<td>".$value['ProductsNumber']."</td>";
-                echo  "<td>".$value['ProductsName']."</td>";
-                
-                // echo  "<td>".$value['MEInforCalibrationNo']."</td>";
-                echo  "<td>".$value['MEInforSN']."</td>";
-                echo  "<td>".$value['MEInforModel']."</td>";
-                echo  "<td>".$value['MEInforMinimum']."</td>";
-                echo  "<td>".$value['MEInforSpec']."</td>";
-                echo  "<td>".$value['MEInforMaker']."</td>";
-                // echo  "<td>".$value['MEInforMakerLocation']."</td>";
-
-                // echo  "<td>".$value['MEInforReceivedDate']."</td>";
                 echo  "<td>".$value['SupplyChainObjectName']."</td>";
-
-                echo  "<td>".$value['MEInforLocation']."</td>";
-
-                // echo  "<td>".$value['UsersFullName']."</td>";
-
-                // echo  "<td>".$value['MEInforStartDate']."</td>";
-                // echo  "<td>".$value['MEInforLastCalDate']."</td>";
-                echo  "<td>".$value['MEInforNextCalDate']."</td>";
-
-                // echo  "<td>".$value['MEInforCalLocation']."</td>";
-                echo  "<td>".$value['MEInforStatus']."</td>";
-                echo  "<td>".$value['MEInforStatus']."</td>";
-
+                echo  "<td>".$value['Total']."</td>";
+                echo  "<td>".$value['TotalOk']."</td>";
+                echo  "<td>".$value['TotalSpare']."</td>";
+                echo  "<td>".$value['TotalBroken']."</td>";
+                echo  "<td>".$value['TotalLost']."</td>";
+                echo  "<td>".$value['TotalCal']."</td>";
                 echo "</tr>";
               }
             

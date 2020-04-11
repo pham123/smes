@@ -43,9 +43,9 @@ $_SESSION[_site_]['enddate'] = (isset($_SESSION[_site_]['enddate'])) ? $_SESSION
         <?php 
 
 if ($user->acess()==1) {
-  $table_header  = 'No.,IssueDate,Dept,Location,title,issue,Picture,PictureAfter,Efficiency,Maker,Pic,Status,ResultOfReview,Plan,Score,Edit,Delete';
+  $table_header  = 'No.,IssueDate,Dept,Location,title,issue,Picture,PictureAfter,Efficiency,Maker,Pic,Remark,Status,ResultOfReview,Plan,Score,Edit,Delete';
 }else{
-  $table_header  = 'No.,IssueDate,Dept,Location,title,issue,Picture,PictureAfter,Efficiency,Maker,Pic,Status,ResultOfReview,Plan,Score,Edit';
+  $table_header  = 'No.,IssueDate,Dept,Location,title,issue,Picture,PictureAfter,Efficiency,Maker,Pic,Remark,Status,ResultOfReview,Plan,Score,Edit';
 }
 
           
@@ -122,8 +122,17 @@ if ($user->acess()==1) {
           echo "<td>".$value['MemosLocation']."</td>";
           echo "<td style='min-width: 100px'><a href='ViewMemos.php?id=".$value['MemosId']."'>".$value['MemosName']."</a></td>";
           echo "<td style='min-width:180px;'>".$value['MemosIssue']."</td>";
-          echo "<td><a href='image/img_".$value['MemosId'].".jpg' target='_blank'><img src='image/small/img_".$value['MemosId'].".jpg' alt=''></a></td>";
-          echo "<td><a href='image/imgafter_".$value['MemosId'].".jpg' target='_blank'><img src='image/small/imgafter_".$value['MemosId'].".jpg' alt=''></a></td>";
+          if (file_exists("image/small/img_".$value['MemosId'].".jpg")) {
+          echo "<td><a href='image/img_".$value['MemosId'].".jpg?".filemtime("image/small/img_".$value['MemosId'].".jpg")."' target='_blank'><img src='image/small/img_".$value['MemosId'].".jpg?".filemtime("image/small/img_".$value['MemosId'].".jpg")."' alt=''></a></td>";
+          }else{
+            echo "<td><a href='image/img_".$value['MemosId'].".jpg' target='_blank'><img src='image/small/img_".$value['MemosId'].".jpg' alt=''></a></td>";  
+          }
+          if (file_exists("image/small/imgafter_".$value['MemosId'].".jpg")) {
+            echo "<td><a href='image/imgafter_".$value['MemosId'].".jpg?".filemtime("image/small/imgafter_".$value['MemosId'].".jpg")."' target='_blank'><img src='image/small/imgafter_".$value['MemosId'].".jpg?".filemtime("image/small/imgafter_".$value['MemosId'].".jpg")."' alt=''></a></td>";
+          }else{
+            echo "<td><a href='image/imgafter_".$value['MemosId'].".jpg' target='_blank'><img src='image/small/imgafter_".$value['MemosId'].".jpg' alt=''></a></td>";
+          }
+          
           echo "<td style='min-width:150px;'>".$value['MemosEfficiency']."</td>";
 
           
@@ -142,8 +151,10 @@ if ($user->acess()==1) {
             }
 
           }
+
+          // MemosPicExplain
           
-          
+          echo "<td style=''>".$value['MemosPicExplain']."</td>";
           // echo "<td>".$value['MemosOption']."</td>";
           switch ($value['MemosOption']) {
             case '':
@@ -183,10 +194,10 @@ if ($user->acess()==1) {
           echo "<td>".$value['MemosScore']."</td>";
           // $status = color($value['QualityIssuelistStatus']);
           // echo "<td style='background-color:".$status[0]."'>".$oDB->lang($status[1])."</td>";
-          if ($user->acess()==1||$user->acess()==2||$_SESSION[_site_]['userid']==$value['UsersId']) {
+          if ($user->acess()==1||$_SESSION[_site_]['userid']==$value['UsersId']) {
             echo "<td><a href='EditMemos.php?id=".$value['MemosId']."'><i class='fas fa-edit'></i></a></td>";
           }else{
-            echo "<td><i class='fas fa-edit'></i></td>";
+            echo "<td></td>";
           }
 
           if ($user->acess()==1) {

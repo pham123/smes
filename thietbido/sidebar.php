@@ -1,3 +1,4 @@
+   
     <!-- Sidebar -->
     <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
 
@@ -16,25 +17,35 @@
       <li class="nav-item active">
         <a class="nav-link" href="index.php">
           <i class="fas fa-fw fa-home"></i>
-          <span><?php echo $oDB->lang('Home')?></span></a>
+          <span><?php echo $oDB->lang('NewIn-Out')?></span></a>
       </li>
 
       <!-- Divider -->
 <?php
+$arr = array(
+  array('NewStockIn.php', 'fas fa-plus-square',$oDB->lang('Input')),
+  array('NewStockOut.php', 'fas fa-plus-square',$oDB->lang('Output')),
+);
+echo nav_item($oDB->lang('InOut'),$arr);
 
 $arr = array(
-  array('plan.php', 'fas fa-plus-square',$oDB->lang('AddPlan')),
-  array('plan2.php', 'fas fa-plus-square',$oDB->lang('PlansInMonth')),
-  array('showplan.php', 'fas fa-plus-square',$oDB->lang('ViewPlan')),
-  array('fi.php?id=5', 'fas fa-plus-square',$oDB->lang('FiReport')),
-  array('fi.php?id=6', 'fas fa-plus-square',$oDB->lang('OqcReport')),
-  array('daily.php', 'fas fa-plus-square',$oDB->lang('FiDailyReport')),
-  array('daily.php?id=6', 'fas fa-plus-square',$oDB->lang('OqcDailyReport')),
-  array('process-daily-history.php', 'fas fa-history',$oDB->lang('ProcessDailyReport')),
-  array('view-process-daily-history.php', 'fas fa-eye',$oDB->lang('ViewProcessHistory')),
+  array('StockIn.php', 'fas fa-plus-square',$oDB->lang('StockIn')),
+  array('StockOut.php', 'fas fa-plus-square',$oDB->lang('StockOut')),
 );
-echo nav_item($oDB->lang('Plan'),$arr);
+echo nav_item($oDB->lang('Stock'),$arr);
+
+$arr = array(
+  array('ReportOut.php', 'fas fa-plus-square',$oDB->lang('ReportOut')),
+  array('ReportIn.php', 'fas fa-plus-square',$oDB->lang('ReportIn')),
+);
+echo nav_item($oDB->lang('Report'),$arr);
+
+$arr = array(
+  array('Material2.php', 'fas fa-plus-square',$oDB->lang('themthietbi',"Thêm thiết bị")),
+);
+echo nav_item($oDB->lang('Add'),$arr);
 ?>
+ 
 
       <!-- Divider -->
       <hr class="sidebar-divider d-none d-md-block">

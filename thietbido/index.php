@@ -39,11 +39,12 @@ $newDB = new MysqliDb(_DB_HOST_, _DB_USER_, _DB_PASS_,_DB_name_);
 
         <div class="container-fluid">
           <?php 
-          $sql = "SELECT `meinfor`.*, prd.ProductsName, prd.ProductsNumber , Users.UsersFullName
-          FROM `meinfor`
-          INNER JOIN Products prd ON prd.ProductsId = meinfor.ProductsId AND prd.MaterialTypesId = 6
-          INNER JOIN Users ON Users.UsersId = meinfor.UsersId
-          WHERE MEInforId in (SELECT MAX(`MEInforId`) as id FROM `meinfor` GROUP BY ProductsId )";
+          $sql = "SELECT `meinfor`.*, prd.ProductsName, prd.ProductsNumber , Users.UsersFullName, scm.SupplyChainObjectName
+          FROM `MEInfor`
+          INNER JOIN Products prd ON prd.ProductsId = MEInfor.ProductsId AND prd.MaterialTypesId = 6
+          INNER JOIN Users ON Users.UsersId = MEInfor.UsersId
+          INNER JOIN SupplyChainObject scm on scm.SupplyChainObjectId = MEInfor.SupplyChainObjectId
+          WHERE MEInforId in (SELECT MAX(`MEInforId`) as id FROM `MEInfor` GROUP BY ProductsId )";
           $result = $oDB->fetchAll($sql);
           // echo "<pre>";
           // var_dump($result);
@@ -92,11 +93,11 @@ $newDB = new MysqliDb(_DB_HOST_, _DB_USER_, _DB_PASS_,_DB_name_);
                 echo  "<td>".$value['MEInforMakerLocation']."</td>";
 
                 echo  "<td>".$value['MEInforReceivedDate']."</td>";
-                echo  "<td>".$value['SupplyChainObjectId']."</td>";
+                echo  "<td>".$value['SupplyChainObjectName']."</td>";
 
                 echo  "<td>".$value['MEInforLocation']."</td>";
 
-                echo  "<td>".$value['UsersId']."</td>";
+                echo  "<td>".$value['UsersFullName']."</td>";
 
                 echo  "<td>".$value['MEInforStartDate']."</td>";
                 echo  "<td>".$value['MEInforLastCalDate']."</td>";

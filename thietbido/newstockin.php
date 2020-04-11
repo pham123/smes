@@ -14,7 +14,7 @@ $pagetitle = $user->module;
 $page_css='th,td{font-weight: normal;font-size: 13px;text-align: center;vertical-align: middle !important;}.vs__dropdown-toggle {border: 0px !important;margin-top: -4px;} .vs__selected{white-space: nowrap;max-width: 200px;overflow: hidden;font-size: 13px;}.vs__dropdown-menu li{font-size: 14px;}input::placeholder{font-size: 14px;} .vmoney{width: 100px; font-size: 16px;}';
 require('../views/template-header.php');
 require('../function/template.php');
-$materialtypes = isset($_GET['materialtypeid']) ? ($_GET['materialtypeid'] : 6 ;
+$materialtypes = isset($_GET['materialtypeid']) ? $_GET['materialtypeid'] : 6 ;
 $oDB = new db();
 $newDB = new MysqliDb(_DB_HOST_, _DB_USER_, _DB_PASS_, _DB_name_);
 $shifts = $newDB->get('shift');

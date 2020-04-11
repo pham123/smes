@@ -39,11 +39,15 @@ $newDB = new MysqliDb(_DB_HOST_, _DB_USER_, _DB_PASS_,_DB_name_);
 
         <div class="container-fluid">
           <?php 
-          $sql = "SELECT `meinfor`.*, prd.ProductsName, prd.ProductsNumber , Users.UsersFullName
-          FROM `meinfor`
-          INNER JOIN Products prd ON prd.ProductsId = meinfor.ProductsId AND prd.MaterialTypesId = 6
-          INNER JOIN Users ON Users.UsersId = meinfor.UsersId
-          WHERE MEInforId in (SELECT MAX(`MEInforId`) as id FROM `meinfor` GROUP BY ProductsId )";
+          $sql = "SELECT prd.ProductsId, prd.ProductsName, prd.ProductsNumber, si.ToId, si.StockInputsDate, 
+          ssi.StockInputItemsWo, scm.SupplyChainObjectName FROM `stockinputitems` ssi
+          INNER JOIN StockInputs si on si.StockInputsId = ssi.`StockInputsId`
+          INNER JOIN Products prd on prd.ProductsId = ssi.ProductsId
+          INNER JOIN SupplyChainObject scm on scm.SupplyChainObjectId = si.ToId
+          WHERE `StockInputItemsId` in (SELECT MAX(`StockInputItemsId`) As lastId 
+          FROM `StockInputItems` sii 
+          inner join Products prd on prd.ProductsId = sii.ProductsId AND prd.MaterialTypesId = 6 
+          group by sii.`ProductsId`)";
           $result = $oDB->fetchAll($sql);
           // echo "<pre>";
           // var_dump($result);
@@ -53,25 +57,11 @@ $newDB = new MysqliDb(_DB_HOST_, _DB_USER_, _DB_PASS_,_DB_name_);
         <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
           <thead>
             <tr>
-            <th>Equipment No.</th>
-            <th>Equipment name</th>
-            <th>Latest Calibration No.</th>
-            <th>Serial No.</th>
-            <th>Model</th>
-            <th>Minimum indication</th>
-            <th>Specification</th>
-            <th>Maker</th>
-            <th>Buy by VN/Korea</th>
-            <th>Received date</th>
-            <th>TIC</th>
-            <th>Location</th>
-            <th>PIC</th>
-            <th>Day (start using)</th>
-            <th>Latest Calibration date</th>
-            <th>Next calibration schedule</th>
-            <th>Calibration Place</th>
-            <th>Status</th>
-            <th>Remark</th>
+              <th>Mã thiết bị</th>
+              <th>Tên thiết bị</th>
+              <th>Vị trí hiện tại</th>
+              <th>Ngày thay đổi</th>
+              <th>Lịch kiểm định</th>
             </tr>
           </thead>
           <tbody>
@@ -79,33 +69,18 @@ $newDB = new MysqliDb(_DB_HOST_, _DB_USER_, _DB_PASS_,_DB_name_);
             <?php
               foreach ($result as $key => $value) {
                 echo "<tr>";
-
                 echo  "<td>".$value['ProductsNumber']."</td>";
-                echo  "<td>".$value['ProductsName']."</td>";
+                echo  "<td><a href='movinghistory.php?id=".$value['ProductsId']."'>".$value['ProductsName']."</a></td>";
+                echo  "<td>".$value['SupplyChainObjectName']."</td>";
+                $date_ = date("d-M-Y",strtotime($value['StockInputsDate']));
+                echo  "<td>".$date_."</td>";
+                if ($value['StockInputItemsWo']=="") {
+                  $date_ = "NA";
+                }else{
+                  $date_ = date("d-M-Y",strtotime($value['StockInputItemsWo']));
+                }
                 
-                echo  "<td>".$value['MEInforCalibrationNo']."</td>";
-                echo  "<td>".$value['MEInforSN']."</td>";
-                echo  "<td>".$value['MEInforModel']."</td>";
-                echo  "<td>".$value['MEInforMinimum']."</td>";
-                echo  "<td>".$value['MEInforSpec']."</td>";
-                echo  "<td>".$value['MEInforMaker']."</td>";
-                echo  "<td>".$value['MEInforMakerLocation']."</td>";
-
-                echo  "<td>".$value['MEInforReceivedDate']."</td>";
-                echo  "<td>".$value['SupplyChainObjectId']."</td>";
-
-                echo  "<td>".$value['MEInforLocation']."</td>";
-
-                echo  "<td>".$value['UsersId']."</td>";
-
-                echo  "<td>".$value['MEInforStartDate']."</td>";
-                echo  "<td>".$value['MEInforLastCalDate']."</td>";
-                echo  "<td>".$value['MEInforNextCalDate']."</td>";
-
-                echo  "<td>".$value['MEInforCalLocation']."</td>";
-                echo  "<td>".$value['MEInforStatus']."</td>";
-                echo  "<td>".$value['MEInforStatus']."</td>";
-
+                echo  "<td>".$date_."</td>";
                 echo "</tr>";
               }
             

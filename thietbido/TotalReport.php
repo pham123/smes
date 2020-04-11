@@ -52,8 +52,8 @@ $newDB = new MysqliDb(_DB_HOST_, _DB_USER_, _DB_PASS_,_DB_name_);
         <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
           <thead>
             <tr>
-            <th>Equipment name</th>
             <th>Equipment No.</th>
+            <th>Equipment name</th>
             <th>Latest Calibration No.</th>
             <th>Serial No.</th>
             <th>Model</th>
@@ -61,22 +61,16 @@ $newDB = new MysqliDb(_DB_HOST_, _DB_USER_, _DB_PASS_,_DB_name_);
             <th>Specification</th>
             <th>Maker</th>
             <th>Buy by VN/Korea</th>
-
             <th>Received date</th>
             <th>TIC</th>
-
             <th>Location</th>
-
             <th>PIC</th>
-
             <th>Day (start using)</th>
             <th>Latest Calibration date</th>
             <th>Next calibration schedule</th>
-
             <th>Calibration Place</th>
             <th>Status</th>
             <th>Remark</th>
-            
             </tr>
           </thead>
           <tbody>
@@ -84,8 +78,10 @@ $newDB = new MysqliDb(_DB_HOST_, _DB_USER_, _DB_PASS_,_DB_name_);
             <?php
               foreach ($result as $key => $value) {
                 echo "<tr>";
-                echo  "<td>".$value['ProductsName']."</td>";
+
                 echo  "<td>".$value['ProductsNumber']."</td>";
+                echo  "<td>".$value['ProductsName']."</td>";
+                
                 echo  "<td>".$value['MEInforCalibrationNo']."</td>";
                 echo  "<td>".$value['MEInforSN']."</td>";
                 echo  "<td>".$value['MEInforModel']."</td>";

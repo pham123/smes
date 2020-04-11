@@ -55,7 +55,7 @@ $oDB = new db();
                   <p><?php echo $oDB->lang('Model') ?></p>
                   <select name="ModelsId" id="" class='selectpicker show-tick' data-live-search="true" data-style="btn-info" data-width="100%">
                   <?php 
-                      echo "<option value='10'>Thiết bị đo</option>";
+                      echo "<option value='18'>Thiết bị đo</option>";
                     ?>
                     
                   </select>

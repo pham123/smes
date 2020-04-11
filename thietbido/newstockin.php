@@ -172,7 +172,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     <th><strong>NO</strong><br><em>STT</em></th>
                     <th style="min-width: 350px;"><strong>Part name</strong></th>
                     <th style="min-width: 150px;"><strong>Part No</strong></th>
-                    <th><strong>W/o</strong></th>
+                    <th><strong>Ngày kiểm định</strong></th>
                     <th><strong>Unit price</strong></th>
                     <th><strong>Unit</strong></th>
                     <th><strong>Q'ty</strong></th>

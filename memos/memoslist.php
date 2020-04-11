@@ -154,7 +154,7 @@ if ($user->acess()==1) {
 
           // MemosPicExplain
           
-          echo "<td style='background-color:green;'>".$value['MemosPicExplain']."</td>";
+          echo "<td style=''>".$value['MemosPicExplain']."</td>";
           // echo "<td>".$value['MemosOption']."</td>";
           switch ($value['MemosOption']) {
             case '':

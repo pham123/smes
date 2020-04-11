@@ -205,7 +205,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                       <input type="hidden" name="ProductsId[]" required :value="item.ProductsId">
                     </td>
                     <td>{{productSelected(item).ProductsNumber}}</td>
-                    <td><input style="height: 33px; width: 130px; font-size: 16px;" type="text" v-model="item.StockInputItemsWo" name="StockInputItemsWo[]"></td>
+                    <td><input style="height: 33px; width: 130px; font-size: 16px;" type="date" v-model="item.StockInputItemsWo" name="StockInputItemsWo[]"></td>
                     <td>
                     <money v-model="item.StockInputItemsUnitPrice" v-bind="money" class="vmoney" required></money>
                     <input type="hidden" name="StockInputItemsUnitPrice[]" :value="item.StockInputItemsUnitPrice">

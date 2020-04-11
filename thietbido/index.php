@@ -84,7 +84,7 @@ $newDB = new MysqliDb(_DB_HOST_, _DB_USER_, _DB_PASS_,_DB_name_);
                 echo  "<td>".$value['ProductsNumber']."</td>";
                 echo  "<td>".$value['ProductsName']."</td>";
                 
-                echo  "<td>".$value['MEInforCalibrationNo']."</td>";
+                // echo  "<td>".$value['MEInforCalibrationNo']."</td>";
                 echo  "<td>".$value['MEInforSN']."</td>";
                 echo  "<td>".$value['MEInforModel']."</td>";
                 echo  "<td>".$value['MEInforMinimum']."</td>";

@@ -39,19 +39,16 @@ $newDB = new MysqliDb(_DB_HOST_, _DB_USER_, _DB_PASS_,_DB_name_);
 
         <div class="container-fluid">
           <?php 
-          $sql = "SELECT scm.SupplyChainObjectName, count(*) as Total
+          $sql = "SELECT `meinfor`.*, prd.ProductsName, prd.ProductsNumber , Users.UsersFullName, scm.SupplyChainObjectName
           FROM `MEInfor`
-          INNER JOIN Products prd ON prd.ProductsId = MEInfor.ProductsId
+          INNER JOIN Products prd ON prd.ProductsId = MEInfor.ProductsId AND prd.MaterialTypesId = 6
           INNER JOIN Users ON Users.UsersId = MEInfor.UsersId AND MEInfor.UsersId = ".$_SESSION[_site_]['userid']."
           INNER JOIN SupplyChainObject scm on scm.SupplyChainObjectId = MEInfor.SupplyChainObjectId
-          WHERE MEInforId in (SELECT MAX(`MEInforId`) as id FROM `MEInfor` GROUP BY ProductsId )
-          GROUP BY scm.SupplyChainObjectName";
+          WHERE MEInforId in (SELECT MAX(`MEInforId`) as id FROM `MEInfor` GROUP BY ProductsId )";
           $result = $oDB->fetchAll($sql);
-          echo "<pre>";
-          var_dump($result);
-          echo "</pre>";
-
-          exit();
+          // echo "<pre>";
+          // var_dump($result);
+          // echo "</pre>";
           ?>
 
         <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">

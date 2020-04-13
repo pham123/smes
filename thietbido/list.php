@@ -50,7 +50,7 @@ $newDB = new MysqliDb(_DB_HOST_, _DB_USER_, _DB_PASS_,_DB_name_);
           // var_dump($result);
           // echo "</pre>";
           ?>
-
+        <div class="table-responsive">
         <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
           <thead>
             <tr>
@@ -114,6 +114,7 @@ $newDB = new MysqliDb(_DB_HOST_, _DB_USER_, _DB_PASS_,_DB_name_);
             ?>
           </tbody>
           </table>
+          </div>
         </div>
 
   

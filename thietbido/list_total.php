@@ -50,7 +50,7 @@ $newDB = new MysqliDb(_DB_HOST_, _DB_USER_, _DB_PASS_,_DB_name_);
           // var_dump($result);
           // echo "</pre>";
           ?>
-
+        <div class="table-responsive">
         <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
           <thead>
             <tr>
@@ -62,15 +62,15 @@ $newDB = new MysqliDb(_DB_HOST_, _DB_USER_, _DB_PASS_,_DB_name_);
             <th>Minimum indication</th>
             <th>Specification</th>
             <th>Maker</th>
-            <!-- <th>Buy by VN/Korea</th> -->
-            <!-- <th>Received date</th> -->
+            <th>Buy by VN/Korea</th>
+            <th>Received date</th>
             <th>TIC</th>
             <th>Location</th>
-            <!-- <th>PIC</th> -->
-            <!-- <th>Day (start using)</th> -->
-            <!-- <th>Latest Calibration date</th> -->
+            <th>PIC</th>
+            <th>Day (start using)</th>
+            <th>Latest Calibration date</th>
             <th>Next calibration schedule</th>
-            <!-- <th>Calibration Place</th> -->
+            <th>Calibration Place</th>
             <th>Status</th>
             <th>Remark</th>
             </tr>
@@ -89,26 +89,26 @@ $newDB = new MysqliDb(_DB_HOST_, _DB_USER_, _DB_PASS_,_DB_name_);
                 
                 echo  "<td>".$value['ProductsName']."</td>";
                 
-                // echo  "<td>".$value['MEInforCalibrationNo']."</td>";
+                echo  "<td>".$value['MEInforCalibrationNo']."</td>";
                 echo  "<td>".$value['MEInforSN']."</td>";
                 echo  "<td>".$value['MEInforModel']."</td>";
                 echo  "<td>".$value['MEInforMinimum']."</td>";
                 echo  "<td>".$value['MEInforSpec']."</td>";
                 echo  "<td>".$value['MEInforMaker']."</td>";
-                // echo  "<td>".$value['MEInforMakerLocation']."</td>";
+                echo  "<td>".$value['MEInforMakerLocation']."</td>";
 
-                // echo  "<td>".$value['MEInforReceivedDate']."</td>";
+                echo  "<td>".$value['MEInforReceivedDate']."</td>";
                 echo  "<td>".$value['SupplyChainObjectName']."</td>";
 
                 echo  "<td>".$value['MEInforLocation']."</td>";
 
-                // echo  "<td>".$value['UsersFullName']."</td>";
+                echo  "<td>".$value['UsersFullName']."</td>";
 
-                // echo  "<td>".$value['MEInforStartDate']."</td>";
-                // echo  "<td>".$value['MEInforLastCalDate']."</td>";
+                echo  "<td>".$value['MEInforStartDate']."</td>";
+                echo  "<td>".$value['MEInforLastCalDate']."</td>";
                 echo  "<td>".$value['MEInforNextCalDate']."</td>";
 
-                // echo  "<td>".$value['MEInforCalLocation']."</td>";
+                echo  "<td>".$value['MEInforCalLocation']."</td>";
                 echo  "<td>".$value['MEInforStatus']."</td>";
                 echo  "<td>".$value['MEInforStatus']."</td>";
 
@@ -118,6 +118,7 @@ $newDB = new MysqliDb(_DB_HOST_, _DB_USER_, _DB_PASS_,_DB_name_);
             ?>
           </tbody>
           </table>
+          </div>
         </div>
 
   

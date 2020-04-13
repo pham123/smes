@@ -28,11 +28,14 @@ $arr = array(
 );
 echo nav_item($oDB->lang('list'),$arr);
 
+if ($user->acess()==1) {
+  $arr = array(
+    array('list_full.php', 'fas fa-plus-square',$oDB->lang('FullList',"Danh sách đầy đủ")),
+    array('Material2.php', 'fas fa-plus-square',$oDB->lang('themthietbi',"Thêm thiết bị")),
+  );
+  echo nav_item($oDB->lang('Add'),$arr);
+}
 
-$arr = array(
-  array('Material2.php', 'fas fa-plus-square',$oDB->lang('themthietbi',"Thêm thiết bị")),
-);
-echo nav_item($oDB->lang('Add'),$arr);
 ?>
  
 

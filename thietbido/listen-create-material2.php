@@ -26,7 +26,13 @@ $MaterialTypesId = safe($_POST['MaterialTypesId']);
 $field_values = "`ProductsName`='".$ProductsName."', `ProductsNumber`='".$ProductsNumber."', `ProductsDescription`='".$ProductsDescription."', `ProductsOption`=".$ProductsOption.",MaterialTypesId=".$MaterialTypesId.", `ModelsId`=".$ModelsId ;
 $oDB->insert('Products',$field_values);
 
+
 $pnum = $products->getnum($ProductsNumber);
+
+$pid = $products->id;
+$field_values2 = "`ProductsId`=".$pid.",`SupplyChainObjectId`=53,`UsersId`=160,`MEInforStatus`=1,`MEInforRemark`='Create New'";
+$oDB->insert('MEInfor',$field_values2);
+
 $logs_content = 'products '.$_SESSION[_site_]['username'].' create ProductsNumber='.$ProductsNumber.' ModelsId='.$ModelsId.' file='.basename($_SERVER['PHP_SELF']);
 w_logs(__DIR__."\logs\\", $logs_content);
 

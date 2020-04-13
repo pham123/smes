@@ -106,7 +106,7 @@ $newDB = new MysqliDb(_DB_HOST_, _DB_USER_, _DB_PASS_,_DB_name_);
           droplistfromarr('MEInforStatus',$array,$result['MEInforStatus']);
           ?>
           </td></tr>
-          <tr><th>Remark</th><td><input type="text" name="MEInforRemark" id="" class='form-control' value='<?php echo $result['MEInforRemark'] ?>' required></td></tr>
+          <tr><th>Remark</th><td><input type="text" name="MEInforRemark" id="" class='form-control' value='' required></td></tr>
         </table>
         <button type="submit" class='form-control'>Update</button>
         </div>

@@ -42,7 +42,7 @@ $newDB = new MysqliDb(_DB_HOST_, _DB_USER_, _DB_PASS_,_DB_name_);
           $sql = "SELECT `meinfor`.*, prd.ProductsName, prd.ProductsNumber , Users.UsersFullName, scm.SupplyChainObjectName
           FROM `MEInfor`
           INNER JOIN Products prd ON prd.ProductsId = MEInfor.ProductsId AND prd.MaterialTypesId = 6
-          INNER JOIN Users ON Users.UsersId = MEInfor.UsersId AND MEInfor.UsersId = ".$_SESSION[_site_]['userid']."
+          INNER JOIN Users ON Users.UsersId = MEInfor.UsersId
           INNER JOIN SupplyChainObject scm on scm.SupplyChainObjectId = MEInfor.SupplyChainObjectId
           WHERE MEInforId in (SELECT MAX(`MEInforId`) as id FROM `MEInfor` GROUP BY ProductsId )";
           $result = $oDB->fetchAll($sql);

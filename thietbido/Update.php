@@ -4,6 +4,7 @@ ob_start();
 date_default_timezone_set('Asia/Ho_Chi_Minh');
 require('../config.php');
 require('../function/db_lib.php');
+require('../function/sdb.php');
 require('../function/MysqliDb.php');
 require('../function/function.php');
 $user = New Users();
@@ -16,6 +17,7 @@ $page_css='.vs__dropdown-toggle {border: 0px !important;margin-top: -4px;} .vs__
 require('../views/template-header.php');
 require('../function/template.php');
 $oDB = new db();
+$sDB = new sdb();
 if(isset($_SESSION[_site_]['userlang'])){
   $oDB->lang = ucfirst($_SESSION[_site_]['userlang']);
 }
@@ -39,58 +41,28 @@ $newDB = new MysqliDb(_DB_HOST_, _DB_USER_, _DB_PASS_,_DB_name_);
 
         <div class="container-fluid">
           <?php 
-          $sql = "SELECT scm.SupplyChainObjectName, 
-          count(*) as Total,
-          SUM(case when MEInforStatus = 1 then 1 else 0 end) as TotalOk,
-          SUM(case when MEInforStatus = 2 then 1 else 0 end) as TotalSpare,
-          SUM(case when MEInforStatus = 3 then 1 else 0 end) as TotalBroken,
-          SUM(case when MEInforStatus = 4 then 1 else 0 end) as TotalLost,
-          SUM(case when MEInforStatus = 5 then 1 else 0 end) as TotalCal
+          $sql = "SELECT MEInfor.*, prd.ProductsName, prd.ProductsNumber
           FROM `MEInfor`
           INNER JOIN Products prd ON prd.ProductsId = MEInfor.ProductsId
-          INNER JOIN Users ON Users.UsersId = MEInfor.UsersId
-          INNER JOIN SupplyChainObject scm on scm.SupplyChainObjectId = MEInfor.SupplyChainObjectId
-          WHERE MEInforId in (SELECT MAX(`MEInforId`) as id FROM `MEInfor` GROUP BY ProductsId )
-          GROUP BY scm.SupplyChainObjectName";
-          $result = $oDB->fetchAll($sql);
-          // echo "<pre>";
-          // var_dump($result);
-          // echo "</pre>";
-
-          // exit();
-          ?>
-
-        <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
-          <thead>
-            <tr>
-            <th>TIC</th>
-            <th>Total</th>
-            <th>Using</th>
-            <th>Spare</th>
-            <th>Broken</th>
-            <th>Lost</th>
-            <th>Cal</th>
-            </tr>
-          </thead>
-          <tbody>
+          WHERE prd.ProductsId =?";
+          if (isset($_GET['id'])) {
+            $result = $sDB->query($sql,$_GET['id'])->fetchArray();
+          }else{
+            exit();
+          }
           
-            <?php
-              foreach ($result as $key => $value) {
-                echo "<tr>";
-                echo  "<td>".$value['SupplyChainObjectName']."</td>";
-                echo  "<td>".$value['Total']."</td>";
-                echo  "<td>".$value['TotalOk']."</td>";
-                echo  "<td>".$value['TotalSpare']."</td>";
-                echo  "<td>".$value['TotalBroken']."</td>";
-                echo  "<td>".$value['TotalLost']."</td>";
-                echo  "<td>".$value['TotalCal']."</td>";
-                echo "</tr>";
-              }
-            
-            ?>
-          </tbody>
-          </table>
+          var_dump($result);
+
+          ?>
+        <form action="" method="post">
+        <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+          <tr><th>Mã thiết bị</th> <td><?php echo $result['ProductsNumber'] ?></td></tr>
+          <tr><th>Tên thiết bị</th> <td><?php echo $result['ProductsName'] ?></td></tr>
+          <tr><th>Latest Calibration No.</th><td><input type="text" name="MEInforCalibrationNo" id="" value='<?php echo $result['MEInforCalibrationNo'] ?>'></td></tr>
+          <tr><th>Latest Calibration No.</th><td><input type="text" name="MEInforCalibrationNo" id="" value='<?php echo $result['MEInforCalibrationNo'] ?>'></td></tr>
+        </table>
         </div>
+        </form>
 
   
 

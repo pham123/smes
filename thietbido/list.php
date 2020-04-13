@@ -77,11 +77,12 @@ $newDB = new MysqliDb(_DB_HOST_, _DB_USER_, _DB_PASS_,_DB_name_);
           </thead>
           <tbody>
           
+          
             <?php
               foreach ($result as $key => $value) {
                 echo "<tr>";
 
-                echo  "<td>".$value['ProductsNumber']."</td>";
+                echo  "<td><a href='update.php?id=".$value['ProductsId']."'>".$value['ProductsNumber']."</a></td>";
                 echo  "<td>".$value['ProductsName']."</td>";
                 
                 // echo  "<td>".$value['MEInforCalibrationNo']."</td>";

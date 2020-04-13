@@ -167,7 +167,11 @@ p{margin:5px;}
                 </tr>
 
                 <tr>
-                  <td><?php echo $oDB->lang('UpdatePicture') ?></td><td><input type="file" id='ingredient_file' name='MemosPicture' class="form-control" ></td>
+                  <td><?php echo $oDB->lang('UpdatePictureBefore') ?></td><td><input type="file" id='ingredient_file' name='MemosPicture' class="form-control" ></td>
+                  <td><?php echo $oDB->lang('UpdatePictureAfter') ?></td><td><input type="file" id='ingredient_file' name='MemosPictureAfter' class="form-control" ></td>
+                </tr>
+
+                <tr>
                   <td><?php echo $oDB->lang('UpdateFile') ?></td><td><input type="file" id='ingredient_file' name='MemosReport' class="form-control" ></td>
                 </tr>
 

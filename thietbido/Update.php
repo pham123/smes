@@ -40,32 +40,82 @@ $newDB = new MysqliDb(_DB_HOST_, _DB_USER_, _DB_PASS_,_DB_name_);
         <?php require('navbar.php') ?>
 
         <div class="container-fluid">
+        <div class="col-md-8">
           <?php 
           $sql = "SELECT MEInfor.*, prd.ProductsName, prd.ProductsNumber
           FROM `MEInfor`
           INNER JOIN Products prd ON prd.ProductsId = MEInfor.ProductsId
-          WHERE prd.ProductsId =?";
+          WHERE MEInfor.ProductsId =?
+          ORDER BY MEInforId DESC LIMIT 1";
           if (isset($_GET['id'])) {
             $result = $sDB->query($sql,$_GET['id'])->fetchArray();
           }else{
             exit();
           }
-          
-          var_dump($result);
-
+          $readonly = ($user->acess()==1) ? '' : 'Readonly' ;
           ?>
-        <form action="" method="post">
+        <form action="listen_update.php" method="post">
+        <input type="hidden" name="ProductsId" value="<?php echo $result['ProductsId'] ?>">
         <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
           <tr><th>Mã thiết bị</th> <td><?php echo $result['ProductsNumber'] ?></td></tr>
           <tr><th>Tên thiết bị</th> <td><?php echo $result['ProductsName'] ?></td></tr>
-          <tr><th>Latest Calibration No.</th><td><input type="text" name="MEInforCalibrationNo" id="" value='<?php echo $result['MEInforCalibrationNo'] ?>'></td></tr>
-          <tr><th>Latest Calibration No.</th><td><input type="text" name="MEInforCalibrationNo" id="" value='<?php echo $result['MEInforCalibrationNo'] ?>'></td></tr>
+          <tr><th>Latest Calibration No.</th><td><input type="text" name="MEInforCalibrationNo" class='form-control' id="" value='<?php echo $result['MEInforCalibrationNo'] ?>' <?php echo $readonly ?>></td></tr>
+          <tr><th>Serial No.</th><td><input type="text" name="MEInforSN" id="" class='form-control' value='<?php echo $result['MEInforSN'] ?>' <?php echo $readonly ?>></td></tr>
+          <tr><th>Model</th><td><input type="text" name="MEInforModel" id="" class='form-control' value='<?php echo $result['MEInforModel'] ?>' <?php echo $readonly ?>></td></tr>
+          <tr><th>Minimum indication</th><td><input type="text" name="MEInforMinimum" class='form-control' id="" value='<?php echo $result['MEInforMinimum'] ?>' <?php echo $readonly ?>></td></tr>
+          <tr><th>Specification</th><td><input type="text" name="MEInforSpec" class='form-control' id="" value='<?php echo $result['MEInforSpec'] ?>' <?php echo $readonly ?>></td></tr>
+          <tr><th>Maker</th><td><input type="text" name="MEInforMaker" id="" class='form-control' value='<?php echo $result['MEInforMaker'] ?>' <?php echo $readonly ?>></td></tr>
+          <tr><th>Buy by VN/Korea</th><td><input type="text" name="MEInforMakerLocation" id="" class='form-control' value='<?php echo $result['MEInforMakerLocation'] ?>' <?php echo $readonly ?>></td></tr>
+          <tr><th>Received date</th><td><input type="date" name="MEInforReceivedDate" id="" class='form-control' value='<?php echo $result['MEInforReceivedDate'] ?>' <?php echo $readonly ?>></td></tr>
+
+          <tr><th>TIC</th><td>
+          <?php
+          if ($user->acess()==1) {
+            makedroplistreadonly('SupplyChainObject','SupplyChainTypeId=2',$result['SupplyChainObjectId'],$readonly);
+          }else{
+            echo "<input type='hidden' name='SupplyChainObjectId' value='".$result['SupplyChainObjectId']."'>";
+          }
+          ?>
+          
+          </td>
+          </tr>
+          <!-- makedroplistreadonly -->
+          <tr><th>Location</th><td><input type="text" name="MEInforLocation" id="" class='form-control' value='<?php echo $result['MEInforLocation'] ?>' <?php echo $readonly ?>></td></tr>
+          <tr><th>PIC</th><td>
+          <?php
+          if ($user->acess()==1) {
+            makedroplistreadonly('Users',1,$result['UsersId'],$readonly);
+          }else{
+            echo "<input type='hidden' name='UsersId' value='".$result['UsersId']."'>";
+          }
+          ?>
+          </td></tr>
+          <tr><th>Day (start using)</th><td><input type="date" name="MEInforStartDate" id="" class='form-control' value='<?php echo $result['MEInforStartDate'] ?>' <?php echo $readonly ?>></td></tr>
+          <tr><th>Latest Calibration date</th><td><input type="date" name="MEInforLastCalDate" id="" class='form-control' value='<?php echo $result['MEInforLastCalDate'] ?>' <?php echo $readonly ?>></td></tr>
+          <tr><th>Next calibration schedule</th><td><input type="date" name="MEInforNextCalDate" id="" class='form-control' value='<?php echo $result['MEInforNextCalDate'] ?>' <?php echo $readonly ?>></td></tr>
+          <tr><th>Calibration Place</th><td><input type="text" name="MEInforCalLocation" id="" class='form-control' value='<?php echo $result['MEInforCalLocation'] ?>' <?php echo $readonly ?>></td></tr>
+          <tr><th>Status</th><td>
+          <?php 
+          $array = array(
+            array('Id' => '1' , 'Name' => 'Using'),
+            array('Id' => '2' , 'Name' => 'Spare'),
+            array('Id' => '3' , 'Name' => 'Broken'),
+            array('Id' => '4' , 'Name' => 'Lost'),
+            array('Id' => '5' , 'Name' => 'Calibration'),
+          );
+          droplistfromarr('MEInforStatus',$array,$result['MEInforStatus']);
+          ?>
+          </td></tr>
+          <tr><th>Remark</th><td><input type="text" name="MEInforRemark" id="" class='form-control' value='<?php echo $result['MEInforRemark'] ?>' required></td></tr>
         </table>
+        <button type="submit" class='form-control'>Update</button>
         </div>
+        
         </form>
-
-  
-
+        </div>
+        <div class="col-md-4">
+          <img src="" alt="">
+        </div>
       </div>
       <!-- End of Main Content -->
 

@@ -1,0 +1,1 @@
+ALTER TABLE MEInfor ADD MEInforRemark varchar(1000);

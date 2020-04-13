@@ -16,14 +16,14 @@ require('../views/template-header.php');
 require('../function/template.php');
 $oDB = new db();
 
-$table_header  = 'PurchasesNo,PurchasesDate,RequestSection,ReceiveSection,Urgent,Print,PO';
+$table_header  = 'PONo,PODate,Supplier,Shipment,Print,Payment';
 //using new db library
 $newDB = new MysqliDb(_DB_HOST_, _DB_USER_, _DB_PASS_,_DB_name_);
-$newDB->join("Section s", "s.SectionId=p.RequestSectionId", "LEFT");
-$newDB->where('PurchasesStatus', 1);
+$newDB->join('supplychainobject spl', 'spl.SupplyChainObjectId=po.SupplyChainObjectId', 'left');
+$newDB->where('PurchaseOrdersStatus', 1);
 $newDB->where('UsersId', $_SESSION[_site_]['userid']);
-$newDB->orderBy('p.PurchasesDate', 'DESC');
-$table_data = $newDB->get ("Purchases p", null, "p.PurchasesId,p.PurchasesNo,p.PurchasesDate,s.SectionName as RequestSection, CONCAT('Purchase','') as ReceiveSection, p.IsUrgent as Urgent,CONCAT('<a href=\"print-purchase.php&quest;id=',p.PurchasesId,'\" target=\"_blank\" >','<i class=\"fas fa-print\"></i>', '</a>') as Print,CONCAT('<a href=\"addpurchaseorder.php&quest;id=',p.PurchasesId,'\" target=\"_blank\" >','Make PO', '</a>') as PO");
+$newDB->orderBy('po.PurchaseOrdersDate', 'DESC');
+$table_data = $newDB->get ("PurchaseOrders po", null, "po.PurchaseOrdersId,CONCAT('<a href=\"attach-scan-po.php&quest;id=',po.PurchaseOrdersId,'\" >',po.PurchaseOrdersNo, '</a>') as PONo,po.PurchaseOrdersDate as PODate,spl.SupplyChainObjectName as Supplier, po.PurchaseOrdersShipmentMethod as Shipment,CONCAT('<a href=\"print-po.php&quest;id=',po.PurchasesId,'\" target=\"_blank\" >','<i class=\"fas fa-print\"></i>', '</a>') as Print,if(char_length(po.PurchaseOrdersFileName)>0, CONCAT('<a href=\"#\" target=\"_blank\">', 'Make payment', '</a>'), 'Not have scan file') as Payment");
 ?>
 
 <body id="page-top">
@@ -45,52 +45,51 @@ $table_data = $newDB->get ("Purchases p", null, "p.PurchasesId,p.PurchasesNo,p.P
           <div class="container-fluid">
               
             <div class="table-responsive">
-                <a href="purchaserequest.php" class="text-primary">Add request</a>
+                <h3 class="text-center">PURCHASE ORDERS</h3>
                 <table class='table table-bordered' id='dataTable' width='100%' cellspacing='0'>
                   <thead>
                       <tr>
-                        <th>PurchaseNo</th>
-                        <th>PurchaseDate</th>
-                        <th>RequestSection</th>
-                        <th>Urgent</th>
+                        <th>PO No</th>
+                        <th>PO Date</th>
+                        <th>Supplier</th>
+                        <th>Shipment</th>
+                        <th>PO File</th>
                         <th>Print</th>
-                        <th>Quotation</th>
-                        <th>PO</th>
+                        <th>Payment</th>
                       </tr>
                   </thead>
 
                   <tbody>
                       <?php
                         foreach ($table_data as $key => $value) {
-                          if(!is_dir('quotation/'.$value['PurchasesId'])){
-                            $haveQuotation = false;
+                          $filename = $newDB->where('PurchaseOrdersId', $value['PurchaseOrdersId'])->getOne('purchaseorders')['PurchaseOrdersFileName'];
+                          if(file_exists('po/'.$value['PurchaseOrdersId'].'_'.$filename)){
+                            $havePoFile = true;
                           }else{
-                            if(glob('quotation/'.$value['PurchasesId'].'/*')){
-                              $numQuo = count(glob('quotation/'.$value['PurchasesId'].'/*'));
-                              $haveQuotation = true;
-                            }else{
-                              $haveQuotation = false;
-                            }
+                            $havePoFile = false;
                           }
                           
-                          echo '<tr><td><a href="attach-quotation-files.php?id='.$value['PurchasesId'].'">'.$value['PurchasesNo'].'</a></td>';
-                          echo '<td>'.$value['PurchasesDate'].'</td>';
-                          echo '<td>'.$value['RequestSection'].'</td>';
-                          echo '<td>'.($value['Urgent'] == 0? 'No':'<span class="text-danger">urgent</span>').'</td>';
-                          echo '<td><a href="print-purchase.php?id='.$value['PurchasesId'].'" target="_blank"><i class="fas fa-print"></i></a></td>';
-                          if(!$haveQuotation){
-                            echo '<td class="text-danger">no quotations</td>';
-                            echo '<td class="text-danger">no quotations</td></tr>';
+                          echo '<tr><td><a href="attach-scan-po.php?id='.$value['PurchaseOrdersId'].'">'.$value['PONo'].'</a></td>';
+                          echo '<td>'.$value['PODate'].'</td>';
+                          echo '<td>'.$value['Supplier'].'</td>';
+                          echo '<td>'.$value['Shipment'].'</td>';
+                          if($havePoFile){
+                            echo '<td><a target="_blank" href="po/'.$value['PurchaseOrdersId'].'_'.$filename.'">view</a></td>';
                           }else{
-                            echo '<td><a target="_blank" href="quotation/'.$value['PurchasesId'].'">'.$numQuo.' files</a></td>';
-                            echo '<td><a href="addpurchaseorder.php?id='.$value['PurchasesId'].'">Make PO</a></td></tr>';
+                            echo '<td class="text-danger">no po file</td>';
+                          }
+                          echo '<td><a href="print-po.php?id='.$value['PurchaseOrdersId'].'" target="_blank"><i class="fas fa-print"></i></a></td>';
+                          if(!$havePoFile){
+                            echo '<td class="text-danger">no po file</td></tr>';
+                          }else{
+                            echo '<td><a href="#?id='.$value['PurchaseOrdersId'].'">Make payment</a></td></tr>';
                           }
                         }
                       ?>
 
                   </tbody>
           
-                  </table>
+                </table>
             </div> 
         </div>
         <!-- /.container-fluid -->

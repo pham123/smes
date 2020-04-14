@@ -5,6 +5,7 @@ date_default_timezone_set('Asia/Ho_Chi_Minh');
 require('../config.php');
 require('../function/db_lib.php');
 require('../function/MysqliDb.php');
+require('../function/sdb.php');
 require('../function/function.php');
 $user = New Users();
 $user->set($_SESSION[_site_]['userid']);
@@ -16,6 +17,7 @@ $page_css='.vs__dropdown-toggle {border: 0px !important;margin-top: -4px;} .vs__
 require('../views/template-header.php');
 require('../function/template.php');
 $oDB = new db();
+$sDB = new sdb();
 if(isset($_SESSION[_site_]['userlang'])){
   $oDB->lang = ucfirst($_SESSION[_site_]['userlang']);
 }
@@ -39,13 +41,18 @@ $newDB = new MysqliDb(_DB_HOST_, _DB_USER_, _DB_PASS_,_DB_name_);
 
         <div class="container-fluid">
           <?php 
+          if (isset($_GET['id'])) {
+            $id=$_GET['id'];
+          }else{
+            exit();
+          }
           $sql = "SELECT `meinfor`.*, prd.ProductsName, prd.ProductsNumber , Users.UsersFullName, scm.SupplyChainObjectName
           FROM `MEInfor`
           INNER JOIN Products prd ON prd.ProductsId = MEInfor.ProductsId AND prd.MaterialTypesId = 6
           INNER JOIN Users ON Users.UsersId = MEInfor.UsersId
           INNER JOIN SupplyChainObject scm on scm.SupplyChainObjectId = MEInfor.SupplyChainObjectId
-          WHERE MEInforId in (SELECT MAX(`MEInforId`) as id FROM `MEInfor` GROUP BY ProductsId )";
-          $result = $oDB->fetchAll($sql);
+          WHERE meinfor.ProductsId=?";
+          $result = $sDB->query($sql,$id)->fetchAll();
           // echo "<pre>";
           // var_dump($result);
           // echo "</pre>";
@@ -54,7 +61,6 @@ $newDB = new MysqliDb(_DB_HOST_, _DB_USER_, _DB_PASS_,_DB_name_);
         <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
           <thead>
             <tr>
-            <th>History</th>
             <th>Equipment No.</th>
             <th>Equipment name</th>
             <th>Latest Calibration No.</th>
@@ -74,7 +80,6 @@ $newDB = new MysqliDb(_DB_HOST_, _DB_USER_, _DB_PASS_,_DB_name_);
             <th>Calibration Place</th>
             <th>Status</th>
             <th>Remark</th>
-            
             </tr>
           </thead>
           <tbody>
@@ -83,7 +88,6 @@ $newDB = new MysqliDb(_DB_HOST_, _DB_USER_, _DB_PASS_,_DB_name_);
             <?php
               foreach ($result as $key => $value) {
                 echo "<tr>";
-                echo "<td><a href='history.php?id=".$value['ProductsId']."'><i class='fas fa-clipboard-list'></i></a></td>";
                 if ($user->acess()==1) {
                   echo  "<td><a href='update.php?id=".$value['ProductsId']."'>".$value['ProductsNumber']."</a></td>";
                 }else{
@@ -134,12 +138,11 @@ $newDB = new MysqliDb(_DB_HOST_, _DB_USER_, _DB_PASS_,_DB_name_);
                     break;
                 }
                 
-                
+
                 echo "</tr>";
               }
             
             ?>
-            
           </tbody>
           </table>
           </div>

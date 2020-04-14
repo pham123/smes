@@ -39,64 +39,107 @@ $newDB = new MysqliDb(_DB_HOST_, _DB_USER_, _DB_PASS_,_DB_name_);
 
         <div class="container-fluid">
           <?php 
-          $sql = "SELECT scm.SupplyChainObjectName, 
-          count(*) as Total,
-          SUM(case when MEInforStatus = 1 then 1 else 0 end) as TotalOk,
-          SUM(case when MEInforStatus = 2 then 1 else 0 end) as TotalSpare,
-          SUM(case when MEInforStatus = 3 then 1 else 0 end) as TotalBroken,
-          SUM(case when MEInforStatus = 4 then 1 else 0 end) as TotalLost,
-          SUM(case when MEInforStatus = 5 then 1 else 0 end) as TotalCal,
-          SUM(case when MEInforStatus <> 3 AND MEInforStatus <> 4 AND date(`MEInforNextCalDate`) <= (CURDATE() + INTERVAL 45 DAY) then 1 else 0 end) as Total45,
-          SUM(case when MEInforStatus <> 3 AND MEInforStatus <> 4 AND date(`MEInforNextCalDate`) <= (CURDATE() + INTERVAL 15 DAY) then 1 else 0 end) as Total15
+          $sql = "SELECT `meinfor`.*, prd.ProductsName, prd.ProductsNumber , Users.UsersFullName, scm.SupplyChainObjectName
           FROM `MEInfor`
-          INNER JOIN Products prd ON prd.ProductsId = MEInfor.ProductsId
+          INNER JOIN Products prd ON prd.ProductsId = MEInfor.ProductsId AND prd.MaterialTypesId = 6
           INNER JOIN Users ON Users.UsersId = MEInfor.UsersId
           INNER JOIN SupplyChainObject scm on scm.SupplyChainObjectId = MEInfor.SupplyChainObjectId
           WHERE MEInforId in (SELECT MAX(`MEInforId`) as id FROM `MEInfor` GROUP BY ProductsId )
-          GROUP BY scm.SupplyChainObjectName";
+          AND MEInforStatus <> 3 AND MEInforStatus <> 4 AND date(`MEInforNextCalDate`) >= (CURDATE() + INTERVAL 15 DAY) AND date(`MEInforNextCalDate`) <= (CURDATE() + INTERVAL 45 DAY)";
           $result = $oDB->fetchAll($sql);
           // echo "<pre>";
           // var_dump($result);
           // echo "</pre>";
-
-          // exit();
           ?>
-
+        <div class="table-responsive">
         <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
           <thead>
             <tr>
+            <th>Equipment No.</th>
+            <th>Equipment name</th>
+            <!-- <th>Latest Calibration No.</th> -->
+            <th>Serial No.</th>
+            <th>Model</th>
+            <th>Minimum indication</th>
+            <th>Specification</th>
+            <!-- <th>Maker</th> -->
+            <!-- <th>Buy by VN/Korea</th> -->
+            <!-- <th>Received date</th> -->
             <th>TIC</th>
-            <th>Total</th>
-            <th>Using</th>
-            <th>Spare</th>
-            <th>Broken</th>
-            <th>Lost</th>
-            <th>Cal</th>
-            <th>Cal -15 days</th>
-            <th>Cal -45 days</th>
+            <th>Location</th>
+            <!-- <th>PIC</th> -->
+            <!-- <th>Day (start using)</th> -->
+            <!-- <th>Latest Calibration date</th> -->
+            <th>Next calibration schedule</th>
+            <!-- <th>Calibration Place</th> -->
+            <th>Status</th>
+            <!-- <th>Remark</th> -->
             </tr>
           </thead>
           <tbody>
           
+          
             <?php
               foreach ($result as $key => $value) {
                 echo "<tr>";
+                if ($user->acess()==1) {
+                  echo  "<td><a href='update.php?id=".$value['ProductsId']."'>".$value['ProductsNumber']."</a></td>";
+                }else{
+                  echo  "<td>".$value['ProductsNumber']."</td>";
+                }
+                
+                echo  "<td>".$value['ProductsName']."</td>";
+                
+                // echo  "<td>".$value['MEInforCalibrationNo']."</td>";
+                echo  "<td>".$value['MEInforSN']."</td>";
+                echo  "<td>".$value['MEInforModel']."</td>";
+                echo  "<td>".$value['MEInforMinimum']."</td>";
+                echo  "<td>".$value['MEInforSpec']."</td>";
+                // echo  "<td>".$value['MEInforMaker']."</td>";
+                // echo  "<td>".$value['MEInforMakerLocation']."</td>";
+
+                // echo  "<td>".$value['MEInforReceivedDate']."</td>";
                 echo  "<td>".$value['SupplyChainObjectName']."</td>";
-                echo  "<td>".$value['Total']."</td>";
-                echo  "<td>".$value['TotalOk']."</td>";
-                echo  "<td>".$value['TotalSpare']."</td>";
-                echo  "<td>".$value['TotalBroken']."</td>";
-                echo  "<td>".$value['TotalLost']."</td>";
-                echo  "<td>".$value['TotalCal']."</td>";
-                echo  "<td style='background-color:red;'><a href='list15.php'>".$value['Total15']."</a></td>";
-                echo  "<td style='background-color:yellow;'><a href='list45.php'>".($value['Total45']-$value['Total15'])."</a></td>";
+
+                echo  "<td>".$value['MEInforLocation']."</td>";
+
+                // echo  "<td>".$value['UsersFullName']."</td>";
+
+                // echo  "<td>".$value['MEInforStartDate']."</td>";
+                // echo  "<td>".$value['MEInforLastCalDate']."</td>";
+                echo  "<td>".$value['MEInforNextCalDate']."</td>";
+
+                // echo  "<td>".$value['MEInforCalLocation']."</td>";
+                // echo  "<td>".$value['MEInforStatus']."</td>";
+                switch ($value['MEInforStatus']) {
+                  case '1':
+                    echo  "<td style='background-color:Green;'>Using</td>";
+                    break;
+                  case '2':
+                    echo  "<td style='background-color:yellow;'>Spare</td>";
+                    break;
+                  case '3':
+                    echo  "<td style='background-color:red;'>Broken</td>";
+                    break;
+                  case '4':
+                    echo  "<td style='background-color:red;'>Lost</td>";
+                    break;
+                  case '5':
+                    echo  "<td style='background-color:yellow;'>Calibration</td>";
+                    break;                 
+                  default:
+                    # code...
+                    break;
+                }
+                
+
                 echo "</tr>";
               }
             
             ?>
           </tbody>
-          
           </table>
+          </div>
         </div>
 
   

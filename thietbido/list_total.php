@@ -61,6 +61,7 @@ $newDB = new MysqliDb(_DB_HOST_, _DB_USER_, _DB_PASS_,_DB_name_);
             <th>Model</th>
             <th>Minimum indication</th>
             <th>Specification</th>
+            <th>Picture</th>
             <!-- <th>Maker</th> -->
             <!-- <th>Buy by VN/Korea</th> -->
             <!-- <th>Received date</th> -->
@@ -94,6 +95,12 @@ $newDB = new MysqliDb(_DB_HOST_, _DB_USER_, _DB_PASS_,_DB_name_);
                 echo  "<td>".$value['MEInforModel']."</td>";
                 echo  "<td>".$value['MEInforMinimum']."</td>";
                 echo  "<td>".$value['MEInforSpec']."</td>";
+if (file_exists("../products/image/small/img_".$value['ProductsId'].".jpg")) {
+  echo "<td><a href='../products/image/img_".$value['ProductsId'].".jpg?".filemtime("../products/image/img_".$value['ProductsId'].".jpg")."' target='_blank'><img src='../products/image/small/img_".$value['ProductsId'].".jpg?".filemtime("../products/image/small/img_".$value['ProductsId'].".jpg")."' alt='' width='100%'></a></td>";
+}else{
+  echo  "<td>-</td>";
+}
+                // echo  "<td>".$value['MEInforSpec']."</td>";
                 // echo  "<td>".$value['MEInforMaker']."</td>";
                 // echo  "<td>".$value['MEInforMakerLocation']."</td>";
 
@@ -140,7 +147,8 @@ $newDB = new MysqliDb(_DB_HOST_, _DB_USER_, _DB_PASS_,_DB_name_);
           </table>
           </div>
         </div>
-
+        
+<a href=''></a>
   
 
       </div>

@@ -39,7 +39,9 @@ $newDB = new MysqliDb(_DB_HOST_, _DB_USER_, _DB_PASS_,_DB_name_);
         <!-- Topbar -->
         <?php require('navbar.php') ?>
 
-        <div class="container-fluid">
+        <div class="row">
+        
+
         <div class="col-md-8">
           <?php 
           $sql = "SELECT MEInfor.*, prd.ProductsName, prd.ProductsNumber
@@ -109,13 +111,38 @@ $newDB = new MysqliDb(_DB_HOST_, _DB_USER_, _DB_PASS_,_DB_name_);
           <tr><th>Remark</th><td><input type="text" name="MEInforRemark" id="" class='form-control' value='' required></td></tr>
         </table>
         <button type="submit" class='form-control'>Update</button>
-        </div>
-        
         </form>
         </div>
+
         <div class="col-md-4">
-          <img src="" alt="">
+        <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+          <tr>
+          <?php
+          if (file_exists("../products/image/img_".$result['ProductsId'].".jpg")) {
+           ?>
+              <td><img src="../products/image/img_<?php echo $result['ProductsId'] ?>.jpg?<?php filemtime("../products/image/img_".$result['ProductsId'].".jpg"); ?>" alt="" width="100%"></td>
+           <?php
+          }else{
+            ?>
+              <td></td>
+            <?php
+
+          }
+          ?>
+          </tr>
+          <form action="listen-update-picture.php?id=<?php echo $result['ProductsId'] ?>" method="post" enctype="multipart/form-data">
+          <tr>
+            <td><input type="file" name="file" id="" accept="image/x-png,image/gif,image/jpeg"></td>
+          </tr>
+          <tr>
+            <td><button type="submit">Update Picture</button></td>
+          </tr>
+          </form>
+        </table>
         </div>
+
+        
+      </div>
       </div>
       <!-- End of Main Content -->
 

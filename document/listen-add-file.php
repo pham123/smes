@@ -31,6 +31,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
 	} else {
 		$id = $_GET['id'];
+		$document = $newDB->where('DocumentId', $id)->getOne('document');
 		$filename = $_FILES['fileToUpload']['name'];
 		$tmp = explode(".", $filename);
 		$ext = end($tmp);
@@ -61,7 +62,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 				$newDB->where('UsersId', $firstLineApp['UsersId']);
 				$lineUser = $newDB->getOne('users');
 				//Create a new PHPMailer instance
-				$mail = new PHPMailer;
+				$mail = new PHPMailer();
+				$mail->CharSet = "UTF-8";
 				//Tell PHPMailer to use SMTP
 				$mail->isSMTP();
 				//Enable SMTP debugging
@@ -69,15 +71,19 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 				// SMTP::DEBUG_CLIENT = client messages
 				// SMTP::DEBUG_SERVER = client and server messages
 				$mail->SMTPDebug = SMTP::DEBUG_SERVER;
-				configurePHPMailer($mail, 'Document Approval');
+				configurePHPMailer($mail, 'HEV System');
 				//Set who the message is to be sent to
 				$mail->addAddress($lineUser['UsersEmail'], $lineUser['UsersFullName']);
 				//Set the subject line
-				$mail->Subject = 'Document Approval';
+				$mail->Subject = 'Document Approval: ['.$document['DocumentName'].']';
 				//Read an HTML message body from an external file, convert referenced images to embedded,
 				$mail->Body = "
-				<p>Dear </p>
-				<p>New Document waiting your approval</p>
+				<p>Dear ".$lineUser['UsersFullName']."</p>
+				<p>The following document need your approval</p>
+				<p>Document name: ".$document['DocumentName']."</p>
+				<p>Version: ".$_POST['DocumentDetailVersion']."</p>
+				<p>Creator: ".$_SESSION[_site_]['userfullname']."</p>
+				<p>Created at: ".date('d-m-Y')."</p>
 				<p><a href='localhost/smes/document/approveorrejectdoc.php?id=".$insert_id."'>Please follow this link and approval this request</a></p>
 				";
 				//convert HTML into a basic plain-text alternative body

@@ -106,7 +106,6 @@ $lines = $newDB->get('documentlineapproval');
                             :placeholder="'line ' + (index+1)"
                             :options="users_data" 
                             :get-option-label="u => (u.UsersFullName+'-'+u.SectionName+' '+u.PositionsName)" 
-                            :disabled="DocumentSubmit==1"
                             v-model="line.UsersId"
                             :reduce="user => user.UsersId" 
                             class="form-control" />
@@ -114,7 +113,7 @@ $lines = $newDB->get('documentlineapproval');
                         <input type="hidden" name="Lines[]" :value="line.UsersId">
                     </div>
                 </template>
-                <div class="mb-1" v-if="!DocumentSubmit==1">
+                <div class="mb-1">
                   <a class="text-info" style="font-size: 12px;" href="#" @click="addNewLine()"><i class="fas fa-plus"></i>&nbsp;Add new line</a>
                   &nbsp;&nbsp;
                   <a class="text-danger" style="font-size: 12px;" v-if="form.lines.length > 0" href="#" @click="removeLastLine()"><i class="fas fa-times"></i>&nbsp;Remove last line</a>
@@ -130,14 +129,13 @@ $lines = $newDB->get('documentlineapproval');
                   :get-option-label="option => (option.UsersFullName+'-'+option.SectionName+' '+option.PositionsName)"
                   :reduce="user => user.UsersEmail" 
                   class="bg-white mb-2"
-                  :disabled="DocumentSubmit==1"
                   
                   v-model="EmailList">
 
                   </v-select>
                   <input type="hidden" name="DocumentEmailList[]" :value="this.EmailList">
-                  <div v-show="!DocumentSubmit==1"><input type="submit" name="saveBtn" value="save" class="btn btn-primary" />&nbsp;
-                  <input type="submit" name="submitBtn" value="submit" class="btn btn-success" /></div>
+                  <div><input type="submit" name="saveBtn" value="save" class="btn btn-primary" />&nbsp;
+                  <input v-show="!DocumentSubmit==1" type="submit" name="submitBtn" value="submit" class="btn btn-success" /></div>
               </div>
               </div>
               </form>

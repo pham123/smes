@@ -17,33 +17,25 @@
       <li class="nav-item active">
         <a class="nav-link" href="index.php">
           <i class="fas fa-fw fa-home"></i>
-          <span><?php echo $oDB->lang('NewIn-Out')?></span></a>
+          <span><?php echo $oDB->lang('Home')?></span></a>
       </li>
 
       <!-- Divider -->
 <?php
 $arr = array(
-  array('NewStockIn.php', 'fas fa-plus-square',$oDB->lang('Input')),
-  array('NewStockOut.php', 'fas fa-plus-square',$oDB->lang('Output')),
+  array('list_total.php', 'fas fa-list',$oDB->lang('All')),
+  array('list.php', 'fas fa-list',$oDB->lang('YourControlList')),
 );
-echo nav_item($oDB->lang('InOut'),$arr);
+echo nav_item($oDB->lang('list'),$arr);
 
-$arr = array(
-  array('StockIn.php', 'fas fa-plus-square',$oDB->lang('StockIn')),
-  array('StockOut.php', 'fas fa-plus-square',$oDB->lang('StockOut')),
-);
-echo nav_item($oDB->lang('Stock'),$arr);
+if ($user->acess()==1) {
+  $arr = array(
+    array('list_full.php', 'fas fa-plus-square',$oDB->lang('FullList',"Danh sách đầy đủ")),
+    array('Material2.php', 'fas fa-plus-square',$oDB->lang('themthietbi',"Thêm thiết bị")),
+  );
+  echo nav_item($oDB->lang('Add'),$arr);
+}
 
-$arr = array(
-  array('ReportOut.php', 'fas fa-plus-square',$oDB->lang('ReportOut')),
-  array('ReportIn.php', 'fas fa-plus-square',$oDB->lang('ReportIn')),
-);
-echo nav_item($oDB->lang('Report'),$arr);
-
-$arr = array(
-  array('Material2.php', 'fas fa-plus-square',$oDB->lang('themthietbi',"Thêm thiết bị")),
-);
-echo nav_item($oDB->lang('Add'),$arr);
 ?>
  
 

@@ -45,10 +45,12 @@ $newDB = new MysqliDb(_DB_HOST_, _DB_USER_, _DB_PASS_,_DB_name_);
           SUM(case when MEInforStatus = 2 then 1 else 0 end) as TotalSpare,
           SUM(case when MEInforStatus = 3 then 1 else 0 end) as TotalBroken,
           SUM(case when MEInforStatus = 4 then 1 else 0 end) as TotalLost,
-          SUM(case when MEInforStatus = 5 then 1 else 0 end) as TotalCal
+          SUM(case when MEInforStatus = 5 then 1 else 0 end) as TotalCal,
+          SUM(case when MEInforStatus <> 3 AND MEInforStatus <> 4 AND date(`MEInforNextCalDate`) <= (CURDATE() + INTERVAL 45 DAY) then 1 else 0 end) as Total45,
+          SUM(case when MEInforStatus <> 3 AND MEInforStatus <> 4 AND date(`MEInforNextCalDate`) <= (CURDATE() + INTERVAL 15 DAY) then 1 else 0 end) as Total15
           FROM `MEInfor`
           INNER JOIN Products prd ON prd.ProductsId = MEInfor.ProductsId
-          INNER JOIN Users ON Users.UsersId = MEInfor.UsersId AND MEInfor.UsersId = ".$_SESSION[_site_]['userid']."
+          INNER JOIN Users ON Users.UsersId = MEInfor.UsersId
           INNER JOIN SupplyChainObject scm on scm.SupplyChainObjectId = MEInfor.SupplyChainObjectId
           WHERE MEInforId in (SELECT MAX(`MEInforId`) as id FROM `MEInfor` GROUP BY ProductsId )
           GROUP BY scm.SupplyChainObjectName";
@@ -70,6 +72,8 @@ $newDB = new MysqliDb(_DB_HOST_, _DB_USER_, _DB_PASS_,_DB_name_);
             <th>Broken</th>
             <th>Lost</th>
             <th>Cal</th>
+            <th>Cal -15 days</th>
+            <th>Cal -45 days</th>
             </tr>
           </thead>
           <tbody>
@@ -84,11 +88,14 @@ $newDB = new MysqliDb(_DB_HOST_, _DB_USER_, _DB_PASS_,_DB_name_);
                 echo  "<td>".$value['TotalBroken']."</td>";
                 echo  "<td>".$value['TotalLost']."</td>";
                 echo  "<td>".$value['TotalCal']."</td>";
+                echo  "<td style='background-color:red;'><a href='list15.php'>".$value['Total15']."</a></td>";
+                echo  "<td style='background-color:yellow;'><a href='list45.php'>".($value['Total45']-$value['Total15'])."</a></td>";
                 echo "</tr>";
               }
             
             ?>
           </tbody>
+          
           </table>
         </div>
 

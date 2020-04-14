@@ -42,9 +42,10 @@ $newDB = new MysqliDb(_DB_HOST_, _DB_USER_, _DB_PASS_,_DB_name_);
           $sql = "SELECT `meinfor`.*, prd.ProductsName, prd.ProductsNumber , Users.UsersFullName, scm.SupplyChainObjectName
           FROM `MEInfor`
           INNER JOIN Products prd ON prd.ProductsId = MEInfor.ProductsId AND prd.MaterialTypesId = 6
-          INNER JOIN Users ON Users.UsersId = MEInfor.UsersId AND MEInfor.UsersId = ".$_SESSION[_site_]['userid']."
+          INNER JOIN Users ON Users.UsersId = MEInfor.UsersId
           INNER JOIN SupplyChainObject scm on scm.SupplyChainObjectId = MEInfor.SupplyChainObjectId
-          WHERE MEInforId in (SELECT MAX(`MEInforId`) as id FROM `MEInfor` GROUP BY ProductsId )";
+          WHERE MEInforId in (SELECT MAX(`MEInforId`) as id FROM `MEInfor` GROUP BY ProductsId )
+          AND MEInforStatus <> 3 AND MEInforStatus <> 4 AND date(`MEInforNextCalDate`) >= (CURDATE() + INTERVAL 15 DAY) AND date(`MEInforNextCalDate`) <= (CURDATE() + INTERVAL 45 DAY)";
           $result = $oDB->fetchAll($sql);
           // echo "<pre>";
           // var_dump($result);
@@ -61,7 +62,7 @@ $newDB = new MysqliDb(_DB_HOST_, _DB_USER_, _DB_PASS_,_DB_name_);
             <th>Model</th>
             <th>Minimum indication</th>
             <th>Specification</th>
-            <th>Maker</th>
+            <!-- <th>Maker</th> -->
             <!-- <th>Buy by VN/Korea</th> -->
             <!-- <th>Received date</th> -->
             <th>TIC</th>
@@ -72,7 +73,7 @@ $newDB = new MysqliDb(_DB_HOST_, _DB_USER_, _DB_PASS_,_DB_name_);
             <th>Next calibration schedule</th>
             <!-- <th>Calibration Place</th> -->
             <th>Status</th>
-            <th>Remark</th>
+            <!-- <th>Remark</th> -->
             </tr>
           </thead>
           <tbody>
@@ -81,8 +82,12 @@ $newDB = new MysqliDb(_DB_HOST_, _DB_USER_, _DB_PASS_,_DB_name_);
             <?php
               foreach ($result as $key => $value) {
                 echo "<tr>";
-
-                echo  "<td><a href='update.php?id=".$value['ProductsId']."'>".$value['ProductsNumber']."</a></td>";
+                if ($user->acess()==1) {
+                  echo  "<td><a href='update.php?id=".$value['ProductsId']."'>".$value['ProductsNumber']."</a></td>";
+                }else{
+                  echo  "<td>".$value['ProductsNumber']."</td>";
+                }
+                
                 echo  "<td>".$value['ProductsName']."</td>";
                 
                 // echo  "<td>".$value['MEInforCalibrationNo']."</td>";
@@ -90,7 +95,7 @@ $newDB = new MysqliDb(_DB_HOST_, _DB_USER_, _DB_PASS_,_DB_name_);
                 echo  "<td>".$value['MEInforModel']."</td>";
                 echo  "<td>".$value['MEInforMinimum']."</td>";
                 echo  "<td>".$value['MEInforSpec']."</td>";
-                echo  "<td>".$value['MEInforMaker']."</td>";
+                // echo  "<td>".$value['MEInforMaker']."</td>";
                 // echo  "<td>".$value['MEInforMakerLocation']."</td>";
 
                 // echo  "<td>".$value['MEInforReceivedDate']."</td>";
@@ -105,8 +110,28 @@ $newDB = new MysqliDb(_DB_HOST_, _DB_USER_, _DB_PASS_,_DB_name_);
                 echo  "<td>".$value['MEInforNextCalDate']."</td>";
 
                 // echo  "<td>".$value['MEInforCalLocation']."</td>";
-                echo  "<td>".$value['MEInforStatus']."</td>";
-                echo  "<td>".$value['MEInforStatus']."</td>";
+                // echo  "<td>".$value['MEInforStatus']."</td>";
+                switch ($value['MEInforStatus']) {
+                  case '1':
+                    echo  "<td style='background-color:Green;'>Using</td>";
+                    break;
+                  case '2':
+                    echo  "<td style='background-color:yellow;'>Spare</td>";
+                    break;
+                  case '3':
+                    echo  "<td style='background-color:red;'>Broken</td>";
+                    break;
+                  case '4':
+                    echo  "<td style='background-color:red;'>Lost</td>";
+                    break;
+                  case '5':
+                    echo  "<td style='background-color:yellow;'>Calibration</td>";
+                    break;                 
+                  default:
+                    # code...
+                    break;
+                }
+                
 
                 echo "</tr>";
               }

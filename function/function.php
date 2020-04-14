@@ -282,3 +282,48 @@ function makedroplist($table,$where=1,$selected=null,$width='100%'){
 	$text .="</select>";
 	echo $text;
 }
+
+function makedroplistreadonly($table,$where=1,$selected=null,$readonly,$width='100%'){
+	global $oDB;
+	$disabled = ($readonly=='Readonly') ? "disabled='true'" : '' ;
+	$text = "<select name='".$table."Id' id='' class='selectpicker show-tick' data-live-search='true' data-style='btn-info' data-width='".$width."'>";
+	$model = $oDB->sl_all($table,$where);
+	foreach ($model as $key => $value) {
+		$select = ($selected==$value[$table.'Id']) ? 'selected' : '' ;
+		$text .="
+		<option value='".$value[$table.'Id']."' ".$select.">".$value[$table.'Name']."</option>";
+	}
+	$text .="</select>";
+	echo $text;
+}
+
+function droplistfromarr($name,$array,$selected=null){
+	
+	$text = "<select name='".$name."' id='' class='selectpicker show-tick' data-live-search='true' data-style='btn-info' >";
+	
+	foreach ($array as $key => $value) {
+		$select = ($selected==$value['Id']) ? 'selected' : '' ;
+		$text .="
+		<option value='".$value['Id']."' ".$select.">".$value['Name']."</option>";
+	}
+	$text .="</select>";
+	echo $text;
+}
+
+function auto_insert($table,$arr,$db){
+    // Table(text),array(key==columnname),database object
+    $tablearr = array();
+    $valuearr = array();
+    $slotarr = array();
+    foreach ($arr as $key => $value) {
+        $tablearr[] = $key;
+        if ($key=='password') {
+            $valuearr[] = md5($value);
+        }else{
+            $valuearr[] = $value;
+        }
+        $slotarr[] = '?';
+    }
+    echo $sql = "INSERT INTO `".$table."`(".implode(',',$tablearr).") VALUES (".implode(',',$slotarr).")";
+    $db->query($sql,$valuearr);
+}

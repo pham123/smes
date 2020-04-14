@@ -66,9 +66,49 @@ $oDB->update('Memos',$field_values,'`MemosId`='.$id);
 		        echo "Sorry, there was an error uploading your file.";
 		    }
         }
+// Update picture after
+		$target_dir = "image/";
+		$target_file = $target_dir . basename($_FILES["MemosPictureAfter"]["name"]);
+		//var_dump($_POST);
+		//echo "<br>";
+		//var_dump($_FILES);
+		//exit();
+		$uploadOk = 1;
+		$imageFileType = pathinfo($target_file,PATHINFO_EXTENSION);
+
+		if($imageFileType != "jpg" && $imageFileType != "JPG" && $imageFileType != "png" && $imageFileType != "PNG" && $imageFileType != "jpeg"
+		&& $imageFileType != "gif" ) {
+		    echo "Sorry, only JPG, JPEG, PNG & GIF files are allowed.";
+		    $uploadOk = 0;
+		}
+		// Check if $uploadOk is set to 0 by an error
+		if ($uploadOk == 0) {
+		    echo "Sorry, your file was not uploaded.";
+		// if everything is ok, try to upload file
+		} else {
+		    if (move_uploaded_file($_FILES["MemosPictureAfter"]["tmp_name"], $target_file)) {
+		        echo "The file ". basename( $_FILES["MemosPictureAfter"]["name"]). " has been uploaded.";
+		        //Đổi tên
+		        // rename($target_file, "image/".$_FILES["issuepicture"]["name"].".jpg");
+				rename($target_file, "image/imgafter_".$id.".jpg");
+				
+		        //thay doi kich thuoc anh
+				   $resize = new ResizeImage("image/imgafter_".$id.".jpg");
+					$resize->resizeTo(1500, 1500, 'maxWidth');
+					$resize->saveImage("image/imgafter_".$id.".jpg");
+
+					$resize = new ResizeImage("image/imgafter_".$id.".jpg");
+					$resize->resizeTo(100, 100, 'maxWidth');
+					$resize->saveImage("image/small/imgafter_".$id.".jpg");
+
+		        // header('Location: index.php');
+		    } else {
+		        echo "Sorry, there was an error uploading your file.";
+		    }
+        }
 		
 		
-echo "</br>";
+// Update report files
         $target_dir = "files/";
 		echo $target_file = $target_dir . basename($_FILES["MemosReport"]["name"]);
 		$uploadOk = 1;

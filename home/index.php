@@ -126,6 +126,7 @@ if(isset($_SESSION[_site_]['userlang'])){
 $linkar =  array(
   // array('../Approval/','APPROVAL','Request everything!','fa-check-square'),
   array('../Productivity/',$oDB->lang('Productivity','Sản lượng'),$oDB->lang('Quantity'),'fa-pallet'),
+  array('../Approval/',$oDB->lang('Internal Approval','Internal Approval'),$oDB->lang('Internal Approval'),'fa-check-square'),
   array('../print/',$oDB->lang('Print'),$oDB->lang('PrintLabel'),'fa-barcode'),
   array('../products/',$oDB->lang('Products'),$oDB->lang('ProductsInformation'),'fa-dolly'),
   array('../patrols',$oDB->lang('LinePatrol'),$oDB->lang('FactoryIssueReport'),'fa-camera'),

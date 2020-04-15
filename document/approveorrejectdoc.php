@@ -31,6 +31,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
   if(isset($_POST['rejectBtn'])){
     $status = 3;
   }
+  $document_detail = $newDB->where('DocumentDetailId', $data['id'])->getOne('documentdetail');
+  $document = $newDB->where('DocumentId', $document_detail['DocumentId'])->getOne('document');
+
   $newDB->where('DocumentDetailId', $data['id']);
   $newDB->where('UsersId', $_SESSION[_site_]['userid']);
   $newDB->update('DocumentDetailLineApproval', [
@@ -53,7 +56,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
       $newDB->where('UsersId', $nextLineApp['UsersId']);
       $lineUser = $newDB->getOne('users');
       //Create a new PHPMailer instance
-      $mail = new PHPMailer;
+      $mail = new PHPMailer();
+      $mail->CharSet = "UTF-8";
       //Tell PHPMailer to use SMTP
       $mail->isSMTP();
       //Enable SMTP debugging
@@ -61,15 +65,19 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
       // SMTP::DEBUG_CLIENT = client messages
       // SMTP::DEBUG_SERVER = client and server messages
       $mail->SMTPDebug = SMTP::DEBUG_SERVER;
-      configurePHPMailer($mail, 'Document Approval');
+      configurePHPMailer($mail, 'HEV System');
       //Set who the message is to be sent to
       $mail->addAddress($lineUser['UsersEmail'], $lineUser['UsersFullName']);
       //Set the subject line
-      $mail->Subject = 'Document Approval';
+      $mail->Subject = 'Document Approval: ['.$document['DocumentName'].']';
       //Read an HTML message body from an external file, convert referenced images to embedded,
       $mail->Body = "
-      <p>Dear </p>
-      <p>New Document waiting your approval</p>
+      <p>Dear ".$lineUser['UsersFullName']."</p>
+      <p>The following document need your approval</p>
+      <p>Document name: ".$document['DocumentName']."</p>
+      <p>Version: ".$document_detail['DocumentDetailVersion']."</p>
+      <p>Creator: ".$newDB->where('UsersId', $document_detail['UserId'])->getOne('users')['UsersFullName']."</p>
+      <p>Created at: ".date('d-m-Y')."</p>
       <p><a href='localhost/smes/document/approveorrejectdoc.php?id=".$insert_id."'>Please follow this link and approval this request</a></p>
       ";
       //convert HTML into a basic plain-text alternative body
@@ -90,7 +98,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
       return;
     }else{
       //send email to emailist
-      $document_detail = $newDB->where('DocumentDetailId', $data['id'])->getOne('documentdetail');
       $newDB->where('DocumentId', $document_detail['DocumentId']);
       $document = $newDB->getOne('document');
       $email_list = $document['DocumentEmailList'];
@@ -100,7 +107,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $email_arr = [$email_list];
       }
 
-      $mail = new PHPMailer;
+      $mail = new PHPMailer();
+      $mail->CharSet = "UTF-8";
       //Tell PHPMailer to use SMTP
       $mail->isSMTP();
       //Enable SMTP debugging
@@ -108,16 +116,19 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
       // SMTP::DEBUG_CLIENT = client messages
       // SMTP::DEBUG_SERVER = client and server messages
       $mail->SMTPDebug = SMTP::DEBUG_SERVER;
-      configurePHPMailer($mail, 'Link '.$document['DocumentName']);
+      configurePHPMailer($mail, 'HEV System');
       //Set who the message is to be sent to
       foreach($email_arr as $email){
         $mail->addAddress($email, "");
       }
       //Set the subject line
-      $mail->Subject = 'Link '.$document['DocumentName'];
+      $mail->Subject = 'Thông báo tài liệu ['.$document['DocumentName'].'] đã được cập nhật';
       //Read an HTML message body from an external file, convert referenced images to embedded,
       $mail->Body = "
-      <p><strong>".$document['DocumentName']."</strong></p>
+      <p>Tên tài liệu: <strong>".$document['DocumentName']."</strong></p>
+      <p>Phiên bản: ".$document_detail['DocumentDetailVersion']."</p>
+      <p>Người tạo: ".$newDB->where('UsersId', $document_detail['UserId'])->getOne('users')['UsersFullName']."</p>
+      <p>Ngày áp dụng: ".(new DateTime('tomorrow'))->format('d-m-Y')."</p>
       <p><a href='#'>Click this link to download the document</a></p>
       ";
       //convert HTML into a basic plain-text alternative body

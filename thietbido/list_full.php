@@ -134,7 +134,7 @@ $newDB = new MysqliDb(_DB_HOST_, _DB_USER_, _DB_PASS_,_DB_name_);
                     break;
                 }
                 
-                echo  "<td>".$value['MEInforRemark']."</td>"
+                echo  "<td>".$value['MEInforRemark']."</td>";
                 echo "</tr>";
               }
             

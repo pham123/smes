@@ -57,8 +57,12 @@ $newDB = new MysqliDb(_DB_HOST_, _DB_USER_, _DB_PASS_,_DB_name_);
               <div class="col-md">
                   <span>Loại tài liệu</span>
                   <?php makedroplist('DocumentType'); ?>
-                  </div>
               </div>
+              <div class="col-md">
+                <span>Mã tài liệu</span>
+                <input type="text" class="form-control" name="DocumentNumber" required>
+              </div>
+            </div>
 
               <div class="row">
                   <div class="col-md">

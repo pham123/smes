@@ -23,10 +23,8 @@
 <?php
 
 $arr = array(
-  array('purchaselist.php', 'fas fa-list',$oDB->lang('PurchasesList')),
-  array('#', 'fas fa-plus-square',$oDB->lang('Quotation')),
-  array('purchaseorderlist.php', 'fas fa-plus-square',$oDB->lang('PurchaseOrder')),
-  array('cashgroup.php', 'fas fa-plus-square',$oDB->lang('Cashgroup')),
+  array('addapp.php', 'fas fa-plus-square',$oDB->lang('AddApp')),
+  array('cashgroup.php', 'fas fa-list-ol',$oDB->lang('Cashgroup')),
 );
 echo nav_item($oDB->lang(''),$arr);
 ?>

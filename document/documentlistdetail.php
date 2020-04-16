@@ -43,6 +43,7 @@ $newDB = new MysqliDb(_DB_HOST_, _DB_USER_, _DB_PASS_,_DB_name_);
             <thead>
                 <tr>
                   <th>Tên tài liệu</th>
+                  <th>Mã tài liệu</th>
                   <th>Bộ phận</th>
                   <th style="max-width: 300px;">Miêu tả</th>
                   <th>Phiên bản</th>
@@ -62,6 +63,7 @@ $newDB = new MysqliDb(_DB_HOST_, _DB_USER_, _DB_PASS_,_DB_name_);
                     $ext = end($tmp);
                     echo "<tr>
                         <td><a href='add-file-to-document.php?id=".$value['DocumentId']."'>".$value['DocumentName']."</a></td>
+                        <td>".$value['DocumentNumber']."</td>
                         <td>".$value['SectionName']."</td>
                         <td style='width:30%'>".$value['DocumentDescription']."</td>
                         <td>".$last_document_detail['DocumentDetailVersion']."</td>

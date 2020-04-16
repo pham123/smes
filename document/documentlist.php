@@ -70,6 +70,7 @@ $newDB = new MysqliDb(_DB_HOST_, _DB_USER_, _DB_PASS_,_DB_name_);
             <table class='table table-bordered' id='dataTable' width='100%' cellspacing='0'>
             <thead>
                 <tr>
+                  <th>Mã tài liệu</th>
                   <th>Tên tài liệu</th>
                   <th>Miêu tả</th>
                   <th>Phiên bản</th>
@@ -85,8 +86,9 @@ $newDB = new MysqliDb(_DB_HOST_, _DB_USER_, _DB_PASS_,_DB_name_);
                   $list = $oDB->sl_all('Document',$where);
                   foreach ($list as $key => $value) {
                     echo "<tr>
+                        <td>".$value['DocumentNumber']."</td>
                         <td>".$value['DocumentName']."</td>
-                        <td style='width:50%'>".$value['DocumentDescription']."</td>
+                        <td style='width:40%'>".$value['DocumentDescription']."</td>
                         <td></td>
                         <td></td>";
                     if ($_SESSION[_site_]['userid']==$value['UsersId']) {

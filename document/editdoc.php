@@ -84,6 +84,10 @@ $lines = $newDB->get('documentlineapproval');
                     ?>
                   </select>
               </div>
+              <div class="col-md">
+                <span>Mã tài liệu</span>
+                  <input :readonly="DocumentSubmit==1" type="text" name="DocumentNumber"  placeholder='Mã tài liệu' class='form-control' required value='<?php echo $thisdoc['DocumentNumber'] ?>'>
+              </div>
           </div>
 
               <div class="row">

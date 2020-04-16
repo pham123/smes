@@ -211,7 +211,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     <td><money v-model="item.StockOutputItemsUnitPrice" v-bind="money" class="vmoney" required></money>
                     <input type="hidden" name="StockOutputItemsUnitPrice[]" :value="item.StockOutputItemsUnitPrice">
                     <td>{{productSelected(item).ProductsUnit}}</td>
-                    <td><input style="height: 33px; font-size: 16px;width: 60px;" type="number" v-model="item.StockOutputItemsQty" name="StockOutputItemsQty[]"></td>
+                    <td><input step=".01" style="height: 33px; font-size: 16px;width: 60px;" type="number" v-model="item.StockOutputItemsQty" name="StockOutputItemsQty[]"></td>
                     <td>{{(item.StockOutputItemsQty * item.StockOutputItemsUnitPrice).format()}}</td>
                     <td><input style="height:33px; font-size: 16px;" type="text" v-model="item.StockOutputItemsRemark" name="StockOutputItemsRemark[]"></td>
                   </tr>

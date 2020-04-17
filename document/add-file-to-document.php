@@ -48,6 +48,11 @@ $doc = $newDB->where('DocumentId', $id)->getOne('document');
           <div class="col-md-8">
             <div class="row">
                 <div class="col-md-12">
+                    <strong>Mã tài liệu:&nbsp;</strong><?php echo $doc['DocumentNumber'] ?>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
                     <strong>Tên tài liệu:&nbsp;</strong><?php echo $doc['DocumentName'] ?>
                 </div>
             </div>

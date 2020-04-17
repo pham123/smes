@@ -27,6 +27,8 @@ $sql[] = "CREATE TABLE PurchaseOrders (
 );";
 $sql[]="ALTER TABLE PurchaseItems ADD PurchaseItemsUnitPrice int(9);";
 $sql[]="ALTER TABLE PurchaseOrders ADD PurchaseOrdersFileName varchar(255);";
+$sql[] = "ALTER TABLE StockInputItems MODIFY StockInputItemsQty float;";
+$sql[] = "ALTER TABLE StockOutputItems MODIFY StockOutputItemsQty float;";
 for ($i=0; $i < count($sql) ; $i++) { 
     $oDB -> query($sql[$i]);
 }

@@ -39,6 +39,11 @@ $arr = array(
   array('Material2.php', 'fas fa-plus-square',$oDB->lang('AddNew')),
 );
 echo nav_item($oDB->lang('Add'),$arr);
+
+$arr = array(
+  array('stockview.php', 'fas fa-plus-square',$oDB->lang('stationery')),
+);
+echo nav_item($oDB->lang('Stock'),$arr);
 ?>
  
 

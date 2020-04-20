@@ -6,6 +6,8 @@ require('../config.php');
 require('../function/db_lib.php');
 require('../function/sdb.php');
 require('../function/function.php');
+require('../function/MysqliDb.php');
+$newDB = new MysqliDb(_DB_HOST_, _DB_USER_, _DB_PASS_, _DB_name_);
 $user = New Users();
 $user->set($_SESSION[_site_]['userid']);
 $user->module = basename(dirname(__FILE__));

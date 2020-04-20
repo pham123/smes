@@ -55,7 +55,6 @@ $table_data = $newDB->get ("PurchaseOrders po", null, "po.PurchaseOrdersId,CONCA
                         <th>Shipment</th>
                         <th>PO File</th>
                         <th>Print</th>
-                        <th>Payment</th>
                       </tr>
                   </thead>
 
@@ -79,11 +78,6 @@ $table_data = $newDB->get ("PurchaseOrders po", null, "po.PurchaseOrdersId,CONCA
                             echo '<td class="text-danger">no po file</td>';
                           }
                           echo '<td><a href="print-po.php?id='.$value['PurchaseOrdersId'].'" target="_blank"><i class="fas fa-print"></i></a></td>';
-                          if(!$havePoFile){
-                            echo '<td class="text-danger">no po file</td></tr>';
-                          }else{
-                            echo '<td><a href="#?id='.$value['PurchaseOrdersId'].'">Make payment</a></td></tr>';
-                          }
                         }
                       ?>
 

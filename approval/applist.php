@@ -30,9 +30,30 @@ $newDB = new MysqliDb(_DB_HOST_, _DB_USER_, _DB_PASS_,_DB_name_);
 
   <?php require('sidebar.php') ?>
   <?php
-
-    $data = totalReceived();
-    $title = 'Received apps';
+    switch ($_GET['type']) {
+      case 1:
+        $data = totalReceived();
+        $title = 'Received apps';
+        break;
+      case 2:
+        $title = 'Waiting your approval';
+        $data = waitingYourApproval();
+        break;
+      case 3:
+        $title = 'Waiting final approval';
+        $data = waitingFinalApproval();
+        break;
+      case 4:
+        $title = 'Your rejected list';
+        $data = yourRejectedList();
+        break;
+      case 5:
+        $title = 'Your created apps';
+        $data = yourCreatedApp();
+        break;
+      default:
+        header("Location:index.php");
+    }
 
     function generateAppStatus($id){
       global $newDB;
@@ -89,11 +110,12 @@ $newDB = new MysqliDb(_DB_HOST_, _DB_USER_, _DB_PASS_,_DB_name_);
             <thead>
                 <tr>
                   <th>Title</th>
-                  <th>PO Num</th>
+                  <th>PO number</th>
                   <th>Cashgroup</th>
                   <th>Amount</th>
                   <th>Date</th>
                   <th>Receive date</th>
+                  <th>Urgent</th>
                   <th>Status</th>
                 </tr>
             </thead>
@@ -103,15 +125,27 @@ $newDB = new MysqliDb(_DB_HOST_, _DB_USER_, _DB_PASS_,_DB_name_);
                 foreach($data as $d){
               ?>
                 <tr>
-                  <td><?php echo $d['PurchasePaymentsTitle']?></td>
                   <td>
-                  <?php echo $d['PurchaseOrdersNo']?>
+                    <?php
+                      if($_GET['type'] ==2){
+                    ?>
+                      <a href="approveorrejectapp.php?id=<?php echo $d['PurchasePaymentsId']?>"><?php echo $d['PurchasePaymentsTitle']?></a>
+                    <?php
+                      } else {
+                    ?>
+                    <a href="viewapp.php?id=<?php echo $d['PurchasePaymentsId']?>"><?php echo $d['PurchasePaymentsTitle']?></a>
+                    <?php
+                      }
+                    ?>
+                    
                   </td>
+                  <td><?php echo $d['PurchaseOrdersNo']?></td>
                   <td><?php echo $d['CashgroupsName']?></td>
                   <td><?php echo number_format($d['PurchasePaymentsAmount'],0,',','.')?></td>
                   <td><?php echo $d['PurchasePaymentsDate']?></td>
                   <td><?php echo $d['PurchasePaymentsReceiveDate']?></td>
-                  <td><?php generateAppStatus($d['PurchasePaymentsId']) ?></td>
+                  <td><?php if($d['IsUrgent'] == 0) echo 'no'; else echo 'yes'; ?></td>
+                  <td><?php generateAppStatus($d['PurchasePaymentsId'])?></td>
                 </tr>
               <?php
                 }

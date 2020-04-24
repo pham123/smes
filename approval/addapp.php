@@ -40,6 +40,7 @@ $oDB = new db();
 
         <!-- Begin Page Content -->
         <div class="container-fluid">
+          <form action="listen-add-app.php" method="post">
           <div class="row m-0 pb-4 w-100">
             <div class="col-md-9">
               <div class="row">
@@ -57,12 +58,23 @@ $oDB = new db();
                         :reduce="po => po.PurchaseOrdersId" 
                         v-model="form.PurchaseOrdersId"
                         class="form-control"
-                        @input="onPOChange()" />
+                        @input="onPOChange()"
+                        required>
+                        <template #search="{attributes, events}">
+                          <input
+                            class="vs__search"
+                            :required="!form.PurchaseOrdersId"
+                            v-bind="attributes"
+                            v-on="events"
+                          />
+                        </template>
+                      </v-select>
+                        <input type="hidden" name="PurchaseOrdersId" :value="this.form.PurchaseOrdersId">
                     </div>
                 </div>
                 <div class="col-md-3">
                   <div class="input-group">
-                    <select v-model="form.IsUrgent" class="form-control">
+                    <select v-model="form.IsUrgent" class="form-control" name="IsUrgent">
                       <option value="1">Normal</option>
                       <option value="2">Urgent</option>
                     </select>
@@ -79,7 +91,17 @@ $oDB = new db();
                       :reduce="cashgroup => cashgroup.CashgroupsId" 
                       v-model="form.CashgroupsId"
                       class="form-control"
-                      @input="onCashgroupChange()" />
+                      required>
+                      <template #search="{attributes, events}">
+                        <input
+                          class="vs__search"
+                          :required="!form.CashgroupsId"
+                          v-bind="attributes"
+                          v-on="events"
+                        />
+                      </template>
+                    </v-select>
+                      <input type="hidden" name="CashgroupsId" :value="this.form.CashgroupsId">
                   </div>
                 </div>
                 <div class="col-md-4">
@@ -87,7 +109,7 @@ $oDB = new db();
                     <div class="input-group-prepend">
                       <span class="input-group-text" id="basic-addon1">Số lần thanh toán</span>
                     </div>
-                      <input type="number" class="form-control" v-model="form.PurchasePaymentsNum">
+                      <input type="number" class="form-control" v-model="form.PurchasePaymentsNum" required name="PurchasePaymentsNum">
                   </div>
                 </div>
                 <div class="col-md-12">
@@ -95,26 +117,27 @@ $oDB = new db();
                       <div class="input-group-prepend">
                         <span class="input-group-text" id="basic-addon1">Title&nbsp;<sup style="color: red;">*</sup></span>
                       </div>
-                       <input type="text" class="form-control" v-model="form.PurchasePaymentsTitle" placeholder="Input title request here">
+                       <input type="text" class="form-control" v-model="form.PurchasePaymentsTitle" placeholder="Input title request here" required name="PurchasePaymentsTitle">
                     </div>
                 </div>
                 <div class="col-md-3">
                    <strong>Payment date:</strong> 
-                   <input type="date" v-model="form.PurchasePaymentsDate" class="form-control">
+                   <input type="date" v-model="form.PurchasePaymentsDate" class="form-control" required name="PurchasePaymentsDate">
             
                 </div>
                 <div class="col-md-3">
                    <strong>Received Date:</strong>
-                   <input type="date" v-model="form.PurchasePaymentsReceiveDate" class="form-control">
+                   <input type="date" v-model="form.PurchasePaymentsReceiveDate" class="form-control" required name="PurchasePaymentsReceiveDate">
                 </div>
                 <div class="col-md-3">
                    <strong>Amount:</strong>
-                   <input type="text" v-model="form.PurchasePaymentsAmount" class="form-control">
+                   <money v-model="form.PurchasePaymentsAmount" v-bind="money" class="form-control" required></money>
+                   <input type="hidden" name="PurchasePaymentsAmount" :value="form.PurchasePaymentsAmount">
                 </div>
                 <div class="col-md-3">
                   <strong>Currency:</strong> 
                   <br>
-                  <select name="currency" v-model="form.PurchasePaymentsCurrency" class="form-control">
+                  <select name="PurchasePaymentsCurrency" v-model="form.PurchasePaymentsCurrency" class="form-control">
                     <option value="VND">VND</option>
                     <option value="USD">USD</option>
                     <option value="KRW">KRW</option>
@@ -177,7 +200,8 @@ $oDB = new db();
             </div>
             <div class="col-md-3">
               <h5>Line approval</h5>
-              <div class="form-group" v-for="(line, index) in form.lines" :key="index">
+              <template v-for="(line, index) in form.lines">
+              <div class="form-group">
                 <v-select 
                 :placeholder="'line ' + (index+1)"
                 :options="users_data" 
@@ -186,6 +210,8 @@ $oDB = new db();
                 :reduce="user => user.UsersId" 
                 class="form-control" />
               </div>
+              <input type="hidden" name="UsersId[]" :value="line.user_id" />
+              </template>
               <?php
                 $newDB->where('ModulesName', 'approval');
                 $forcedLines = explode(',', $newDB->getOne('modules')['ModulesForcedLine']);
@@ -216,9 +242,10 @@ $oDB = new db();
               <p>1. Quotations: <strong><a v-if="this.PurchasesId" :href="'/smes/purchase/quotation/'+this.PurchasesId" target="_blank">view</a></strong></p>
               <p>2. PO scan:<strong><a v-if="this.PurchaseOrdersId" target="_blank" :href="'/smes/purchase/po/'+this.PurchaseOrdersId+'_'+this.PurchaseOrdersFileName">view</a></strong></p>
 
-              <button class="btn btn-primary">submit</button>
+              <button class="btn btn-primary" type="submit">submit</button>
             </div>
           </div>
+          </form>
         </div>
         <!-- /.container-fluid -->
 
@@ -273,6 +300,10 @@ $oDB = new db();
   <script src="../js/vue-select.js"></script>
   <link rel="stylesheet" href="../css/vue-select.css">
   <script src="../js/vform.js"></script>
+  <script type="module" src="../js/v-money.js">
+    import money from '../js/v-money.js';
+    Vue.use(money, {precision: 4});
+  </script>
 
   <script>
     Number.prototype.format = function(n, x) {
@@ -303,7 +334,15 @@ $oDB = new db();
           supplier: {},
           users_data: [],
           pos_data: [],
-          cashgroups_data: []
+          cashgroups_data: [],
+          money: {
+            decimal: ',',
+            thousands: '.',
+            prefix: '',
+            suffix: '',
+            precision: 0,
+            masked: false /* doesn't work with directive */
+          }
         },
         methods: {
           addNewLine(){
@@ -333,6 +372,9 @@ $oDB = new db();
             }else{
               this.supplier = {};
               this.items = [];
+              this.PurchasesId = '';
+              this.PurchaseOrdersId = '';
+              this.PurchaseOrdersFileName = '';
             }
           }
         },

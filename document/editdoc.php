@@ -86,7 +86,7 @@ $lines = $newDB->get('documentlineapproval');
               </div>
               <div class="col-md">
                 <span>Mã tài liệu</span>
-                  <input :readonly="DocumentSubmit==1" type="text" name="DocumentNumber"  placeholder='Mã tài liệu' class='form-control' required value='<?php echo $thisdoc['DocumentNumber'] ?>'>
+                  <input :readonly="DocumentSubmit==1" type="text" name="DocumentNumber" class='form-control' required value='<?php echo $thisdoc['DocumentNumber'] ?>'>
               </div>
           </div>
 
@@ -215,9 +215,6 @@ $lines = $newDB->get('documentlineapproval');
           DocumentTypeId: <?php echo $thisdoc['DocumentTypeId']?>,
           DocumentSubmit: <?php echo $thisdoc['DocumentSubmit']?$thisdoc['DocumentSubmit']:0 ?>,
           EmailList: <?php echo json_encode($thisdoc['DocumentEmailList']?explode(",", $thisdoc['DocumentEmailList']):[]);?>,
-          ProPlanId: '',
-          TraceStationId: '',
-          ProPlanDate:'',
           form: new Form({
             lines: <?php echo json_encode($lines)?>
           }),

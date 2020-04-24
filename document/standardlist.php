@@ -21,19 +21,6 @@ if(isset($_SESSION[_site_]['userlang'])){
   $oDB->lang = ucfirst($_SESSION[_site_]['userlang']);
 }
 $newDB = new MysqliDb(_DB_HOST_, _DB_USER_, _DB_PASS_,_DB_name_);
-
-function findLastApprovalDocumentDetail($documentid){
-  global $newDB;
-  $newDB->where('DocumentId', $documentid);
-  $documentdetails = $newDB->orderBy('DocumentDetailId', 'desc')->get('documentdetail');
-  foreach($documentdetails as $key => $detail){
-    $lastline = $newDB->where('DocumentDetailId', $detail['DocumentDetailId'])->orderBy('DocumentDetailLineApprovalId', 'desc')->getOne('documentdetaillineapproval');
-    if($lastline['DocumentDetailLineApprovalStatus'] == 2){
-      return $detail;
-    }
-  }
-  return null;
-}
 ?>
 
 <body id="page-top">
@@ -51,52 +38,49 @@ function findLastApprovalDocumentDetail($documentid){
         <?php require('navbar.php') ?>
 
         <div class="container">
-          <!-- Begin card -->
+        <h1>Danh sách tiêu chuẩn :</h1>
+          <div class="col-md-12">
+            <table class='table table-bordered' id='dataTable' width='100%' cellspacing='0'>
+            <thead>
+                <tr>
+                  <th>Tên tiêu chuẩn</th>
+                  <th>Mã tài liệu</th>
+                  <th>Bộ phận</th>
+                  <th style="max-width: 300px;">Miêu tả</th>
+                  <th>Phiên bản</th>
+                  <th>Ngày cập nhật</th>
+                  <th>Download</th>
+                </tr>
+            </thead>
 
-          <div class="card-deck text-center">
-        <div class="card mb-4 box-shadow">
-          <div class="card-header">
-            <h4 class="my-0 font-weight-normal">Standard</h4>
-          </div>
-          <div class="card-body">
-            <ul class="list-unstyled mt-3 mb-4">
-              <li>ISO 9001:2000</li>
-              <li>IATF</li>
-              <li>BIQS</li>
-            </ul>
-            <a href="standardlist.php"><button type="button" class="btn btn-lg btn-block btn-outline-primary">Click to show more</button></a>
-          </div>
-        </div>
-        <div class="card mb-4 box-shadow">
-          <div class="card-header">
-            <h4 class="my-0 font-weight-normal">Form</h4>
-          </div>
-          <div class="card-body">
-            <ul class="list-unstyled mt-3 mb-4">
-              <li>Form </li>
-              <li>Form </li>
-              <li>Form </li>
-            </ul>
-            <a href=""><button type="button" class="btn btn-lg btn-block btn-outline-primary">Click to show more</button></a>
-          </div>
-        </div>
-        <div class="card mb-4 box-shadow">
-          <div class="card-header">
-            <h4 class="my-0 font-weight-normal">Product's</h4>
-          </div>
-          <div class="card-body">
-            <ul class="list-unstyled mt-3 mb-4">
-              <li>PFMEA</li>
-              <li>TEST</li>
-              <li>WG</li>
+            <tbody>
+                  <?php
+                  $sql = "Select * from Document d 
+                  inner join section s on s.SectionId=d.SectionId
+                  where DocumentTypeId=1";
+                  $list2 = $sDB->query($sql)->fetchAll();
+                  foreach ($list2 as $key => $value) {
+                    $last_document_detail = $newDB->where('DocumentId', $value['DocumentId'])->orderBy('DocumentDetailId', 'DESC')->getOne('documentdetail');
+                    $filename = $last_document_detail['DocumentDetailFileName'];
+                    $tmp = explode(".", $filename);
+                    $ext = end($tmp);
+                    echo "<tr>
+                        <td><a href='related.php?id=".$value['DocumentId']."'>".$value['DocumentName']."</a></td>
+                        <td>".$value['DocumentNumber']."</td>
+                        <td>".$value['SectionName']."</td>
+                        <td style='width:30%'>".$value['DocumentDescription']."</td>
+                        <td>".$last_document_detail['DocumentDetailVersion']."</td>
+                        <td>".$last_document_detail['DocumentDetailUpdateDate']."</td>
+                        <td style='width: 20%'><a target='_blank' href='files/".$last_document_detail['DocumentDetailId'].'.'.$ext."'>".$last_document_detail['DocumentDetailFileName']."</a></td";
+                   
+                    echo "</tr>";
+                  }
+                  ?>
 
-            </ul>
-            <a href=""><button type="button" class="btn btn-lg btn-block btn-outline-primary">Click to show more</button></a>
+            </tbody>
+    
+            </table>
           </div>
-        </div>
-      </div>
-
-          <!-- End card -->
         
         </div>
       <!-- End of Main Content -->

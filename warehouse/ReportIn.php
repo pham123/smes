@@ -106,7 +106,7 @@ $newDB = new MysqliDb(_DB_HOST_, _DB_USER_, _DB_PASS_,_DB_name_);
             echo "<td>".$value['FromName']."</td>";
             echo "<td>".$value['ToName']."</td>";
             echo "<td>".$value['ModelsName']."</td>";
-            echo "<td>".date("d-m-Y",strtotime($value['StockInputsDate']))."</td>";
+            echo "<td>".date("d/m/Y",strtotime($value['StockInputsDate']))."</td>";
 
             echo "<td>".$value['StockInputItemsQty']."</td>";
             echo "<td></td>";

@@ -17,6 +17,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $newDB->where('DocumentId', $id);
     $document_data = [
         'DocumentName' => $_POST['DocumentName'],
+        'DocumentNumber' => $_POST['DocumentNumber'],
         'SectionId' => $_POST['SectionId'],
         'DocumentTypeId' => $_POST['DocumentTypeId'],
         'DocumentDescription' => $_POST['DocumentDescription']

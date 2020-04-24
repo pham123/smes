@@ -16,9 +16,9 @@ if (isset($_POST['DocumentName'])) {
   //ok thì tạo bản ghi
 
   //Lấy về ID bản ghi vừa rồi
-  $sql = "INSERT INTO Document (`DocumentName`,`DocumentDescription`,`DocumentTypeId`,`SectionId`,`UsersId`) VALUES (?,?,?,?,?)";
+  $sql = "INSERT INTO Document (`DocumentName`,`DocumentDescription`,`DocumentTypeId`,`SectionId`,`UsersId`,`DocumentNumber`) VALUES (?,?,?,?,?,?)";
 
-  $sDB -> query($sql,$_POST['DocumentName'],$_POST['DocumentDescription'],$_POST['DocumentTypeId'],$_POST['SectionId'],$_SESSION[_site_]['userid']);
+  $sDB -> query($sql,$_POST['DocumentName'],$_POST['DocumentDescription'],$_POST['DocumentTypeId'],$_POST['SectionId'],$_SESSION[_site_]['userid'],$_POST['DocumentNumber']);
   $last = $sDB->lastInsertID();
 }
 $sDB = Null;

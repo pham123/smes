@@ -52,51 +52,73 @@ function findLastApprovalDocumentDetail($documentid){
 
         <div class="container">
           <!-- Begin card -->
-
-          <div class="card-deck text-center">
-        <div class="card mb-4 box-shadow">
-          <div class="card-header">
-            <h4 class="my-0 font-weight-normal">Standard</h4>
+          <h1>Danh sách các document</h1>
+          <form action="" method="get">
+          <div class="row">
+          <div class="col-md-4">
+          <?php
+          $selected = (isset($_GET['DocumentId'])) ? safe($_GET['DocumentId']) : null ;
+          makedroplist('Document',$where=1,$selected,$width='100%');
+          ?>
           </div>
-          <div class="card-body">
-            <ul class="list-unstyled mt-3 mb-4">
-              <li>ISO 9001:2000</li>
-              <li>IATF</li>
-              <li>BIQS</li>
-            </ul>
-            <a href=""><button type="button" class="btn btn-lg btn-block btn-outline-primary">Click to show more</button></a>
+          <div class="col-md-4">
+          <button type="submit" class='form-control'>Submit</button>
           </div>
-        </div>
-        <div class="card mb-4 box-shadow">
-          <div class="card-header">
-            <h4 class="my-0 font-weight-normal">Form</h4>
           </div>
-          <div class="card-body">
-            <ul class="list-unstyled mt-3 mb-4">
-              <li>Form </li>
-              <li>Form </li>
-              <li>Form </li>
-            </ul>
-            <a href=""><button type="button" class="btn btn-lg btn-block btn-outline-primary">Click to show more</button></a>
-          </div>
-        </div>
-        <div class="card mb-4 box-shadow">
-          <div class="card-header">
-            <h4 class="my-0 font-weight-normal">Product's</h4>
-          </div>
-          <div class="card-body">
-            <ul class="list-unstyled mt-3 mb-4">
-              <li>PFMEA</li>
-              <li>TEST</li>
-              <li>WG</li>
-
-            </ul>
-            <a href=""><button type="button" class="btn btn-lg btn-block btn-outline-primary">Click to show more</button></a>
-          </div>
-        </div>
-      </div>
-
+          </form>
           <!-- End card -->
+          
+          <?php
+          if (isset($_GET['DocumentId'])) {
+            ?>
+          <h3>Danh mục tài liệu liên quan</h3>
+
+          
+          <table class="table">
+            <tr>
+              <th>Tên tài liệu</th>
+              <th>Ngày thêm vào</th>
+            </tr>
+            <?php
+              $sql = "SELECT ad.*, dc2.DocumentName as child FROM DocumentAD ad
+              INNER JOIN Document dc2 ON dc2.DocumentId = ad.RelatedDocumentId
+              Where ad.DocumentId=?";
+              $list = $sDB->query($sql,$_GET['DocumentId'])->fetchAll();
+              // var_dump($list);
+              foreach ($list as $key => $value) {
+                echo "<tr>";
+                echo "<td>".$value['child']."</td>";
+                echo "<td>".$value['DocumentADCreateDate']."</td>";
+                echo "</tr>";
+
+              }
+            ?>
+            
+              
+              
+            
+            <tr>
+              
+              <td>
+              <form method="post" action="assignd.php">
+              <input type="hidden" name="mother" value='<?php echo $_GET['DocumentId']?>'>
+              <?php
+                makedroplist('Document',$where=1,$selected=null,$width='100%');
+              ?>
+              </td>
+              <td>
+              <button type="submit" class='form-control'>Thêm tài liệu liên quan</button>
+              </td>
+              </form>
+            </tr>
+          </table>
+          
+
+            <?php
+            } else {
+              # code...
+            }
+            ?>
         
         </div>
       <!-- End of Main Content -->

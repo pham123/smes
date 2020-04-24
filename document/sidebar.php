@@ -88,13 +88,14 @@ function yourCreatedDoc(){
 
       <!-- Divider -->
 <?php
-
 $arr = array();
 if($user->acess() == 1){
   array_push($arr, array('documenttype.php', 'fas fa-plus-square',$oDB->lang('DocumentType')));
   array_push($arr, array('adddoc.php', 'fas fa-plus-square',$oDB->lang('AddDocument')));
   array_push($arr, array('documentlist.php', 'fas fa-list-ol',$oDB->lang('DocumentList')));
   array_push($arr, array('documentlistdetail.php', 'fas fa-code-branch',$oDB->lang('DocumentVersion')));
+  array_push($arr, array('assigndocument.php', 'fas fa-code-branch',$oDB->lang('AssignDocument')));
+  array_push($arr, array('assignproduct.php', 'fas fa-code-branch',$oDB->lang('AssignProduct')));
 }
 echo nav_item($oDB->lang('Document'),$arr);
 ?>

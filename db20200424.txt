@@ -1,0 +1,16 @@
+CREATE TABLE DocumentAD (             DocumentADId INT(6) UNSIGNED AUTO_INCREMENT PRIMARY KEY,             DocumentADName VARCHAR(255) NOT NULL UNIQUE,             DocumentADDescription VARCHAR(255),             DocumentADOption INT(2),             DocumentADCreateDate TIMESTAMP DEFAULT CURRENT_TIMESTAMP ,             DocumentADUpdateDate TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP);;
+ALTER TABLE DocumentAD DROP COLUMN DocumentADName;
+ALTER TABLE DocumentAD DROP COLUMN DocumentADDescription;
+ALTER TABLE DocumentAD DROP COLUMN DocumentADOption;
+ALTER TABLE DocumentAD DROP COLUMN DocumentADUpdateDate ;
+ALTER TABLE DocumentAD ADD DocumentId INT(6) UNSIGNED;
+ALTER TABLE DocumentAD ADD RelatedDocumentId INT(6) UNSIGNED;
+CREATE TABLE DocumentAP (             DocumentAPId INT(6) UNSIGNED AUTO_INCREMENT PRIMARY KEY,             DocumentAPName VARCHAR(255) NOT NULL UNIQUE,             DocumentAPDescription VARCHAR(255),             DocumentAPOption INT(2),             DocumentAPCreateDate TIMESTAMP DEFAULT CURRENT_TIMESTAMP ,             DocumentAPUpdateDate TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP);;
+ALTER TABLE DocumentAP DROP COLUMN DocumentAPName;
+ALTER TABLE DocumentAP DROP COLUMN DocumentAPDescription;
+ALTER TABLE DocumentAP DROP COLUMN DocumentAPOption;;
+ALTER TABLE DocumentAP DROP COLUMN DocumentAPUpdateDate ;
+ALTER TABLE DocumentAP ADD ProductsId INT(6) UNSIGNED;
+ALTER TABLE DocumentAP ADD RelatedDocumentId INT(6) UNSIGNED;
+ALTER TABLE `DocumentAD` ADD UNIQUE `DocumentAD_index`(`DocumentId`, `RelatedDocumentId`);
+ALTER TABLE `DocumentAP` ADD UNIQUE `DocumentAPD_index`(`ProductsId`, `RelatedDocumentId`);

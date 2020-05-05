@@ -10,6 +10,7 @@ require('../function/function.php');
 $user = New Users();
 $user->set($_SESSION[_site_]['userid']);
 $user->module = basename(dirname(__FILE__));
+$accessOption = $user->acess();
 check($user->acess());
 $pagetitle = $user->module;
 $page_css='.vs__dropdown-toggle {border: 0px !important;margin-top: -4px;} .vs__selected{white-space: nowrap;max-width: 250px;overflow: hidden;font-size: 14px;}';
@@ -81,9 +82,13 @@ $newDB = new MysqliDb(_DB_HOST_, _DB_USER_, _DB_PASS_,_DB_name_);
 
             <tbody>
                   <?php
-
-                  $where = (isset($_GET['id'])&&is_numeric($_GET['id'])) ? 'SectionId = '.safe($_GET['id']) : 1 ;
-                  $list = $oDB->sl_all('Document',$where);
+                  if($accessOption == 1){
+                    $where = (isset($_GET['id'])&&is_numeric($_GET['id'])) ? 'SectionId = '.safe($_GET['id']) : 1 ;
+                    $list = $oDB->sl_all('Document',$where);
+                  }else{
+                    $where = ((isset($_GET['id'])&&is_numeric($_GET['id'])) ? 'SectionId = '.safe($_GET['id']) : 1). ' and UsersId = '.$_SESSION[_site_]['userid'];
+                    $list = $oDB->sl_all('Document',$where);
+                  }
                   foreach ($list as $key => $value) {
                     echo "<tr>
                         <td>".$value['DocumentNumber']."</td>

@@ -55,6 +55,9 @@ $newDB = new MysqliDb(_DB_HOST_, _DB_USER_, _DB_PASS_,_DB_name_);
             <tbody>
                   <?php
                   $newDB->join('section s', 's.SectionId=d.SectionId', 'left');
+                  if($user->acess() != 1){
+                    $newDB->where('UsersId', $_SESSION[_site_]['userid']);
+                  }
                   $list = $newDB->get('document d');
                   foreach ($list as $key => $value) {
                     $last_document_detail = $newDB->where('DocumentId', $value['DocumentId'])->orderBy('DocumentDetailId', 'DESC')->getOne('documentdetail');

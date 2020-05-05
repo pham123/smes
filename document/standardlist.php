@@ -37,7 +37,7 @@ $newDB = new MysqliDb(_DB_HOST_, _DB_USER_, _DB_PASS_,_DB_name_);
         <!-- Topbar -->
         <?php require('navbar.php') ?>
 
-        <div class="container">
+        <div class="">
         <h1>Danh sách tiêu chuẩn :</h1>
           <div class="col-md-12">
             <table class='table table-bordered' id='dataTable' width='100%' cellspacing='0'>

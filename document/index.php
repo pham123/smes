@@ -50,7 +50,7 @@ function findLastApprovalDocumentDetail($documentid){
         <!-- Topbar -->
         <?php require('navbar.php') ?>
 
-        <div class="container">
+        <div class="">
           <!-- Begin card -->
 
           <div class="card-deck text-center">

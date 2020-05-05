@@ -66,13 +66,13 @@ $newDB = new MysqliDb(_DB_HOST_, _DB_USER_, _DB_PASS_,_DB_name_);
                     $ext = end($tmp);
                     echo "<tr>
                         
-                        <td>".$value['DocumentNumber']."</td>
-                        <td><a href='related.php?id=".$value['DocumentId']."'>".$value['DocumentName']."</a></td>
-                        <td>".$value['SectionName']."</td>
+                        <td style='white-space:nowrap;' >".$value['DocumentNumber']."</td>
+                        <td style='white-space:nowrap;'><a href='related.php?id=".$value['DocumentId']."'>".$value['DocumentName']."</a></td>
+                        <td style='white-space:nowrap;'>".$value['SectionName']."</td>
                         <td style='width:30%'>".$value['DocumentDescription']."</td>
-                        <td>".$last_document_detail['DocumentDetailVersion']."</td>
-                        <td>".$last_document_detail['DocumentDetailUpdateDate']."</td>
-                        <td style='width: 20%'><a target='_blank' href='files/".$last_document_detail['DocumentDetailId'].'.'.$ext."'>".$last_document_detail['DocumentDetailFileName']."</a></td";
+                        <td style='white-space:nowrap;'>".$last_document_detail['DocumentDetailVersion']."</td>
+                        <td style='white-space:nowrap;'>".date("d-m-Y",strtotime($last_document_detail['DocumentDetailUpdateDate']))."</td>
+                        <td style='width: 20%;white-space:nowrap;' ><a target='_blank' href='files/".$last_document_detail['DocumentDetailId'].'.'.$ext."'>".$last_document_detail['DocumentDetailFileName']."</a></td";
                    
                     echo "</tr>";
                   }

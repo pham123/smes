@@ -43,8 +43,8 @@ $newDB = new MysqliDb(_DB_HOST_, _DB_USER_, _DB_PASS_,_DB_name_);
             <table class='table table-bordered' id='dataTable' width='100%' cellspacing='0'>
             <thead>
                 <tr>
-                  <th>Tên tiêu chuẩn</th>
                   <th>Mã tài liệu</th>
+                  <th>Tên tiêu chuẩn</th>
                   <th>Bộ phận</th>
                   <th style="max-width: 300px;">Miêu tả</th>
                   <th>Phiên bản</th>
@@ -65,8 +65,9 @@ $newDB = new MysqliDb(_DB_HOST_, _DB_USER_, _DB_PASS_,_DB_name_);
                     $tmp = explode(".", $filename);
                     $ext = end($tmp);
                     echo "<tr>
-                        <td><a href='related.php?id=".$value['DocumentId']."'>".$value['DocumentName']."</a></td>
+                        
                         <td>".$value['DocumentNumber']."</td>
+                        <td><a href='related.php?id=".$value['DocumentId']."'>".$value['DocumentName']."</a></td>
                         <td>".$value['SectionName']."</td>
                         <td style='width:30%'>".$value['DocumentDescription']."</td>
                         <td>".$last_document_detail['DocumentDetailVersion']."</td>

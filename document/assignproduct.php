@@ -52,13 +52,13 @@ function findLastApprovalDocumentDetail($documentid){
 
         <div class="container">
           <!-- Begin card -->
-          <h1>Danh sách các document</h1>
+          <h1>Danh sách sản phẩm</h1>
           <form action="" method="get">
           <div class="row">
           <div class="col-md-4">
           <?php
-          $selected = (isset($_GET['DocumentId'])) ? safe($_GET['DocumentId']) : null ;
-          makedroplist('Document',$where=1,$selected,$width='100%');
+          $selected = (isset($_GET['ProductsId'])) ? safe($_GET['ProductsId']) : null ;
+          makedroplist('Products',$where=1,$selected,$width='100%');
           ?>
           </div>
           <div class="col-md-4">
@@ -69,7 +69,7 @@ function findLastApprovalDocumentDetail($documentid){
           <!-- End card -->
           
           <?php
-          if (isset($_GET['DocumentId'])) {
+          if (isset($_GET['ProductsId'])) {
             ?>
           <h3>Danh mục tài liệu liên quan</h3>
 
@@ -80,28 +80,25 @@ function findLastApprovalDocumentDetail($documentid){
               <th>Ngày thêm vào</th>
             </tr>
             <?php
-              $sql = "SELECT ad.*, dc2.DocumentName as child FROM DocumentAD ad
+              $sql = "SELECT ad.*, dc2.DocumentName as child FROM DocumentAP ad
               INNER JOIN Document dc2 ON dc2.DocumentId = ad.RelatedDocumentId
-              Where ad.DocumentId=?";
-              $list = $sDB->query($sql,$_GET['DocumentId'])->fetchAll();
+              Where ad.ProductsId=?";
+              $list = $sDB->query($sql,$_GET['ProductsId'])->fetchAll();
               // var_dump($list);
               foreach ($list as $key => $value) {
                 echo "<tr>";
                 echo "<td>".$value['child']."</td>";
-                echo "<td>".$value['DocumentADCreateDate']."</td>";
+                echo "<td>".$value['DocumentAPCreateDate']."</td>";
                 echo "</tr>";
 
               }
             ?>
-            
-              
-              
-            
+
             <tr>
               
               <td>
-              <form method="post" action="assignd.php">
-              <input type="hidden" name="mother" value='<?php echo $_GET['DocumentId']?>'>
+              <form method="post" action="assignp.php">
+              <input type="hidden" name="mother" value='<?php echo $_GET['ProductsId']?>'>
               <?php
                 makedroplist('Document',$where=1,$selected=null,$width='100%');
               ?>

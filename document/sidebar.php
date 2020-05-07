@@ -89,7 +89,7 @@ function yourCreatedDoc(){
       <!-- Divider -->
 <?php
 $arr = array();
-if($user->acess() == 1 || $user->acess() == 2){
+if($user->acess() <= 2){
   array_push($arr, array('documenttype.php', 'fas fa-plus-square',$oDB->lang('DocumentType')));
   array_push($arr, array('adddoc.php', 'fas fa-plus-square',$oDB->lang('AddDocument')));
   array_push($arr, array('documentlist.php', 'fas fa-list-ol',$oDB->lang('DocumentList')));

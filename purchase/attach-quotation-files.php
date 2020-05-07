@@ -38,6 +38,7 @@ if($_SERVER['REQUEST_METHOD'] === 'POST'){
     for( $i=0 ; $i < $total ; $i++ ) {
       $tmpFilePath = $_FILES['fileToUpload']['tmp_name'][$i];
       if ($tmpFilePath != ""){
+        mkdir('quotation/'.$purchaseid);
         move_uploaded_file($tmpFilePath, 'quotation/' .$purchaseid.'/'.$_FILES['fileToUpload']['name'][$i]);
       }
     }

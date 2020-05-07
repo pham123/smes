@@ -28,10 +28,10 @@ if($_SERVER['REQUEST_METHOD'] === 'POST'){
     //delete all old files
     if($total > 0){
       $files = glob('quotation/'.$purchaseid.'/*'); // get all file names
-      foreach($files as $file){ // iterate files
-        if(is_file($file))
-          unlink($file); // delete file
-      }
+      // foreach($files as $file){ // iterate files
+      //   if(is_file($file))
+      //     unlink($file); // delete file
+      // }
     }
     //save new files
 
@@ -154,14 +154,13 @@ $purchaseitems = $newDB->where('PurchasesId', $purchase['PurchasesId'])
             </div>
             <div class="row">
               <div class="col-8">
-                <label for=""><strong>Current quotation files:</strong><?php
+                <label for=""><strong>Current quotation files:<br></strong><?php
                 if(!is_dir('quotation/'.$purchase['PurchasesId'])){
                   echo 'chưa có';
                 }else{
                   if($files = glob('quotation/'.$purchase['PurchasesId'].'/*')){
-                    foreach($files as $file){
-                      echo '<a href="/smes/purchase/'.$file.'" target="_blank">'.$file.'</a>';
-                      echo ' ,';
+                    foreach($files as $index => $file){
+                      echo '<span><a href="/smes/purchase/'.$file.'" target="_blank">'.($index+1).'. '.$file.'</a><a href="#" id="remove-file" data-file="'.$file.'" class="text-danger ml-3"><i class="fas fa-trash"></i></a><br></span>';
                     }
                   }else{
                     echo 'chưa có';
@@ -225,6 +224,24 @@ $purchaseitems = $newDB->where('PurchasesId', $purchase['PurchasesId'])
   </div>
 
   <?php require('../views/template-footer.php'); ?>
+  <script>
+    $(function(){
+      $('#remove-file').click(function(){
+        let file = $(this).data('file');
+        $.ajax({
+          type: 'post',
+          data: {
+            action: 'deletefile',
+            file: file
+          },
+          url: 'deletepofile.php',
+          success: () => {
+            $(this).closest('span').remove();
+          }
+        })
+      });
+    })
+  </script>
 
 </body>
 

@@ -24,9 +24,11 @@ if(isset($_SESSION[_site_]['userlang'])){
 if($_SERVER['REQUEST_METHOD'] === 'POST'){
   $purchaseitemsid = $_POST['PurchaseItemsId'];
   $purchaseitemsunitprice = $_POST['PurchaseItemsUnitPrice'];
+  $purchaseqtys = $_POST['PurchasesQty'];
   $po_data = array_filter($_POST);
   unset($po_data['PurchaseItemsId']);
   unset($po_data['PurchaseItemsUnitPrice']);
+  unset($po_data['PurchasesQty']);
   if(isset($_POST['submitBtn'])){
     $po_data['PurchaseOrdersStatus'] = 1;
   }
@@ -35,7 +37,10 @@ if($_SERVER['REQUEST_METHOD'] === 'POST'){
 
   for ($i=0; $i <count($purchaseitemsid) ; $i++) { 
     $newDB->where('PurchaseItemsId', $purchaseitemsid[$i]);
-    $newDB->update('purchaseitems',['PurchaseItemsUnitPrice' => $purchaseitemsunitprice[$i]]);
+    $newDB->update('purchaseitems',[
+      'PurchaseItemsUnitPrice' => $purchaseitemsunitprice[$i],
+      'PurchasesQty' => $purchaseqtys[$i]
+      ]);
   }
   header('Location:addpurchaseorder.php?id='.$_POST['PurchasesId']);
   exit();
@@ -118,7 +123,13 @@ $purchaseitems = $newDB->where('PurchasesId', $purchase['PurchasesId'])
                 </td>
                 <th>통화(Currency)</th>
                 <td>
-                  <input :readonly="!canEdit" type="text" class="form-control" v-model="PurchaseOrdersCurrency" name="PurchaseOrdersCurrency">
+                  <select :readonly="!canEdit" name="PurchaseOrdersCurrency" v-model="PurchaseOrdersCurrency" class="form-control">
+                    <option value="">select</option>
+                    <option value="vnd">VND</option>
+                    <option value="usd">USD</option>
+                    <option value="krw">KRW</option>
+                    <option value="jpy">JPY</option>
+                  </select>
                 </td>
               </tr>
               <tr>
@@ -165,7 +176,7 @@ $purchaseitems = $newDB->where('PurchasesId', $purchase['PurchasesId'])
                     <td>{{item.ProductsNumber}}</td>
                     <td>{{item.ProductsUnit}}</td>
                     <td>{{item.PurchasesEta}}</td>
-                    <td>{{item.PurchasesQty}}</td>
+                    <td><input type="text" name="PurchasesQty[]" v-model="item.PurchasesQty" class="vmoney" /></td>
                     <td><money v-model="item.PurchaseItemsUnitPrice" v-bind="money" class="vmoney" required :readonly="!canEdit"></money></td>
                     <input type="hidden" name="PurchaseItemsUnitPrice[]" :value="item.PurchaseItemsUnitPrice">
                     <td>{{(item.PurchasesQty*item.PurchaseItemsUnitPrice).format()}}</td>

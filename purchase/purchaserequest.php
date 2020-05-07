@@ -229,6 +229,7 @@ $tracestations = $newDB->get('tracestation');
   <?php require('../views/template-footer.php'); ?>
   <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
   <script src="../js/axios.min.js"></script>
+  <script src="../js/moment.min.js"></script>
 
   <!-- use the latest vue-select release -->
   <script src="../js/vue-select.js"></script>
@@ -297,17 +298,6 @@ $tracestations = $newDB->get('tracestation');
               return;
             }
             this.purchaseitems.splice(index,1);
-          },
-          loadPlans(){
-            if(this.TraceStationId && this.ProPlanDate){
-              axios.get('/smes/purchase/loadpurchasedata.php').then(({data}) => {
-                this.products = data['products'];
-              }).catch(() => {
-                console.log('error');
-              });
-            }else{
-              console.log('station or date not select');
-            }
           }
         },
         created: function(){
@@ -317,7 +307,7 @@ $tracestations = $newDB->get('tracestation');
             this.RequestSectionId = data['RequestSectionId'];
             this.TraceStationId = data['TraceStationId'];
             this.IsUrgent = data['IsUrgent']+'';
-            this.PurchasesDate = data['PurchasesDate'];
+            this.PurchasesDate = data['PurchasesDate']?data['PurchasesDate']:moment().format('YYYY-MM-DD');
             this.PurchasesNo = data['PurchasesNo'];
             this.PurchasesComment = data['PurchasesComment'];
             this.purchaseitems = data['purchaseitems'];

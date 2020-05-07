@@ -11,3 +11,5 @@ memos/files
 */image
 */files
 logs
+purchase/quotation/*
+purchase/po/*

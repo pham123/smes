@@ -160,7 +160,7 @@ $purchaseitems = $newDB->where('PurchasesId', $purchase['PurchasesId'])
                 }else{
                   if($files = glob('quotation/'.$purchase['PurchasesId'].'/*')){
                     foreach($files as $index => $file){
-                      echo '<span><a href="/smes/purchase/'.$file.'" target="_blank">'.($index+1).'. '.$file.'</a><a href="#" id="remove-file" data-file="'.$file.'" class="text-danger ml-3"><i class="fas fa-trash"></i></a><br></span>';
+                      echo '<span><a href="/smes/purchase/'.$file.'" target="_blank">'.($index+1).'. '.$file.'</a><a href="#" data-file="'.$file.'" class="remove-file text-danger ml-3"><i class="fas fa-trash"></i></a><br></span>';
                     }
                   }else{
                     echo 'chưa có';
@@ -226,7 +226,7 @@ $purchaseitems = $newDB->where('PurchasesId', $purchase['PurchasesId'])
   <?php require('../views/template-footer.php'); ?>
   <script>
     $(function(){
-      $('#remove-file').click(function(){
+      $('.remove-file').on('click', function(){
         let file = $(this).data('file');
         $.ajax({
           type: 'post',

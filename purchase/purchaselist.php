@@ -77,13 +77,22 @@ $table_data = $newDB->get ("Purchases p", null, "p.PurchasesId,p.PurchasesNo,p.P
                           echo '<td>'.$value['PurchasesDate'].'</td>';
                           echo '<td>'.$value['RequestSection'].'</td>';
                           echo '<td>'.($value['Urgent'] == 0? 'No':'<span class="text-danger">urgent</span>').'</td>';
-                          echo '<td><a href="print-purchase.php?id='.$value['PurchasesId'].'" target="_blank"><i class="fas fa-print"></i></a></td>';
+                          echo '<td><a href="print-purchase.php?id='.$value['PurchasesId'].'" target="_blank"><i class="fas fa-pr
+                          int"></i></a></td>';
                           if(!$haveQuotation){
                             echo '<td class="text-danger">no quotations</td>';
                             echo '<td class="text-danger">no quotations</td></tr>';
                           }else{
+                            $po = $newDB->where('PurchasesId', $value['PurchasesId'])->getOne('purchaseorders');
+
                             echo '<td><a target="_blank" href="quotation/'.$value['PurchasesId'].'">'.$numQuo.' files</a></td>';
-                            echo '<td><a href="addpurchaseorder.php?id='.$value['PurchasesId'].'">Make PO</a></td></tr>';
+                            if(!$po){
+                              echo '<td><a href="addpurchaseorder.php?id='.$value['PurchasesId'].'">Make PO</a></td></tr>';
+                            }else if($po['PurchaseOrdersStatus'] == 0){
+                              echo '<td><a href="addpurchaseorder.php?id='.$value['PurchasesId'].'">Update PO</a></td></tr>';
+                            }else{
+                              echo '<td><a href="addpurchaseorder.php?id='.$value['PurchasesId'].'">View PO</a></td></tr>';
+                            }
                           }
                         }
                       ?>

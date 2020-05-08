@@ -24,9 +24,7 @@
 
 $arr = array(
   array('purchaselist.php', 'fas fa-list',$oDB->lang('PurchasesList')),
-  array('#', 'fas fa-plus-square',$oDB->lang('Quotation')),
   array('purchaseorderlist.php', 'fas fa-plus-square',$oDB->lang('PurchaseOrder')),
-  array('#', 'fas fa-plus-square',$oDB->lang('PoControl')),
   array('#', 'fas fa-plus-square',$oDB->lang('SupplierControl')),
   array('#', 'fas fa-plus-square',$oDB->lang('CommodityType')),
   array('#', 'fas fa-plus-square',$oDB->lang('CommodityCode'))

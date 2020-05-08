@@ -91,7 +91,7 @@ $table_data = $newDB->get ("Purchases p", null, "p.PurchasesId,p.PurchasesNo,p.P
                             }else if($po['PurchaseOrdersStatus'] == 0){
                               echo '<td><a href="addpurchaseorder.php?id='.$value['PurchasesId'].'">Update PO</a></td></tr>';
                             }else{
-                              echo '<td><a href="addpurchaseorder.php?id='.$value['PurchasesId'].'">View PO</a></td></tr>';
+                              echo '<td><a href="addpurchaseorder.php?id='.$value['PurchasesId'].'">View submited PO</a></td></tr>';
                             }
                           }
                         }

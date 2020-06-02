@@ -24,6 +24,7 @@
 <?php
 
 $arr = array(
+  array('guest.php', 'fas fa-plus-square',$oDB->lang('GuestRegister')),
   array('StockOut.php', 'fas fa-plus-square',$oDB->lang('StockOut')),
   array('StockIn.php', 'fas fa-plus-square',$oDB->lang('StockIn')),
 );

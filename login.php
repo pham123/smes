@@ -1,48 +1,3 @@
-<?php
-session_start();
-ob_start();
-date_default_timezone_set('Asia/Ho_Chi_Minh');
-require('config.php');
-require('function/db_lib.php');
-require('lang/en.php');
-$pagetitle ="Login Page";
-require('views/template-header.php');
-require('function/template.php');
-$oDB = new db();
-
-//reset all session variable
-session_unset();
-
-//log user in
-if (isset($_POST['username'])) {
-  // Lấy giá trị user name và pass
-  $username = safe($_POST['username']);
-  $userpass = md5(safe($_POST['userpass']));
-  
-  // Kiểm tra trong data base
-  $sql = "`UsersName`='".$username."' AND `UsersPassword` = '".$userpass."'";
-  $ketqua = $oDB-> sl_one('Users',$sql);
-
-  // var_dump($ketqua);
-  if (isset($ketqua["UsersId"])) {
-    $_SESSION[_site_]['userid']=$ketqua['UsersId'];
-    $_SESSION[_site_]['username']=$username;
-    $_SESSION[_site_]['userfullname']=$ketqua['UsersFullName'];
-    $_SESSION[_site_]['useroption']=$ketqua['UsersOption'];
-    $_SESSION[_site_]['useremail'] = $ketqua['UsersEmail'];
-    $_SESSION[_site_]['userlang'] = $ketqua['UsersLang'];
-
-     header("Location: home/");
-     die(); 
-    
-
-
-  } else {
-    # code...
-  }
-}
-?>
-
 <!DOCTYPE html>
 <html lang="en">
 
@@ -87,7 +42,7 @@ if (isset($_POST['username'])) {
                   <div class="text-center">
                     <h1 class="h4 text-gray-900 mb-4">Welcome Back!</h1>
                   </div>
-                  <form class="user" action='' method='post'>
+                  <form class="user" action='checklogin.php' method='post'>
                     <div class="form-group">
                       <input type="text" class="form-control form-control-user" name='username' placeholder="Enter user name" autocomplete="off">
                     </div>

@@ -65,15 +65,15 @@ $newDB = new MysqliDb(_DB_HOST_, _DB_USER_, _DB_PASS_,_DB_name_);
         <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
           <thead>
             <tr>
-            <th>TIC</th>
-            <th>Total</th>
-            <th>Using</th>
-            <th>Spare</th>
-            <th>Broken</th>
-            <th>Lost</th>
-            <th>Cal</th>
-            <th>Cal -15 days</th>
-            <th>Cal -45 days</th>
+            <th>Bộ phận</th>
+            <th>Tổng</th>
+            <th>Đang sử dụng</th>
+            <th>Dự phòng</th>
+            <th>Hỏng</th>
+            <th>Mất</th>
+            <th>Hiệu chuẩn</th>
+            <th>Ngày hiệu chuẩn - 15</th>
+            <th>Ngày hiệu chuẩn - 45</th>
             </tr>
           </thead>
           <tbody>

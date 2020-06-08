@@ -39,7 +39,7 @@ $newDB = new MysqliDb(_DB_HOST_, _DB_USER_, _DB_PASS_,_DB_name_);
 
         <div class="container-fluid">
           <?php 
-          $sql = "SELECT scm.SupplyChainObjectName, 
+          $sql = "SELECT scm.SupplyChainObjectName,scm.SupplyChainObjectId,  
           count(*) as Total,
           SUM(case when MEInforStatus = 1 then 1 else 0 end) as TotalOk,
           SUM(case when MEInforStatus = 2 then 1 else 0 end) as TotalSpare,
@@ -53,7 +53,7 @@ $newDB = new MysqliDb(_DB_HOST_, _DB_USER_, _DB_PASS_,_DB_name_);
           INNER JOIN Users ON Users.UsersId = MEInfor.UsersId
           INNER JOIN SupplyChainObject scm on scm.SupplyChainObjectId = MEInfor.SupplyChainObjectId
           WHERE MEInforId in (SELECT MAX(`MEInforId`) as id FROM `MEInfor` GROUP BY ProductsId )
-          GROUP BY scm.SupplyChainObjectName";
+          GROUP BY scm.SupplyChainObjectName,scm.SupplyChainObjectId";
           $result = $oDB->fetchAll($sql);
           // echo "<pre>";
           // var_dump($result);
@@ -88,8 +88,8 @@ $newDB = new MysqliDb(_DB_HOST_, _DB_USER_, _DB_PASS_,_DB_name_);
                 echo  "<td>".$value['TotalBroken']."</td>";
                 echo  "<td>".$value['TotalLost']."</td>";
                 echo  "<td>".$value['TotalCal']."</td>";
-                echo  "<td style='background-color:red;'><a href='list15.php'>".$value['Total15']."</a></td>";
-                echo  "<td style='background-color:yellow;'><a href='list45.php'>".($value['Total45']-$value['Total15'])."</a></td>";
+                echo  "<td style='background-color:red;'><a href='list15.php?tic=".$value['SupplyChainObjectId']."'>".$value['Total15']."</a></td>";
+                echo  "<td style='background-color:yellow;'><a href='list45.php?tic=".$value['SupplyChainObjectId']."'>".($value['Total45']-$value['Total15'])."</a></td>";
                 echo "</tr>";
               }
             

@@ -72,8 +72,8 @@ $newDB = new MysqliDb(_DB_HOST_, _DB_USER_, _DB_PASS_,_DB_name_);
             <th>Hỏng</th>
             <th>Mất</th>
             <th>Hiệu chuẩn</th>
-            <th>Ngày hiệu chuẩn - 15</th>
-            <th>Ngày hiệu chuẩn - 45</th>
+            <th>Ngày hiệu chuẩn - 15.</th>
+            <th>Ngày hiệu chuẩn - 45.</th>
             </tr>
           </thead>
           <tbody>

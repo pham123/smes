@@ -85,7 +85,8 @@ if(isset($_SESSION[_site_]['userlang'])){
                 <?php
                 }else{
                 ?>
-                  <img class="img-profile rounded-circle" style="object-fit: cover" src="../user/image/user_<?php echo $_SESSION[_site_]['userid']?>.jpg">
+                  <img class="img-profile rounded-circle" style="object-fit: cover" src="../img/Users/1.png">
+                  <!-- <img class="img-profile rounded-circle" style="object-fit: cover" src="../user/image/user_<?php echo $_SESSION[_site_]['userid']?>.jpg"> -->
                 <?php
                 }
                 ?>

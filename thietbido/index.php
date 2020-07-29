@@ -39,7 +39,7 @@ $newDB = new MysqliDb(_DB_HOST_, _DB_USER_, _DB_PASS_,_DB_name_);
 
         <div class="container-fluid">
           <?php 
-          $sql = "SELECT scm.SupplyChainObjectName, 
+          $sql = "SELECT scm.SupplyChainObjectName,scm.SupplyChainObjectId,  
           count(*) as Total,
           SUM(case when MEInforStatus = 1 then 1 else 0 end) as TotalOk,
           SUM(case when MEInforStatus = 2 then 1 else 0 end) as TotalSpare,
@@ -53,7 +53,7 @@ $newDB = new MysqliDb(_DB_HOST_, _DB_USER_, _DB_PASS_,_DB_name_);
           INNER JOIN Users ON Users.UsersId = MEInfor.UsersId
           INNER JOIN SupplyChainObject scm on scm.SupplyChainObjectId = MEInfor.SupplyChainObjectId
           WHERE MEInforId in (SELECT MAX(`MEInforId`) as id FROM `MEInfor` GROUP BY ProductsId )
-          GROUP BY scm.SupplyChainObjectName";
+          GROUP BY scm.SupplyChainObjectName,scm.SupplyChainObjectId";
           $result = $oDB->fetchAll($sql);
           // echo "<pre>";
           // var_dump($result);
@@ -65,15 +65,15 @@ $newDB = new MysqliDb(_DB_HOST_, _DB_USER_, _DB_PASS_,_DB_name_);
         <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
           <thead>
             <tr>
-            <th>TIC</th>
-            <th>Total</th>
-            <th>Using</th>
-            <th>Spare</th>
-            <th>Broken</th>
-            <th>Lost</th>
-            <th>Cal</th>
-            <th>Cal -15 days</th>
-            <th>Cal -45 days</th>
+            <th>Bộ phận</th>
+            <th>Tổng</th>
+            <th>Đang sử dụng</th>
+            <th>Dự phòng</th>
+            <th>Hỏng</th>
+            <th>Mất</th>
+            <th>Hiệu chuẩn</th>
+            <th>Ngày hiệu chuẩn - 15.</th>
+            <th>Ngày hiệu chuẩn - 45.</th>
             </tr>
           </thead>
           <tbody>
@@ -88,8 +88,8 @@ $newDB = new MysqliDb(_DB_HOST_, _DB_USER_, _DB_PASS_,_DB_name_);
                 echo  "<td>".$value['TotalBroken']."</td>";
                 echo  "<td>".$value['TotalLost']."</td>";
                 echo  "<td>".$value['TotalCal']."</td>";
-                echo  "<td style='background-color:red;'><a href='list15.php'>".$value['Total15']."</a></td>";
-                echo  "<td style='background-color:yellow;'><a href='list45.php'>".($value['Total45']-$value['Total15'])."</a></td>";
+                echo  "<td style='background-color:red;'><a href='list15.php?tic=".$value['SupplyChainObjectId']."'>".$value['Total15']."</a></td>";
+                echo  "<td style='background-color:yellow;'><a href='list45.php?tic=".$value['SupplyChainObjectId']."'>".($value['Total45']-$value['Total15'])."</a></td>";
                 echo "</tr>";
               }
             

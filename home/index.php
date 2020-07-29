@@ -181,7 +181,7 @@ foreach ($linkar as $key => $value) {
                   <h6 class="m-0 font-weight-bold text-primary">Thông báo</h6>
                 </div>
                 <div class="card-body">
-                  <h4>Thử nghiệm hệ thống nhập liệu sản lượng trên chuyền sản xuất.</h4>
+                  <h4>...</h4>
                 </div>
               </div>
         </div>
